@@ -3,25 +3,82 @@ Introduction to R
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax
-for authoring HTML, PDF, and MS Word documents. For more details on
-using R Markdown see <http://rmarkdown.rstudio.com>.
+In its most basic form, R can be used as a simple calculator. Consider
+the following arithmetic operators:
 
-When you click the **Knit** button a document will be generated that
-includes both content as well as the output of any embedded R code
-chunks within the document. You can embed an R code chunk like this:
+-   Addition: `+`
+-   Subtraction: `-`
+-   Multiplication: `*`
+-   Division: `/`
+-   Exponentiation: `^`
+-   Modulo: `%%`
+
+The last two might need some explaining:
+
+-   The `^` operator raises the number to its left to the power of the
+    number to its right: for example `3^2` is 9.
+-   The modulo returns the remainder of the division of the number to
+    the left by the number on its right, for example 5 modulo 3 or
+    `5 %% 3` is 2.
 
 ``` r
-summary(cars)
+# An addition
+5 + 5 
 ```
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
+    ## [1] 10
+
+``` r
+#> [1] 10
+
+# A subtraction
+5 - 5 
+```
+
+    ## [1] 0
+
+``` r
+#> [1] 0
+
+# A multiplication
+3 * 5
+```
+
+    ## [1] 15
+
+``` r
+#> [1] 15
+
+ # A division
+(5 + 5) / 2 
+```
+
+    ## [1] 5
+
+``` r
+#> [1] 5
+
+# Exponentiation
+2^5
+```
+
+    ## [1] 32
+
+``` r
+#> [1] 32
+
+# Modulo
+28%%6
+```
+
+    ## [1] 4
+
+``` r
+#> [1] 4
+```
+
+<sup>Created on 2022-01-17 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Including Plots
 
