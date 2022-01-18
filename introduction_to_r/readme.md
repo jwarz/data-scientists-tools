@@ -1,30 +1,28 @@
 Introduction to R
 ================
 
-# How it works
+# Intro to basics
 
-<p>
+## How it works
+
 In the editor on the right you should type R code to solve the
 exercises. When you hit the ‘Submit Answer’ button, every line of code
 is interpreted and executed by R and you get a message whether or not
 your code was correct. The output of your R code is shown in the console
 in the lower right corner.
-</p>
-<p>
+
 R makes use of the `#` sign to add comments, so that you and others can
 understand what the R code is about. Just like Twitter! Comments are not
 run as R code, so they will not influence your result. For example,
 *Calculate 3 + 4* in the editor on the right is a comment.
-</p>
-<p>
+
 You can also execute R commands straight in the console. This is a good
 way to experiment with R code, as your submission is not checked for
 correctness.
-</p>
 
 **Instructions:**
 
--   In the ed itor on the right there is already some sample code. Can
+-   In the editor on the right there is already some sample code. Can
     you see which lines are actual R code and which are comments?
 -   Add a line of code that calculates the sum of 6 and 12, and hit the
     ‘Submit Answer’ button.
@@ -32,11 +30,11 @@ correctness.
 **Solution:**
 
 ``` r
-# Sample: Calculate 3 + 4
+## Sample: Calculate 3 + 4
 3 + 4
 #> [1] 7
 
-# Instruction: Calculate 6 + 12
+## Instruction: Calculate 6 + 12
 6 + 12
 #> [1] 18
 ```
@@ -44,12 +42,10 @@ correctness.
 <sup>Created on 2022-01-17 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Arithmetic with R
+## Arithmetic with R
 
-<p>
 In its most basic form, R can be used as a simple calculator. Consider
 the following arithmetic operators:
-</p>
 
 -   Addition: `+`
 -   Subtraction: `-`
@@ -58,9 +54,7 @@ the following arithmetic operators:
 -   Exponentiation: `^`
 -   Modulo: `%%`
 
-<p>
 The last two might need some explaining:
-</p>
 
 -   The `^` operator raises the number to its left to the power of the
     number to its right: for example `3^2` is 9.
@@ -68,9 +62,7 @@ The last two might need some explaining:
     the left by the number on its right, for example 5 modulo 3 or
     `5 %% 3` is 2.
 
-<p>
 With this knowledge, follow the instructions to complete the exercise.
-</p>
 
 **Instructions:**
 
@@ -82,27 +74,27 @@ With this knowledge, follow the instructions to complete the exercise.
 **Solution:**
 
 ``` r
-# An addition
+## An addition
 5 + 5 
 #> [1] 10
 
-# A subtraction
+## A subtraction
 5 - 5 
 #> [1] 0
 
-# A multiplication
+## A multiplication
 3 * 5
 #> [1] 15
 
-# A division
+## A division
 (5 + 5) / 2 
 #> [1] 5
 
-# Exponentiation
+## Exponentiation
 2^5
 #> [1] 32
 
-# Modulo
+## Modulo
 28%%6
 #> [1] 4
 ```
@@ -110,36 +102,30 @@ With this knowledge, follow the instructions to complete the exercise.
 <sup>Created on 2022-01-17 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Variable assignment
+## Variable assignment
 
-<p>
 A basic concept in (statistical) programming is called a **variable**.
-</p>
-<p>
+
 A variable allows you to store a value (e.g. 4) or an object (e.g. a
 function description) in R. You can then later use this variable’s name
 to easily access the value or the object that is stored within this
 variable.
-</p>
-<p>
-You can assign a value 4 to a variable `my_var` with the command
-</p>
+
+You can assign a value 4 to a variable `my_var` with the command<br>
 
 **Instructions:**
 
-<p>
 Over to you: complete the code in the editor such that it assigns the
 value 42 to the variable `x` in the editor. Submit the answer. Notice
-that when you ask R to print `x`, the value 42 appears.
-</p>
+that when you ask R to print `x`, the value 42 appears.<br>
 
 **Solution:**
 
 ``` r
-# Assign the value 42 to x
+## Assign the value 42 to x
 x <- 42
 
-# Print out the value of the variable x
+## Print out the value of the variable x
 x
 #> [1] 42
 ```
@@ -147,13 +133,11 @@ x
 <sup>Created on 2022-01-17 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Variable assignment (2)
+## Variable assignment (2)
 
-<p>
 Suppose you have a fruit basket with five apples. As a data analyst in
 training, you want to store the number of apples in a variable with the
-name `my_apples`.
-</p>
+name `my_apples`.<br>
 
 **Instructions:**
 
@@ -168,10 +152,10 @@ name `my_apples`.
 **Solution:**
 
 ``` r
-# Assign the value 5 to the variable my_apples
+## Assign the value 5 to the variable my_apples
 my_apples <- 5
 
-# Print out the value of the variable my_apples
+## Print out the value of the variable my_apples
 my_apples
 #> [1] 5
 ```
@@ -179,16 +163,14 @@ my_apples
 <sup>Created on 2022-01-17 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Variable assignment (3)
+## Variable assignment (3)
 
-<p>
 Every tasty fruit basket needs oranges, so you decide to add six
 oranges. As a data analyst, your reflex is to immediately create the
 variable `my_oranges` and assign the value 6 to it. Next, you want to
 calculate how many pieces of fruit you have in total. Since you have
 given meaningful names to these values, you can now code this in a clear
-way:
-</p>
+way: <br>
 
 **Instructions:**
 
@@ -201,28 +183,27 @@ way:
 **Solution:**
 
 ``` r
-# Assign a value to the variables my_apples and my_oranges
+## Assign a value to the variables my_apples and my_oranges
 my_apples <- 5
 my_oranges <- 6
 
-# Add these two variables together
+## Add these two variables together
 my_apples + my_oranges
 
-# Create the variable my_fruit
+## Create the variable my_fruit
 my_fruit <- my_apples + my_oranges
 ```
 
-# Apples and oranges
+## Apples and oranges
 
-<p>
 Common knowledge tells you not to add apples and oranges. But hey, that
 is what you just did, no :-)? The `my_apples` and `my_oranges` variables
 both contained a number in the previous exercise. The `+` operator works
 with numeric variables in R. If you really tried to add “apples” and
 “oranges”, and assigned a text value to the variable `my_oranges` (see
 the editor), you would be trying to assign the addition of a numeric and
-a character variable to the variable `my_fruit`. This is not possible.
-</p>
+a character variable to the variable `my_fruit`. This is not
+possible.<br>
 
 **Instructions:**
 
@@ -234,25 +215,23 @@ a character variable to the variable `my_fruit`. This is not possible.
 **Solution:**
 
 ``` r
-# Assign a value to the variable my_apples
+## Assign a value to the variable my_apples
 my_apples  <- 5 
 
-# Fix the assignment of my_oranges
+## Fix the assignment of my_oranges
 my_oranges <- 6
 
-# Create the variable my_fruit and print it out
+## Create the variable my_fruit and print it out
 my_fruit <- my_apples + my_oranges 
 my_fruit
 ```
 
     ## [1] 11
 
-# Basic data types in R
+## Basic data types in R
 
-<p>
 R works with numerous data types. Some of the most basic types to get
-started are:
-</p>
+started are:<br>
 
 -   Decimal values like `4.5` are called **numerics**.
 -   Whole numbers like `4` are called **integers**. Integers are also
@@ -260,72 +239,62 @@ started are:
 -   Boolean values (`TRUE` or `FALSE`) are called **logical**.
 -   Text (or string) values are called **characters**.
 
-<p>
 Note how the quotation marks in the editor indicate that `"some text"`
-is a string.
-</p>
+is a string.<br>
 
 **Instructions:**
 
-<p>
-Change the value of the:
-</p>
+Change the value of the:<br>
 
 -   `my_numeric` variable to `42`.
 -   `my_character` variable to `"universe"`. Note that the quotation
     marks indicate that `"universe"` is a character.
 -   `my_logical` variable to `FALSE`.
 
-<p>
-Note that R is case sensitive!
-</p>
+Note that R is case sensitive!<br>
 
 **Solution:**
 
 ``` r
-# Change my_numeric to be 42
+## Change my_numeric to be 42
 my_numeric   <- 42
 
-# Change my_character to be "universe"
+## Change my_character to be "universe"
 my_character <- "universe"
 
-# Change my_logical to be FALSE
+## Change my_logical to be FALSE
 my_logical   <- FALSE
 ```
 
-# What’s that data type?
+## What’s that data type?
 
-<p>
 Do you remember that when you added `5 + "six"`, you got an error due to
 a mismatch in data types? You can avoid such embarrassing situations by
 checking the data type of a variable beforehand. You can do this with
-the `class()` function, as the code in the editor shows.
-</p>
+the `class()` function, as the code in the editor shows.<br>
 
 **Instructions:**
 
-<p>
 Complete the code in the editor and also print out the classes of
-`my_character` and `my_logical`.
-</p>
+`my_character` and `my_logical`.<br>
 
 **Solution:**
 
 ``` r
-# Declare variables of different types
+## Declare variables of different types
 my_numeric   <- 42
 my_character <- "universe"
 my_logical   <- FALSE 
 
-# Check class of my_numeric
+## Check class of my_numeric
 class(my_numeric)
 #> [1] "numeric"
 
-# Check class of my_character
+## Check class of my_character
 class(my_character)
 #> [1] "character"
 
-# Check class of my_logical
+## Check class of my_logical
 class(my_logical)
 #> [1] "logical"
 ```
@@ -333,19 +302,17 @@ class(my_logical)
 <sup>Created on 2022-01-18 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Create a vector
+# Vectors
 
-<p>
+## Create a vector
+
 Feeling lucky? You better, because this chapter takes you on a trip to
-the City of Sins, also known as *Statisticians Paradise*!
-</p>
-<p>
-Thanks to R and your new data-analytical skills, you will learn how to
-uplift your performance at the tables and fire off your career as a
-professional gambler. This chapter will show how you can easily keep
-track of your betting progress and how you can do some simple analyses
-on past actions. Next stop, Vegas Baby… VEGAS!!
-</p>
+the City of Sins, also known as *Statisticians Paradise*!<br> Thanks to
+R and your new data-analytical skills, you will learn how to uplift your
+performance at the tables and fire off your career as a professional
+gambler. This chapter will show how you can easily keep track of your
+betting progress and how you can do some simple analyses on past
+actions. Next stop, Vegas Baby… VEGAS!!<br>
 
 **Instructions:**
 
@@ -356,39 +323,37 @@ on past actions. Next stop, Vegas Baby… VEGAS!!
 **Solution:**
 
 ``` r
-# Define the variable vegas
+## Define the variable vegas
 vegas <- "Go!"
 ```
 
-# Create a vector (2)
+## Create a vector (2)
 
-<p>
 Let us focus first!
-</p>
-<p>
+
 On your way from rags to riches, you will make extensive use of vectors.
 Vectors are one-dimension arrays that can hold numeric data, character
 data, or logical data. In other words, a vector is a simple tool to
 store data. For example, you can store your daily gains and losses in
 the casinos.
-</p>
-<p>
+
 In R, you create a vector with the combine function
 <a href="http://www.rdocumentation.org/packages/base/functions/c" target="_blank" rel="noopener noreferrer">`c()`</a>.
 You place the vector elements separated by a comma between the
 parentheses. For example:
-</p>
-<p>
+
+``` r
+numeric_vector   <- c(1, 2, 3)
+character_vector <- c("a", "b", "c")
+```
+
 Once you have created these vectors in R, you can use them to do
 calculations.
-</p>
 
 **Instructions:**
 
-<p>
 Complete the code such that `boolean_vector` contains the three
-elements: `TRUE`, `FALSE` and `TRUE` (in that order).
-</p>
+elements: `TRUE`, `FALSE` and `TRUE` (in that order).<br>
 
 **Solution:**
 
@@ -396,23 +361,19 @@ elements: `TRUE`, `FALSE` and `TRUE` (in that order).
 numeric_vector   <- c(1, 10, 49)
 character_vector <- c("a", "b", "c")
 
-# Complete the code for boolean_vector
+## Complete the code for boolean_vector
 boolean_vector   <- c(TRUE, FALSE, TRUE)
 ```
 
-# Create a vector (3)
+## Create a vector (3)
 
-<p>
 After one week in Las Vegas and still zero Ferraris in your garage, you
 decide that it is time to start using your data analytical superpowers.
-</p>
-<p>
+
 Before doing a first analysis, you decide to first collect all the
 winnings and losses for the last week:
-</p>
-<p>
+
 For `poker_vector`:
-</p>
 
 -   On Monday you won $140
 -   Tuesday you lost $50
@@ -420,9 +381,7 @@ For `poker_vector`:
 -   Thursday you lost $120
 -   Friday you won $240
 
-<p>
 For `roulette_vector`:
-</p>
 
 -   On Monday you lost $24
 -   Tuesday you lost $50
@@ -430,54 +389,58 @@ For `roulette_vector`:
 -   Thursday you lost $350
 -   Friday you won $10
 
-<p>
 You only played poker and roulette, since there was a delegation of
 mediums that occupied the craps tables. To be able to use this data in
 R, you decide to create the variables `poker_vector` and
 `roulette_vector`.
-</p>
 
 **Instructions:**
 
-<p>
 Assign the winnings/losses for roulette to the variable
 `roulette_vector`. You lost $24, then lost $50, won $100, lost $350, and
-won $10.
-</p>
+won $10.<br>
 
 **Solution:**
 
 ``` r
-# Poker winnings from Monday to Friday
+## Poker winnings from Monday to Friday
 poker_vector    <- c(140, -50, 20, -120, 240)
 
-# Roulette winnings from Monday to Friday
+## Roulette winnings from Monday to Friday
 roulette_vector <-  c(-24, -50, 100, -350, 10)
 ```
 
-# Naming a vector
+## Naming a vector
 
-<p>
 As a data analyst, it is important to have a clear view on the data that
 you are using. Understanding what each element refers to is therefore
 essential.
-</p>
-<p>
+
 In the previous exercise, we created a vector with your winnings over
 the week. Each vector element refers to a day of the week but it is hard
 to tell which element belongs to which day. It would be nice if you
 could show that in the vector itself.
-</p>
-<p>
+
 You can give a name to the elements of a vector with the `names()`
 function. Have a look at this example:
-</p>
-<p>
+
+``` r
+some_vector        <- c("John Doe", "poker player")
+names(some_vector) <- c("Name", "Profession")
+```
+
 This code first creates a vector `some_vector` and then gives the two
 elements a name. The first element is assigned the name `Name`, while
 the second element is labeled `Profession`. Printing the contents to the
 console yields following output:
-</p>
+
+``` r
+#>           Name     Profession 
+#>     "John Doe" "poker player"
+```
+
+<sup>Created on 2022-01-18 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 **Instructions:**
 
@@ -488,32 +451,28 @@ console yields following output:
 **Solution:**
 
 ``` r
-# Assign days as names of poker_vector
+## Assign days as names of poker_vector
 names(poker_vector)    <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 
-# Assign days as names of roulette_vectors
+## Assign days as names of roulette_vectors
 names(roulette_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 ```
 
-# Naming a vector (2)
+## Naming a vector (2)
 
-<p>
 If you want to become a good statistician, you have to become lazy. (If
 you are already lazy, chances are high you are one of those exceptional,
 natural-born statistical talents.)
-</p>
-<p>
+
 In the previous exercises you probably experienced that it is boring and
 frustrating to type and retype information such as the days of the week.
 However, when you look at it from a higher perspective, there is a more
 efficient way to do this, namely, to assign the days of the week vector
 to a **variable**!
-</p>
-<p>
+
 Just like you did with your poker and roulette returns, you can also
 create a variable that contains the days of the week. This way you can
 use and re-use it.
-</p>
 
 **Instructions:**
 
@@ -527,36 +486,41 @@ use and re-use it.
 ``` r
 days_vector <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
  
-# Assign the names of the day to roulette_vector and poker_vector
+## Assign the names of the day to roulette_vector and poker_vector
 names(poker_vector)    <- days_vector 
 names(roulette_vector) <- days_vector
 ```
 
-# Calculating total winnings
+## Calculating total winnings
 
-<p>
 Now that you have the poker and roulette winnings nicely as named
 vectors, you can start doing some data analytical magic.
-</p>
-<p>
+
 You want to find out the following type of information:
-</p>
 
 -   How much has been your overall profit or loss per day of the week?
 -   Have you lost money over the week in total?
 -   Are you winning/losing money on poker or on roulette?
 
-<p>
 To get the answers, you have to do arithmetic calculations on vectors.
-</p>
-<p>
+
 It is important to know that if you sum two vectors in R, it takes the
 element-wise sum. For example, the following three statements are
 completely equivalent:
-</p>
-<p>
+
+``` r
+c(1, 2, 3) + c(4, 5, 6)
+c(1 + 4, 2 + 5, 3 + 6)
+c(5, 7, 9)
+```
+
 You can also do the calculations with variables that represent vectors:
-</p>
+
+``` r
+a <- c(1, 2, 3) 
+b <- c(4, 5, 6)
+c <- a + b
+```
 
 **Instructions:**
 
@@ -570,55 +534,51 @@ You can also do the calculations with variables that represent vectors:
 A_vector <- c(1, 2, 3)
 B_vector <- c(4, 5, 6)
 
-# Take the sum of A_vector and B_vector
+## Take the sum of A_vector and B_vector
 total_vector <- A_vector + B_vector
   
-# Print out total_vector
+## Print out total_vector
 total_vector
 ```
 
     ## [1] 5 7 9
 
-# Calculating total winnings (2)
+## Calculating total winnings (2)
 
-<p>
 Now you understand how R does arithmetic with vectors, it is time to get
 those Ferraris in your garage! First, you need to understand what the
 overall profit or loss per day of the week was. The total daily profit
 is the sum of the profit/loss you realized on poker per day, and the
 profit/loss you realized on roulette per day.
-</p>
-<p>
+
 In R, this is just the sum of `roulette_vector` and `poker_vector`.
-</p>
 
 **Instructions:**
 
-<p>
 Assign to the variable `total_daily` how much you won or lost on each
 day in total (poker and roulette combined).
-</p>
 
 **Solution:**
 
 ``` r
-# Assign to total_daily how much you won/lost on each day
+## Assign to total_daily how much you won/lost on each day
 total_daily <- poker_vector + roulette_vector
 ```
 
-# Calculating total winnings (3)
+## Calculating total winnings (3)
 
-<p>
 Based on the previous analysis, it looks like you had a mix of good and
 bad days. This is not what your ego expected, and you wonder if there
 may be a very tiny chance you have lost money over the week in total?
-</p>
-<p>
+
 A function that helps you to answer this question is
 <a href="http://www.rdocumentation.org/packages/base/functions/sum" target="_blank" rel="noopener noreferrer">`sum()`</a>.
 It calculates the sum of all elements of a vector. For example, to
 calculate the total amount of money you have lost/won with poker you do:
-</p>
+
+``` r
+total_poker <- sum(poker_vector)
+```
 
 **Instructions:**
 
@@ -632,33 +592,30 @@ calculate the total amount of money you have lost/won with poker you do:
 **Solution:**
 
 ``` r
-# Total winnings with poker
+## Total winnings with poker
 total_poker    <- sum(poker_vector)
 
-# Total winnings with roulette
+## Total winnings with roulette
 total_roulette <- sum(roulette_vector) 
 
-# Total winnings overall
+## Total winnings overall
 total_week     <- total_roulette + total_poker
 
-# Print out total_week
+## Print out total_week
 total_week
 ```
 
     ## [1] -84
 
-# Comparing total winnings
+## Comparing total winnings
 
-<p>
 Oops, it seems like you are losing money. Time to rethink and adapt your
 strategy! This will require some deeper analysis…
-</p>
-<p>
+
 After a short brainstorm in your hotel’s jacuzzi, you realize that a
 possible explanation might be that your skills in roulette are not as
 well developed as your skills in poker. So maybe your total gains in
-poker are higher (or `&gt;` ) than in roulette.
-</p>
+poker are higher (or `>` ) than in roulette.
 
 **Instructions:**
 
@@ -671,24 +628,21 @@ poker are higher (or `&gt;` ) than in roulette.
 **Solution:**
 
 ``` r
-# Check if you realized higher total gains in poker than in roulette 
+## Check if you realized higher total gains in poker than in roulette 
 total_poker > total_roulette
 ```
 
     ## [1] TRUE
 
-# Vector selection: the good times
+## Vector selection: the good times
 
-<p>
 Your hunch seemed to be right. It appears that the poker game is more
 your cup of tea than roulette.
-</p>
-<p>
+
 Another possible route for investigation is your performance at the
 beginning of the working week compared to the end of it. You did have a
 couple of Margarita cocktails at the end of the week…
-</p>
-<p>
+
 To answer that question, you only want to focus on a selection of the
 `total_vector`. In other words, our goal is to select specific elements
 of the vector. To select elements of a vector (and later matrices, data
@@ -698,93 +652,89 @@ element of the vector, you type `poker_vector[1]`. To select the second
 element of the vector, you type `poker_vector[2]`, etc. Notice that the
 first element in a vector has index 1, not 0 as in many other
 programming languages.
-</p>
 
 **Instructions:**
 
-<p>
-Assign the poker results of Wednesday to the variable `poker_wednesday`.
-</p>
+Assign the poker results of Wednesday to the variable
+`poker_wednesday`.<br>
 
 **Solution:**
 
 ``` r
-# Define a new variable based on a selection
+## Define a new variable based on a selection
 poker_wednesday <- poker_vector[3]
 ```
 
-# Vector selection: the good times (2)
+## Vector selection: the good times (2)
 
-<p>
 How about analyzing your midweek results?
-</p>
-<p>
+
 To select multiple elements from a vector, you can add square brackets
 at the end of it. You can indicate between the brackets what elements
 should be selected. For example: suppose you want to select the first
 and the fifth day of the week: use the vector `c(1, 5)` between the
 square brackets. For example, the code below selects the first and fifth
 element of `poker_vector`:
-</p>
+
+``` r
+poker_vector[c(1, 5)]
+```
 
 **Instructions:**
 
-<p>
 Assign the poker results of Tuesday, Wednesday and Thursday to the
-variable `poker_midweek`.
-</p>
+variable `poker_midweek`.<br>
 
 **Solution:**
 
 ``` r
-# Define a new variable based on a selection
+## Define a new variable based on a selection
 poker_midweek <- poker_vector[c(2,3,4)]
 ```
 
-# Vector selection: the good times (3)
+## Vector selection: the good times (3)
 
-<p>
 Selecting multiple elements of `poker_vector` with `c(2, 3, 4)` is not
 very convenient. Many statisticians are lazy people by nature, so they
 created an easier way to do this: `c(2, 3, 4)` can be abbreviated
 to`2:4`, which generates a vector with all natural numbers from 2 up to
 4.
-</p>
-<p>
+
 So, another way to find the mid-week results is `poker_vector[2:4]`.
 Notice how the vector `2:4` is placed between the square brackets to
 select element 2 up to 4.
-</p>
 
 **Instructions:**
 
-<p>
 Assign to `roulette_selection_vector` the roulette results from Tuesday
-up to Friday; make use of `:` if it makes things easier for you.
-</p>
+up to Friday; make use of `:` if it makes things easier for you.<br>
 
 **Solution:**
 
 ``` r
-# Define a new variable based on a selection
+## Define a new variable based on a selection
 roulette_selection_vector <- roulette_vector[2:5]
 ```
 
-# Vector selection: the good times (4)
+## Vector selection: the good times (4)
 
-<p>
 Another way to tackle the previous exercise is by using the names of the
 vector elements (Monday, Tuesday, …) instead of their numeric positions.
 For example,
-</p>
-<p>
+
+``` r
+poker_vector["Monday"]
+```
+
 will select the first element of `poker_vector` since `"Monday"` is the
 name of that first element.
-</p>
-<p>
+
 Just like you did in the previous exercise with numerics, you can also
 use the element names to select multiple elements, for example:
-</p>
+
+``` r
+poker_vector[c("Monday","Tuesday")]
+```
 
 **Instructions:**
 
@@ -798,24 +748,20 @@ use the element names to select multiple elements, for example:
 **Solution:**
 
 ``` r
-# Select poker results for Monday, Tuesday and Wednesday
+## Select poker results for Monday, Tuesday and Wednesday
 poker_start <- poker_vector[c("Monday", "Tuesday", "Wednesday")]
   
-# Calculate the average of the elements in poker_start
+## Calculate the average of the elements in poker_start
 mean(poker_start)
 ```
 
     ## [1] 36.66667
 
-# Selection by comparison - Step 1
+## Selection by comparison - Step 1
 
-<p>
 By making use of comparison operators, we can approach the previous
-question in a more proactive way.
-</p>
-<p>
-The (logical) comparison operators known to R are:
-</p>
+question in a more proactive way. <br> The (logical) comparison
+operators known to R are:<br>
 
 -   `<` for less than
 -   `>` for greater than
@@ -824,11 +770,9 @@ The (logical) comparison operators known to R are:
 -   `==` for equal to each other
 -   `!=` not equal to each other
 
-<p>
 As seen in the previous chapter, stating `6 &gt; 5` returns `TRUE`. The
 nice thing about R is that you can use these comparison operators also
-on vectors. For example:
-</p>
+on vectors. For example:<br>
 
 ``` r
 c(4, 5, 6) > 5
@@ -838,10 +782,8 @@ c(4, 5, 6) > 5
 <sup>Created on 2022-01-17 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-<p>
 This command tests for every element of the vector if the condition
-stated by the comparison operator is `TRUE` or `FALSE`.
-</p>
+stated by the comparison operator is `TRUE` or `FALSE`.<br>
 
 **Instructions:**
 
@@ -854,60 +796,55 @@ stated by the comparison operator is `TRUE` or `FALSE`.
 **Solution:**
 
 ``` r
-# Which days did you make money on poker?
+## Which days did you make money on poker?
 selection_vector <- poker_vector > 0
   
-# Print out selection_vector
+## Print out selection_vector
 selection_vector
 ```
 
     ##    Monday   Tuesday Wednesday  Thursday    Friday 
     ##      TRUE     FALSE      TRUE     FALSE      TRUE
 
-# Selection by comparison - Step 2
+## Selection by comparison - Step 2
 
-<p>
 Working with comparisons will make your data analytical life easier.
 Instead of selecting a subset of days to investigate yourself (like
 before), you can simply ask R to return only those days where you
 realized a positive return for poker.
-</p>
-<p>
+
 In the previous exercises you used
-`selection_vector &lt;- poker_vector &gt; 0` to find the days on which
-you had a positive poker return. Now, you would like to know not only
-the days on which you won, but also how much you won on those days.
-</p>
-<p>
+`selection_vector <- poker_vector > 0` to find the days on which you had
+a positive poker return. Now, you would like to know not only the days
+on which you won, but also how much you won on those days.
+
 You can select the desired elements, by putting `selection_vector`
 between the square brackets that follow `poker_vector`:
-</p>
-<p>
+
+``` r
+poker_vector[selection_vector]
+```
+
 R knows what to do when you pass a logical vector in square brackets: it
 will only select the elements that correspond to `TRUE` in
 `selection_vector`.
-</p>
 
 **Instructions:**
 
-<p>
 Use `selection_vector` in square brackets to assign the amounts that you
 won on the profitable days to the variable `poker_winning_days`.
-</p>
 
 **Solution:**
 
 ``` r
-# Select from poker_vector these days
+## Select from poker_vector these days
 poker_winning_days <- poker_vector[selection_vector]
 ```
 
-# Advanced selection
+## Advanced selection
 
-<p>
 Just like you did for poker, you also want to know those days where you
 realized a positive return for roulette.
-</p>
 
 **Instructions:**
 
@@ -921,31 +858,33 @@ realized a positive return for roulette.
 **Solution:**
 
 ``` r
-# Which days did you make money on roulette?
+## Which days did you make money on roulette?
 selection_vector      <- roulette_vector > 0
 
-# Select from roulette_vector these days
+## Select from roulette_vector these days
 roulette_winning_days <- roulette_vector[selection_vector]
 ```
 
-# What’s a matrix?
+# Matrices
 
-<p>
+## What’s a matrix?
+
 In R, a matrix is a collection of elements of the same data type
 (numeric, character, or logical) arranged into a fixed number of rows
 and columns. Since you are only working with rows and columns, a matrix
 is called two-dimensional.
-</p>
-<p>
+
 You can construct a matrix in R with the
 <a href="http://www.rdocumentation.org/packages/base/functions/matrix" target="_blank" rel="noopener noreferrer">`matrix()`</a>
 function. Consider the following example:
-</p>
-<p>
+
+``` r
+matrix(1:9, byrow = TRUE, nrow = 3)
+```
+
 In the
 <a href="http://www.rdocumentation.org/packages/base/functions/matrix" target="_blank" rel="noopener noreferrer">`matrix()`</a>
-function:
-</p>
+function:<br>
 
 -   The first argument is the collection of elements that R will arrange
     into the rows and columns of the matrix. Here, we use `1:9` which is
@@ -958,15 +897,13 @@ function:
 
 **Instructions:**
 
-<p>
 Construct a matrix with 3 rows containing the numbers 1 up to 9, filled
-row-wise.
-</p>
+row-wise.<br>
 
 **Solution:**
 
 ``` r
-# Construct a matrix with 3 rows that contain the numbers 1 up to 9
+## Construct a matrix with 3 rows that contain the numbers 1 up to 9
 matrix(1:9, byrow = TRUE, nrow = 3)
 ```
 
@@ -975,23 +912,19 @@ matrix(1:9, byrow = TRUE, nrow = 3)
     ## [2,]    4    5    6
     ## [3,]    7    8    9
 
-# Analyze matrices, you shall
+## Analyze matrices, you shall
 
-<p>
 It is now time to get your hands dirty. In the following exercises you
 will analyze the box office numbers of the Star Wars franchise. May the
 force be with you!
-</p>
-<p>
+
 In the editor, three vectors are defined. Each one represents the box
 office numbers from the first three Star Wars movies. The first element
 of each vector indicates the US box office revenue, the second element
 refers to the Non-US box office (source: Wikipedia).
-</p>
-<p>
+
 In this exercise, you’ll combine all these figures into a single vector.
 Next, you’ll build a matrix from this vector.
-</p>
 
 **Instructions:**
 
@@ -1006,15 +939,15 @@ Next, you’ll build a matrix from this vector.
 **Solution:**
 
 ``` r
-# Box office Star Wars (in millions!)
+## Box office Star Wars (in millions!)
 new_hope         <- c(460.998, 314.4)
 empire_strikes   <- c(290.475, 247.900)
 return_jedi      <- c(309.306, 165.8)
 
-# Create box_office
+## Create box_office
 box_office       <- c(new_hope, empire_strikes, return_jedi)
 
-# Construct star_wars_matrix
+## Construct star_wars_matrix
 star_wars_matrix <- matrix(box_office, byrow=TRUE, nrow=3)
 star_wars_matrix
 ```
@@ -1024,29 +957,24 @@ star_wars_matrix
     ## [2,] 290.475 247.9
     ## [3,] 309.306 165.8
 
-# Naming a matrix
+## Naming a matrix
 
-<p>
 To help you remember what is stored in `star_wars_matrix`, you would
 like to add the names of the movies for the rows. Not only does this
 help you to read the data, but it is also useful to select certain
 elements from the matrix.
-</p>
-<p>
+
 Similar to vectors, you can add names for the rows and the columns of a
 matrix
-</p>
 
 ``` r
 rownames(my_matrix) <- row_names_vector
 colnames(my_matrix) <- col_names_vector
 ```
 
-<p>
 We went ahead and prepared two vectors for you: `region`, and `titles`.
 You will need these vectors to name the columns and rows of
 `star_wars_matrix`, respectively.
-</p>
 
 **Instructions:**
 
@@ -1059,17 +987,17 @@ You will need these vectors to name the columns and rows of
 **Solution:**
 
 ``` r
-# Vectors region and titles, used for naming
+## Vectors region and titles, used for naming
 region <- c("US", "non-US")
 titles <- c("A New Hope", "The Empire Strikes Back", "Return of the Jedi")
 
-# Name the columns with region
+## Name the columns with region
 colnames(star_wars_matrix) <- region
 
-# Name the rows with titles
+## Name the rows with titles
 rownames(star_wars_matrix) <- titles
 
-# Print out star_wars_matrix
+## Print out star_wars_matrix
 star_wars_matrix
 ```
 
@@ -1078,23 +1006,19 @@ star_wars_matrix
     ## The Empire Strikes Back 290.475  247.9
     ## Return of the Jedi      309.306  165.8
 
-# Calculating the worldwide box office
+## Calculating the worldwide box office
 
-<p>
 The single most important thing for a movie in order to become an
 instant legend in Tinseltown is its worldwide box office figures.
-</p>
-<p>
+
 To calculate the total box office revenue for the three Star Wars
 movies, you have to take the sum of the US revenue column and the non-US
 revenue column.
-</p>
-<p>
+
 In R, the function
 <a href="http://www.rdocumentation.org/packages/base/functions/colSums" target="_blank" rel="noopener noreferrer">`rowSums()`</a>
 conveniently calculates the totals for each row of a matrix. This
 function creates a new vector:
-</p>
 
 ``` r
 rowSums(my_matrix)
@@ -1102,15 +1026,13 @@ rowSums(my_matrix)
 
 **Instructions:**
 
-<p>
 Calculate the worldwide box office figures for the three movies and put
 these in the vector named `worldwide_vector`.
-</p>
 
 **Solution:**
 
 ``` r
-# Calculate worldwide box office figures
+## Calculate worldwide box office figures
 worldwide_vector <- rowSums(star_wars_matrix)
 worldwide_vector
 ```
@@ -1118,19 +1040,16 @@ worldwide_vector
     ##              A New Hope The Empire Strikes Back      Return of the Jedi 
     ##                 775.398                 538.375                 475.106
 
-# Adding a column for the Worldwide box office
+## Adding a column for the Worldwide box office
 
-<p>
 In the previous exercise you calculated the vector that contained the
 worldwide box office receipt for each of the three Star Wars movies.
 However, this vector is not yet part of `star_wars_matrix`.
-</p>
-<p>
+
 You can add a column or multiple columns to a matrix with the
 <a href="http://www.rdocumentation.org/packages/base/functions/cbind" target="_blank" rel="noopener noreferrer">`cbind()`</a>
 function, which merges matrices and/or vectors together by column. For
 example:
-</p>
 
 ``` r
 big_matrix <- cbind(matrix1, matrix2, vector1, ...)
@@ -1138,17 +1057,15 @@ big_matrix <- cbind(matrix1, matrix2, vector1, ...)
 
 **Instructions:**
 
-<p>
 Add `worldwide_vector` as a new column to the `star_wars_matrix` and
 assign the result to `all_wars_matrix`. Use the
 <a href="http://www.rdocumentation.org/packages/base/functions/cbind" target="_blank" rel="noopener noreferrer">`cbind()`</a>
 function.
-</p>
 
 **Solution:**
 
 ``` r
-# Bind the new variable worldwide_vector as a column to star_wars_matrix
+## Bind the new variable worldwide_vector as a column to star_wars_matrix
 all_wars_matrix <- cbind(star_wars_matrix, worldwide_vector)
 all_wars_matrix
 ```
@@ -1158,50 +1075,43 @@ all_wars_matrix
     ## The Empire Strikes Back 290.475  247.9          538.375
     ## Return of the Jedi      309.306  165.8          475.106
 
-# Adding a row
+## Adding a row
 
-<p>
 Just like every action has a reaction, every
 <a href="http://www.rdocumentation.org/packages/base/functions/cbind" target="_blank" rel="noopener noreferrer">`cbind()`</a>
 has an
 <a href="http://www.rdocumentation.org/packages/base/functions/cbind" target="_blank" rel="noopener noreferrer">`rbind()`</a>.
 (We admit, we are pretty bad with metaphors.)
-</p>
-<p>
+
 Your R workspace, where all variables you defined ‘live’
 (<a href="http://www.statmethods.net/interface/workspace.html" target="_blank" rel="noopener noreferrer">check
 out what a workspace is</a>), has already been initialized and contains
 two matrices:
-</p>
 
 -   `star_wars_matrix` that we have used all along, with data on the
     original trilogy,
 -   `star_wars_matrix2`, with similar data for the prequels trilogy.
 
-<p>
 Explore these matrices in the console if you want to have a closer look.
 If you want to check out the contents of the workspace, you can type
 `ls()` in the console.
-</p>
 
 **Instructions:**
 
-<p>
 Use `rbind()` to paste together `star_wars_matrix` and
 `star_wars_matrix2`, in this order. Assign the resulting matrix to
 `all_wars_matrix`.
-</p>
 
 **Solution:**
 
 ``` r
-# star_wars_matrix and star_wars_matrix2 are available in your workspace
+## star_wars_matrix and star_wars_matrix2 are available in your workspace
 box_office2       <- c(474.5, 552.5, 310.7, 338.7, 380.3, 468.5)
 star_wars_matrix2 <- matrix(box_office2, nrow = 3, byrow = TRUE,
                            dimnames = list(c("The Phantom Menace", "Attack of the Clones", "Revenge of the Sith"), 
                                            c("US", "non-US")))
 
-# Combine both Star Wars trilogies in one matrix
+## Combine both Star Wars trilogies in one matrix
 all_wars_matrix <- rbind(star_wars_matrix, star_wars_matrix2)
 all_wars_matrix
 ```
@@ -1214,9 +1124,8 @@ all_wars_matrix
     ## Attack of the Clones    310.700  338.7
     ## Revenge of the Sith     380.300  468.5
 
-# The total box office revenue for the entire saga
+## The total box office revenue for the entire saga
 
-<p>
 Just like
 <a href="http://www.rdocumentation.org/packages/base/functions/cbind" target="_blank" rel="noopener noreferrer">`cbind()`</a>
 has
@@ -1228,7 +1137,6 @@ Your R workspace already contains the `all_wars_matrix` that you
 constructed in the previous exercise; type `all_wars_matrix` to have
 another look. Let’s now calculate the total box office revenue for the
 entire saga.
-</p>
 
 **Instructions:**
 
@@ -1241,7 +1149,7 @@ entire saga.
 **Solution:**
 
 ``` r
-# all_wars_matrix is available in your workspace
+## all_wars_matrix is available in your workspace
 all_wars_matrix
 ```
 
@@ -1254,42 +1162,36 @@ all_wars_matrix
     ## Revenge of the Sith     380.300  468.5
 
 ``` r
-# Total revenue for US and non-US
+## Total revenue for US and non-US
 total_revenue_vector <- colSums(all_wars_matrix)
   
-# Print out total_revenue_vector
+## Print out total_revenue_vector
 total_revenue_vector
 ```
 
     ##       US   non-US 
     ## 2226.279 2087.800
 
-# Selection of matrix elements
+## Selection of matrix elements
 
-<p>
 Similar to vectors, you can use the square brackets `[ ]` to select one
 or multiple elements from a matrix. Whereas vectors have one dimension,
 matrices have two dimensions. You should therefore use a comma to
 separate the rows you want to select from the columns. For example:
-</p>
 
 -   `my_matrix[1,2]` selects the element at the first row and second
     column.
 -   `my_matrix[1:3,2:4]` results in a matrix with the data on the rows
     1, 2, 3 and columns 2, 3, 4.
 
-<p>
 If you want to select all elements of a row or a column, no number is
 needed before or after the comma, respectively:
-</p>
 
 -   `my_matrix[,1]` selects all elements of the first column.
 -   `my_matrix[1,]` selects all elements of the first row.
 
-<p>
 Back to Star Wars with this newly acquired knowledge! As in the previous
 exercise, `all_wars_matrix` is already available in your workspace.
-</p>
 
 **Instructions:**
 
@@ -1305,43 +1207,39 @@ exercise, `all_wars_matrix` is already available in your workspace.
 **Solution:**
 
 ``` r
-# Select the non-US revenue for all movies
+## Select the non-US revenue for all movies
 non_us_all  <- all_wars_matrix[,2]
   
-# Average non-US revenue
+## Average non-US revenue
 mean(non_us_all)
 ```
 
     ## [1] 347.9667
 
 ``` r
-# Select the non-US revenue for first two movies
+## Select the non-US revenue for first two movies
 non_us_some <- all_wars_matrix[1:2,2]
   
-# Average non-US revenue for first two movies
+## Average non-US revenue for first two movies
 mean(non_us_some)
 ```
 
     ## [1] 281.15
 
-# A little arithmetic with matrices
+## A little arithmetic with matrices
 
-<p>
 Similar to what you have learned with vectors, the standard operators
 like `+`, `-`, `/`, `*`, etc. work in an element-wise way on matrices in
 R.
-</p>
-<p>
+
 For example, `2 * my_matrix` multiplies each element of `my_matrix` by
 two.
-</p>
-<p>
+
 As a newly-hired data analyst for Lucasfilm, it is your job to find out
 how many visitors went to each movie for each geographical area. You
 already have the total revenue figures in `all_wars_matrix`. Assume that
 the price of a ticket was 5 dollars. Simply dividing the box office
 numbers by this ticket price gives you the number of visitors.
-</p>
 
 **Instructions:**
 
@@ -1352,7 +1250,7 @@ numbers by this ticket price gives you the number of visitors.
 **Solution:**
 
 ``` r
-# all_wars_matrix is available in your workspace
+## all_wars_matrix is available in your workspace
 all_wars_matrix
 ```
 
@@ -1365,10 +1263,10 @@ all_wars_matrix
     ## Revenge of the Sith     380.300  468.5
 
 ``` r
-# Estimate the visitors
+## Estimate the visitors
 visitors <- all_wars_matrix / 5
   
-# Print the estimate to the console
+## Print the estimate to the console
 visitors
 ```
 
@@ -1380,24 +1278,20 @@ visitors
     ## Attack of the Clones    62.1400  67.74
     ## Revenge of the Sith     76.0600  93.70
 
-# A little arithmetic with matrices (2)
+## A little arithmetic with matrices (2)
 
-<p>
 Just like `2 * my_matrix` multiplied every element of `my_matrix` by
 two, `my_matrix1 * my_matrix2` creates a matrix where each element is
 the product of the corresponding elements in `my_matrix1` and
 `my_matrix2`.
-</p>
-<p>
+
 After looking at the result of the previous exercise, big boss Lucas
 points out that the ticket prices went up over time. He asks to redo the
 analysis based on the prices you can find in `ticket_prices_matrix`
 (source: imagination).
-</p>
-<p>
+
 *Those who are familiar with matrices should note that this is not the
 standard matrix multiplication for which you should use `%%` in R.*
-</p>
 
 **Instructions:**
 
@@ -1417,80 +1311,70 @@ ticket_prices_matrix <- matrix(ticket_prices, nrow = 6, byrow = TRUE,
                                dimnames = list(c("A New Hope", "The Empire Strikes Back", "Return of the Jedi", "The Phantom Menace", "Attack of the Clones", "Revenge of the Sith"), 
                                                c("US", "non-US")))
 
-# Estimated number of visitors
+## Estimated number of visitors
 visitors <- all_wars_matrix / ticket_prices_matrix
 
-# US visitors
+## US visitors
 us_visitors <- visitors[,1]
 
-# Average number of US visitors
+## Average number of US visitors
 mean(us_visitors)
 ```
 
     ## [1] 75.01339
 
-# What’s a factor and why would you use it?
+# Factors
 
-<p>
+## What’s a factor and why would you use it?
+
 In this chapter you dive into the wonderful world of **factors**.
-</p>
-<p>
+
 The term factor refers to a statistical data type used to store
 categorical variables. The difference between a categorical variable and
 a continuous variable is that a categorical variable can belong to a
 **limited number of categories**. A continuous variable, on the other
 hand, can correspond to an infinite number of values.
-</p>
-<p>
+
 It is important that R knows whether it is dealing with a continuous or
 a categorical variable, as the statistical models you will develop in
 the future treat both types differently. (You will see later why this is
 the case.)
-</p>
-<p>
+
 A good example of a categorical variable is sex. In many circumstances
 you can limit the sex categories to “Male” or “Female”. (Sometimes you
 may need different categories. For example, you may need to consider
 chromosomal variation, hermaphroditic animals, or different cultural
 norms, but you will always have a finite number of categories.)
-</p>
 
 **Instructions:**
 
-<p>
 Assign to variable `theory` the value `"factors"`.
-</p>
 
 **Solution:**
 
 ``` r
-# Assign to the variable theory what this chapter is about!
+## Assign to the variable theory what this chapter is about!
 theory <- "factors for categorical variables"
 ```
 
-# What’s a factor and why would you use it? (2)
+## What’s a factor and why would you use it? (2)
 
-<p>
 To create factors in R, you make use of the function
 <a href="http://www.rdocumentation.org/packages/base/functions/factor" target="_blank" rel="noopener noreferrer">`factor()`</a>.
 First thing that you have to do is create a vector that contains all the
 observations that belong to a limited number of categories. For example,
 `sex_vector` contains the sex of 5 different individuals:
-</p>
 
 ``` r
 sex_vector <- c("Male","Female","Female","Male","Male")
 ```
 
-<p>
 It is clear that there are two categories, or in R-terms **‘factor
 levels’**, at work here: “Male” and “Female”.
-</p>
-<p>
+
 The function
 <a href="http://www.rdocumentation.org/packages/base/functions/factor" target="_blank" rel="noopener noreferrer">`factor()`</a>
 will encode the vector as a factor:
-</p>
 
 ``` r
 factor_sex_vector <- factor(sex_vector)
@@ -1506,52 +1390,46 @@ factor_sex_vector <- factor(sex_vector)
 **Solution:**
 
 ``` r
-# Sex vector
+## Sex vector
 sex_vector        <- c("Male", "Female", "Female", "Male", "Male")
 
-# Convert sex_vector to a factor
+## Convert sex_vector to a factor
 factor_sex_vector <- factor(sex_vector)
 
-# Print out factor_sex_vector
+## Print out factor_sex_vector
 factor_sex_vector
 ```
 
     ## [1] Male   Female Female Male   Male  
     ## Levels: Female Male
 
-# What’s a factor and why would you use it? (3)
+## What’s a factor and why would you use it? (3)
 
-<p>
 There are two types of categorical variables: a **nominal categorical
 variable** and an **ordinal categorical variable**.
-</p>
-<p>
+
 A nominal variable is a categorical variable without an implied order.
 This means that it is impossible to say that ‘one is worth more than the
 other’. For example, think of the categorical variable `animals_vector`
 with the categories `"Elephant"`, `"Giraffe"`, `"Donkey"` and `"Horse"`.
 Here, it is impossible to say that one stands above or below the other.
 (Note that some of you might disagree ;-) ).
-</p>
-<p>
+
 In contrast, ordinal variables do have a natural ordering. Consider for
 example the categorical variable `temperature_vector` with the
 categories: `"Low"`, `"Medium"` and `"High"`. Here it is obvious that
 `"Medium"` stands above `"Low"`, and `"High"` stands above `"Medium"`.
-</p>
 
 **Instructions:**
 
-<p>
 Submit the answer to check how R constructs and prints nominal and
 ordinal variables. Do not worry if you do not understand all the code
 just yet, we will get to that.
-</p>
 
 **Solution:**
 
 ``` r
-# Animals
+## Animals
 animals_vector        <- c("Elephant", "Giraffe", "Donkey", "Horse")
 factor_animals_vector <- factor(animals_vector)
 factor_animals_vector
@@ -1561,7 +1439,7 @@ factor_animals_vector
     ## Levels: Donkey Elephant Giraffe Horse
 
 ``` r
-# Temperature
+## Temperature
 temperature_vector        <- c("High", "Low", "High","Low", "Medium")
 factor_temperature_vector <- factor(temperature_vector, order = TRUE, levels = c("Low", "Medium", "High"))
 factor_temperature_vector
@@ -1570,47 +1448,40 @@ factor_temperature_vector
     ## [1] High   Low    High   Low    Medium
     ## Levels: Low < Medium < High
 
-# Factor levels
+## Factor levels
 
-<p>
 When you first get a dataset, you will often notice that it contains
 factors with specific factor levels. However, sometimes you will want to
 change the names of these levels for clarity or other reasons. R allows
 you to do this with the function
 <a href="http://www.rdocumentation.org/packages/base/functions/levels" target="_blank" rel="noopener noreferrer">`levels()`</a>:
-</p>
 
 ``` r
 levels(factor_vector) <- c("name1", "name2",...)
 ```
 
-<p>
 A good illustration is the raw data that is provided to you by a survey.
 A common question for every questionnaire is the sex of the respondent.
 Here, for simplicity, just two categories were recorded, `"M"` and
 `"F"`. (You usually need more categories for survey data; either way,
 you use a factor to store the categorical data.)
-</p>
 
 ``` r
 survey_vector <- c("M", "F", "F", "M", "M")
 ```
 
-<p>
 Recording the sex with the abbreviations `"M"` and `"F"` can be
 convenient if you are collecting data with pen and paper, but it can
 introduce confusion when analyzing the data. At that point, you will
 often want to change the factor levels to `"Male"` and `"Female"`
 instead of `"M"` and `"F"` for clarity.
-</p>
-<p>
+
 **Watch out:** the order with which you assign the levels is important.
 If you type `levels(factor_survey_vector)`, you’ll see that it outputs
 `[1] "F" "M"`. If you don’t specify the levels of the factor when
 creating the vector, `R` will automatically assign them alphabetically.
 To correctly map `"F"` to `"Female"` and `"M"` to `"Male"`, the levels
 should be set to `c("Female", "Male")`, in this order.
-</p>
 
 **Instructions:**
 
@@ -1622,11 +1493,11 @@ should be set to `c("Female", "Male")`, in this order.
 **Solution:**
 
 ``` r
-# Code to build factor_survey_vector
+## Code to build factor_survey_vector
 survey_vector        <- c("M", "F", "F", "M", "M")
 factor_survey_vector <- factor(survey_vector)
 
-# Specify the levels of factor_survey_vector
+## Specify the levels of factor_survey_vector
 levels(factor_survey_vector) <- c("Female", "Male")
 
 factor_survey_vector
@@ -1635,43 +1506,37 @@ factor_survey_vector
     ## [1] Male   Female Female Male   Male  
     ## Levels: Female Male
 
-# Summarizing a factor
+## Summarizing a factor
 
-<p>
 After finishing this course, one of your favorite functions in R will be
 <a href="http://www.rdocumentation.org/packages/base/functions/summary" target="_blank" rel="noopener noreferrer">`summary()`</a>.
 This will give you a quick overview of the contents of a variable:
-</p>
 
 ``` r
 summary(my_var)
 ```
 
-<p>
 Going back to our survey, you would like to know how many `"Male"`
 responses you have in your study, and how many `"Female"` responses. The
 <a href="http://www.rdocumentation.org/packages/base/functions/summary" target="_blank" rel="noopener noreferrer">`summary()`</a>
-function gives you the answer to this question.
-</p>
+function gives you the answer to this question.<br>
 
 **Instructions:**
 
-<p>
 Ask a
 <a href="http://www.rdocumentation.org/packages/base/functions/summary" target="_blank" rel="noopener noreferrer">`summary()`</a>
 of the `survey_vector` and `factor_survey_vector`. Interpret the results
 of both vectors. Are they both equally useful in this case?
-</p>
 
 **Solution:**
 
 ``` r
-# Generate summary for survey_vector
+## Generate summary for survey_vector
 summary(survey_vector)
 #>    Length     Class      Mode 
 #>         5 character character
 
-# Generate summary for factor_survey_vector
+## Generate summary for factor_survey_vector
 summary(factor_survey_vector)
 #> Female   Male 
 #>      2      3
@@ -1680,32 +1545,28 @@ summary(factor_survey_vector)
 <sup>Created on 2022-01-18 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Battle of the sexes
+## Battle of the sexes
 
-<p>
 You might wonder what happens when you try to compare elements of a
 factor. In `factor_survey_vector` you have a factor with two levels:
 `"Male"` and `"Female"`. But how does R value these relative to each
 other?
-</p>
 
 **Instructions:**
 
-<p>
 Read the code in the editor and submit the answer to test if `male` is
 greater than (`&gt;`) `female`.
-</p>
 
 **Solution:**
 
 ``` r
-# Male
+## Male
 male <- factor_survey_vector[1]
 
-# Female
+## Female
 female <- factor_survey_vector[2]
 
-# Battle of the sexes: Male 'larger' than female?
+## Battle of the sexes: Male 'larger' than female?
 male > female
 ```
 
@@ -1713,33 +1574,27 @@ male > female
 
     ## [1] NA
 
-# Ordered factors
+## Ordered factors
 
-<p>
 Since `"Male"` and `"Female"` are unordered (or nominal) factor levels,
 R returns a warning message, telling you that the greater than operator
 is not meaningful. As seen before, R attaches an equal value to the
 levels for such factors.
-</p>
-<p>
+
 But this is not always the case! Sometimes you will also deal with
 factors that do have a natural ordering between its categories. If this
 is the case, we have to make sure that we pass this information to R…
-</p>
-<p>
+
 Let us say that you are leading a research team of five data analysts
 and that you want to evaluate their performance. To do this, you track
 their speed, evaluate each analyst as `"slow"`, `"medium"` or `"fast"`,
 and save the results in `speed_vector`.
-</p>
 
 **Instructions:**
 
-<p>
 As a first step, assign `speed_vector` a vector with 5 entries, one for
 each analyst. Each entry should be either `"slow"`, `"medium"`, or
 `"fast"`. Use the list below:
-</p>
 
 -   Analyst 1 is medium,
 -   Analyst 2 is slow,
@@ -1747,27 +1602,23 @@ each analyst. Each entry should be either `"slow"`, `"medium"`, or
 -   Analyst 4 is medium and
 -   Analyst 5 is fast.
 
-<p>
 No need to specify these are factors yet.
-</p>
 
 **Solution:**
 
 ``` r
-# Create speed_vector
+## Create speed_vector
 speed_vector <- c("medium", "slow", "slow", "medium", "fast")
 ```
 
-# Ordered factors (2)
+## Ordered factors (2)
 
-<p>
 `speed_vector` should be converted to an ordinal factor since its
 categories have a natural ordering. By default, the function
 <a href="http://www.rdocumentation.org/packages/base/functions/factor" target="_blank" rel="noopener noreferrer">`factor()`</a>
 transforms `speed_vector` into an unordered factor. To create an ordered
 factor, you have to add two additional arguments: `ordered` and
 `levels`.
-</p>
 
 ``` r
 factor(some_vector,
@@ -1775,28 +1626,24 @@ factor(some_vector,
        levels = c("lev1", "lev2", ...))
 ```
 
-<p>
 By setting the argument `ordered` to `TRUE` in the function
 <a href="http://www.rdocumentation.org/packages/base/functions/factor" target="_blank" rel="noopener noreferrer">`factor()`</a>,
 you indicate that the factor is ordered. With the argument `levels` you
 give the values of the factor in the correct order.
-</p>
 
 **Instructions:**
 
-<p>
 From `speed_vector`, create an ordered factor vector:
 `factor_speed_vector`. Set `ordered` to `TRUE`, and set `levels` to
 `c("slow", "medium", "fast")`.
-</p>
 
 **Solution:**
 
 ``` r
-# Convert speed_vector to ordered factor vector
+## Convert speed_vector to ordered factor vector
 factor_speed_vector <- factor(speed_vector, ordered = TRUE, levels =c("slow", "medium", "fast"))
 
-# Print factor_speed_vector
+## Print factor_speed_vector
 factor_speed_vector
 #> [1] medium slow   slow   medium fast  
 #> Levels: slow < medium < fast
@@ -1808,20 +1655,17 @@ summary(factor_speed_vector)
 <sup>Created on 2022-01-18 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Comparing ordered factors
+## Comparing ordered factors
 
-<p>
 Having a bad day at work, ‘data analyst number two’ enters your office
 and starts complaining that ‘data analyst number five’ is slowing down
 the entire project. Since you know that ‘data analyst number two’ has
 the reputation of being a smarty-pants, you first decide to check if his
 statement is true.
-</p>
-<p>
+
 The fact that `factor_speed_vector` is now ordered enables us to compare
 different elements (the data analysts in this case). You can simply do
 this by using the well-known operators.
-</p>
 
 **Instructions:**
 
@@ -1836,13 +1680,13 @@ this by using the well-known operators.
 **Solution:**
 
 ``` r
-# Factor value for second data analyst
+## Factor value for second data analyst
 da2 <- factor_speed_vector[2]
 
-# Factor value for fifth data analyst
+## Factor value for fifth data analyst
 da5 <- factor_speed_vector[5]
 
-# Is data analyst 2 faster than data analyst 5?
+## Is data analyst 2 faster than data analyst 5?
 da2 > da5
 #> [1] FALSE
 ```
@@ -1850,17 +1694,16 @@ da2 > da5
 <sup>Created on 2022-01-18 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# What’s a data frame?
+# Data frames
 
-<p>
+## What’s a data frame?
+
 You may remember from the chapter about matrices that all the elements
 that you put in a matrix should be of the same type. Back then, your
 dataset on Star Wars only contained numeric elements.
-</p>
-<p>
+
 When doing a market research survey, however, you often have questions
 such as:
-</p>
 
 -   ‘Are you married?’ or ‘yes/no’ questions (`logical`)
 -   ‘How old are you?’ (`numeric`)
@@ -1868,30 +1711,25 @@ such as:
     questions (`character`)
 -   …
 
-<p>
 The output, namely the respondents’ answers to the questions formulated
 above, is a dataset of different data types. You will often find
 yourself working with datasets that contain different data types instead
 of only one.
-</p>
-<p>
+
 A data frame has the variables of a dataset as columns and the
 observations as rows. This will be a familiar concept for those coming
 from different statistical software packages such as SAS or SPSS.
-</p>
 
 **Instructions:**
 
-<p>
 Submit the answer. The data from the built-in example data frame
 <a href="http://www.rdocumentation.org/packages/datasets/functions/mtcars" target="_blank" rel="noopener noreferrer">`mtcars`</a>
 will be printed to the console.
-</p>
 
 **Solution:**
 
 ``` r
-# Print out built-in R data frame
+## Print out built-in R data frame
 mtcars 
 ```
 
@@ -1929,49 +1767,42 @@ mtcars
     ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
     ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
 
-# Quick, have a look at your dataset
+## Quick, have a look at your dataset
 
-<p>
 Wow, that is a lot of cars!
-</p>
-<p>
+
 Working with large datasets is not uncommon in data analysis. When you
 work with (extremely) large datasets and data frames, your first task as
 a data analyst is to develop a clear understanding of its structure and
 main elements. Therefore, it is often useful to show only a small part
 of the entire dataset.
-</p>
-<p>
+
 So how to do this in R? Well, the function
 <a href="http://www.rdocumentation.org/packages/utils/functions/head" target="_blank" rel="noopener noreferrer">`head()`</a>
 enables you to show the first observations of a data frame. Similarly,
 the function
 <a href="http://www.rdocumentation.org/packages/utils/functions/head" target="_blank" rel="noopener noreferrer">`tail()`</a>
 prints out the last observations in your dataset.
-</p>
-<p>
+
 Both
 <a href="http://www.rdocumentation.org/packages/utils/functions/head" target="_blank" rel="noopener noreferrer">`head()`</a>
 and
 <a href="http://www.rdocumentation.org/packages/utils/functions/head" target="_blank" rel="noopener noreferrer">`tail()`</a>
 print a top line called the ‘header’, which contains the names of the
 different variables in your dataset.
-</p>
 
 **Instructions:**
 
-<p>
 Call
 <a href="http://www.rdocumentation.org/packages/utils/functions/head" target="_blank" rel="noopener noreferrer">`head()`</a>
 on the
 <a href="http://www.rdocumentation.org/packages/datasets/functions/mtcars" target="_blank" rel="noopener noreferrer">`mtcars`</a>
 dataset to have a look at the header and the first observations.
-</p>
 
 **Solution:**
 
 ``` r
-# Call head() on mtcars
+## Call head() on mtcars
 head(mtcars)
 ```
 
@@ -1983,16 +1814,14 @@ head(mtcars)
     ## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
     ## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 
-# Have a look at the structure
+## Have a look at the structure
 
-<p>
 Another method that is often used to get a rapid overview of your data
 is the function
 <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>.
 The function
 <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>
 shows you the structure of your dataset. For a data frame it tells you:
-</p>
 
 -   The total number of observations (e.g. 32 car types)
 -   The total number of variables (e.g. 11 car features)
@@ -2000,27 +1829,23 @@ shows you the structure of your dataset. For a data frame it tells you:
 -   The data type of each variable (e.g. `num`)
 -   The first observations
 
-<p>
 Applying the
 <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>
 function will often be the first thing that you do when receiving a new
 dataset or data frame. It is a great way to get more insight in your
 dataset before diving into the real analysis.
-</p>
 
 **Instructions:**
 
-<p>
 Investigate the structure of
 <a href="http://www.rdocumentation.org/packages/datasets/functions/mtcars" target="_blank" rel="noopener noreferrer">`mtcars`</a>.
 Make sure that you see the same numbers, variables and data types as
 mentioned above.
-</p>
 
 **Solution:**
 
 ``` r
-# Investigate the structure of mtcars
+## Investigate the structure of mtcars
 str(mtcars)
 ```
 
@@ -2037,34 +1862,29 @@ str(mtcars)
     ##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
     ##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
 
-# Creating a data frame
+## Creating a data frame
 
-<p>
 Since using built-in datasets is not even half the fun of creating your
 own datasets, the rest of this chapter is based on your personally
 developed dataset. Put your jet pack on because it is time for some
 space exploration!
-</p>
-<p>
+
 As a first goal, you want to construct a data frame that describes the
 main characteristics of eight planets in our solar system. According to
 your good friend Buzz, the main features of a planet are:
-</p>
 
 -   The type of planet (Terrestrial or Gas Giant).
 -   The planet’s diameter relative to the diameter of the Earth.
 -   The planet’s rotation across the sun relative to that of the Earth.
 -   If the planet has rings or not (TRUE or FALSE).
 
-<p>
 After doing some high-quality research on
 <a href="https://en.wikipedia.org/wiki/Planet" target="_blank" rel="noopener noreferrer">Wikipedia</a>,
 you feel confident enough to create the necessary vectors: `name`,
 `type`, `diameter`, `rotation` and `rings`; these vectors have already
 been coded up in the editor. The first element in each of these vectors
 correspond to the first observation.
-</p>
-<p>
+
 You construct a data frame with the
 <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/data.frame" target="_blank" rel="noopener noreferrer">`data.frame()`</a>
 function. As arguments, you pass the vectors from before: they will
@@ -2072,22 +1892,19 @@ become the different columns of your data frame. Because every column
 has the same length, the vectors you pass should also have the same
 length. But don’t forget that it is possible (and likely) that they
 contain different types of data.
-</p>
 
 **Instructions:**
 
-<p>
 Use the function
 <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/data.frame" target="_blank" rel="noopener noreferrer">`data.frame()`</a>
 to construct a data frame. Pass the vectors `name`, `type`, `diameter`,
 `rotation` and `rings` as arguments to `data.frame()`, in this order.
 Call the resulting data frame `planets_df`.
-</p>
 
 **Solution:**
 
 ``` r
-# Definition of vectors
+## Definition of vectors
 name <- c("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
 type <- c("Terrestrial planet", "Terrestrial planet", "Terrestrial planet", 
           "Terrestrial planet", "Gas giant", "Gas giant", "Gas giant", "Gas giant")
@@ -2095,7 +1912,7 @@ diameter <- c(0.382, 0.949, 1, 0.532, 11.209, 9.449, 4.007, 3.883)
 rotation <- c(58.64, -243.02, 1, 1.03, 0.41, 0.43, -0.72, 0.67)
 rings    <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
 
-# Create a data frame from the vectors
+## Create a data frame from the vectors
 planets_df <- data.frame(name, type, diameter, rotation, rings)
 planets_df
 ```
@@ -2110,25 +1927,21 @@ planets_df
     ## 7  Uranus          Gas giant    4.007    -0.72  TRUE
     ## 8 Neptune          Gas giant    3.883     0.67  TRUE
 
-# Creating a data frame (2)
+## Creating a data frame (2)
 
-<p>
 The `planets_df` data frame should have 8 observations and 5 variables.
 It has been made available in the workspace, so you can directly use it.
-</p>
 
 **Instructions:**
 
-<p>
 Use
 <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>
 to investigate the structure of the new `planets_df` variable.
-</p>
 
 **Solution:**
 
 ``` r
-# Check the structure of planets_df
+## Check the structure of planets_df
 str(planets_df)
 ```
 
@@ -2139,25 +1952,21 @@ str(planets_df)
     ##  $ rotation: num  58.64 -243.02 1 1.03 0.41 ...
     ##  $ rings   : logi  FALSE FALSE FALSE FALSE TRUE TRUE ...
 
-# Selection of data frame elements
+## Selection of data frame elements
 
-<p>
 Similar to vectors and matrices, you select elements from a data frame
 with the help of square brackets `[ ]`. By using a comma, you can
 indicate what to select from the rows and the columns respectively. For
 example:
-</p>
 
 -   `my_df[1,2]` selects the value at the first row and second column in
     `my_df`.
 -   `my_df[1:3,2:4]` selects rows 1, 2, 3 and columns 2, 3, 4 in
     `my_df`.
 
-<p>
 Sometimes you want to select all elements of a row or column. For
 example, `my_df[1, ]` selects all elements of the first row. Let us now
 apply this technique on `planets_df`!
-</p>
 
 **Instructions:**
 
@@ -2169,42 +1978,36 @@ apply this technique on `planets_df`!
 **Solution:**
 
 ``` r
-# The planets_df data frame from the previous exercise is pre-loaded
+## The planets_df data frame from the previous exercise is pre-loaded
 
-# Print out diameter of Mercury (row 1, column 3)
+## Print out diameter of Mercury (row 1, column 3)
 planets_df[1,3]
 ```
 
     ## [1] 0.382
 
 ``` r
-# Print out data for Mars (entire fourth row)
+## Print out data for Mars (entire fourth row)
 planets_df[4,]
 ```
 
     ##   name               type diameter rotation rings
     ## 4 Mars Terrestrial planet    0.532     1.03 FALSE
 
-# Selection of data frame elements (2)
+## Selection of data frame elements (2)
 
-<p>
 Instead of using numerics to select elements of a data frame, you can
-also use the variable names to select columns of a data frame.
-</p>
-<p>
-Suppose you want to select the first three elements of the `type`
-column. One way to do this is
-</p>
+also use the variable names to select columns of a data frame. Suppose
+you want to select the first three elements of the `type` column. One
+way to do this is
 
 ``` r
 planets_df[1:3,2]
 ```
 
-<p>
 A possible disadvantage of this approach is that you have to know (or
 look up) the column number of `type`, which gets hard if you have a lot
 of variables. It is often easier to just make use of the variable name:
-</p>
 
 ``` r
 planets_df[1:3,"type"]
@@ -2212,37 +2015,31 @@ planets_df[1:3,"type"]
 
 **Instructions:**
 
-<p>
 Select and print out the first 5 values in the `"diameter"` column of
 `planets_df`.
-</p>
 
 **Solution:**
 
 ``` r
-# Select first 5 values of diameter column
+## Select first 5 values of diameter column
 planets_df[1:5, "diameter"]
 ```
 
     ## [1]  0.382  0.949  1.000  0.532 11.209
 
-# Only planets with rings
+## Only planets with rings
 
-<p>
 You will often want to select an entire column, namely one specific
 variable from a data frame. If you want to select all elements of the
 variable `diameter`, for example, both of these will do the trick:
-</p>
 
 ``` r
 planets_df[,3]
 planets_df[,"diameter"]
 ```
 
-<p>
 However, there is a short-cut. If your columns have names, you can use
 the `$` sign:
-</p>
 
 ``` r
 planets_df$diameter
@@ -2257,50 +2054,43 @@ planets_df$diameter
 **Solution:**
 
 ``` r
-# Select the rings variable from planets_df
+## Select the rings variable from planets_df
 rings_vector <- planets_df$rings
   
-# Print out rings_vector
+## Print out rings_vector
 rings_vector
 ```
 
     ## [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
 
-# Only planets with rings (2)
+## Only planets with rings (2)
 
-<p>
 You probably remember from high school that some planets in our solar
 system have rings and others do not. Unfortunately you can not recall
 their names. Could R help you out?
-</p>
-<p>
+
 If you type `rings_vector` in the console, you get:
-</p>
 
 ``` r
 #> [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
 ```
 
-<p>
 This means that the first four observations (or planets) do not have a
 ring (`FALSE`), but the other four do (`TRUE`). However, you do not get
 a nice overview of the names of these planets, their diameter, etc.
 Let’s try to use `rings_vector` to select the data for the four planets
 with rings.
-</p>
 
 **Instructions:**
 
-<p>
 The code in the editor selects the `name` column of all planets that
 have rings. Adapt the code so that instead of only the `name` column,
 *all* columns for planets that have rings are selected.
-</p>
 
 **Solution:**
 
 ``` r
-# Adapt the code to select all columns for planets with rings
+## Adapt the code to select all columns for planets with rings
 planets_df[rings_vector,]
 ```
 
@@ -2310,39 +2100,33 @@ planets_df[rings_vector,]
     ## 7  Uranus Gas giant    4.007    -0.72  TRUE
     ## 8 Neptune Gas giant    3.883     0.67  TRUE
 
-# Only planets with rings but shorter
+## Only planets with rings but shorter
 
-<p>
 So what exactly did you learn in the previous exercises? You selected a
 subset from a data frame (`planets_df`) based on whether or not a
 certain condition was true (rings or no rings), and you managed to pull
 out all relevant data. Pretty awesome! By now, NASA is probably already
 flirting with your CV ;-).
-</p>
-<p>
+
 Now, let us move up one level and use the function
 <a href="http://www.rdocumentation.org/packages/base/functions/subset" target="_blank" rel="noopener noreferrer">`subset()`</a>.
 You should see the
 <a href="http://www.rdocumentation.org/packages/base/functions/subset" target="_blank" rel="noopener noreferrer">`subset()`</a>
 function as a short-cut to do exactly the same as what you did in the
 previous exercises.
-</p>
 
 ``` r
 subset(my_df, subset = some_condition)
 ```
 
-<p>
 The first argument of
 <a href="http://www.rdocumentation.org/packages/base/functions/subset" target="_blank" rel="noopener noreferrer">`subset()`</a>
 specifies the dataset for which you want a subset. By adding the second
 argument, you give R the necessary information and conditions to select
 the correct subset.
-</p>
-<p>
+
 The code below will give the exact same result as you got in the
 previous exercise, but this time, you didn’t need the `rings_vector`!
-</p>
 
 ``` r
 subset(planets_df, subset = rings)
@@ -2350,17 +2134,15 @@ subset(planets_df, subset = rings)
 
 **Instructions:**
 
-<p>
 Use `subset()` on `planets_df` to select planets that have a diameter
 smaller than Earth. Because the `diameter` variable is a relative
 measure of the planet’s diameter w.r.t that of planet Earth, your
 condition is `diameter &lt; 1`.
-</p>
 
 **Solution:**
 
 ``` r
-# Select planets with diameter < 1
+## Select planets with diameter < 1
 subset(planets_df, subset = diameter <1)
 ```
 
@@ -2369,23 +2151,19 @@ subset(planets_df, subset = diameter <1)
     ## 2   Venus Terrestrial planet    0.949  -243.02 FALSE
     ## 4    Mars Terrestrial planet    0.532     1.03 FALSE
 
-# Sorting
+## Sorting
 
-<p>
 Making and creating rankings is one of mankind’s favorite affairs. These
 rankings can be useful (best universities in the world), entertaining
 (most influential movie stars) or pointless (best 007 look-a-like).
-</p>
-<p>
+
 In data analysis you can sort your data according to a certain variable
 in the dataset. In R, this is done with the help of the function
 <a href="http://www.rdocumentation.org/packages/base/functions/order" target="_blank" rel="noopener noreferrer">`order()`</a>.
-</p>
-<p>
+
 <a href="http://www.rdocumentation.org/packages/base/functions/order" target="_blank" rel="noopener noreferrer">`order()`</a>
 is a function that gives you the ranked position of each element when it
 is applied on a variable, such as a vector for example:
-</p>
 
 ``` r
 a <- c(100, 10, 1000)
@@ -2396,15 +2174,12 @@ order(a)
 <sup>Created on 2022-01-18 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-<p>
 10, which is the second element in `a`, is the smallest element, so 2
 comes first in the output of `order(a)`. 100, which is the first element
 in `a` is the second smallest element, so 1 comes second in the output
 of `order(a)`.
-</p>
-<p>
+
 This means we can use the output of `order(a)` to reshuffle `a`:
-</p>
 
 ``` r
 a[order(a)]
@@ -2416,17 +2191,15 @@ package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 **Instructions:**
 
-<p>
 Experiment with the
 <a href="http://www.rdocumentation.org/packages/base/functions/order" target="_blank" rel="noopener noreferrer">`order()`</a>
 function in the console. Submit the answer when you are ready to
 continue.
-</p>
 
 **Solution:**
 
 ``` r
-# Play around with the order function in the console
+## Play around with the order function in the console
 vektor1 <- c(5, 2, 8)
 vektor1
 ```
@@ -2439,15 +2212,13 @@ vektor1[order(vektor1)]
 
     ## [1] 2 5 8
 
-# Sorting your data frame
+## Sorting your data frame
 
-<p>
 Alright, now that you understand the
 <a href="http://www.rdocumentation.org/packages/base/functions/order" target="_blank" rel="noopener noreferrer">`order()`</a>
 function, let us do something useful with it. You would like to
 rearrange your data frame such that it starts with the smallest planet
 and ends with the largest one. A sort on the `diameter` column.
-</p>
 
 **Instructions:**
 
@@ -2460,10 +2231,10 @@ and ends with the largest one. A sort on the `diameter` column.
 **Solution:**
 
 ``` r
-# Use order() to create positions
+## Use order() to create positions
 positions <- order(planets_df$diameter)
 
-# Use positions to sort planets_df
+## Use positions to sort planets_df
 planets_df[positions,]
 ```
 
@@ -2477,12 +2248,12 @@ planets_df[positions,]
     ## 6  Saturn          Gas giant    9.449     0.43  TRUE
     ## 5 Jupiter          Gas giant   11.209     0.41  TRUE
 
-# Lists, why would you need them?
+# Lists
 
-<p>
+## Lists, why would you need them?
+
 Congratulations! At this point in the course you are already familiar
 with:
-</p>
 
 -   **Vectors** (one dimensional array): can hold numeric, character or
     logical values. The elements in a vector all have the same data
@@ -2494,89 +2265,72 @@ with:
     character or logical values. Within a column all elements have the
     same data type, but different columns can be of different data type.
 
-<p>
 Pretty sweet for an R newbie, right? ;-)
-</p>
 
-# Lists, why would you need them? (2)
+## Lists, why would you need them? (2)
 
-<p>
 A **list** in R is similar to your to-do list at work or school: the
 different items on that list most likely differ in length,
-characteristic, and type of activity that has to be done.
-</p>
-<p>
-A list in R allows you to gather a variety of objects under one name
-(that is, the name of the list) in an ordered way. These objects can be
-matrices, vectors, data frames, even other lists, etc. It is not even
-required that these objects are related to each other in any way.
-</p>
-<p>
+characteristic, and type of activity that has to be done. <br> A list in
+R allows you to gather a variety of objects under one name (that is, the
+name of the list) in an ordered way. These objects can be matrices,
+vectors, data frames, even other lists, etc. It is not even required
+that these objects are related to each other in any way.
+
 You could say that a list is some kind super data type: you can store
 practically any piece of information in it!
-</p>
 
-# Creating a list
+## Creating a list
 
-<p>
 Let us create our first list! To construct a list you use the function
 <a href="http://www.rdocumentation.org/packages/base/functions/list" target="_blank" rel="noopener noreferrer">`list()`</a>:
-</p>
+<br>
 
 ``` r
 my_list <- list(comp1, comp2, ...)
 ```
 
-<p>
 The arguments to the list function are the list components. Remember,
 these components can be matrices, vectors, other lists, …
-</p>
 
 **Instructions:**
 
-<p>
 Construct a list, named `my_list`, that contains the variables
 `my_vector`, `my_matrix` and `my_df` as list components.
-</p>
 
 **Solution:**
 
 ``` r
-# Vector with numerics from 1 up to 10
+## Vector with numerics from 1 up to 10
 my_vector <- 1:10 
 
-# Matrix with numerics from 1 up to 9
+## Matrix with numerics from 1 up to 9
 my_matrix <- matrix(1:9, ncol = 3)
 
-# First 10 elements of the built-in data frame mtcars
+## First 10 elements of the built-in data frame mtcars
 my_df     <- mtcars[1:10,]
 
-# Construct list with these different elements:
+## Construct list with these different elements:
 my_list   <- list(my_vector, my_matrix, my_df) 
 ```
 
-# Creating a named list
+## Creating a named list
 
-<p>
 Well done, you’re on a roll!
-</p>
-<p>
+
 Just like on your to-do list, you want to avoid not knowing or
 remembering what the components of your list stand for. That is why you
 should give names to them:
-</p>
 
 ``` r
 my_list <- list(name1 = your_comp1, 
                 name2 = your_comp2)
 ```
 
-<p>
 This creates a list with components that are named `name1`, `name2`, and
 so on. If you want to name your lists after you’ve created them, you can
 use the `names()` function as you did with vectors. The following
 commands are fully equivalent to the assignment above:
-</p>
 
 ``` r
 my_list <- list(your_comp1, your_comp2)
@@ -2593,10 +2347,10 @@ names(my_list) <- c("name1", "name2")
 **Solution:**
 
 ``` r
-# Adapt list() call to give the components names
+## Adapt list() call to give the components names
 my_list <- list(vec = my_vector, mat = my_matrix, df = my_df)
 
-# Print out my_list
+## Print out my_list
 my_list
 ```
 
@@ -2622,88 +2376,73 @@ my_list
     ## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
     ## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
 
-# Creating a named list (2)
+## Creating a named list (2)
 
-<p>
 Being a huge movie fan (remember your job at LucasFilms), you decide to
 start storing information on good movies with the help of lists.
-</p>
-<p>
+
 Start by creating a list for the movie “The Shining”. We have already
 created the variables `mov`, `act` and `rev` in your R workspace. Feel
 free to check them out in the console.
-</p>
 
 **Instructions:**
 
-<p>
 Complete the code in the editor to create `shining_list`; it contains
 three elements:
-</p>
 
 -   `moviename`: a character string with the movie title (stored in
     `mov`)
 -   `actors`: a vector with the main actors’ names (stored in `act`)
 -   `reviews`: a data frame that contains some reviews (stored in `rev`)
 
-<p>
 Do not forget to name the list components accordingly (names are
 `moviename`, `actors` and `reviews`).
-</p>
 
 **Solution:**
 
 ``` r
-# The variables mov, act and rev are available
+## The variables mov, act and rev are available
 mov <- "The Shining"
 act <- c("Jack Nicholson","Shelley Duvall","Danny Lloyd","Scatman Crothers","Barry Nelson")
 rev <- data.frame(scores   = c(4.5,4.0,5.0),
                   sources  = c("IMDB1", "IMDB2", "IMDB3"),
                   comments = c("Best Horror Film I Have Ever Seen", "A truly brilliant and scary film from Stanley Kubrick", "A masterpiece of psychological horror"))
 
-# Finish the code to build shining_list
+## Finish the code to build shining_list
 shining_list <- list(moviename = mov, actors = act, reviews = rev)
 ```
 
-# Selecting elements from a list
+## Selecting elements from a list
 
-<p>
 Your list will often be built out of numerous elements and components.
 Therefore, getting a single element, multiple elements, or a component
 out of it is not always straightforward.
-</p>
-<p>
+
 One way to select a component is using the numbered position of that
 component. For example, to “grab” the first component of `shining_list`
 you type
-</p>
 
 ``` r
 shining_list[[1]]
 ```
 
-<p>
 A quick way to check this out is typing it in the console. Important to
 remember: to select elements from vectors, you use single square
 brackets: `[ ]`. Don’t mix them up!
-</p>
-<p>
+
 You can also refer to the names of the components, with `[[ ]]` or with
 the `$` sign. Both will select the data frame representing the reviews:
-</p>
 
 ``` r
 shining_list[["reviews"]]
 shining_list$reviews
 ```
 
-<p>
 Besides selecting components, you often need to select specific elements
 out of these components. For example, with `shining_list[[2]][1]` you
 select from the second component, `actors` (`shining_list[[2]]`), the
 first element (`[1]`). When you type this in the console, you will see
 the answer is Jack Nicholson.
-</p>
 
 **Instructions:**
 
@@ -2715,7 +2454,7 @@ the answer is Jack Nicholson.
 **Solution:**
 
 ``` r
-# Print out the vector representing the actors
+## Print out the vector representing the actors
 shining_list$actors
 ```
 
@@ -2723,77 +2462,33 @@ shining_list$actors
     ## [5] "Barry Nelson"
 
 ``` r
-# Print the second element of the vector representing the actors
+## Print the second element of the vector representing the actors
 shining_list[[2]][2]
 ```
 
     ## [1] "Shelley Duvall"
 
-# Creating a new list for another movie
+## Creating a new list for another movie
 
-<p>
 You found reviews of another, more recent, Jack Nicholson movie: The
 Departed!
-</p>
-<tr>
-<th>
-Scores
-</th>
-<th>
-Comments
-</th>
-</tr>
-<tr>
-<td>
-4.6
-</td>
-<td>
-I would watch it again
-</td>
-</tr>
-<tr>
-<td>
-5
-</td>
-<td>
-Amazing!
-</td>
-</tr>
-<tr>
-<td>
-4.8
-</td>
-<td>
-I liked it
-</td>
-</tr>
-<tr>
-<td>
-5
-</td>
-<td>
-One of the best movies
-</td>
-</tr>
-<tr>
-<td>
-4.2
-</td>
-<td>
-Fascinating plot
-</td>
-</tr>
-<p>
+
+| Scores | Comments               |
+|--------|------------------------|
+| 4.6    | I would watch it again |
+| 5      | Amazing!               |
+| 4.8    | I liked it             |
+| 5      | One of the best movies |
+| 4.2    | Fascinating plot       |
+
 It would be useful to collect together all the pieces of information
 about the movie, like the title, actors, and reviews into a single
 variable. Since these pieces of data are different shapes, it is natural
 to combine them in a list variable.
-</p>
-<p>
+
 `movie_title`, containing the title of the movie, and `movie_actors`,
 containing the names of some of the actors in the movie, are available
 in your workspace.
-</p>
 
 **Instructions:**
 
@@ -2809,19 +2504,19 @@ in your workspace.
 **Solution:**
 
 ``` r
-# Use the table from the exercise to define the comments and scores vectors
+## Use the table from the exercise to define the comments and scores vectors
 scores       <- c(4.6, 5, 4.8, 5, 4.2)
 comments     <- c("I would watch it again", "Amazing!", "I liked it", "One of the best movies", "Fascinating plot")
 movie_title  <- "The Departed"
 movie_actors <- c("Leonardo DiCaprio", "Matt Damon", "Jack Nicholson", "Mark Wahlberg", "Vera Farmiga", "Martin Sheen")
 
-# Save the average of the scores vector as avg_review  
+## Save the average of the scores vector as avg_review  
 avg_review <- mean(scores)
 
-# Combine scores and comments into the reviews_df data frame
+## Combine scores and comments into the reviews_df data frame
 reviews_df <- data.frame(scores, comments)
 
-# Create and print out a list, called departed_list
+## Create and print out a list, called departed_list
 departed_list <- list(movie_title, movie_actors, reviews_df, avg_review)
 departed_list
 ```
