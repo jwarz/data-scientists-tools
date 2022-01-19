@@ -1,7 +1,7 @@
 Intermediate R
 ================
 
-# Intermediate R
+# 1. Conditionals and Control Flow
 
 ## Equality
 
@@ -333,9 +333,9 @@ package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 **Possible Answers:**
 
--   `TRUE`
--   `FALSE`(\<-)
--   Running this piece of code would throw an error.
+:white_large_square: `TRUE`<br> :white_check_mark: `FALSE`<br>
+:white_large_square: Running this piece of code would throw an
+error.<br>
 
 ## Blend it all together
 
@@ -584,10 +584,8 @@ Select the option that lists <u>all</u> the true statements.
 
 **Possible Answers:**
 
--   2 and 4
--   1 and 4 (\<-)
--   1 and 3
--   2 and 3
+:white_large_square: 2 and 4<br> :white_check_mark: 1 and 4<br>
+:white_large_square: 1 and 3<br> :white_large_square: 2 and 3<br>
 
 ## Take control!
 
@@ -635,6 +633,8 @@ sms
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+# 2. Loops
 
 ## Write a while loop
 
@@ -1249,7 +1249,7 @@ rcount
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-# Functions
+# 3. Functions
 
 ## Function documentation
 
@@ -1537,13 +1537,10 @@ function are true?
 
 **Possible Answers:**
 
--   1.  and (3) \<-
-
--   2.  and (4)
-
--   (1), (2) and (3)
-
--   (1), (2) and (3)
+<input type="checkbox" disabled checked /> (1) and (3)<br>
+<input type="checkbox" disabled /> (2) and (4)<br>
+<input type="checkbox" disabled /> (1), (2) and (3)<br>
+<input type="checkbox" disabled /> (1), (2) and (3)<br>
 
 ## Write your own function
 
@@ -1736,11 +1733,11 @@ two_dice <- function() {
 
 **Possible Answers:**
 
-:white_large_square Executing: `two_dice()` causes an error.
-:white_large_square Executing: `res <- two_dice()` makes the contents of
-dice1 and dice2 available outside the function. :white_check_mark
-Whatever: the way of calling the `two_dice()` function, R won’t have
-access to `dice1` and `dice2` outside the function. (\<-)
+:white_large_square: Executing `two_dice()` causes an error.<br>
+:white_large_square: Executing `res <- two_dice()` makes the contents of
+dice1 and dice2 available outside the function.<br> :white_check_mark:
+Whatever the way of calling the `two_dice()` function, R won’t have
+access to `dice1` and `dice2` outside the function.
 
 ## R passes arguments by value
 
@@ -1785,12 +1782,12 @@ count <- increment(count, 2)
 
 **Possible Answers:**
 
--   a and b equal 7 and 6 respectively after executing this code block.
--   After the first call of increment(), where a is defined, a equals 7
-    and count equals 5.
--   In the end, count will equal 10.
--   In the last expression, the value of count was actually changed
-    because of the explicit assignment.
+:white_large_square: `a` and `b` equal 7 and 6 respectively after
+executing this code block.<br> :white_large_square: After the first call
+of `increment()`, where `a` is defined, `a` equals 7 and `count` equals
+5.<br> :white_check_mark: In the end, `count` will equal 10.<br>
+:white_large_square: In the last expression, the value of `count` was
+actually changed because of the explicit assignment.<br>
 
 ## R you functional?
 
@@ -1822,8 +1819,6 @@ write another function that can handle an entire vector at once.
 **Solution:**
 
 ``` r
-# The linkedin and facebook vectors have already been created for you
-
 # Define the interpret function
 interpret <- function(num_views) {
   if (num_views > 15) {
@@ -1840,7 +1835,16 @@ interpret <- function(num_views) {
 }
 
 # Call the interpret function twice
+interpret(linkedin[1])
+#> [1] "You're popular!"
+#> [1] 16
+interpret(facebook[2])
+#> [1] "Try to be more visible!"
+#> [1] 0
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## R you functional? (2)
 
@@ -1889,7 +1893,45 @@ interpret <- function(num_views) {
 # Define the interpret_all() function
 # views: vector with data to interpret
 # return_sum: return total number of views on popular days?
+interpret_all <- function(views, return_sum = TRUE) {
+  count <- 0
+
+  for (v in views) {
+
+      count <- count + interpret(v)
+        
+  }
+
+  if (return_sum == TRUE) {
+    return(count)
+  } else {
+    return(NULL)
+  }
+}
+
+# Call the interpret_all() function on both linkedin and facebook
+interpret_all(linkedin)
+#> [1] "You're popular!"
+#> [1] "Try to be more visible!"
+#> [1] "Try to be more visible!"
+#> [1] "Try to be more visible!"
+#> [1] "Try to be more visible!"
+#> [1] "You're popular!"
+#> [1] "Try to be more visible!"
+#> [1] 33
+interpret_all(facebook)
+#> [1] "You're popular!"
+#> [1] "Try to be more visible!"
+#> [1] "Try to be more visible!"
+#> [1] "You're popular!"
+#> [1] "Try to be more visible!"
+#> [1] "Try to be more visible!"
+#> [1] "Try to be more visible!"
+#> [1] 33
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Load an R Package
 
@@ -1937,13 +1979,23 @@ yet!
 
 ``` r
 # Load the ggplot2 package
-
+library(ggplot2)
 
 # Retry the qplot() function
-
-
-# Check out the currently attached packages again
+qplot(mtcars$wt, mtcars$hp)
 ```
+
+![](readme_files/figure-gfm/unnamed-chunk-61-1.png)<!-- -->
+
+``` r
+# Check out the currently attached packages again
+search()
+```
+
+    ##  [1] ".GlobalEnv"        "package:ggplot2"   "package:stats"    
+    ##  [4] "package:graphics"  "package:grDevices" "package:utils"    
+    ##  [7] "package:datasets"  "package:methods"   "Autoloads"        
+    ## [10] "package:base"
 
 ## Different ways to load a package
 
@@ -1958,29 +2010,33 @@ a package.
 Have a look at some more code chunks that (attempt to) load one or more
 packages:
 
-<pre>
-
-\`# Chunk 1 library(data.table) require(rjson)
+``` r
+# Chunk 1
+library(data.table)
+require(rjson)
 
 # Chunk 2
-
-library(“data.table”) require(rjson)
+library("data.table")
+require(rjson)
 
 # Chunk 3
-
-library(data.table) require(rjson, character.only = TRUE)
+library(data.table)
+require(rjson, character.only = TRUE)
 
 # Chunk 4
-
-library(c(“data.table”, “rjson”)) \`
-<pre>
+library(c("data.table", "rjson"))
+```
 
 Select the option that lists <u>all</u> of the chunks that do not
 generate an error. The console is yours to experiment in.
 
-**Instructions:**
+**Possible Answers:**
 
-**Solution:**
+:white_large_square: Only (1)<br> :white_check_mark: (1) and (2)<br>
+:white_large_square: (1), (2) and (3)<br> :white_large_square: All of
+them are valid<br>
+
+# 4. The apply family
 
 ## Use lapply with a built-in R function
 
@@ -1989,9 +2045,9 @@ documentation of the
 <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
 function. The Usage section shows the following expression:
 
-<pre>
-`lapply(X, FUN, ...)`
-<pre>
+``` r
+lapply(X, FUN, ...)
+```
 
 To put it generally, `lapply` takes a vector or list `X`, and applies
 the function `FUN` to each of its members. If `FUN` requires additional
@@ -2032,12 +2088,31 @@ pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
 # Split names from birth year
 split_math <- strsplit(pioneers, split = ":")
 split_math
+#> [[1]]
+#> [1] "GAUSS" "1777" 
+#> 
+#> [[2]]
+#> [1] "BAYES" "1702" 
+#> 
+#> [[3]]
+#> [1] "PASCAL" "1623"  
+#> 
+#> [[4]]
+#> [1] "PEARSON" "1857"
 # Convert to lowercase strings: split_low
 split_low <- lapply(split_math, tolower)
 
 # Take a look at the structure of split_low
 str(split_low)
+#> List of 4
+#>  $ : chr [1:2] "gauss" "1777"
+#>  $ : chr [1:2] "bayes" "1702"
+#>  $ : chr [1:2] "pascal" "1623"
+#>  $ : chr [1:2] "pearson" "1857"
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Use lapply with your own function
 
@@ -2074,8 +2149,8 @@ vector.
 
 ``` r
 # Code from previous exercise:
-pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
-split <- strsplit(pioneers, split = ":")
+pioneers  <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
+split     <- strsplit(pioneers, split = ":")
 split_low <- lapply(split, tolower)
 
 # Write function select_first()
@@ -2090,7 +2165,13 @@ names <- lapply(split_low, select_first)
 select_second <- function(x) {
   x[2]
 }
+
+# Apply select_second() over split_low: years
+years <- lapply(split_low, select_second)
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## lapply and anonymous functions
 
@@ -2106,20 +2187,16 @@ you create a function, you can use the assignment operator to give the
 function a name. It’s perfectly possible, however, to not give the
 function a name. This is called an anonymous function:
 
-<pre>
-
-\`# Named function triple \<- function(x) { 3 \* x }
+``` r
+# Named function
+triple <- function(x) { 3 * x }
 
 # Anonymous function with same implementation
-
-function(x) { 3 \* x }
+function(x) { 3 * x }
 
 # Use anonymous function inside lapply()
-
-lapply(list(1,2,3), function(x) { 3 \* x }) \`
-<pre>
-
-`split_low` is defined for you.
+lapply(list(1,2,3), function(x) { 3 * x })
+```
 
 **Instructions:**
 
@@ -2134,19 +2211,15 @@ lapply(list(1,2,3), function(x) { 3 \* x }) \`
 **Solution:**
 
 ``` r
-# Definition of split_low
-pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
-split <- strsplit(pioneers, split = ":")
-split_low <- lapply(split, tolower)
-
 # Transform: use anonymous function inside lapply
-
 names <- lapply(split_low, function(x){x[1]})
 
 # Transform: use anonymous function inside lapply
-
 years <- lapply(split_low, function(x){x[2]})
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Use lapply with additional arguments
 
@@ -2156,9 +2229,12 @@ In the video, the `triple()` function was transformed to the
 provides a way to handle functions that require more than one argument,
 such as the `multiply()` function:
 
-<pre>
-`multiply <- function(x, factor) {   x * factor } lapply(list(1,2,3), multiply, factor = 3)`
-<pre>
+``` r
+multiply <- function(x, factor) {
+  x * factor
+}
+lapply(list(1,2,3), multiply, factor = 3)
+```
 
 On the right we’ve included a generic version of the select functions
 that you’ve coded earlier: `select_el()`. It takes a vector as its first
@@ -2175,21 +2251,18 @@ respectively.
 **Solution:**
 
 ``` r
-# Definition of split_low
-pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
-split <- strsplit(pioneers, split = ":")
-split_low <- lapply(split, tolower)
-
 # Generic select function
 select_el <- function(x, index) {
   x[index]
 }
 
 # Use lapply() twice on split_low: names and years
-
 names <- lapply(split_low, select_el, index = 1)
 years <- lapply(split_low, select_el, index = 2)
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Apply functions that return NULL
 
@@ -2203,16 +2276,16 @@ of every element of a list. You could use the
 <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>
 function for this, which returns `NULL`:
 
-<pre>
-`lapply(list(1, "a", TRUE), str)`
-<pre>
+``` r
+lapply(list(1, "a", TRUE), str)
+```
 
 This call actually returns a list, the same size as the input list,
 containing all `NULL` values. On the other hand calling
 
-<pre>
-`str(TRUE)`
-<pre>
+``` r
+str(TRUE)
+```
 
 on its own prints only the structure of the logical to the console, not
 `NULL`. That’s because
@@ -2229,13 +2302,22 @@ What will the following code chunk return (`split_low` is already
 available in the workspace)? Try to reason about the result before
 simply executing it in the console!
 
-<pre>
-`lapply(split_low, function(x) {   if (nchar(x[1]) > 5) {     return(NULL)   } else {     return(x[2])   } })`
-<pre>
+``` r
+lapply(split_low, function(x) {
+  if (nchar(x[1]) > 5) {
+    return(NULL)
+  } else {
+    return(x[2])
+  }
+})
+```
 
-**Instructions:**
+**Possible Answers:**
 
-**Solution:**
+:white_large_square: `list(NULL, NULL, "1623", "1857")`<br>
+:white_large_square: `list("gauss", "bayes", NULL, NULL)`<br>
+:white_check_mark: `list("1777", "1702", NULL, NULL)`<br>
+:white_large_square: `list("1777", "1702")`<br>
 
 ## How to use sapply
 
@@ -2249,9 +2331,9 @@ is the list or vector `X` over which you want to apply a function,
 `FUN`. Potential additional arguments to this function are specified
 afterwards (`...`):
 
-<pre>
-`sapply(X, FUN, ...)`
-<pre>
+``` r
+sapply(X, FUN, ...)
+```
 
 In the next couple of exercises, you’ll be working with the variable
 `temp`, that contains temperature measurements for 7 days. `temp` is a
@@ -2286,19 +2368,71 @@ been defined in the workspace: type `str(temp)` to see its structure.
 
 ``` r
 # temp has already been defined in the workspace
-
+temp <- list(c(3,7,9,6,-1),
+             c(6,9,12,13,5),
+             c(4,8,3,-1,-3),
+             c(1,4,7,2,-2),
+             c(5,7,9,4,2),
+             c(-3,5,8,9,4),
+             c(3,6,9,4,1))
+  
 # Use lapply() to find each day's minimum temperature
 lapply(temp, min)
+#> [[1]]
+#> [1] -1
+#> 
+#> [[2]]
+#> [1] 5
+#> 
+#> [[3]]
+#> [1] -3
+#> 
+#> [[4]]
+#> [1] -2
+#> 
+#> [[5]]
+#> [1] 2
+#> 
+#> [[6]]
+#> [1] -3
+#> 
+#> [[7]]
+#> [1] 1
 
 # Use sapply() to find each day's minimum temperature
 sapply(temp, min)
+#> [1] -1  5 -3 -2  2 -3  1
 
 # Use lapply() to find each day's maximum temperature
 lapply(temp, max)
+#> [[1]]
+#> [1] 9
+#> 
+#> [[2]]
+#> [1] 13
+#> 
+#> [[3]]
+#> [1] 8
+#> 
+#> [[4]]
+#> [1] 7
+#> 
+#> [[5]]
+#> [1] 9
+#> 
+#> [[6]]
+#> [1] 9
+#> 
+#> [[7]]
+#> [1] 9
 
 # Use sapply() to find each day's maximum temperature
 sapply(temp, max)
+#> [1]  9 13  8  7  9  9  9
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## sapply with your own function
 
@@ -2308,9 +2442,9 @@ Like
 allows you to use self-defined functions and apply them over a vector or
 a list:
 
-<pre>
-`sapply(X, FUN, ...)`
-<pre>
+``` r
+sapply(X, FUN, ...)
+```
 
 Here, `FUN` can be one of R’s built-in functions, but it can also be a
 function you wrote. This self-written function can be defined before
@@ -2331,8 +2465,6 @@ hand, or can be inserted directly as an anonymous function.
 **Solution:**
 
 ``` r
-# temp is already defined in the workspace
-temp
 # Finish function definition of extremes_avg
 extremes_avg <- function(x) {
   ( min(x) + max(x) ) / 2
@@ -2340,10 +2472,34 @@ extremes_avg <- function(x) {
 
 # Apply extremes_avg() over temp using sapply()
 sapply(temp, extremes_avg)
+#> [1] 4.0 9.0 2.5 2.5 5.5 3.0 5.0
 
 # Apply extremes_avg() over temp using lapply()
 lapply(temp, extremes_avg)
+#> [[1]]
+#> [1] 4
+#> 
+#> [[2]]
+#> [1] 9
+#> 
+#> [[3]]
+#> [1] 2.5
+#> 
+#> [[4]]
+#> [1] 2.5
+#> 
+#> [[5]]
+#> [1] 5.5
+#> 
+#> [[6]]
+#> [1] 3
+#> 
+#> [[7]]
+#> [1] 5
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## sapply with function returning vector
 
@@ -2371,8 +2527,6 @@ time in the valley of ignorance and head over to the instructions!
 **Solution:**
 
 ``` r
-# temp is already available in the workspace
-
 # Create a function that returns min and max of a vector: extremes
 extremes <- function(x) {
   c(min = min(x), max = max(x))
@@ -2380,10 +2534,43 @@ extremes <- function(x) {
 
 # Apply extremes() over temp with sapply()
 sapply(temp, extremes)
+#>     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+#> min   -1    5   -3   -2    2   -3    1
+#> max    9   13    8    7    9    9    9
 
 # Apply extremes() over temp with lapply()
 lapply(temp, extremes)
+#> [[1]]
+#> min max 
+#>  -1   9 
+#> 
+#> [[2]]
+#> min max 
+#>   5  13 
+#> 
+#> [[3]]
+#> min max 
+#>  -3   8 
+#> 
+#> [[4]]
+#> min max 
+#>  -2   7 
+#> 
+#> [[5]]
+#> min max 
+#>   2   9 
+#> 
+#> [[6]]
+#> min max 
+#>  -3   9 
+#> 
+#> [[7]]
+#> min max 
+#>   1   9
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## sapply can’t simplify, now what?
 
@@ -2416,8 +2603,6 @@ are strictly below zero.
 **Solution:**
 
 ``` r
-# temp is already prepared for you in the workspace
-
 # Definition of below_zero()
 below_zero <- function(x) {
   return(x[x < 0])
@@ -2426,12 +2611,56 @@ below_zero <- function(x) {
 # Apply below_zero over temp using sapply(): freezing_s
 freezing_s <- sapply(temp, below_zero)
 freezing_s
+#> [[1]]
+#> [1] -1
+#> 
+#> [[2]]
+#> numeric(0)
+#> 
+#> [[3]]
+#> [1] -1 -3
+#> 
+#> [[4]]
+#> [1] -2
+#> 
+#> [[5]]
+#> numeric(0)
+#> 
+#> [[6]]
+#> [1] -3
+#> 
+#> [[7]]
+#> numeric(0)
 # Apply below_zero over temp using lapply(): freezing_l
 freezing_l <- lapply(temp, below_zero)
 freezing_l
+#> [[1]]
+#> [1] -1
+#> 
+#> [[2]]
+#> numeric(0)
+#> 
+#> [[3]]
+#> [1] -1 -3
+#> 
+#> [[4]]
+#> [1] -2
+#> 
+#> [[5]]
+#> numeric(0)
+#> 
+#> [[6]]
+#> [1] -3
+#> 
+#> [[7]]
+#> numeric(0)
 # Are freezing_s and freezing_l identical?
 identical(freezing_s, freezing_l)
+#> [1] TRUE
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## sapply with functions that return NULL
 
@@ -2457,8 +2686,6 @@ function.
 **Solution:**
 
 ``` r
-# temp is already available in the workspace
-
 # Definition of print_info()
 print_info <- function(x) {
   cat("The average temperature is", mean(x), "\n")
@@ -2466,16 +2693,74 @@ print_info <- function(x) {
 
 # Apply print_info() over temp using sapply()
 sapply(temp, print_info)
+#> The average temperature is 4.8 
+#> The average temperature is 9 
+#> The average temperature is 2.2 
+#> The average temperature is 2.4 
+#> The average temperature is 5.4 
+#> The average temperature is 4.6 
+#> The average temperature is 4.6
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+#> [[3]]
+#> NULL
+#> 
+#> [[4]]
+#> NULL
+#> 
+#> [[5]]
+#> NULL
+#> 
+#> [[6]]
+#> NULL
+#> 
+#> [[7]]
+#> NULL
 
 # Apply print_info() over temp using lapply()
 lapply(temp, print_info)
+#> The average temperature is 4.8 
+#> The average temperature is 9 
+#> The average temperature is 2.2 
+#> The average temperature is 2.4 
+#> The average temperature is 5.4 
+#> The average temperature is 4.6 
+#> The average temperature is 4.6
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+#> [[3]]
+#> NULL
+#> 
+#> [[4]]
+#> NULL
+#> 
+#> [[5]]
+#> NULL
+#> 
+#> [[6]]
+#> NULL
+#> 
+#> [[7]]
+#> NULL
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Reverse engineering sapply
 
-<pre>
-`sapply(list(runif (10), runif (10)),         function(x) c(min = min(x), mean = mean(x), max = max(x)))`
-<pre>
+``` r
+sapply(list(runif (10), runif (10)), 
+       function(x) c(min = min(x), mean = mean(x), max = max(x)))
+```
 
 Without going straight to the console to run the code, try to reason
 through which of the following statements are correct and why.
@@ -2492,9 +2777,11 @@ through which of the following statements are correct and why.
 
 Select the option that lists <u>all</u> correct statements.
 
-**Instructions:**
+**Possible Answers:**
 
-**Solution:**
+:white_large_square: (1) and (3)<br> :white_check_mark: (2) and (3)<br>
+:white_large_square: (1) and (4)<br> :white_large_square: (2), (3) and
+(4)<br>
 
 ## Use vapply
 
@@ -2504,9 +2791,9 @@ at its syntax. The function is called
 <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`vapply()`</a>,
 and it has the following syntax:
 
-<pre>
-`vapply(X, FUN, FUN.VALUE, ..., USE.NAMES = TRUE)`
-<pre>
+``` r
+vapply(X, FUN, FUN.VALUE, ..., USE.NAMES = TRUE)
+```
 
 Over the elements inside `X`, the function `FUN` is applied. The
 `FUN.VALUE` argument expects a template for the return argument of this
@@ -2531,8 +2818,6 @@ respectively.
 **Solution:**
 
 ``` r
-# temp is already available in the workspace
-
 # Definition of basics()
 basics <- function(x) {
   c(min = min(x), mean = mean(x), max = max(x))
@@ -2540,7 +2825,14 @@ basics <- function(x) {
 
 # Apply basics() over temp using vapply()
 vapply(temp, basics, numeric(3))
+#>      [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+#> min  -1.0    5 -3.0 -2.0  2.0 -3.0  1.0
+#> mean  4.8    9  2.2  2.4  5.4  4.6  4.6
+#> max   9.0   13  8.0  7.0  9.0  9.0  9.0
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Use vapply (2)
 
@@ -2571,8 +2863,6 @@ expected and actual output.
 **Solution:**
 
 ``` r
-# temp is already available in the workspace
-
 # Definition of the basics() function
 basics <- function(x) {
   c(min = min(x), mean = mean(x), median = median(x), max = max(x))
@@ -2580,7 +2870,15 @@ basics <- function(x) {
 
 # Fix the error:
 vapply(temp, basics, numeric(4))
+#>        [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+#> min    -1.0    5 -3.0 -2.0  2.0 -3.0  1.0
+#> mean    4.8    9  2.2  2.4  5.4  4.6  4.6
+#> median  6.0    9  3.0  2.0  5.0  5.0  4.0
+#> max     9.0   13  8.0  7.0  9.0  9.0  9.0
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## From sapply to vapply
 
@@ -2608,14 +2906,19 @@ adding robustness. You’ll need the templates `numeric(1)` and
 **Solution:**
 
 ``` r
-# temp is already defined in the workspace
-
 # Convert to vapply() expression
 vapply(temp, max, numeric(1))
+#> [1]  9 13  8  7  9  9  9
 
 # Convert to vapply() expression
 vapply(temp, function(x, y) { mean(x) > y }, y = 5, logical(1))
+#> [1] FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+# 5. Utilities
 
 ## Mathematical utilities
 
@@ -2653,7 +2956,11 @@ errors <- c(1.9, -2.6, 4.0, -9.5, -3.4, 7.3)
 
 # Sum of absolute rounded values of errors
 sum(round(abs(errors)))
+#> [1] 29
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Find the error
 
@@ -2682,7 +2989,11 @@ vec2 <- rev(vec1)
 
 # Fix the error
 mean(c(abs(vec1), abs(vec2)))
+#> [1] 4.48
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Data Utilities
 
@@ -2728,12 +3039,17 @@ linkedin <- list(16, 9, 13, 5, 2, 17, 14)
 facebook <- list(17, 7, 5, 16, 8, 13, 14)
 
 # Convert linkedin and facebook to a vector: li_vec and fb_vec
-
+li_vec <- as.vector(linkedin)
+fb_vec <- as.vector(facebook)
 
 # Append fb_vec to li_vec: social_vec
-
+social_vec <- append(li_vec, fb_vec)
 sort(append(unlist(linkedin), unlist(facebook)), decreasing = TRUE)
+#>  [1] 17 17 16 16 14 14 13 13  9  8  7  5  5  2
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Find the error (2)
 
@@ -2747,12 +3063,20 @@ Correct the expression. Make sure that your fix still uses the functions
 and
 <a href="http://www.rdocumentation.org/packages/base/functions/seq" target="_blank" rel="noopener noreferrer">`seq()`</a>.
 
+``` r
+# Fix me
+seq(rep(1, 7, by = 2), times = 7)
+```
+
 **Solution:**
 
 ``` r
-# Fix me
 rep(seq(1, 7, by = 2), 7)
+#>  [1] 1 3 5 7 1 3 5 7 1 3 5 7 1 3 5 7 1 3 5 7 1 3 5 7 1 3 5 7
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Beat Gauss using R
 
@@ -2793,7 +3117,11 @@ seq2 <- seq(1200,900,-7)
 
 # Calculate total sum of the sequences
 sum(seq1,seq2)
+#> [1] 87029
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## grepl & grep
 
@@ -2837,13 +3165,19 @@ emails <- c("john.doe@ivyleague.edu", "education@world.gov", "dalai.lama@peace.o
 
 # Use grepl() to match for "edu"
 grepl("edu", emails)
+#> [1]  TRUE  TRUE FALSE  TRUE  TRUE FALSE
 
 # Use grep() to match for "edu", save result to hits
 hits <- grep("edu", emails)
 
 # Subset emails using hits
 emails[hits]
+#> [1] "john.doe@ivyleague.edu"   "education@world.gov"     
+#> [3] "invalid.edu"              "quant@bigdatacollege.edu"
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## grepl & grep (2)
 
@@ -2877,19 +3211,20 @@ can be added to make the pattern more robust:
 **Solution:**
 
 ``` r
-# The emails vector has already been defined for you
-emails <- c("john.doe@ivyleague.edu", "education@world.gov", "dalai.lama@peace.org",
-            "invalid.edu", "quant@bigdatacollege.edu", "cookie.monster@sesame.tv")
-
 # Use grepl() to match for .edu addresses more robustly
 grepl("@.*\\.edu$", emails)
+#> [1]  TRUE FALSE FALSE FALSE  TRUE FALSE
 
 # Use grep() to match for .edu addresses more robustly, save result to hits
 hits <- grep("@.*\\.edu$", emails)
 
 # Subset emails using hits
 emails[hits]
+#> [1] "john.doe@ivyleague.edu"   "quant@bigdatacollege.edu"
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## sub & gsub
 
@@ -2927,13 +3262,15 @@ resulting output.
 **Solution:**
 
 ``` r
-# The emails vector has already been defined for you
-emails <- c("john.doe@ivyleague.edu", "education@world.gov", "global@peace.org",
-            "invalid.edu", "quant@bigdatacollege.edu", "cookie.monster@sesame.tv")
-
 # Use sub() to convert the email domains to datacamp.edu
 sub("@.*\\.edu$", "@datacamp.edu", emails)
+#> [1] "john.doe@datacamp.edu"    "education@world.gov"     
+#> [3] "global@peace.org"         "invalid.edu"             
+#> [5] "quant@datacamp.edu"       "cookie.monster@sesame.tv"
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## sub & gsub (2)
 
@@ -2954,22 +3291,29 @@ used:
     gets set to the string that is captured by the regular expression
     `[0-9]+`.
 
-<pre>
+``` r
+awards <- c("Won 1 Oscar.",
+  "Won 1 Oscar. Another 9 wins & 24 nominations.",
+  "1 win and 2 nominations.",
+  "2 wins & 3 nominations.",
+  "Nominated for 2 Golden Globes. 1 more win & 2 nominations.",
+  "4 wins & 1 nomination.")
 
-\`awards \<- c(“Won 1 Oscar.”, “Won 1 Oscar. Another 9 wins & 24
-nominations.”, “1 win and 2 nominations.”, “2 wins & 3 nominations.”,
-“Nominated for 2 Golden Globes. 1 more win & 2 nominations.”, “4 wins &
-1 nomination.”)
-
-sub(“.*\\s(\[0-9\]+)\\snomination.*$”, “\\1”, awards) \`
-<pre>
+sub(".*\\s([0-9]+)\\snomination.*$", "\\1", awards)
+```
 
 What does this code chunk return? `awards` is already defined in the
 workspace so you can start playing in the console straight away.
 
-**Instructions:**
+:white_large_square: A vector of integers containing: 1, 24, 2, 3, 2,
+1.<br> :white_large_square: The vector `awards` gets returned as there
+isn’t a single element in `awards` that matches the regular
+expression.<br> :white_large_square: A vector of character strings
+containing “1”, “24”, “2”, “3”, “2”, “1”.<br> :white_check_mark: A
+vector of character strings containing “Won 1 Oscar.”, “24”, “2”, “3”,
+“2”, “1”.<br>
 
-**Solution:**
+# Time & Dates
 
 ## Right here, right now
 
@@ -3001,11 +3345,13 @@ numerical values are simply negative in this case.
 **Solution:**
 
 ``` r
+``` r
 # Get the current date: today
 today <- Sys.Date()
 
 # See what today looks like under the hood
 unclass(today)
+#> [1] 19011
 
 # Get the current time: now
 
@@ -3013,7 +3359,11 @@ now <- Sys.time()
 
 # See what now looks like under the hood
 unclass(now)
+#> [1] 1642618152
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Create and format dates
 
@@ -3035,9 +3385,11 @@ using a set of symbols (the examples correspond to 13 January, 1982):
 The following R commands will all create the same `Date` object for the
 13th day in January of 1982:
 
-<pre>
-`as.Date("1982-01-13") as.Date("Jan-13-82", format = "%b-%d-%y") as.Date("13 January, 1982", format = "%d %B, %Y")`
-<pre>
+``` r
+as.Date("1982-01-13")
+as.Date("Jan-13-82", format = "%b-%d-%y")
+as.Date("13 January, 1982", format = "%d %B, %Y")
+```
 
 Notice that the first line here did not need a format argument, because
 by default R matches your character string to the formats `"%Y-%m-%d"`
@@ -3048,9 +3400,11 @@ strings that use a different date notation. For this, you use the
 <a href="http://www.rdocumentation.org/packages/base/functions/format" target="_blank" rel="noopener noreferrer">`format()`</a>
 function. Try the following lines of code:
 
-<pre>
-`today <- Sys.Date() format(Sys.Date(), format = "%d %B, %Y") format(Sys.Date(), format = "Today is a %A!")`
-<pre>
+``` r
+today <- Sys.Date()
+format(Sys.Date(), format = "%d %B, %Y")
+format(Sys.Date(), format = "Today is a %A!")
+```
 
 **Instructions:**
 
@@ -3081,9 +3435,15 @@ date3 <- as.Date(str3, format = "%d/%B/%Y")
 
 # Convert dates to formatted strings
 format(date1, "%A")
+#> [1] "Thursday"
 format(date2, "%d")
+#> [1] "15"
 format(date3, "%b %Y")
+#> [1] "Jan 2006"
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Create and format times
 
@@ -3104,9 +3464,9 @@ have a wide variety of symbols:
 For a full list of conversion symbols, consult the `strptime`
 documentation in the console:
 
-<pre>
-`?strptime`
-<pre>
+``` r
+?strptime
+```
 
 Again,<a href="http://www.rdocumentation.org/packages/base/functions/as.POSIXlt" target="_blank" rel="noopener noreferrer">`as.POSIXct()`</a>
 uses a default format to match character strings. In this case, it’s
@@ -3137,8 +3497,13 @@ time2 <- as.POSIXct(str2)
 
 # Convert times to formatted strings
 format(time1, "%M")
+#> [1] "01"
 format(time2, "%I:%M %p")
+#> [1] "02:23 PM"
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Calculations with Dates
 
@@ -3151,12 +3516,13 @@ time information again.
 You can increment and decrement `Date` objects, or do actual
 calculations with them:
 
-<pre>
+``` r
+today <- Sys.Date()
+today + 1
+today - 1
 
-\`today \<- Sys.Date() today + 1 today - 1
-
-as.Date(“2015-03-12”) - as.Date(“2015-02-27”) \`
-<pre>
+as.Date("2015-03-12") - as.Date("2015-02-27")
+```
 
 To control your eating habits, you decided to write down the dates of
 the last five days that you ate pizza. In the workspace, these dates are
@@ -3178,9 +3544,15 @@ containing these 5 `Date` objects has been pre-defined for you.
 
 ``` r
 # day1, day2, day3, day4 and day5 are already available in the workspace
+day1 <- as.Date("2022-01-01")
+day2 <- as.Date("2022-01-03")
+day3 <- as.Date("2022-01-08")
+day4 <- as.Date("2022-01-14")
+day5 <- as.Date("2022-01-19")
 
 # Difference between last and first pizza day
 day5-day1
+#> Time difference of 18 days
 
 # Create vector pizza
 pizza <- c(day1, day2, day3, day4, day5)
@@ -3190,7 +3562,11 @@ day_diff <- diff(pizza)
 
 # Average period between two consecutive pizza days
 mean(day_diff)
+#> Time difference of 4.5 days
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Calculations with Times
 
@@ -3198,15 +3574,20 @@ Calculations using `POSIXct` objects are completely analogous to those
 using `Date` objects. Try to experiment with this code to increase or
 decrease `POSIXct` objects:
 
-<pre>
-`now <- Sys.time() now + 3600          # add an hour now - 3600 * 24     # subtract a day`
-<pre>
+``` r
+now <- Sys.time()
+now + 3600          # add an hour
+now - 3600 * 24     # subtract a day
+```
 
 Adding or subtracting time objects is also straightforward:
 
-<pre>
-`birth <- as.POSIXct("1879-03-14 14:37:23") death <- as.POSIXct("1955-04-18 03:47:12") einstein <- death - birth einstein`
-<pre>
+``` r
+birth <- as.POSIXct("1879-03-14 14:37:23")
+death <- as.POSIXct("1955-04-18 03:47:12")
+einstein <- death - birth
+einstein
+```
 
 You’re developing a website that requires users to log in and out. You
 want to know what is the total and average amount of time a particular
@@ -3227,18 +3608,28 @@ out 5 times as well. These times are gathered in the vectors `login` and
 
 ``` r
 # login and logout are already defined in the workspace
+login  <- as.POSIXct(c("2022-01-05 10:18:04", "2022-01-10 09:14:18","2022-01-10 12:21:51", "2022-01-10 12:37:24","2022-01-12 21:37:55"), tz = "UTC")
+logout <- as.POSIXct(c("2022-01-05 10:56:29", "2022-01-10 09:14:52","2022-01-10 12:35:48", "2022-01-10 13:17:22","2022-01-12 22:08:47"), tz = "UTC")
+
 # Calculate the difference between login and logout: time_online
 time_online <- logout - login
 
 # Inspect the variable time_online
 print(time_online)
+#> Time differences in secs
+#> [1] 2305   34  837 2398 1852
 
 # Calculate the total time online
 sum(time_online)
+#> Time difference of 7426 secs
 
 # Calculate the average time online
 mean(time_online)
+#> Time difference of 1485.2 secs
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 ## Time is of the essence
 
@@ -3274,8 +3665,18 @@ you, with the meteorological beginnings of a season.
 **Solution:**
 
 ``` r
-# Convert astro to vector of Date objects: astro_dates
+# data
+astro <- c(spring = "20-Mar-2015", 
+           summer = "25-Jun-2015",
+           fall   = "23-Sep-2015",
+           winter = "22-Dec-2015")
 
+meteo <- c(spring = "March 1, 15", 
+           summer = "June 1, 15",
+           fall   = "September 1, 15",
+           winter = "December 1, 15")
+
+# Convert astro to vector of Date objects: astro_dates
 astro_dates <- as.Date(astro, "%d-%b-%Y")
 
 # Convert meteo to vector of Date objects: meteo_dates
@@ -3283,4 +3684,8 @@ meteo_dates <- as.Date(meteo, "%B %d, %y")
 
 # Calculate the maximum absolute difference between astro_dates and meteo_dates
 max(abs(astro_dates - meteo_dates))
+#> Time difference of 24 days
 ```
+
+<sup>Created on 2022-01-19 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
