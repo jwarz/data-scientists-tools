@@ -1480,9 +1480,9 @@ two_dice <- function() {
 
 **Possible Answers:**
 
-:white_large_square Executing `two_dice()` causes an error.
-:white_large_square Executing `res <- two_dice()` makes the contents of dice1 and dice2 available outside the function.
-:white_check_mark Whatever the way of calling the `two_dice()` function, R won't have access to `dice1` and `dice2` outside the function. (<-)
+:white_large_square Executing: `two_dice()` causes an error.
+:white_large_square Executing: `res <- two_dice()` makes the contents of dice1 and dice2 available outside the function.
+:white_check_mark Whatever: the way of calling the `two_dice()` function, R won't have access to `dice1` and `dice2` outside the function. (<-)
 
 
 ## R passes arguments by value
