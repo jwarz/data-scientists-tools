@@ -6,8 +6,7 @@ Intermediate Data Visualization with ggplot2
 ## Smoothing
 
 To practice on the remaining layers (statistics, coordinates and
-facets), we’ll continue working on several datasets from the first
-course.
+facets), we’ll continue working on several datasets.
 
 The `mtcars` dataset contains information for 32 cars from Motor Trends
 magazine from 1974. This dataset is small, intuitive, and contains a

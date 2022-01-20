@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = F)
 # 1. Statistics
 ## Smoothing
 
-To practice on the remaining layers (statistics, coordinates and facets), we'll continue working on several datasets from the first course.
+To practice on the remaining layers (statistics, coordinates and facets), we'll continue working on several datasets.
 
 The `mtcars` dataset contains information for 32 cars from Motor Trends magazine from 1974. This dataset is small, intuitive, and contains a variety of continuous and categorical (both nominal and ordinal) variables.
 
