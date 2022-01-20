@@ -60,7 +60,7 @@ mtcars %>%
     geom_point()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ``` r
 # Amend the plot to add a smooth layer
@@ -71,7 +71,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 # Amend the plot. Use lin. reg. smoothing; turn off std err ribbon
@@ -82,7 +82,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 # Amend the plot. Swap geom_smooth() for stat_smooth().
@@ -93,7 +93,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ## Grouping variables
 
@@ -140,7 +140,7 @@ ggplot(mtcars, aes(wt, mpg, color = fcyl)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 # Amend the plot to add another smooth layer with dummy grouping
@@ -153,7 +153,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl)) +
     ## `geom_smooth()` using formula 'y ~ x'
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ## Modifying stat_smooth
 
@@ -199,7 +199,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 # Amend the plot to color by fcyl
@@ -215,7 +215,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 # Amend the plot
@@ -230,7 +230,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ## Modifying stat_smooth (2)
 
@@ -279,7 +279,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 # Amend the plot
@@ -291,7 +291,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ## Quantiles
 
@@ -325,7 +325,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
 
     ## Smoothing formula not specified. Using: y ~ x
 
-![](out_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ``` r
 # Amend the plot to color by year_group
@@ -339,7 +339,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
 
     ## Warning in rq.fit.br(wx, wy, tau = tau, ...): Solution may be nonunique
 
-![](out_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ## Using stat_sum
 
@@ -384,7 +384,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   stat_sum(alpha = 0.25)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
@@ -393,7 +393,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   scale_size(range=c(1,10))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ``` r
 # Amend the stat to use proportion sizes
@@ -401,7 +401,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   stat_sum(aes(size = ..prop..))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
 # Amend the plot to group by education
@@ -409,7 +409,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary, group = education)) +
   stat_sum(aes(size = ..prop..))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ## Preparations
 
@@ -473,7 +473,7 @@ p_wt_vs_fcyl_by_fam +
   geom_point()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 ## Using position objects
 
@@ -498,7 +498,7 @@ p_wt_vs_fcyl_by_fam +
   geom_point(position = posn_j) 
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 ``` r
 # Add dodging only
@@ -506,7 +506,7 @@ p_wt_vs_fcyl_by_fam +
   geom_point(position = posn_d)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 # Add jittering and dodging
@@ -514,7 +514,7 @@ p_wt_vs_fcyl_by_fam +
   geom_point(position = posn_jd)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 ## Plotting variations
 
@@ -572,7 +572,7 @@ p_wt_vs_fcyl_by_fam_jit +
   )
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
 p_wt_vs_fcyl_by_fam_jit +
@@ -580,7 +580,7 @@ p_wt_vs_fcyl_by_fam_jit +
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), position = posn_d, geom = "errorbar")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 ``` r
 p_wt_vs_fcyl_by_fam_jit +
@@ -591,7 +591,7 @@ p_wt_vs_fcyl_by_fam_jit +
   )
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 # 2. Coordinates
 
@@ -627,7 +627,7 @@ ggplot(mtcars, aes(x = wt, y = hp, color = fam)) +
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ``` r
   # Add a continuous x scale from 3 to 6
@@ -648,7 +648,7 @@ ggplot(mtcars, aes(x = wt, y = hp, color = fam)) +
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 ## Aspect ratio I: 1:1 ratios
 
@@ -685,7 +685,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 ## Aspect ratio II: setting ratios
 
@@ -714,7 +714,7 @@ oscillations: it is better to force a wider ratio.
 **Solution:**
 
 ``` r
-sunspots <- readRDS("intermediate_data_visualization_with_ggplot2/data/sunspots.rds")
+sunspots <- readRDS("data/sunspots.rds")
 sun_plot <- sunspots %>%
   ggplot(aes(x = Date, y = Mean)) +
   geom_line(color="skyblue") +
@@ -723,7 +723,7 @@ sun_plot <- sunspots %>%
 sun_plot
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-30-1.png)<!-- --> REWORK
+![](readme_files/figure-gfm/unnamed-chunk-30-1.png)<!-- --> REWORK
 NECESSARY!
 
 ``` r
@@ -732,7 +732,7 @@ sun_plot +
   coord_fixed()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
 ``` r
 # Change the aspect ratio to 20:1
@@ -740,7 +740,7 @@ sun_plot +
   coord_fixed(ratio = 20)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
 ## Expand and clip
 
@@ -777,7 +777,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   theme_classic()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(wt, mpg)) +
@@ -789,7 +789,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   theme(axis.line = element_blank())
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 ## Log-transforming scales
 
@@ -835,7 +835,7 @@ ggplot(msleep, aes(bodywt, brainwt)) +
 
     ## Warning: Removed 27 rows containing missing values (geom_point).
 
-![](out_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
 
 ``` r
 # Perform a log10 coordinate system transformation
@@ -849,7 +849,7 @@ ggplot(msleep, aes(bodywt, brainwt)) +
 
     ## Warning: Removed 27 rows containing missing values (geom_point).
 
-![](out_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
 
 ## Adding stats to transformed scales
 
@@ -886,7 +886,7 @@ ggplot(msleep, aes(bodywt, brainwt)) +
 
     ## Warning: Removed 27 rows containing missing values (geom_point).
 
-![](out_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
 ``` r
 # Plot with transformed coordinates
@@ -906,7 +906,7 @@ ggplot(msleep, aes(bodywt, brainwt)) +
 
     ## Warning: Removed 27 rows containing missing values (geom_point).
 
-![](out_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 ## Useful double axes
 
@@ -952,7 +952,7 @@ ggplot(airquality, aes(Date, Temp)) +
   labs(x = "Date (1973)", y = "Fahrenheit")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
 # Define breaks (Fahrenheit)
@@ -1001,7 +1001,7 @@ ggplot(airquality, aes(Date, Temp)) +
   labs(x = "Date (1973)", y = "Fahrenheit")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 ## Flipping axes I
 
@@ -1033,7 +1033,7 @@ ggplot(mtcars, aes(fill = fam, x = fcyl)) +
   geom_bar(position = "dodge")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(fcyl, fill = fam)) +
@@ -1042,7 +1042,7 @@ ggplot(mtcars, aes(fcyl, fill = fam)) +
   coord_flip()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(fcyl, fill = fam)) +
@@ -1051,7 +1051,7 @@ ggplot(mtcars, aes(fcyl, fill = fam)) +
   coord_flip()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 ## Flipping axes II
 
@@ -1082,7 +1082,7 @@ ggplot(mtcars, aes(car, wt)) +
   labs(x = "car", y = "weight")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 ``` r
 # Flip the axes to set car to the y axis
@@ -1092,7 +1092,7 @@ ggplot(mtcars, aes(car, wt)) +
   coord_flip()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
 ## Pie charts
 
@@ -1134,7 +1134,7 @@ ggplot(mtcars, aes(x = 1, fill = fcyl)) +
   coord_polar(theta = "y")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(x = 1, fill = fcyl)) +
@@ -1147,7 +1147,7 @@ ggplot(mtcars, aes(x = 1, fill = fcyl)) +
   )
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
 ## Wind rose plots
 
@@ -1200,7 +1200,7 @@ ggplot(wind, aes(wdf, fill = wsf)) +
   geom_bar(width = 1)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
 ``` r
 # Convert to polar coordinates:
@@ -1209,7 +1209,7 @@ ggplot(wind, aes(wdf, fill = wsf)) +
   coord_polar()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-52-1.png)<!-- -->
 
 ``` r
 # Convert to polar coordinates:
@@ -1218,7 +1218,7 @@ ggplot(wind, aes(wdf, fill = wsf)) +
   coord_polar(start = -pi/16)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-53-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-53-1.png)<!-- -->
 
 # 3. Facets
 
@@ -1266,7 +1266,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(cyl))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -1276,7 +1276,7 @@ ggplot(mtcars, aes(wt, mpg)) +
              cols = vars(cyl))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
 
 ## Many variables
 
@@ -1327,7 +1327,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl_fam)) +
   scale_color_brewer(palette = "Paired")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
 
 ``` r
 # Update the plot to map disp to size
@@ -1336,7 +1336,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl_fam, size = disp)) +
   scale_color_brewer(palette = "Paired")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
 
 ``` r
 # Update the plot
@@ -1347,7 +1347,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl_fam, size = disp)) +
   facet_grid(rows = vars(gear), cols = vars(vs))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
 
 ## Formula notation
 
@@ -1387,7 +1387,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(. ~ cyl)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-62-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-62-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -1396,7 +1396,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(am ~ cyl)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-63-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-63-1.png)<!-- -->
 
 ## Labeling facets
 
@@ -1435,7 +1435,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(cyl))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-64-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-64-1.png)<!-- -->
 
 ``` r
 # Plot wt by mpg
@@ -1445,7 +1445,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(cyl), labeller = label_both)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-65-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-65-1.png)<!-- -->
 
 ``` r
 # Plot wt by mpg
@@ -1456,7 +1456,7 @@ ggplot(mtcars, aes(wt, mpg)) +
              labeller = label_context)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-66-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-66-1.png)<!-- -->
 
 ``` r
 # Plot wt by mpg
@@ -1466,7 +1466,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(vs, cyl), labeller = label_context)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-67-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-67-1.png)<!-- -->
 
 ## Setting order
 
@@ -1500,7 +1500,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(fam))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-68-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-68-1.png)<!-- -->
 
 ``` r
 # Make factor, set proper labels explictly, and
@@ -1515,7 +1515,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(fam))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
 
 ## Variable plotting spaces I: continuous variables
 
@@ -1548,7 +1548,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(cyl))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-70-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-70-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(wt, mpg)) +
@@ -1558,7 +1558,7 @@ ggplot(mtcars, aes(wt, mpg)) +
             scales = "free_x")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-71-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-71-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(wt, mpg)) +
@@ -1567,7 +1567,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(rows = vars(cyl), scales = "free_y")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-72-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-72-1.png)<!-- -->
 
 ## Variable plotting spaces II: categorical variables
 
@@ -1598,7 +1598,7 @@ ggplot(mtcars, aes(x = mpg, y = car, color = fam)) +
   facet_grid(rows = vars(gear))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-73-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-73-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(x = mpg, y = car, color = fam)) +
@@ -1609,7 +1609,7 @@ ggplot(mtcars, aes(x = mpg, y = car, color = fam)) +
              space  = "free_y")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-74-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-74-1.png)<!-- -->
 
 ## Wrapping for many levels
 
@@ -1650,7 +1650,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-75-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-75-1.png)<!-- -->
 
 ``` r
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
@@ -1661,7 +1661,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-76-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-76-1.png)<!-- -->
 
 ``` r
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
@@ -1672,7 +1672,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](out_files/figure-gfm/unnamed-chunk-77-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-77-1.png)<!-- -->
 
 ## Margin plots
 
@@ -1715,7 +1715,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
              cols = vars(gear))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-78-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-78-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
@@ -1726,7 +1726,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
              margins = T)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-79-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-79-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
@@ -1737,7 +1737,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
              margins = "fam")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-80-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-80-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
@@ -1746,7 +1746,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   facet_grid(rows = vars(fvs, fam), cols = vars(gear), margins = c("gear", "fvs"))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-81-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-81-1.png)<!-- -->
 
 # 4. Best Practices
 
@@ -1779,7 +1779,7 @@ ggplot(mtcars, aes(x = fcyl, y = wt)) +
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-82-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-82-1.png)<!-- -->
 
 ## Bar plots: position dodging
 
@@ -1818,7 +1818,7 @@ ggplot(mtcars, aes(x = fcyl, y = wt, color = fam, fill = fam)) +
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-83-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-83-1.png)<!-- -->
 
 ``` r
 # Set alpha for the first and set position for each stat summary function
@@ -1836,7 +1836,7 @@ ggplot(mtcars, aes(x = fcyl, y = wt, color = fam, fill = fam)) +
     width    = 0.1)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-84-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-84-1.png)<!-- -->
 
 ``` r
 # Define a dodge position object with width 0.9
@@ -1860,7 +1860,7 @@ ggplot(mtcars, aes(x     = fcyl,
     geom     = "errorbar")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
 
 ## Bar plots: Using aggregated data
 
@@ -1921,7 +1921,7 @@ ggplot(mtcars_by_cyl, aes(cyl, mean_wt)) +
   geom_bar(stat="identity", fill="skyblue")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-86-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-86-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
@@ -1929,7 +1929,7 @@ ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
   geom_col(fill = "skyblue")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
@@ -1940,7 +1940,7 @@ ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
 
     ## Warning: Ignoring unknown aesthetics: width
 
-![](out_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
 
 ``` r
 ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
@@ -1957,7 +1957,7 @@ ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
 
     ## Warning: Ignoring unknown aesthetics: width
 
-![](out_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
 
 ## Heat maps
 
@@ -2017,7 +2017,7 @@ ggplot(barley, aes(year, variety, fill = yield)) +
   geom_tile()
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
 
 ``` r
 # Previously defined
@@ -2029,7 +2029,7 @@ ggplot(barley, aes(x = year, y = variety, fill = yield)) +
   scale_fill_gradient(low = "white", high = "red")
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
 
 ``` r
 # A palette of 9 reds
@@ -2044,7 +2044,7 @@ ggplot(barley, aes(x = year, y = variety, fill = yield)) +
   scale_fill_gradientn(colors = red_brewer_palette)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
 
 ## Useful heat maps
 
@@ -2097,7 +2097,7 @@ ggplot(barley, aes(x = year, y = variety, fill = yield)) +
   scale_fill_gradientn(colors = brewer.pal(9, "Reds"))
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-93-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-93-1.png)<!-- -->
 
 ``` r
 # Using barley, plot yield vs. year, colored and grouped by variety
@@ -2108,7 +2108,7 @@ ggplot(barley, aes(year, yield, color = variety, group = variety)) +
   facet_wrap( ~ site, nrow = 1)
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-94-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-94-1.png)<!-- -->
 
 ``` r
 # Using barely, plot yield vs. year, colored, grouped, and filled by site
@@ -2125,7 +2125,7 @@ ggplot(barley, aes(x = year,
 
     ## Warning: `fun.y` is deprecated. Use `fun` instead.
 
-![](out_files/figure-gfm/unnamed-chunk-95-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-95-1.png)<!-- -->
 
 ## Suppression of the origin
 
@@ -2221,7 +2221,7 @@ growth_by_dose <- ggplot(TG, aes(dose, len, color = supp)) +
 growth_by_dose
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-96-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-96-1.png)<!-- -->
 
 ``` r
 # Change type
@@ -2238,7 +2238,7 @@ growth_by_dose <- ggplot(TG, aes(dose, len, color = supp)) +
 growth_by_dose
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-97-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-97-1.png)<!-- -->
 
 ``` r
 # Change type
@@ -2263,7 +2263,7 @@ growth_by_dose <- ggplot(TG, aes(dose, len, color = supp)) +
 growth_by_dose
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-98-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-98-1.png)<!-- -->
 
 ``` r
 # Change type
@@ -2292,4 +2292,4 @@ growth_by_dose <- ggplot(TG, aes(dose, len, color = supp)) +
 growth_by_dose
 ```
 
-![](out_files/figure-gfm/unnamed-chunk-99-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-99-1.png)<!-- -->

@@ -529,7 +529,7 @@ To make aspect ratios clear, we've drawn an orange box that is 75 units high and
 **Solution:**
 
 ```{r,eval=TRUE}
-sunspots <- readRDS("intermediate_data_visualization_with_ggplot2/data/sunspots.rds")
+sunspots <- readRDS("data/sunspots.rds")
 sun_plot <- sunspots %>%
   ggplot(aes(x = Date, y = Mean)) +
   geom_line(color="skyblue") +
