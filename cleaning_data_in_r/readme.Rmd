@@ -1211,7 +1211,7 @@ The first step towards this goal is to generate pairs of records so that you can
 
 1. Generate all possible pairs of records between the `zagat` and `fodors` datasets (no blocking used).
 
-```{r}
+```{r,message=FALSE}
 zagat  <- readRDS("data/zagat.rds")
 fodors <- readRDS("data/fodors.rds")
 
@@ -1291,5 +1291,7 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
   # 2. Select pairs
   select_n_to_m() %>%
   # 3. Link data 
-  link()
+  link() %>%
+  # Convert to tibble
+  as_tibble()
 ```
