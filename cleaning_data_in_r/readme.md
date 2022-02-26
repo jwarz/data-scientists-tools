@@ -4,35 +4,29 @@ Joschka Schwarz
 
 -   [1. Common Data Problems](#1-common-data-problems)
     -   [Common data types](#common-data-types)
-    -   [Checking data types](#checking-data-types)
     -   [Converting data types](#converting-data-types)
     -   [Trimming strings](#trimming-strings)
     -   [Constraints](#constraints)
 -   [2. Categorical and Text Data](#2-categorical-and-text-data)
     -   [Membership constraints](#membership-constraints)
-    -   [Identifying inconsistency](#identifying-inconsistency)
-    -   [Correcting inconsistency](#correcting-inconsistency)
-    -   [Collapsing categories](#collapsing-categories)
+    -   [Identifying inconsistent categorical
+        data](#identifying-inconsistent-categorical-data)
+    -   [Correcting inconsistent categorical
+        data](#correcting-inconsistent-categorical-data)
     -   [Detecting inconsistent text
         data](#detecting-inconsistent-text-data)
-    -   [Replacing and removing](#replacing-and-removing)
-    -   [Invalid phone numbers](#invalid-phone-numbers)
--   [3. Advanced Data Problems](#3-advanced-data-problems)
+    -   [Correcting inconsistent text
+        data](#correcting-inconsistent-text-data)
     -   [Uniformity](#uniformity)
     -   [Cross field validation](#cross-field-validation)
     -   [Completeness](#completeness)
--   [4. Record Linkage](#4-record-linkage)
-    -   [Calculating distance](#calculating-distance)
-    -   [Small distance, small
-        difference](#small-distance-small-difference)
-    -   [Fixing typos with string
-        distance](#fixing-typos-with-string-distance)
-    -   [Link or join?](#link-or-join)
-    -   [Pair blocking](#pair-blocking)
-    -   [Comparing pairs](#comparing-pairs)
-    -   [Score then select or select then
-        score?](#score-then-select-or-select-then-score)
-    -   [Putting it together](#putting-it-together)
+-   [3. Record Linkage](#3-record-linkage)
+    -   [stringdist(): Calculating
+        distance](#stringdist-calculating-distance)
+    -   [fuzzyjoin(): Fixing typos with string
+        distance](#fuzzyjoin-fixing-typos-with-string-distance)
+    -   [reclin: Linking records with Pair
+        Blocking](#reclin-linking-records-with-pair-blocking)
 
 It’s commonly said that data scientists spend 80% of their time cleaning
 and manipulating data and only 20% of their time analyzing it. The time
@@ -71,7 +65,7 @@ insights from.
 | Category  | Marriage status, color, …             | `factor`    |
 | Date      | Order dates, date of birth, …         | `date`      |
 
-## Checking data types
+### Checking data types
 
 | **Logical checking** - returns `TRUE` / `FALSE` | `assertive` checking - error when `FALSE` |
 |-------------------------------------------------|-------------------------------------------|
@@ -121,6 +115,7 @@ information.
 -   <code><a href="https://github.com/cran/assertive">assertive</a></code>
     -   <code><a href="https://github.com/hadley/assertthat">assertthat</a></code>
 -   <code><a href="http://forcats.tidyverse.org">forcats</a></code>
+-   <code><a href="http://tibble.tidyverse.org">tibble</a></code>
 
 **Steps**
 
@@ -136,6 +131,7 @@ analysis.
 
 ``` r
 # Libraries
+library(tibble)
 library(dplyr)
 library(assertive)
 
@@ -348,7 +344,7 @@ with `NA`s.
 
 **Packages**
 
--   `ggplot2`
+-   <code><a href="http://ggplot2.tidyverse.org">ggplot2</a></code>
 
 **Steps**
 
@@ -401,7 +397,7 @@ which rides are from the future, since R makes it easy to check if one
 
 **Packages**
 
--   `lubridate`
+-   <code><a href="http://lubridate.tidyverse.org">lubridate</a></code>
 
 **Steps**
 
@@ -479,6 +475,10 @@ like this is important, since having the same value repeated multiple
 times can alter summary statistics like the mean and median. Each ride,
 including its `ride_id` should be unique.
 
+**Packages**
+
+-   <code><a href="http://sfirke.github.io/janitor/articles/janitor.html">janitor</a></code>
+
 **Steps**
 
 1.  Find full duplicates
@@ -510,22 +510,11 @@ bike_share_rides_mod |>
 ``` r
 # Libraries
 library(janitor)
-```
 
-    ## 
-    ## Attaching package: 'janitor'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     chisq.test, fisher.test
-
-``` r
 # 1. Finding duplicates
 bike_share_rides_mod |> 
     get_dupes()
 ```
-
-    ## No variable names specified - using all columns.
 
     ## # A tibble: 4 × 14
     ##   ride_id date                duration  station_A_id station_A_name station_B_id
@@ -925,7 +914,7 @@ sfo_survey_mod %>%
     ## 3 Medium      681
     ## 4 Small       225
 
-## Identifying inconsistency
+## Identifying inconsistent categorical data
 
 Different kinds of inconsistencies that can occur within categories,
 making it look like a variable has more categories than it should:
@@ -1005,7 +994,9 @@ sfo_survey_mod %>%
 > in `cleanliness` have inconsistent white space.<br> ⬜ The categories
 > in `cleanliness` have inconsistent capitalization and white space.<br>
 
-## Correcting inconsistency
+## Correcting inconsistent categorical data
+
+### Trimming & Case Sensitivity
 
 Now that we’ve identified that `dest_size` has whitespace
 inconsistencies and `cleanliness` has capitalization inconsistencies,
@@ -1065,7 +1056,7 @@ sfo_survey_mod %>%
     ## 5 somewhat dirty       30
     ## 6 <NA>                120
 
-## Collapsing categories
+### Collapsing categories
 
 One of the tablets that participants filled out the `sfo_survey` on was
 not properly configured, allowing the response for `dest_region` to be
@@ -1208,7 +1199,9 @@ sfo_survey_mod %>%
     ## #   cleanliness <chr>, safety <chr>, satisfaction <chr>, phone <chr>,
     ## #   dest_size_trimmed <chr>, cleanliness_lower <chr>
 
-## Replacing and removing
+## Correcting inconsistent text data
+
+### Replacing and removing
 
 In the last section, you saw that the `phone` column of `sfo_data` is
 plagued with unnecessary parentheses and hyphens. The customer support
@@ -1259,7 +1252,7 @@ sfo_survey_mod %>%
     ## #   dest_size_trimmed <chr>, cleanliness_lower <chr>, phone_no_parens <chr>,
     ## #   phone_clean <chr>
 
-## Invalid phone numbers
+### Invalid format
 
 The customer support team is grateful for your work so far, but during
 their first day of calling participants, they ran into some phone
@@ -1316,15 +1309,13 @@ sfo_survey_mod %>%
     ## #   cleanliness <chr>, safety <chr>, satisfaction <chr>, phone <chr>,
     ## #   dest_size_trimmed <chr>, cleanliness_lower <chr>
 
-# 3. Advanced Data Problems
+## Uniformity
 
 In this section, you’ll dive into more advanced data cleaning problems,
 such as ensuring that weights are all written in kilograms instead of
 pounds. You’ll also gain invaluable skills that will help you verify
 that values have been added correctly and that missing values don’t
 negatively impact your analyses.
-
-## Uniformity
 
 Different units or formats:
 
@@ -1366,20 +1357,24 @@ accounts <- readRDS("data/accounts.rds")
 head(accounts)
 ```
 
-    ##         id      date_opened    total
-    ## 1 A880C79F       2003-10-19   169305
+    ## # A tibble: 6 × 3
+    ##   id       date_opened         total
+    ##   <fct>    <chr>               <dbl>
+    ## 1 A880C79F 2003-10-19         169305
     ## 2 BE8222DF October 05, 2018   107460
-    ## 3 19F9E113       2008-07-29 15297152
-    ## 4 A2FE52A3       2005-06-09 14897272
-    ## 5 F6DC2C08       2012-03-31   124568
-    ## 6 D2E55799       2007-06-20 13635752
+    ## 3 19F9E113 2008-07-29       15297152
+    ## 4 A2FE52A3 2005-06-09       14897272
+    ## 5 F6DC2C08 2012-03-31         124568
+    ## 6 D2E55799 2007-06-20       13635752
 
 > ## *Question*
 >
 > Try running `as.Date(accounts$date_opened)` in the console and examine
 > the output. Notice that you end up with a lot of `NAs`. Why is
-> this?<br> <br> ⬜
-> `` as.Date()` needs to be explicitly told the formats of every single date, including which dates are in which format.<br> ✅ `By default, `as.Date()` can't convert "Month DD, YYYY" formats.<br> ⬜ ``as.Date()`can't convert`character`s to`Date\`s.<br>
+> this?<br> <br> ⬜ `as.Date()` needs to be explicitly told the formats
+> of every single date, including which dates are in which format.<br>
+> ✅ By default, `as.Date()` can’t convert “Month DD, YYYY” formats.<br>
+> ⬜ `as.Date()` can’t convert `character`s to `Date`s.<br>
 
 **Steps**
 
@@ -1396,105 +1391,20 @@ accounts %>%
   mutate(date_opened_clean = parse_date_time(date_opened,  formats))
 ```
 
-    ##          id        date_opened    total date_opened_clean
-    ## 1  A880C79F         2003-10-19   169305        2003-10-19
-    ## 2  BE8222DF   October 05, 2018   107460        2018-10-05
-    ## 3  19F9E113         2008-07-29 15297152        2008-07-29
-    ## 4  A2FE52A3         2005-06-09 14897272        2005-06-09
-    ## 5  F6DC2C08         2012-03-31   124568        2012-03-31
-    ## 6  D2E55799         2007-06-20 13635752        2007-06-20
-    ## 7  53AE87EF  December 01, 2017 15375984        2017-12-01
-    ## 8  3E97F253         2019-06-03 14515800        2019-06-03
-    ## 9  4AE79EA1         2011-05-07 23338536        2011-05-07
-    ## 10 2322DFB4         2018-04-07   189524        2018-04-07
-    ## 11 645335B2         2018-11-16   154001        2018-11-16
-    ## 12 D5EB0F00         2001-04-16   174576        2001-04-16
-    ## 13 1EB593F7         2005-04-21   191989        2005-04-21
-    ## 14 DDBA03D9         2006-06-13  9617192        2006-06-13
-    ## 15 40E4A2F4         2009-01-07   180547        2009-01-07
-    ## 16 39132EEA         2012-07-07 15611960        2012-07-07
-    ## 17 387F8E4D   January 03, 2011  9402640        2011-01-03
-    ## 18 11C3C3C0  December 24, 2017   180003        2017-12-24
-    ## 19 C2FC91E1         2004-05-21   105722        2004-05-21
-    ## 20 FB8F01C1         2001-09-06 22575072        2001-09-06
-    ## 21 0128D2D0         2005-04-09 19179784        2005-04-09
-    ## 22 BE6E4B3F         2009-10-20 15679976        2009-10-20
-    ## 23 7C6E2ECC         2003-05-16   169814        2003-05-16
-    ## 24 02E63545         2015-10-25   125117        2015-10-25
-    ## 25 4399C98B       May 19, 2001   130421        2001-05-19
-    ## 26 98F4CF0F       May 27, 2014 14893944        2014-05-27
-    ## 27 247222A6       May 26, 2015   150372        2015-05-26
-    ## 28 420985EE         2008-12-27   123125        2008-12-27
-    ## 29 0E3903BA         2015-11-11   182668        2015-11-11
-    ## 30 64EF994F         2009-02-26   161141        2009-02-26
-    ## 31 CCF84EDB         2008-12-26   136128        2008-12-26
-    ## 32 51C21705     April 22, 2016 16191136        2016-04-22
-    ## 33 C868C6AD   January 31, 2000 11733072        2000-01-31
-    ## 34 92C237C6         2005-12-13 11838528        2005-12-13
-    ## 35 9ECEADB2       May 17, 2018   146153        2018-05-17
-    ## 36 DF0AFE50         2004-12-03 15250040        2004-12-03
-    ## 37 5CD605B3         2016-10-19    87921        2016-10-19
-    ## 38 402839E2 September 14, 2019   163416        2019-09-14
-    ## 39 78286CE7         2009-10-05 15049216        2009-10-05
-    ## 40 168E071B         2013-07-11    87826        2013-07-11
-    ## 41 466CCDAA         2002-03-24 14981304        2002-03-24
-    ## 42 8DE1ECB9         2015-10-17   217975        2015-10-17
-    ## 43 E19FE6B5      June 06, 2009   101936        2009-06-06
-    ## 44 1240D39C September 07, 2011 15761824        2011-09-07
-    ## 45 A7BFAA72         2019-11-12   133790        2019-11-12
-    ## 46 C3D24436       May 24, 2002   101584        2002-05-24
-    ## 47 FAD92F0F September 13, 2007 17081064        2007-09-13
-    ## 48 236A1D51         2019-10-01 18486936        2019-10-01
-    ## 49 A6DDDC4C         2000-08-17    67962        2000-08-17
-    ## 50 DDFD0B3D         2001-04-11 15776384        2001-04-11
-    ## 51 D13375E9  November 01, 2005 13944632        2005-11-01
-    ## 52 AC50B796         2016-06-30 16111264        2016-06-30
-    ## 53 290319FD       May 27, 2005   170178        2005-05-27
-    ## 54 FC71925A  November 02, 2006   186281        2006-11-02
-    ## 55 7B0F3685         2013-05-23   179102        2013-05-23
-    ## 56 BE411172         2017-02-24 17689984        2017-02-24
-    ## 57 58066E39 September 16, 2015 17025632        2015-09-16
-    ## 58 EA7FF83A         2004-11-02 11598704        2004-11-02
-    ## 59 14A2DDB7         2019-03-06 12808952        2019-03-06
-    ## 60 305EEAA8         2018-09-01 14417728        2018-09-01
-    ## 61 8F25E54C  November 24, 2008   189126        2008-11-24
-    ## 62 19DD73C6         2002-12-31 14692600        2002-12-31
-    ## 63 ACB8E6AF         2013-07-27    71359        2013-07-27
-    ## 64 91BFCC40         2014-01-10   132859        2014-01-10
-    ## 65 86ACAF81         2011-12-14 24533704        2011-12-14
-    ## 66 77E85C14  November 20, 2009 13868192        2009-11-20
-    ## 67 C5C6B79D         2008-03-01   188424        2008-03-01
-    ## 68 0E5B69F5         2018-05-07 18650632        2018-05-07
-    ## 69 5275B518         2017-11-23    71665        2017-11-23
-    ## 70 17217048       May 25, 2001 20111208        2001-05-25
-    ## 71 E7496A7F         2008-09-27   142669        2008-09-27
-    ## 72 41BBB7B4  February 22, 2005   144229        2005-02-22
-    ## 73 F6C7ABA1         2008-01-07   183440        2008-01-07
-    ## 74 E699DF01  February 17, 2008   199603        2008-02-17
-    ## 75 BACA7378         2005-05-11   204271        2005-05-11
-    ## 76 84A4302F         2003-08-12 19420648        2003-08-12
-    ## 77 F8A78C27     April 05, 2006    41164        2006-04-05
-    ## 78 8BADDF6A  December 31, 2010   158203        2010-12-31
-    ## 79 9FB57E68 September 01, 2017   216352        2017-09-01
-    ## 80 5C98E8F5         2014-11-25   103200        2014-11-25
-    ## 81 6BB53C2A  December 03, 2016   146394        2016-12-03
-    ## 82 E23F2505   October 15, 2017   121614        2017-10-15
-    ## 83 0C121914      June 21, 2017   227729        2017-06-21
-    ## 84 3627E08A         2008-04-01   238104        2008-04-01
-    ## 85 A94493B3    August 01, 2009    85975        2009-08-01
-    ## 86 0682E9DE         2002-10-01    72832        2002-10-01
-    ## 87 49931170         2011-03-25 14519856        2011-03-25
-    ## 88 A154F63B         2000-07-11   133800        2000-07-11
-    ## 89 3690CCED         2014-10-19   226595        2014-10-19
-    ## 90 48F5E6D8  February 16, 2020   135435        2020-02-16
-    ## 91 515FAD84         2013-06-20    98190        2013-06-20
-    ## 92 59794264         2008-01-16   157964        2008-01-16
-    ## 93 2038185B         2016-06-24   194662        2016-06-24
-    ## 94 65EAC615  February 20, 2004   140191        2004-02-20
-    ## 95 6C7509C9 September 16, 2000   212089        2000-09-16
-    ## 96 BD969A9D         2007-04-29   167238        2007-04-29
-    ## 97 B0CDCE3D       May 28, 2014   145240        2014-05-28
-    ## 98 33A7F03E   October 14, 2007   191839        2007-10-14
+    ## # A tibble: 98 × 4
+    ##    id       date_opened          total date_opened_clean  
+    ##    <fct>    <chr>                <dbl> <dttm>             
+    ##  1 A880C79F 2003-10-19          169305 2003-10-19 00:00:00
+    ##  2 BE8222DF October 05, 2018    107460 2018-10-05 00:00:00
+    ##  3 19F9E113 2008-07-29        15297152 2008-07-29 00:00:00
+    ##  4 A2FE52A3 2005-06-09        14897272 2005-06-09 00:00:00
+    ##  5 F6DC2C08 2012-03-31          124568 2012-03-31 00:00:00
+    ##  6 D2E55799 2007-06-20        13635752 2007-06-20 00:00:00
+    ##  7 53AE87EF December 01, 2017 15375984 2017-12-01 00:00:00
+    ##  8 3E97F253 2019-06-03        14515800 2019-06-03 00:00:00
+    ##  9 4AE79EA1 2011-05-07        23338536 2011-05-07 00:00:00
+    ## 10 2322DFB4 2018-04-07          189524 2018-04-07 00:00:00
+    ## # … with 88 more rows
 
 ### Currency uniformity
 
@@ -1536,105 +1446,20 @@ accounts %>%
 
     ## Joining, by = "id"
 
-    ##          id        date_opened    total   office
-    ## 1  A880C79F         2003-10-19   169305 New York
-    ## 2  BE8222DF   October 05, 2018   107460 New York
-    ## 3  19F9E113         2008-07-29 15297152    Tokyo
-    ## 4  A2FE52A3         2005-06-09 14897272    Tokyo
-    ## 5  F6DC2C08         2012-03-31   124568 New York
-    ## 6  D2E55799         2007-06-20 13635752    Tokyo
-    ## 7  53AE87EF  December 01, 2017 15375984    Tokyo
-    ## 8  3E97F253         2019-06-03 14515800    Tokyo
-    ## 9  4AE79EA1         2011-05-07 23338536    Tokyo
-    ## 10 2322DFB4         2018-04-07   189524 New York
-    ## 11 645335B2         2018-11-16   154001 New York
-    ## 12 D5EB0F00         2001-04-16   174576 New York
-    ## 13 1EB593F7         2005-04-21   191989 New York
-    ## 14 DDBA03D9         2006-06-13  9617192    Tokyo
-    ## 15 40E4A2F4         2009-01-07   180547 New York
-    ## 16 39132EEA         2012-07-07 15611960    Tokyo
-    ## 17 387F8E4D   January 03, 2011  9402640    Tokyo
-    ## 18 11C3C3C0  December 24, 2017   180003 New York
-    ## 19 C2FC91E1         2004-05-21   105722 New York
-    ## 20 FB8F01C1         2001-09-06 22575072    Tokyo
-    ## 21 0128D2D0         2005-04-09 19179784    Tokyo
-    ## 22 BE6E4B3F         2009-10-20 15679976    Tokyo
-    ## 23 7C6E2ECC         2003-05-16   169814 New York
-    ## 24 02E63545         2015-10-25   125117 New York
-    ## 25 4399C98B       May 19, 2001   130421 New York
-    ## 26 98F4CF0F       May 27, 2014 14893944    Tokyo
-    ## 27 247222A6       May 26, 2015   150372 New York
-    ## 28 420985EE         2008-12-27   123125 New York
-    ## 29 0E3903BA         2015-11-11   182668 New York
-    ## 30 64EF994F         2009-02-26   161141 New York
-    ## 31 CCF84EDB         2008-12-26   136128 New York
-    ## 32 51C21705     April 22, 2016 16191136    Tokyo
-    ## 33 C868C6AD   January 31, 2000 11733072    Tokyo
-    ## 34 92C237C6         2005-12-13 11838528    Tokyo
-    ## 35 9ECEADB2       May 17, 2018   146153 New York
-    ## 36 DF0AFE50         2004-12-03 15250040    Tokyo
-    ## 37 5CD605B3         2016-10-19    87921 New York
-    ## 38 402839E2 September 14, 2019   163416 New York
-    ## 39 78286CE7         2009-10-05 15049216    Tokyo
-    ## 40 168E071B         2013-07-11    87826 New York
-    ## 41 466CCDAA         2002-03-24 14981304    Tokyo
-    ## 42 8DE1ECB9         2015-10-17   217975 New York
-    ## 43 E19FE6B5      June 06, 2009   101936 New York
-    ## 44 1240D39C September 07, 2011 15761824    Tokyo
-    ## 45 A7BFAA72         2019-11-12   133790 New York
-    ## 46 C3D24436       May 24, 2002   101584 New York
-    ## 47 FAD92F0F September 13, 2007 17081064    Tokyo
-    ## 48 236A1D51         2019-10-01 18486936    Tokyo
-    ## 49 A6DDDC4C         2000-08-17    67962 New York
-    ## 50 DDFD0B3D         2001-04-11 15776384    Tokyo
-    ## 51 D13375E9  November 01, 2005 13944632    Tokyo
-    ## 52 AC50B796         2016-06-30 16111264    Tokyo
-    ## 53 290319FD       May 27, 2005   170178 New York
-    ## 54 FC71925A  November 02, 2006   186281 New York
-    ## 55 7B0F3685         2013-05-23   179102 New York
-    ## 56 BE411172         2017-02-24 17689984    Tokyo
-    ## 57 58066E39 September 16, 2015 17025632    Tokyo
-    ## 58 EA7FF83A         2004-11-02 11598704    Tokyo
-    ## 59 14A2DDB7         2019-03-06 12808952    Tokyo
-    ## 60 305EEAA8         2018-09-01 14417728    Tokyo
-    ## 61 8F25E54C  November 24, 2008   189126 New York
-    ## 62 19DD73C6         2002-12-31 14692600    Tokyo
-    ## 63 ACB8E6AF         2013-07-27    71359 New York
-    ## 64 91BFCC40         2014-01-10   132859 New York
-    ## 65 86ACAF81         2011-12-14 24533704    Tokyo
-    ## 66 77E85C14  November 20, 2009 13868192    Tokyo
-    ## 67 C5C6B79D         2008-03-01   188424 New York
-    ## 68 0E5B69F5         2018-05-07 18650632    Tokyo
-    ## 69 5275B518         2017-11-23    71665 New York
-    ## 70 17217048       May 25, 2001 20111208    Tokyo
-    ## 71 E7496A7F         2008-09-27   142669 New York
-    ## 72 41BBB7B4  February 22, 2005   144229 New York
-    ## 73 F6C7ABA1         2008-01-07   183440 New York
-    ## 74 E699DF01  February 17, 2008   199603 New York
-    ## 75 BACA7378         2005-05-11   204271 New York
-    ## 76 84A4302F         2003-08-12 19420648    Tokyo
-    ## 77 F8A78C27     April 05, 2006    41164 New York
-    ## 78 8BADDF6A  December 31, 2010   158203 New York
-    ## 79 9FB57E68 September 01, 2017   216352 New York
-    ## 80 5C98E8F5         2014-11-25   103200 New York
-    ## 81 6BB53C2A  December 03, 2016   146394 New York
-    ## 82 E23F2505   October 15, 2017   121614 New York
-    ## 83 0C121914      June 21, 2017   227729 New York
-    ## 84 3627E08A         2008-04-01   238104 New York
-    ## 85 A94493B3    August 01, 2009    85975 New York
-    ## 86 0682E9DE         2002-10-01    72832 New York
-    ## 87 49931170         2011-03-25 14519856    Tokyo
-    ## 88 A154F63B         2000-07-11   133800 New York
-    ## 89 3690CCED         2014-10-19   226595 New York
-    ## 90 48F5E6D8  February 16, 2020   135435 New York
-    ## 91 515FAD84         2013-06-20    98190 New York
-    ## 92 59794264         2008-01-16   157964 New York
-    ## 93 2038185B         2016-06-24   194662 New York
-    ## 94 65EAC615  February 20, 2004   140191 New York
-    ## 95 6C7509C9 September 16, 2000   212089 New York
-    ## 96 BD969A9D         2007-04-29   167238 New York
-    ## 97 B0CDCE3D       May 28, 2014   145240 New York
-    ## 98 33A7F03E   October 14, 2007   191839 New York
+    ## # A tibble: 98 × 4
+    ##    id       date_opened          total office  
+    ##    <fct>    <chr>                <dbl> <chr>   
+    ##  1 A880C79F 2003-10-19          169305 New York
+    ##  2 BE8222DF October 05, 2018    107460 New York
+    ##  3 19F9E113 2008-07-29        15297152 Tokyo   
+    ##  4 A2FE52A3 2005-06-09        14897272 Tokyo   
+    ##  5 F6DC2C08 2012-03-31          124568 New York
+    ##  6 D2E55799 2007-06-20        13635752 Tokyo   
+    ##  7 53AE87EF December 01, 2017 15375984 Tokyo   
+    ##  8 3E97F253 2019-06-03        14515800 Tokyo   
+    ##  9 4AE79EA1 2011-05-07        23338536 Tokyo   
+    ## 10 2322DFB4 2018-04-07          189524 New York
+    ## # … with 88 more rows
 
 3.  Convert the `total`s from the Tokyo office from yen to dollars, and
     keep the `total` from the New York office in dollars. Store this as
@@ -1648,105 +1473,20 @@ accounts %>%
   mutate(total_usd = ifelse(total > 5000000, total / 104, total))
 ```
 
-    ##          id        date_opened    total   office total_usd
-    ## 1  A880C79F         2003-10-19   169305 New York    169305
-    ## 2  BE8222DF   October 05, 2018   107460 New York    107460
-    ## 3  19F9E113         2008-07-29 15297152    Tokyo    147088
-    ## 4  A2FE52A3         2005-06-09 14897272    Tokyo    143243
-    ## 5  F6DC2C08         2012-03-31   124568 New York    124568
-    ## 6  D2E55799         2007-06-20 13635752    Tokyo    131113
-    ## 7  53AE87EF  December 01, 2017 15375984    Tokyo    147846
-    ## 8  3E97F253         2019-06-03 14515800    Tokyo    139575
-    ## 9  4AE79EA1         2011-05-07 23338536    Tokyo    224409
-    ## 10 2322DFB4         2018-04-07   189524 New York    189524
-    ## 11 645335B2         2018-11-16   154001 New York    154001
-    ## 12 D5EB0F00         2001-04-16   174576 New York    174576
-    ## 13 1EB593F7         2005-04-21   191989 New York    191989
-    ## 14 DDBA03D9         2006-06-13  9617192    Tokyo     92473
-    ## 15 40E4A2F4         2009-01-07   180547 New York    180547
-    ## 16 39132EEA         2012-07-07 15611960    Tokyo    150115
-    ## 17 387F8E4D   January 03, 2011  9402640    Tokyo     90410
-    ## 18 11C3C3C0  December 24, 2017   180003 New York    180003
-    ## 19 C2FC91E1         2004-05-21   105722 New York    105722
-    ## 20 FB8F01C1         2001-09-06 22575072    Tokyo    217068
-    ## 21 0128D2D0         2005-04-09 19179784    Tokyo    184421
-    ## 22 BE6E4B3F         2009-10-20 15679976    Tokyo    150769
-    ## 23 7C6E2ECC         2003-05-16   169814 New York    169814
-    ## 24 02E63545         2015-10-25   125117 New York    125117
-    ## 25 4399C98B       May 19, 2001   130421 New York    130421
-    ## 26 98F4CF0F       May 27, 2014 14893944    Tokyo    143211
-    ## 27 247222A6       May 26, 2015   150372 New York    150372
-    ## 28 420985EE         2008-12-27   123125 New York    123125
-    ## 29 0E3903BA         2015-11-11   182668 New York    182668
-    ## 30 64EF994F         2009-02-26   161141 New York    161141
-    ## 31 CCF84EDB         2008-12-26   136128 New York    136128
-    ## 32 51C21705     April 22, 2016 16191136    Tokyo    155684
-    ## 33 C868C6AD   January 31, 2000 11733072    Tokyo    112818
-    ## 34 92C237C6         2005-12-13 11838528    Tokyo    113832
-    ## 35 9ECEADB2       May 17, 2018   146153 New York    146153
-    ## 36 DF0AFE50         2004-12-03 15250040    Tokyo    146635
-    ## 37 5CD605B3         2016-10-19    87921 New York     87921
-    ## 38 402839E2 September 14, 2019   163416 New York    163416
-    ## 39 78286CE7         2009-10-05 15049216    Tokyo    144704
-    ## 40 168E071B         2013-07-11    87826 New York     87826
-    ## 41 466CCDAA         2002-03-24 14981304    Tokyo    144051
-    ## 42 8DE1ECB9         2015-10-17   217975 New York    217975
-    ## 43 E19FE6B5      June 06, 2009   101936 New York    101936
-    ## 44 1240D39C September 07, 2011 15761824    Tokyo    151556
-    ## 45 A7BFAA72         2019-11-12   133790 New York    133790
-    ## 46 C3D24436       May 24, 2002   101584 New York    101584
-    ## 47 FAD92F0F September 13, 2007 17081064    Tokyo    164241
-    ## 48 236A1D51         2019-10-01 18486936    Tokyo    177759
-    ## 49 A6DDDC4C         2000-08-17    67962 New York     67962
-    ## 50 DDFD0B3D         2001-04-11 15776384    Tokyo    151696
-    ## 51 D13375E9  November 01, 2005 13944632    Tokyo    134083
-    ## 52 AC50B796         2016-06-30 16111264    Tokyo    154916
-    ## 53 290319FD       May 27, 2005   170178 New York    170178
-    ## 54 FC71925A  November 02, 2006   186281 New York    186281
-    ## 55 7B0F3685         2013-05-23   179102 New York    179102
-    ## 56 BE411172         2017-02-24 17689984    Tokyo    170096
-    ## 57 58066E39 September 16, 2015 17025632    Tokyo    163708
-    ## 58 EA7FF83A         2004-11-02 11598704    Tokyo    111526
-    ## 59 14A2DDB7         2019-03-06 12808952    Tokyo    123163
-    ## 60 305EEAA8         2018-09-01 14417728    Tokyo    138632
-    ## 61 8F25E54C  November 24, 2008   189126 New York    189126
-    ## 62 19DD73C6         2002-12-31 14692600    Tokyo    141275
-    ## 63 ACB8E6AF         2013-07-27    71359 New York     71359
-    ## 64 91BFCC40         2014-01-10   132859 New York    132859
-    ## 65 86ACAF81         2011-12-14 24533704    Tokyo    235901
-    ## 66 77E85C14  November 20, 2009 13868192    Tokyo    133348
-    ## 67 C5C6B79D         2008-03-01   188424 New York    188424
-    ## 68 0E5B69F5         2018-05-07 18650632    Tokyo    179333
-    ## 69 5275B518         2017-11-23    71665 New York     71665
-    ## 70 17217048       May 25, 2001 20111208    Tokyo    193377
-    ## 71 E7496A7F         2008-09-27   142669 New York    142669
-    ## 72 41BBB7B4  February 22, 2005   144229 New York    144229
-    ## 73 F6C7ABA1         2008-01-07   183440 New York    183440
-    ## 74 E699DF01  February 17, 2008   199603 New York    199603
-    ## 75 BACA7378         2005-05-11   204271 New York    204271
-    ## 76 84A4302F         2003-08-12 19420648    Tokyo    186737
-    ## 77 F8A78C27     April 05, 2006    41164 New York     41164
-    ## 78 8BADDF6A  December 31, 2010   158203 New York    158203
-    ## 79 9FB57E68 September 01, 2017   216352 New York    216352
-    ## 80 5C98E8F5         2014-11-25   103200 New York    103200
-    ## 81 6BB53C2A  December 03, 2016   146394 New York    146394
-    ## 82 E23F2505   October 15, 2017   121614 New York    121614
-    ## 83 0C121914      June 21, 2017   227729 New York    227729
-    ## 84 3627E08A         2008-04-01   238104 New York    238104
-    ## 85 A94493B3    August 01, 2009    85975 New York     85975
-    ## 86 0682E9DE         2002-10-01    72832 New York     72832
-    ## 87 49931170         2011-03-25 14519856    Tokyo    139614
-    ## 88 A154F63B         2000-07-11   133800 New York    133800
-    ## 89 3690CCED         2014-10-19   226595 New York    226595
-    ## 90 48F5E6D8  February 16, 2020   135435 New York    135435
-    ## 91 515FAD84         2013-06-20    98190 New York     98190
-    ## 92 59794264         2008-01-16   157964 New York    157964
-    ## 93 2038185B         2016-06-24   194662 New York    194662
-    ## 94 65EAC615  February 20, 2004   140191 New York    140191
-    ## 95 6C7509C9 September 16, 2000   212089 New York    212089
-    ## 96 BD969A9D         2007-04-29   167238 New York    167238
-    ## 97 B0CDCE3D       May 28, 2014   145240 New York    145240
-    ## 98 33A7F03E   October 14, 2007   191839 New York    191839
+    ## # A tibble: 98 × 5
+    ##    id       date_opened          total office   total_usd
+    ##    <fct>    <chr>                <dbl> <chr>        <dbl>
+    ##  1 A880C79F 2003-10-19          169305 New York    169305
+    ##  2 BE8222DF October 05, 2018    107460 New York    107460
+    ##  3 19F9E113 2008-07-29        15297152 Tokyo       147088
+    ##  4 A2FE52A3 2005-06-09        14897272 Tokyo       143243
+    ##  5 F6DC2C08 2012-03-31          124568 New York    124568
+    ##  6 D2E55799 2007-06-20        13635752 Tokyo       131113
+    ##  7 53AE87EF December 01, 2017 15375984 Tokyo       147846
+    ##  8 3E97F253 2019-06-03        14515800 Tokyo       139575
+    ##  9 4AE79EA1 2011-05-07        23338536 Tokyo       224409
+    ## 10 2322DFB4 2018-04-07          189524 New York    189524
+    ## # … with 88 more rows
 
 4.  Create a scatter plot of your new uniform data using `date_opened`
     on the x-axis and `total_usd` on the y-axis.
@@ -1765,6 +1505,12 @@ accounts %>%
 ![](readme_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 ## Cross field validation
+
+-   Cross field validation = sanity check
+-   Does this value makes senese based on another values?
+
+![](readme_files/cross_field_validation.jpg)
+<sup><https://www.buzzfeednews.com/article/katienotopoulos/graphs-that-lied-to-us></sup>
 
 ### Validating totals
 
@@ -1869,7 +1615,7 @@ accounts yet, and suspect it could be driving the missingness.
 
 **Packages**
 
--   `visdat`
+-   <code><a href="https://docs.ropensci.org/visdat/">visdat</a></code>
 
 **Steps**
 
@@ -1913,12 +1659,13 @@ accounts_new %>%
 > ## *Question*
 >
 > Take a look at the mean age for each group of `missing_inv`. What’s
-> going on here?<br> <br> ⬜
-> `The data is missing completely at random and there are no drivers behind the missingness.<br> ✅`Since
-> the average age for `TRUE` `missing_inv` is 22 and the average age for
+> going on here?<br> <br> ⬜ The data is missing completely at random
+> and there are no drivers behind the missingness.<br> ✅ Since the
+> average age for `TRUE` `missing_inv` is 22 and the average age for
 > `FALSE` `missing_inv` is 44, it is likely that the `inv_amount`
-> variable is missing mostly in young customers.<br> ⬜
-> `Since the average age for`FALSE``missing_inv`is 22 and the average age for`TRUE``missing_inv`is 44, it is likely that the`inv_amount\`
+> variable is missing mostly in young customers.<br> ⬜ Since the
+> average age for `FALSE` `missing_inv` is 22 and the average age for
+> `TRUE` `missing_inv` is 44, it is likely that the `inv_amount`
 > variable is missing mostly in older customers.<br>
 
 5.  Sort `accounts` by `age`.
@@ -2040,7 +1787,7 @@ assert_all_are_not_na(accounts_clean$cust_id)
 assert_all_are_not_na(accounts_clean$acct_amount_filled)
 ```
 
-# 4. Record Linkage
+# 3. Record Linkage
 
 Record linkage is a powerful technique used to merge multiple datasets
 together, used when values have typos or different spellings. In this
@@ -2048,7 +1795,26 @@ section, you’ll learn how to link records by calculating the similarity
 between strings—you’ll then use your new skills to join two restaurant
 review datasets into one clean master dataset.
 
-## Calculating distance
+**Link or join?**
+
+Similar to joins, record linkage is the act of linking data from
+different sources regarding the same entity. But unlike joins, record
+linkage does not require exact matches between different pairs of data,
+and instead can find close matches using string similarity. This is why
+record linkage is effective when there are no common unique keys between
+the data sources you can rely upon when linking data sources such as a
+unique identifier.
+
+**Example:** Which problems require record linkage and which problems
+can be approached using a standard join.
+
+| Record Linkage                                                                                                                                | Regular joins                                                                                                                     |
+|-----------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Two customer data frames containing names and address, one with a unique identifier per customer, one without.                                | Consolidating two data frames containing details on DataCamp courses, with each DataCamp course having its own unique identifier. |
+| Using an `address` column to join two data frames, with the address in each data frame formatted slightly differently.                        | Two basketball DataFrames with a common unique identifier per game.                                                               |
+| Merging two basketball data frames, with columns `team_A`, `team_B`, and `time` and differently formatted team names between each data frame. |                                                                                                                                   |
+
+## stringdist(): Calculating distance
 
 The Damerau-Levenshtein distance can be used to identify how similar two
 strings are. As a reminder, Damerau-Levenshtein distance is the
@@ -2072,8 +1838,6 @@ strings are. As a reminder, Damerau-Levenshtein distance is the
 > inserting `"s"`.<br> ✅ 2 by substituting `"m"` for `"p"` and
 > inserting `"s"`.<br> ⬜ 3 by deleting `"p"`, adding `"m"`, and adding
 > `"s"`.<br>
-
-## Small distance, small difference
 
 **Packages**
 
@@ -2129,7 +1893,7 @@ stringdist("las angelos", "los angeles", method = "jaccard")
 > distance only uses insertion, deletion, and substitution, so it takes
 > more operations to change a string to another<br>
 
-## Fixing typos with string distance
+## fuzzyjoin(): Fixing typos with string distance
 
 **Data**
 
@@ -2211,26 +1975,9 @@ zagat_mod %>%
     ## 10 cafe'50s                  los angeles  los angeles
     ## # … with 300 more rows
 
-## Link or join?
+## reclin: Linking records with Pair Blocking
 
-Similar to joins, record linkage is the act of linking data from
-different sources regarding the same entity. But unlike joins, record
-linkage does not require exact matches between different pairs of data,
-and instead can find close matches using string similarity. This is why
-record linkage is effective when there are no common unique keys between
-the data sources you can rely upon when linking data sources such as a
-unique identifier.
-
-**Example:** Which problems require record linkage and which problems
-can be approached using a standard join.
-
-| Record Linkage                                                                                                                                | Regular joins                                                                                                                     |
-|-----------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| Two customer data frames containing names and address, one with a unique identifier per customer, one without.                                | Consolidating two data frames containing details on DataCamp courses, with each DataCamp course having its own unique identifier. |
-| Using an `address` column to join two data frames, with the address in each data frame formatted slightly differently.                        | Two basketball DataFrames with a common unique identifier per game.                                                               |
-| Merging two basketball data frames, with columns `team_A`, `team_B`, and `time` and differently formatted team names between each data frame. |                                                                                                                                   |
-
-## Pair blocking
+### Pair Blocking
 
 ------------------------------------------------------------------------
 
@@ -2261,7 +2008,7 @@ use your newly-cleaned `city` column as a blocking variable.
 
 **Packages**
 
--   `reclin`
+-   <code><a href="https://github.com/djvanderlaan/reclin">reclin</a></code>
 
 **Steps**
 
@@ -2376,7 +2123,7 @@ pair_blocking(zagat, fodors, blocking_var = "city")
     ## 40531 310 422
     ## 40532 310 423
 
-## Comparing pairs
+### Comparing pairs
 
 Now that you’ve generated the pairs of restaurants, it’s time to compare
 them. You can easily customize how you perform your comparisons using
@@ -2472,7 +2219,7 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
     ## 40531 310 422 0.6204433 0.6746032 0.7774510
     ## 40532 310 423 0.4233716 0.6746032 0.7908497
 
-## Score then select or select then score?
+### Score then select or select then score?
 
 Record linkage requires a number of steps that can be difficult to keep
 straight. In this section, you’ll solidify your knowledge of the record
@@ -2487,7 +2234,7 @@ Steps of the record linkage process:
 5.  Select pairs that are matches based on their score.
 6.  Link the datasets together.
 
-## Putting it together
+### Putting it together
 
 Above, you’ve cleaned up the `city` column of `zagat` using string
 similarity, as well as generated and compared pairs of restaurants from

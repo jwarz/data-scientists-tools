@@ -32,7 +32,7 @@ Since different data types are treated and act differently, it's important to be
 | Category | Marriage status, color, ... | `factor` |
 | Date | Order dates, date of birth, ... | `date` |
 
-## Checking data types
+### Checking data types
 
 | **Logical checking** - returns `TRUE` / `FALSE` | `assertive` checking - error when `FALSE` | 
 | --- | --- |
@@ -78,6 +78,7 @@ Throughout this section, we'll be working with San Francisco bike share ride dat
 * <code><a href="https://github.com/cran/assertive">assertive</a></code>
   * <code><a href="https://github.com/hadley/assertthat">assertthat</a></code>
 * <code><a href="http://forcats.tidyverse.org">forcats</a></code>
+* <code><a href="http://tibble.tidyverse.org">tibble</a></code> 
 
 **Steps**
 
@@ -89,6 +90,7 @@ At first, we'll take a look at the data types contained in `bike_share_rides` an
 
 ```{r, message=FALSE}
 # Libraries
+library(tibble)
 library(dplyr)
 library(assertive)
 
@@ -217,7 +219,7 @@ In this sections, you'll replace erroneous data with the range limit (1440 minut
 
 **Packages**
 
-* `ggplot2`
+* <code><a href="http://ggplot2.tidyverse.org">ggplot2</a></code>
 
 **Steps**
 
@@ -256,7 +258,7 @@ Something has gone wrong and it looks like you have data with dates from the fut
 
 **Packages**
 
-* `lubridate`
+* <code><a href="http://lubridate.tidyverse.org">lubridate</a></code>
 
 **Steps**
 
@@ -307,6 +309,10 @@ You've been notified that an update has been made to the bike sharing data pipel
 
 When multiple rows of a data frame share the same values for all columns, they're *full duplicates* of each other. Removing duplicates like this is important, since having the same value repeated multiple times can alter summary statistics like the mean and median. Each ride, including its `ride_id` should be unique. 
 
+**Packages**
+
+* <code><a href="http://sfirke.github.io/janitor/articles/janitor.html">janitor</a></code>
+
 **Steps**
 
 1. Find full duplicates
@@ -326,7 +332,7 @@ bike_share_rides_mod |>
 
 **Alternative**
 
-```{r}
+```{r, message=FALSE}
 # Libraries
 library(janitor)
 
@@ -568,7 +574,7 @@ sfo_survey_mod %>%
 ```
 
 
-## Identifying inconsistency
+## Identifying inconsistent categorical data
 
 Different kinds of inconsistencies that can occur within categories, making it look like a variable has more categories than it should:
 
@@ -618,7 +624,8 @@ sfo_survey_mod %>%
 > ⬜ The categories in `cleanliness` have inconsistent white space.<br>
 > ⬜ The categories in `cleanliness` have inconsistent capitalization and white space.<br>
 
-## Correcting inconsistency
+## Correcting inconsistent categorical data
+### Trimming & Case Sensitivity
 
 Now that we've identified that `dest_size` has whitespace inconsistencies and `cleanliness` has capitalization inconsistencies, you'll use the new tools at your disposal to fix the inconsistent values in `sfo_survey` instead of removing the data points entirely, which could add bias to your dataset if more than 5% of the data points need to be dropped.
 
@@ -649,7 +656,7 @@ sfo_survey_mod %>%
   count(cleanliness_lower)
 ```
 
-## Collapsing categories
+### Collapsing categories
 
 One of the tablets that participants filled out the `sfo_survey` on was not properly configured, allowing the response for `dest_region` to be free text instead of a dropdown menu. This resulted in some inconsistencies in the `dest_region` variable that you'll need to correct in this exercise to ensure that the numbers you report to your boss are as accurate as possible.
 
@@ -711,7 +718,8 @@ sfo_survey_mod %>%
   filter(str_detect(phone, fixed("(")) | str_detect(phone, fixed(")")))
 ```
 
-## Replacing and removing
+## Correcting inconsistent text data
+### Replacing and removing
 
 In the last section, you saw that the `phone` column of `sfo_data` is plagued with unnecessary parentheses and hyphens. The customer support team has requested that all phone numbers be in the format `"123 456 7890"`. 
 
@@ -736,7 +744,7 @@ sfo_survey_mod %>%
          phone_clean = str_replace_all(phone_no_parens, "-", " "))
 ```
 
-## Invalid phone numbers
+### Invalid format
 
 The customer support team is grateful for your work so far, but during their first day of calling participants, they ran into some phone numbers that were invalid. In this section, you'll remove any rows with invalid phone numbers so that these faulty numbers don't keep slowing the team down. 
 
@@ -758,11 +766,9 @@ sfo_survey_mod %>%
   filter(str_length(phone_no_parens) == 12)
 ```
 
-# 3. Advanced Data Problems
+## Uniformity
 
 In this section, you’ll dive into more advanced data cleaning problems, such as ensuring that weights are all written in kilograms instead of pounds. You’ll also gain invaluable skills that will help you verify that values have been added correctly and that missing values don’t negatively impact your analyses.
-
-## Uniformity
 
 Different units or formats:
 
@@ -798,9 +804,9 @@ head(accounts)
 > ---
 > Try running `as.Date(accounts$date_opened)` in the console and examine the output. Notice that you end up with a lot of `NAs`. Why is this?<br>
 > <br>
-> ⬜ ``as.Date()` needs to be explicitly told the formats of every single date, including which dates are in which format.<br>
-> ✅ `By default, `as.Date()` can't convert "Month DD, YYYY" formats.<br>
-> ⬜ ``as.Date()` can't convert `character`s to `Date`s.<br>
+> ⬜ `as.Date()` needs to be explicitly told the formats of every single date, including which dates are in which format.<br>
+> ✅ By default, `as.Date()` can't convert "Month DD, YYYY" formats.<br>
+> ⬜ `as.Date()` can't convert `character`s to `Date`s.<br>
 
 **Steps**
 
@@ -866,6 +872,12 @@ accounts %>%
 ```
 
 ## Cross field validation
+
+* Cross field validation = sanity check
+* Does this value makes senese based on another values?
+
+![](readme_files/cross_field_validation.jpg)
+<sup>https://www.buzzfeednews.com/article/katienotopoulos/graphs-that-lied-to-us</sup>
 
 ### Validating totals
 
@@ -934,7 +946,7 @@ You know for a fact that most customers below 25 do not have investment accounts
 
 **Packages**
 
-* `visdat`
+* <code><a href="https://docs.ropensci.org/visdat/">visdat</a></code>
 
 **Steps**
 
@@ -969,9 +981,9 @@ accounts_new %>%
 > ---
 > Take a look at the mean age for each group of `missing_inv`. What's going on here?<br>
 > <br>
-> ⬜ `The data is missing completely at random and there are no drivers behind the missingness.<br>
-> ✅ `Since the average age for `TRUE` `missing_inv` is 22 and the average age for `FALSE` `missing_inv` is 44, it is likely that the `inv_amount` variable is missing mostly in young customers.<br>
-> ⬜ `Since the average age for `FALSE` `missing_inv` is 22 and the average age for `TRUE` `missing_inv` is 44, it is likely that the `inv_amount` variable is missing mostly in older customers.<br>
+> ⬜ The data is missing completely at random and there are no drivers behind the missingness.<br>
+> ✅ Since the average age for `TRUE` `missing_inv` is 22 and the average age for `FALSE` `missing_inv` is 44, it is likely that the `inv_amount` variable is missing mostly in young customers.<br>
+> ⬜ Since the average age for `FALSE` `missing_inv` is 22 and the average age for `TRUE` `missing_inv` is 44, it is likely that the `inv_amount` variable is missing mostly in older customers.<br>
 
 5. Sort `accounts` by `age`.
 6. Visualize missing data by column.
@@ -1047,11 +1059,23 @@ assert_all_are_not_na(accounts_clean$cust_id)
 assert_all_are_not_na(accounts_clean$acct_amount_filled)
 ```
 
-# 4. Record Linkage
+# 3. Record Linkage
 
 Record linkage is a powerful technique used to merge multiple datasets together, used when values have typos or different spellings. In this section, you'll learn how to link records by calculating the similarity between strings—you’ll then use your new skills to join two restaurant review datasets into one clean master dataset.
 
-## Calculating distance
+**Link or join?**
+
+Similar to joins, record linkage is the act of linking data from different sources regarding the same entity. But unlike joins, record linkage does not require exact matches between different pairs of data, and instead can find close matches using string similarity. This is why record linkage is effective when there are no common unique keys between the data sources you can rely upon when linking data sources such as a unique identifier.
+
+**Example:** Which problems require record linkage and which problems can be approached using a standard join.
+
+| Record Linkage | Regular joins |
+| --- | --- |
+| Two customer data frames containing names and address, one with a unique identifier per customer, one without. | Consolidating two data frames containing details on DataCamp courses, with each DataCamp course having its own unique identifier. |
+| Using an `address`  column to join two data frames, with the address in each data frame formatted slightly differently. | Two basketball DataFrames with a common unique identifier per game. |
+| Merging two basketball data frames, with columns `team_A`, `team_B`, and `time`  and differently formatted team names between each data frame. |  |
+
+## stringdist(): Calculating distance
 
 The Damerau-Levenshtein distance can be used to identify how similar two strings are. As a reminder, Damerau-Levenshtein distance is the <ins>minimum number of steps</ins> needed to get from ***String A*** to ***String B***, using these operations: 
 
@@ -1072,8 +1096,6 @@ The Damerau-Levenshtein distance can be used to identify how similar two strings
 > ⬜ 2 by inserting `"m"` and inserting `"s"`.<br>
 > ✅ 2 by substituting `"m"` for `"p"` and inserting `"s"`.<br>
 > ⬜ 3 by deleting `"p"`, adding `"m"`, and adding `"s"`.<br>
-
-## Small distance, small difference
 
 **Packages**
 
@@ -1114,7 +1136,7 @@ stringdist("las angelos", "los angeles", method = "jaccard")
 > ✅ LCS distance only uses insertion and deletion, so it takes more operations to change a string to another.<br>
 > ⬜ LCS distance only uses insertion, deletion, and substitution, so it takes more operations to change a string to another<br>
 
-## Fixing typos with string distance
+## fuzzyjoin(): Fixing typos with string distance
 
 **Data**
 
@@ -1158,19 +1180,8 @@ zagat_mod %>%
   select(name, city, city_actual)
 ```
 
-## Link or join?
-
-Similar to joins, record linkage is the act of linking data from different sources regarding the same entity. But unlike joins, record linkage does not require exact matches between different pairs of data, and instead can find close matches using string similarity. This is why record linkage is effective when there are no common unique keys between the data sources you can rely upon when linking data sources such as a unique identifier.
-
-**Example:** Which problems require record linkage and which problems can be approached using a standard join.
-
-| Record Linkage | Regular joins |
-| --- | --- |
-| Two customer data frames containing names and address, one with a unique identifier per customer, one without. | Consolidating two data frames containing details on DataCamp courses, with each DataCamp course having its own unique identifier. |
-| Using an `address`  column to join two data frames, with the address in each data frame formatted slightly differently. | Two basketball DataFrames with a common unique identifier per game. |
-| Merging two basketball data frames, with columns `team_A`, `team_B`, and `time`  and differently formatted team names between each data frame. |  |
-
-## Pair blocking
+## reclin: Linking records with Pair Blocking
+### Pair Blocking
 
 ----
 
@@ -1194,7 +1205,7 @@ The first step towards this goal is to generate pairs of records so that you can
 
 **Packages**
 
-* `reclin`
+* <code><a href="https://github.com/djvanderlaan/reclin">reclin</a></code>
 
 **Steps**
 
@@ -1218,7 +1229,7 @@ pair_blocking(zagat, fodors)
 pair_blocking(zagat, fodors, blocking_var = "city")
 ```
 
-## Comparing pairs
+### Comparing pairs
 
 Now that you've generated the pairs of restaurants, it's time to compare them. You can easily customize how you perform your comparisons using the `by` and `default_comparator` arguments. There's no right answer as to what each should be set to, so in this exercise, you'll try a couple options out.
 
@@ -1244,7 +1255,7 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
       default_comparator = jaro_winkler())
 ```
 
-## Score then select or select then score?
+### Score then select or select then score?
 
 Record linkage requires a number of steps that can be difficult to keep straight. In this section, you'll solidify your knowledge of the record linkage process so that it's a breeze when you code it yourself!
 
@@ -1258,7 +1269,7 @@ Steps of the record linkage process:
 6. Link the datasets together.
 
 
-## Putting it together
+### Putting it together
 
 Above, you've cleaned up the `city` column of `zagat` using string similarity, as well as generated and compared pairs of restaurants from `zagat` and `fodors`. The end is near - all that's left to do is score and select pairs and link the data together, and you'll be able to begin your analysis in no time! 
 
