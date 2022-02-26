@@ -7,15 +7,6 @@ output: rmarkdown::github_document
 knitr::opts_chunk$set(echo = TRUE, eval = T)
 ```
 
-<style>
-.question {
-   list-style: none;
-   margin-left: 0;
-   padding-left: 1em;
-   text-indent: -1em;
-}
-</style>
-
 # 1. Common Data Problems
 
 In this part, you'll learn how to overcome some of the most common dirty data problems. You'll convert data types, apply range constraints to remove future data points, and remove duplicated data points to avoid double-counting.
@@ -72,15 +63,13 @@ glimpse(bike_share_rides)
 summary(bike_share_rides$user_birth_year)
 ```
 
-<div style="border:3px; border-style:solid; border-color:#2DC6D6; padding: 1em; margin: 1em;">
-<u><strong>Question</strong></u><br>
-The summary statistics of <code>user_birth_year</code> don't seem to offer much useful information about the different birth years in our dataset. Why do you think that is?<br>
-<ul class="question">
-<li>⬜ The <code>user_birth_year</code> column is not of the correct type and should be converted to a character.</li>
-<li>⬜ The <code>user_birth_year</code> column has an infinite set of possible values and should be converted to a factor.</li>
-<li>✅ The <code>user_birth_year</code> column represents groupings of data and should be converted to a factor.</li>
-</ul>
-</div>
+> *Question*
+> ---
+> The summary statistics of <code>user_birth_year</code> don't seem to offer much useful information about the different birth years in our dataset. Why do you think that is?<br>
+> <br>
+> ⬜ The <code>user_birth_year</code> column is not of the correct type and should be converted to a character.<br>
+> ⬜ The <code>user_birth_year</code> column has an infinite set of possible values and should be converted to a factor.<br>
+> ✅ The <code>user_birth_year</code> column represents groupings of data and should be converted to a factor.<br>
 
 3. Add a new column to `bike_share_rides` called `user_birth_year_fct`, which contains `user_birth_year`, converted to a factor.
 4. Assert that the `user_birth_year_fct` is a factor to confirm the conversion.
@@ -134,18 +123,19 @@ bike_share_rides <- bike_share_rides |>
 bike_share_rides %>% glimpse()
 ```
 
-<div style="border:3px; border-style:solid; border-color:#2DC6D6; padding: 1em; margin: 1em;">
-<u><strong>Alternatives</strong></u><br>
-<ul>
-  <li>Instead of removing characters, you can also just extract the digits (including grouping and decimal marks) with a regex <code>stringr::str_extract("[\\d\\.]*")</code></li>
-  <li>Regex Cheatsheets:
-    <ul>
-      <li><a href="https://devhints.io/regexp">devhints.io</a></li>
-      <li><a href="https://github.com/rstudio/cheatsheets/blob/main/strings.pdf"><code>stringr</code> cheatsheet</a></li>
-    </ul>
-  <li>The function <code>readr::parse_number()</code> does everything in one step.</li>
-</ul>
-</div>
+> *Alternatives*
+> ---
+> Take a closer look at your output. Which dest_size values appear to violate membership constraints?<br>
+> <br>
+> <ul>
+> <li>Instead of removing characters, you can also just extract the digits (including grouping and decimal marks) with a regex <code>stringr::str_extract("[\\d\\.]*")</code></li>
+> <li>Regex Cheatsheets:
+>   <ul>
+>     <li><a href="https://devhints.io/regexp">devhints.io</a></li>
+>     <li><a href="https://github.com/rstudio/cheatsheets/blob/main/strings.pdf"><code>stringr</code> cheatsheet</a></li>
+>   </ul>
+> <li>The function <code>readr::parse_number()</code> does everything in one step.</li>
+> </ul>
 
 4. Assert that the `duration_mins` column is `numeric`.
 5. Calculate the mean of `duration_mins`.
@@ -395,15 +385,13 @@ sfo_survey_mod %>%
   count(dest_size)
 ```
 
-<div style="border:3px; border-style:solid; border-color:#2DC6D6; padding: 1em; margin: 1em;">
-<u><strong>Question</strong></u><br>
-Take a closer look at your output. Which dest_size values appear to violate membership constraints?<br>
-<ul class="question">
-  <li>⬜ <code>"huge"</code>, <code>"Small"</code>, <code>"Large&nbsp;"</code>, and <code>"Hub"</code>.</li>
-  <li>✅ <code>"huge"</code>, <code>"&nbsp;Small&nbsp;"</code>, <code>"Large&nbsp;"</code>, and <code>"&nbsp;Hub"</code>.</li>
-  <li>⬜ <code>"Small"</code>, <code>"Medium"</code>, <code>"Large"</code>, and <code>"Hub"</code>.</li>
-</ul>
-</div>
+> *Question*
+> ---
+> Take a closer look at your output. Which dest_size values appear to violate membership constraints?<br>
+> <br>
+> ⬜ <code>"huge"</code>, <code>"Small"</code>, <code>"Large&nbsp;"</code>, and <code>"Hub"</code>.<br>
+> ✅ <code>"huge"</code>, <code>"&nbsp;Small&nbsp;"</code>, <code>"Large&nbsp;"</code>, and <code>"&nbsp;Hub"</code>.<br>
+> ⬜ <code>"Small"</code>, <code>"Medium"</code>, <code>"Large"</code>, and <code>"Hub"</code>.<br>
 
 2. Use the correct type of filtering join on the `sfo_survey` data frame and the `dest_sizes` data frame to get the rows of `sfo_survey` with invalid `dest_size` values.
 3. Get the `id`, `airline`, `destination`, and `dest_size` columns.
