@@ -32,6 +32,130 @@ Since different data types are treated and act differently, it's important to be
 | Category | Marriage status, color, ... | `factor` |
 | Date | Order dates, date of birth, ... | `date` |
 
+The data types `raw` and `complex` will not be discussed in this section. 
+
+----
+
+## Time and Date Classes
+
+There are a variety of different types specific to time data fields in R. 
+
+__Date__
+
+The `as.Date()` format doesn't store any time information. When we use the `as.Date()` method to convert a date stored as a character class to an R date class, it will ignore all values after the date string.
+
+```{r,eval=FALSE}
+help(DateTimeClasses)
+# Convert character data to date (no time) 
+d <- as.Date("2020-01-01 10:15")   
+d
+#> [1] "2020-01-01"
+class(d)
+#> [1] "Date"
+# to see the data in the 'raw' format, i.e., not formatted according to the class type to show us a date we recognize, use the `unclass()` function.
+unclass(d)
+#> [1] 18262
+typeof(d)
+#> [1] "double"
+```
+
+<sup>Created on 2022-02-27 by the [reprex package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Internally, `Date` objects are stored as the number of days since January 1, 1970, using negative numbers for earlier dates. The `as.numeric()` / `unclass()` function can be used to convert a `Date` object to its internal form.
+
+> Data Tip: The `unclass()` method in R allows you to view how a particular R object is stored.
+
+If we have a column containing both date and time we need to use a class that stores both date AND time. Base R offers two closely related classes for date and time: `POSIXct` and `POSIXlt`. To get the current time, the `Sys.time()` can be used, and you can play around a bit with the basic types to get a feel for what R is doing. The `as.POSIXct()` and `as.POSIXlt()` commands are used to convert the time value into the different formats.
+
+__POSIXct__
+
+The `as.POSIXct()` method converts a date-time string into a `POSIXct` class. `as.POSIXct()` stores both a date and time with an associated time zone. The default time zone selected, is the time zone that your computer is set to which is most often your local time zone. If you do not use a timezone specifically, `POSIXct` and `POSIXlt` will reference to your local timezone. However, this is not entirely reliable. It will not display the timezone in the output string. If you do want to avoid ambiguous behaviour, you have to specifiy a time zone.
+
+`POSIXct` stores date and time in seconds with the number of seconds beginning at 1 January 1970. Negative numbers are used to store dates prior to 1970. Thus, the `POSIXct` format stores each date and time a single value in units of seconds. Storing the data this way, optimizes use in data.frames and speeds up computation, processing and conversion to other formats.
+
+```{r,eval=FALSE}
+t <- Sys.time()
+t
+#> [1] "2022-02-27 12:02:23 CET"
+class(t)
+#> [1] "POSIXct" "POSIXt"
+unclass(t)
+#> [1] 1645959743
+typeof(t)
+#> [1] "double"
+
+attr(t, "tzone")
+#> NULL
+attr(t, "tzone") <- "CET"
+unclass(t)
+#> [1] 1645959743
+#> attr(,"tzone")
+#> [1] "CET"
+```
+
+<sup>Created on 2022-02-27 by the [reprex package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+__POSIXlt__
+
+When we convert the data to `POSIXlt`, and view it in R, it still looks similar to the `POSIXct` format. However, `unclass()` shows us that the data are stored differently. The `POSIXlt` class stores the data  separately in a list. The entries have the following meanings:
+
+* seconds
+* minutes
+* hours
+* day of month (1-31)
+* month of the year (0-11)
+* years since 1900
+* day of the week (0-6 where 0 represents Sunday)
+* day of the year (0-365)
+* Daylight savings indicator (positive if it is daylight savings)
+
+```{r,eval=FALSE}
+l <- as.POSIXlt(Sys.time())
+unclass(l)
+#> $sec
+#> [1] 53.80329
+#> 
+#> $min
+#> [1] 8
+#> 
+#> $hour
+#> [1] 12
+#> 
+#> $mday
+#> [1] 27
+#> 
+#> $mon
+#> [1] 1
+#> 
+#> $year
+#> [1] 122
+#> 
+#> $wday
+#> [1] 0
+#> 
+#> $yday
+#> [1] 57
+#> 
+#> $isdst
+#> [1] 0
+#> 
+#> $zone
+#> [1] "CET"
+#> 
+#> $gmtoff
+#> [1] 3600
+#> 
+#> attr(,"tzone")
+#> [1] ""     "CET"  "CEST"
+```
+
+<sup>Created on 2022-02-27 by the [reprex package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Part of the difficulty with time data types is that R prints them out in a way that is different from how it stores them internally. This can make type conversions tricky, and you have to be careful and test your operations to insure that R is doing what you think it is doing.
+
+----
+
+
 ### Checking data types
 
 | **Logical checking** - returns `TRUE` / `FALSE` | `assertive` checking - error when `FALSE` | 
@@ -1293,5 +1417,6 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
   # 3. Link data 
   link() %>%
   # Convert to tibble
-  as_tibble()
+  as_tibble() %>%
+  select(id.x, name.x, city.x, id.y, name.y, city.y)
 ```

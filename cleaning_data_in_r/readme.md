@@ -4,6 +4,7 @@ Joschka Schwarz
 
 -   [1. Common Data Problems](#1-common-data-problems)
     -   [Common data types](#common-data-types)
+    -   [Time and Date Classes](#time-and-date-classes)
     -   [Converting data types](#converting-data-types)
     -   [Trimming strings](#trimming-strings)
     -   [Constraints](#constraints)
@@ -64,6 +65,164 @@ insights from.
 | Binary    | Is married, new customer, yes/no, …   | `logical`   |
 | Category  | Marriage status, color, …             | `factor`    |
 | Date      | Order dates, date of birth, …         | `date`      |
+
+The data types `raw` and `complex` will not be discussed in this
+section.
+
+------------------------------------------------------------------------
+
+## Time and Date Classes
+
+There are a variety of different types specific to time data fields in
+R.
+
+**Date**
+
+The `as.Date()` format doesn’t store any time information. When we use
+the `as.Date()` method to convert a date stored as a character class to
+an R date class, it will ignore all values after the date string.
+
+``` r
+help(DateTimeClasses)
+# Convert character data to date (no time) 
+d <- as.Date("2020-01-01 10:15")   
+d
+#> [1] "2020-01-01"
+class(d)
+#> [1] "Date"
+# to see the data in the 'raw' format, i.e., not formatted according to the class type to show us a date we recognize, use the `unclass()` function.
+unclass(d)
+#> [1] 18262
+typeof(d)
+#> [1] "double"
+```
+
+<sup>Created on 2022-02-27 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Internally, `Date` objects are stored as the number of days since
+January 1, 1970, using negative numbers for earlier dates. The
+`as.numeric()` / `unclass()` function can be used to convert a `Date`
+object to its internal form.
+
+> Data Tip: The `unclass()` method in R allows you to view how a
+> particular R object is stored.
+
+If we have a column containing both date and time we need to use a class
+that stores both date AND time. Base R offers two closely related
+classes for date and time: `POSIXct` and `POSIXlt`. To get the current
+time, the `Sys.time()` can be used, and you can play around a bit with
+the basic types to get a feel for what R is doing. The `as.POSIXct()`
+and `as.POSIXlt()` commands are used to convert the time value into the
+different formats.
+
+**POSIXct**
+
+The `as.POSIXct()` method converts a date-time string into a `POSIXct`
+class. `as.POSIXct()` stores both a date and time with an associated
+time zone. The default time zone selected, is the time zone that your
+computer is set to which is most often your local time zone. If you do
+not use a timezone specifically, `POSIXct` and `POSIXlt` will reference
+to your local timezone. However, this is not entirely reliable. It will
+not display the timezone in the output string. If you do want to avoid
+ambiguous behaviour, you have to specifiy a time zone.
+
+`POSIXct` stores date and time in seconds with the number of seconds
+beginning at 1 January 1970. Negative numbers are used to store dates
+prior to 1970. Thus, the `POSIXct` format stores each date and time a
+single value in units of seconds. Storing the data this way, optimizes
+use in data.frames and speeds up computation, processing and conversion
+to other formats.
+
+``` r
+t <- Sys.time()
+t
+#> [1] "2022-02-27 12:02:23 CET"
+class(t)
+#> [1] "POSIXct" "POSIXt"
+unclass(t)
+#> [1] 1645959743
+typeof(t)
+#> [1] "double"
+
+attr(t, "tzone")
+#> NULL
+attr(t, "tzone") <- "CET"
+unclass(t)
+#> [1] 1645959743
+#> attr(,"tzone")
+#> [1] "CET"
+```
+
+<sup>Created on 2022-02-27 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+**POSIXlt**
+
+When we convert the data to `POSIXlt`, and view it in R, it still looks
+similar to the `POSIXct` format. However, `unclass()` shows us that the
+data are stored differently. The `POSIXlt` class stores the data
+separately in a list. The entries have the following meanings:
+
+-   seconds
+-   minutes
+-   hours
+-   day of month (1-31)
+-   month of the year (0-11)
+-   years since 1900
+-   day of the week (0-6 where 0 represents Sunday)
+-   day of the year (0-365)
+-   Daylight savings indicator (positive if it is daylight savings)
+
+``` r
+l <- as.POSIXlt(Sys.time())
+unclass(l)
+#> $sec
+#> [1] 53.80329
+#> 
+#> $min
+#> [1] 8
+#> 
+#> $hour
+#> [1] 12
+#> 
+#> $mday
+#> [1] 27
+#> 
+#> $mon
+#> [1] 1
+#> 
+#> $year
+#> [1] 122
+#> 
+#> $wday
+#> [1] 0
+#> 
+#> $yday
+#> [1] 57
+#> 
+#> $isdst
+#> [1] 0
+#> 
+#> $zone
+#> [1] "CET"
+#> 
+#> $gmtoff
+#> [1] 3600
+#> 
+#> attr(,"tzone")
+#> [1] ""     "CET"  "CEST"
+```
+
+<sup>Created on 2022-02-27 by the [reprex
+package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Part of the difficulty with time data types is that R prints them out in
+a way that is different from how it stores them internally. This can
+make type conversions tricky, and you have to be careful and test your
+operations to insure that R is doing what you think it is doing.
+
+------------------------------------------------------------------------
 
 ### Checking data types
 
@@ -367,7 +526,7 @@ ggplot(bike_share_rides_sample, aes(duration_min)) +
   geom_histogram(breaks = breaks)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 2.  Replace the values of `duration_min` that are greater than `1440`
     minutes (24 hours) with `1440`. Add this to `bike_share_rides` as a
@@ -1432,7 +1591,7 @@ accounts %>%
   geom_point()
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 2.  Left join `accounts` and `account_offices` by their `id` columns.
 
@@ -1502,7 +1661,7 @@ accounts %>%
     geom_point()
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 ## Cross field validation
 
@@ -1574,12 +1733,13 @@ accounts_mod %>%
   filter(acct_age != theoretical_age)
 ```
 
-    ## # A tibble: 3 × 8
+    ## # A tibble: 4 × 8
     ##   id       date_opened  total fund_A fund_B fund_C acct_age theoretical_age
     ##   <fct>    <date>       <dbl>  <int>  <int>  <int>    <dbl>           <dbl>
     ## 1 11C3C3C0 2017-12-24  180003  84295  31591  64117        3               4
-    ## 2 EA7FF83A 2004-11-02  111526  86856  19406   5264       16              17
-    ## 3 3627E08A 2008-04-01  238104  60475  89011  88618       12              13
+    ## 2 64EF994F 2009-02-26  161141  89269  25939  45933       12              13
+    ## 3 EA7FF83A 2004-11-02  111526  86856  19406   5264       16              17
+    ## 4 3627E08A 2008-04-01  238104  60475  89011  88618       12              13
 
 ## Completeness
 
@@ -1633,7 +1793,7 @@ accounts_new %>%
     vis_miss()
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 2.  Add a logical column to `accounts` called `missing_inv` that
     indicates whether each row is missing the `inv_amount` or not.
@@ -1678,7 +1838,7 @@ accounts_new %>%
   vis_miss()
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
 
 ### Treating missing data
 
@@ -2234,7 +2394,8 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
   # 3. Link data 
   link() %>%
   # Convert to tibble
-  as_tibble()
+  as_tibble() %>%
+  select(id.x, name.x, city.x, id.y, name.y, city.y)
 ```
 
     ## Warning: `group_by_()` was deprecated in dplyr 0.7.0.
@@ -2243,18 +2404,17 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
     ## This warning is displayed once every 8 hours.
     ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 
-    ## # A tibble: 535 × 14
-    ##     id.x name.x  addr.x city.x phone.x type.x class.x  id.y name.y addr.y city.y
-    ##    <int> <chr>   <chr>  <fct>  <fct>   <chr>    <int> <int> <chr>  <chr>  <fct> 
-    ##  1     0 apple … 10801… los a… 310-47… ameri…     534   124 calif… 207 s… los a…
-    ##  2     1 asahi … 2027 … los a… 310-47… noodl…     535   128 chan … 310 n… los a…
-    ##  3     2 baja f… 3345 … los a… 805-49… mexic…     536   121 ca  `… 346 s… los a…
-    ##  4     3 belved… 9882 … los a… 310-78… pacif…     537   131 dive ! 10250… los a…
-    ##  5     4 benita… 1433 … los a… 310-45… fast …     538   149 louis… 4500 … los a…
-    ##  6     5 bernar… 515 s… los a… 213-61… conti…     539   172 trade… 9876 … los a…
-    ##  7     6 bistro… 45 s.… los a… 818-79… calif…     540   118 bistr… 176 n… los a…
-    ##  8     8 bright… 9600 … los a… 310-27… coffe…     542   139 glads… 4 fis… los a…
-    ##  9     9 bristo… 1570 … los a… 310-64… calif…     543   129 clear… 168 w… los a…
-    ## 10    11 cafe'5… 838 l… los a… 310-39… ameri…     545   157 paty's 10001… los a…
-    ## # … with 525 more rows, and 3 more variables: phone.y <chr>, type.y <chr>,
-    ## #   class.y <int>
+    ## # A tibble: 535 × 6
+    ##     id.x name.x                    city.x       id.y name.y            city.y   
+    ##    <int> <chr>                     <fct>       <int> <chr>             <fct>    
+    ##  1     0 apple pan the             los angeles   124 california pizza… los ange…
+    ##  2     1 asahi ramen               los angeles   128 chan dara         los ange…
+    ##  3     2 baja fresh                los angeles   121 ca  ` brea        los ange…
+    ##  4     3 belvedere the             los angeles   131 dive !            los ange…
+    ##  5     4 benita's frites           los angeles   149 louise's trattor… los ange…
+    ##  6     5 bernard's                 los angeles   172 trader vic's      los ange…
+    ##  7     6 bistro 45                 los angeles   118 bistro garden     los ange…
+    ##  8     8 brighton coffee shop      los angeles   139 gladstone's       los ange…
+    ##  9     9 bristol farms market cafe los angeles   129 clearwater cafe   los ange…
+    ## 10    11 cafe'50s                  los angeles   157 paty's            los ange…
+    ## # … with 525 more rows
