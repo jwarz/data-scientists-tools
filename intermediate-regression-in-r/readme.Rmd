@@ -3,8 +3,8 @@ title: "Intermediate Regression in R"
 author: "Joschka Schwarz"
 output: 
   github_document:
-  toc: true
-  toc_depth: 2
+    toc: true
+    toc_depth: 2
 ---
   
 ```{r setup, include=FALSE}

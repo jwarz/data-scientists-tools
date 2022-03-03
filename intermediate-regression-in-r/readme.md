@@ -2,6 +2,81 @@ Intermediate Regression in R
 ================
 Joschka Schwarz
 
+-   [1. Parallel Slopes](#1-parallel-slopes)
+    -   [Parallel slopes linear
+        regression](#parallel-slopes-linear-regression)
+    -   [Fitting a parallel slopes linear
+        regression](#fitting-a-parallel-slopes-linear-regression)
+    -   [Interpreting parallel slopes
+        coefficients](#interpreting-parallel-slopes-coefficients)
+    -   [Visualizing each explanatory
+        variable](#visualizing-each-explanatory-variable)
+    -   [Visualizing parallel slopes](#visualizing-parallel-slopes)
+    -   [Predicting parallel slopes](#predicting-parallel-slopes)
+    -   [Predicting with a parallel slopes
+        model](#predicting-with-a-parallel-slopes-model)
+    -   [Manually calculating
+        predictions](#manually-calculating-predictions)
+    -   [Assessing model performance](#assessing-model-performance)
+    -   [Comparing coefficients of
+        determination](#comparing-coefficients-of-determination)
+    -   [Comparing residual standard
+        error](#comparing-residual-standard-error)
+-   [2. Interactions](#2-interactions)
+    -   [Models for each category](#models-for-each-category)
+    -   [One model per category](#one-model-per-category)
+    -   [Predicting multiple models](#predicting-multiple-models)
+    -   [Visualizing multiple models](#visualizing-multiple-models)
+    -   [Assessing model performance](#assessing-model-performance-1)
+    -   [One model with an interaction](#one-model-with-an-interaction)
+    -   [Specifying an interaction](#specifying-an-interaction)
+    -   [Interactions with understandable
+        coeffs](#interactions-with-understandable-coeffs)
+    -   [Making predictions with
+        interactions](#making-predictions-with-interactions)
+    -   [Predicting with interactions](#predicting-with-interactions)
+    -   [Manually calculating predictions with
+        interactions](#manually-calculating-predictions-with-interactions)
+    -   [Simpson’s Paradox](#simpsons-paradox)
+    -   [Modeling eBay auctions](#modeling-ebay-auctions)
+    -   [Modeling each auction type](#modeling-each-auction-type)
+-   [3. Multiple Linear Regression](#3-multiple-linear-regression)
+    -   [Two numeric explanatory
+        variables](#two-numeric-explanatory-variables)
+    -   [3D visualizations](#3d-visualizations)
+    -   [Modeling 2 numeric explanatory
+        variables](#modeling-2-numeric-explanatory-variables)
+    -   [Including an interaction](#including-an-interaction)
+    -   [More than 2 explanatory
+        variables](#more-than-2-explanatory-variables)
+    -   [Visualizing many variables](#visualizing-many-variables)
+    -   [Different levels of
+        interaction](#different-levels-of-interaction)
+    -   [Predicting again](#predicting-again)
+    -   [How linear regression works](#how-linear-regression-works)
+    -   [The sum of squares](#the-sum-of-squares)
+    -   [Linear regression algorithm](#linear-regression-algorithm)
+-   [4. Multiple Logistic Regression](#4-multiple-logistic-regression)
+    -   [Multiple logistic regression](#multiple-logistic-regression)
+    -   [Visualizing multiple explanatory
+        variables](#visualizing-multiple-explanatory-variables)
+    -   [Logistic regression with 2 explanatory
+        variables](#logistic-regression-with-2-explanatory-variables)
+    -   [Logistic regression
+        prediction](#logistic-regression-prediction)
+    -   [Confusion matrix](#confusion-matrix)
+    -   [The logistic distribution](#the-logistic-distribution)
+    -   [Cumulative distribution
+        function](#cumulative-distribution-function)
+    -   [Inverse cumulative distribution
+        function](#inverse-cumulative-distribution-function)
+    -   [binomial family argument](#binomial-family-argument)
+    -   [Logistic distribution
+        parameters](#logistic-distribution-parameters)
+    -   [How logistic regression works](#how-logistic-regression-works)
+    -   [Likelihood & log-likelihood](#likelihood--log-likelihood)
+    -   [Logistic regression algorithm](#logistic-regression-algorithm)
+
 **Short Description**
 
 Learn to perform linear and logistic regression with multiple
