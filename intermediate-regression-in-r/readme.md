@@ -131,6 +131,8 @@ categorical explanatory variable is sometimes called a “parallel slopes”
 linear regression due to the shape of the predictions – more on that in
 the next exercise.
 
+**Data**
+
 Here, you’ll revisit the Taiwan real estate dataset. Recall the meaning
 of each variable.
 
@@ -140,8 +142,6 @@ of each variable.
 | `n_convenience`         | No. of convenience stores in walking distance.                      |
 | `house_age_years`       | The age of the house, in years, in 3 groups.                        |
 | `price_twd_msq`         | House price per unit area, in New Taiwan dollars per meter squared. |
-
-`taiwan_real_estate` is available.
 
 **Steps**
 
@@ -232,8 +232,6 @@ intercept coefficient for each category.
 In the “parallel slopes” case, where you have a numeric and a
 categorical explanatory variable, what do the coefficients mean?
 
-`taiwan_real_estate` and `mdl_price_vs_both` are available.
-
 > ## *Question*
 >
 > Look at the coefficients of `mdl_price_vs_both`. What is the meaning
@@ -258,11 +256,7 @@ categorical explanatory variable, what do the coefficients mean?
 
 Insightful interpretation! The model has one slope coefficient, and
 three intercept coefficients (one for each possible value of the
-categorical explanatory variable).” \<- “No. House age is given as
-categories – you can’t say anything about one year of house age, only
-what happens in each age group.” \<- “No. House age is a categorical
-variable, so the coefficients are intercept coefficients, not slope
-coefficients.
+categorical explanatory variable).
 
 ## Visualizing each explanatory variable
 
@@ -280,8 +274,6 @@ line.
 
 To visualize the relationship between a categorical explanatory variable
 and the numeric response, you can draw a box plot.
-
-`taiwan_real_estate` is available and `ggplot2` is loaded.
 
 **Steps**
 
@@ -342,9 +334,6 @@ of the box” way to show the predictions. Fortunately, the `moderndive`
 package includes an extra geom, `geom_parallel_slopes()` to make it
 simple.
 
-`taiwan_real_estate` is available; `ggplot2` and `moderndive` are
-loaded.
-
 **Steps**
 
 1.  Using the `taiwan_real_estate` dataset, plot house prices versus the
@@ -391,18 +380,14 @@ column of predictions. To make sure you’ve got the right answer, you can
 add your predictions to the ggplot with the `geom_parallel_slopes()`
 lines.
 
-`taiwan_real_estate` and `mdl_price_vs_both` are available; `dplyr`,
-`tidyr`, and `ggplot2` are loaded.
-
 **Steps**
 
 1.  Make a grid of explanatory data, formed from combinations of the
     following variables.
 
-2.  `n_convenience` should take the numbers zero to ten.
-
-3.  `house_age_years` should take the unique values of the
-    `house_age_years` column of `taiwan_real_estate`.
+    -   `n_convenience` should take the numbers zero to ten.
+    -   `house_age_years` should take the unique values of the
+        `house_age_years` column of `taiwan_real_estate`.
 
 ``` r
 # Load packages
@@ -435,9 +420,9 @@ explanatory_data
     ## 10             3 30 to 45       
     ## # … with 23 more rows
 
-4.  Add a column to the `explanatory_data` named for the response
+2.  Add a column to the `explanatory_data` named for the response
     variable, assigning to `prediction_data`.
-5.  The response column contain predictions made using
+3.  The response column contain predictions made using
     `mdl_price_vs_both` and `explanatory_data`.
 
 ``` r
@@ -488,7 +473,7 @@ prediction_data
     ## 10             3 30 to 45                 9.89
     ## # … with 23 more rows
 
-6.  Update the plot to add a point layer of predictions. Use the
+4.  Update the plot to add a point layer of predictions. Use the
     `prediction_data`, set the point size to 5, and the point shape to
     15.
 
@@ -530,9 +515,6 @@ parallel slopes case is that the intercept is different for each
 category of the categorical explanatory variable. That means you need to
 consider the case when each each category occurs separately.
 
-`taiwan_real_estate`, `mdl_price_vs_both`, and `explanatory_data` are
-available; `dplyr` is loaded.
-
 **Steps**
 
 1.  Get the coefficients from `mdl_price_vs_both`, assigning to
@@ -558,13 +540,12 @@ intercept_30_45 <- coeffs[4]
 
 3.  Add columns to `explanatory_data`.
 
-4.  To choose the `intercept`, in the case when `house_age_years` is
-    `"0 to 15"`, choose `intercept_0_15`. In the case when
-    `house_age_years` is `"15 to 30"`, choose `intercept_15_30`. Do
-    likewise for `"30 to 45"`.
-
-5.  Manually calculate the predictions as the intercept plus the slope
-    times `n_convenience`.
+    -   To choose the `intercept`, in the case when `house_age_years` is
+        `"0 to 15"`, choose `intercept_0_15`. In the case when
+        `house_age_years` is `"15 to 30"`, choose `intercept_15_30`. Do
+        likewise for `"30 to 45"`.
+    -   Manually calculate the predictions as the intercept plus the
+        slope times `n_convenience`.
 
 ``` r
 # From previous step
@@ -628,9 +609,6 @@ a single explanatory variable.
 Here you’ll compare the coefficient of determination for the three
 Taiwan house price models, to see which gives the best result.
 
-`mdl_price_vs_conv`, `mdl_price_vs_age`, and `mdl_price_vs_both` are
-available; `dplyr` and `broom` are loaded.
-
 **Steps**
 
 1.  Get the unadjusted and adjusted coefficients of determination for
@@ -688,10 +666,7 @@ mdl_price_vs_both %>%
 
 Magnificent model metric comparing! When both explanatory variables are
 included in the model, the adjusted coefficient of determination is
-higher, resulting in a better fit.” \<- “No. The adjusted coefficient of
-determination values for the models are different, so one gives a closer
-fit than the other.” \<- “No. Adjusted coefficient of determination does
-measure the goodness of fit.
+higher, resulting in a better fit.
 
 ## Comparing residual standard error
 
@@ -705,9 +680,6 @@ error (RSE), which measures the typical size of the residuals.
 In the last exercise you saw how including both explanatory variables
 into the model increased the coefficient of determination. How do you
 think using both explanatory variables will change the RSE?
-
-`mdl_price_vs_conv`, `mdl_price_vs_age`, and `mdl_price_vs_both` are
-available; `dplyr` and `broom` are loaded.
 
 **Steps**
 
@@ -753,10 +725,7 @@ mdl_price_vs_both %>%
 
 Resplendent use of RSE! By including both explanatory variables in the
 model, a lower RSE was achieved, indicating a smaller difference between
-the predicted responses and the actual responses.” \<- “No. The RSE
-values for the models are different, so one gives more accurate
-predictions than the other.” \<- “No. RSE does measure the accuracy of
-predictions.
+the predicted responses and the actual responses.
 
 # 2. Interactions
 
@@ -780,8 +749,6 @@ The model you ran on the whole dataset fits some parts of the data
 better than others. It’s worth taking a look at what happens when you
 run a linear model on different parts of the dataset separately, to see
 if each model agrees or disagrees with the others.
-
-`taiwan_real_estate` is available; `dplyr` is loaded.
 
 **Steps**
 
@@ -878,9 +845,6 @@ the same as the flow for making predictions on the whole model, though
 remember that you only have a single explanatory variable in these
 models (so `expand_grid()` isn’t needed.)
 
-The models `mdl_0_to_15`, `mdl_15_to_30` and `mdl_30_to_45` are
-available; `dplyr` is loaded.
-
 **Steps**
 
 1.  Create a tibble of explanatory data, setting `n_convenience` to a
@@ -937,10 +901,6 @@ the dataset into groups and draws a line for each group (like the
 `color` aesthetic), you get multiple trend lines. This is the same as
 running a model on each group separately, so we get a chance to test our
 predictions against ggplot’s.
-
-`taiwan_real_estate`, `prediction_data_0_to_15`,
-`prediction_data_15_to_30`, and `prediction_data_30_to_45` are
-available; `ggplot2` is loaded.
 
 **Steps**
 
@@ -1002,10 +962,6 @@ To test which approach is best – the whole dataset model or the models
 for each house age category – you need to calculate some metrics.
 Here’s, you’ll compare the coefficient of determination and the residual
 standard error for each model.
-
-Four models of price versus no. of convenience stores (`mdl_all_ages`,
-`mdl_0_to_15`, `mdl_15_to_30`, and `mdl_30_to_45`) are available;
-`dplyr` and `broom` are loaded.
 
 **Steps**
 
@@ -1116,8 +1072,6 @@ between explanatory variables. R’s formula syntax is flexible, and gives
 you a couple of options, depending on whether you prefer concise code
 that is quick to type and to read, or explicit code that describes what
 you are doing in detail.
-
-`taiwan_real_estate` is available.
 
 **Steps**
 
@@ -1261,10 +1215,7 @@ coefficients(mdl_30_to_45)
 Insightful intercept introspection! Sometimes fiddling about with how
 the model formula is specified makes it easier to interpret the
 coefficients. In this version, you can see how each category has its own
-intercept and slope (just like the 3 separate models had).” \<- “No. The
-15 to 30 year age has the lowest intercept, not the lowest slope.” \<-
-“No. `0.83` is the slope coeffcient for the 0 to 15 year age group, not
-the intercept.
+intercept and slope (just like the 3 separate models had).
 
 ## Making predictions with interactions
 
@@ -1283,18 +1234,14 @@ interactions without any extra prompting from you. The only thing you
 need to remember is the trick for getting combinations of explanatory
 variables.
 
-`mdl_price_vs_both_inter` is available; `dplyr` and `ggplot2` are
-loaded.
-
 **Steps**
 
 1.  Make a grid of explanatory data, formed from combinations of the
     following variables.
 
-2.  `n_convenience` should take the numbers zero to ten.
-
-3.  `house_age_years` should take the unique values of the
-    `house_age_years` column of `taiwan_real_estate`.
+    -   `n_convenience` should take the numbers zero to ten.
+    -   `house_age_years` should take the unique values of the
+        `house_age_years` column of `taiwan_real_estate`.
 
 ``` r
 # Make a grid of explanatory data
@@ -1324,9 +1271,9 @@ explanatory_data
     ## 10             3 30 to 45       
     ## # … with 23 more rows
 
-4.  Add a column to the `explanatory_data`, assigning to
+2.  Add a column to the `explanatory_data`, assigning to
     `prediction_data`.
-5.  The column should be named after the response variable, and contain
+3.  The column should be named after the response variable, and contain
     predictions made using `mdl_price_vs_both_inter` and
     `explanatory_data`.
 
@@ -1364,12 +1311,12 @@ prediction_data
     ## 10             3 30 to 45                10.1 
     ## # … with 23 more rows
 
-6.  Using `taiwan_real_estate`, plot `price_twd_msq` versus
+4.  Using `taiwan_real_estate`, plot `price_twd_msq` versus
     `n_convenience`, colored by `house_age_years`.
-7.  Add a point layer.
-8.  Add smooth trend lines using linear regression, no standard error
+5.  Add a point layer.
+6.  Add smooth trend lines using linear regression, no standard error
     ribbon.
-9.  Add another point layer using `prediction_data`, with `size` `5` and
+7.  Add another point layer using `prediction_data`, with `size` `5` and
     `shape` `15`.
 
 ``` r
@@ -1413,9 +1360,6 @@ lines to calculate for, and in each one, the prediction is an intercept
 plus a slope times the numeric explanatory value. The tricky part is
 getting the right intercept and the right slope for each case.
 
-`mdl_price_vs_both_inter` and `explanatory_data` are available; `dplyr`
-and `tidyr` are available.
-
 **Steps**
 
 1.  Get the coefficients from `mdl_price_vs_both_inter`, assigning to
@@ -1451,12 +1395,11 @@ slope_30_45 <- coeffs[6]
 4.  Add a `price_twd_msq` column to `explanatory_data` containing the
     predictions.
 
-5.  In the case when `house_age_years` is `"0 to 15"`, choose the
-    appropriate intercept plus the appropriate slope times the number of
-    nearby convenience stores.
-
-6.  Do likewise for the cases where the house age is `"15 to 30"` and
-    `"30 to 45"`.
+    -   In the case when `house_age_years` is `"0 to 15"`, choose the
+        appropriate intercept plus the appropriate slope times the
+        number of nearby convenience stores.
+    -   Do likewise for the cases where the house age is `"15 to 30"`
+        and `"30 to 45"`.
 
 ``` r
 # From previous step
@@ -1526,8 +1469,6 @@ auctions</a> of Palm Pilot M515 PDA models.
 | `openbid`      | The opening bid, USD           |
 | `auction_type` | How long did the auction last? |
 
-`auctions` is available; `dplyr` and `ggplot2` are loaded.
-
 **Steps**
 
 1.  Look at the structure of the `auctions` dataset and familiarize
@@ -1594,8 +1535,6 @@ You just saw that the opening bid price appeared not to affect the final
 sale price of Palm Pilots in the eBay auctions. Now let’s look at what
 happens when you model the three auction types (3 day, 5 day, and 7 day)
 separately.
-
-`auctions` is available; `dplyr` and `ggplot2` are loaded.
 
 **Steps**
 
@@ -1688,9 +1627,6 @@ perspective problems usually make it difficult to interpret. There are
 some “flat” alternatives that provide easier interpretation, though they
 require a little thinking about to make.
 
-`taiwan_real_estate` is available; `magrittr`, `plot3D` and `ggplot2`
-are loaded.
-
 **Steps**
 
 1.  With the `taiwan_real_estate` dataset, draw a 3D scatter plot of the
@@ -1759,9 +1695,6 @@ predictions against.
 Here you’ll model and predict the house prices against the number of
 nearby convenience stores and the square-root of the distance to the
 nearest MRT station.
-
-`taiwan_real_estate` is available; `dplyr`, `tidyr` and `ggplot2` are
-loaded.
 
 **Steps**
 
@@ -1876,9 +1809,6 @@ interaction.
 Here you’ll run and predict the same model as in the previous exercise,
 but this time including an interaction between the explanatory
 variables.
-
-`taiwan_real_estate` is available; `dplyr`, `tidyr` and `ggplot2` are
-loaded.
 
 **Steps**
 
@@ -2004,8 +1934,6 @@ Here you’ll push the limits of the scatter plot by showing the house
 price, the distance to the MRT station, the number of nearby convenience
 stores, and the house age, all together in one plot.
 
-`taiwan_real_estate` is available; `ggplot2` is loaded.
-
 **Steps**
 
 1.  Using the `taiwan_real_estate` dataset, draw a scatter plot of
@@ -2049,8 +1977,6 @@ interaction between all three explanatory variables.
 
 As the number of explanatory variables increases further, the number of
 interaction possibilities rapidly increases.
-
-`taiwan_real_estate` is available.
 
 **Steps**
 
@@ -2196,13 +2122,11 @@ three models from the previous exercise.
 1.  Make a grid of explanatory data, formed from combinations of the
     following variables.
 
-2.  `dist_to_mrt_m` should take a sequence from zero to eighty in steps
-    of ten, all squared (0, 100, 400, …, 6400).
-
-3.  `n_convenience` should take the numbers zero to ten.
-
-4.  `house_age_years` should take the unique values of the
-    `house_age_years` column of `taiwan_real_estate`.
+    -   `dist_to_mrt_m` should take a sequence from zero to eighty in
+        steps of ten, all squared (0, 100, 400, …, 6400).
+    -   `n_convenience` should take the numbers zero to ten.
+    -   `house_age_years` should take the unique values of the
+        `house_age_years` column of `taiwan_real_estate`.
 
 ``` r
 # Make a grid of explanatory data
@@ -2234,9 +2158,9 @@ explanatory_data
     ## 10             0             3 30 to 45       
     ## # … with 287 more rows
 
-5.  Add a column to the `explanatory_data`, assigning to
+2.  Add a column to the `explanatory_data`, assigning to
     `prediction_data`.
-6.  The column should be named after the response variable, and contain
+3.  The column should be named after the response variable, and contain
     predictions made using `mdl_price_vs_all_3_way_inter` and
     `explanatory_data`.
 
@@ -2273,9 +2197,9 @@ prediction_data
     ## 10             0             3 30 to 45                 13.4
     ## # … with 287 more rows
 
-7.  Extend the plot to include predictions as points from
+4.  Extend the plot to include predictions as points from
     `prediction_data`, with size 3 and shape 15.
-8.  *Look at the plot. What do the prediction points tell you?*
+5.  *Look at the plot. What do the prediction points tell you?*
 
 ``` r
 # From previous step
@@ -2325,19 +2249,21 @@ slope coefficients. In the plot, the solid black line has the intercept
 and slope you specified. The dotted blue line has the intercept and
 slope calculated by a linear regression on the dataset.
 
-How does linear regression try to optimize the sum of squares metric?
-
 > ## *Question*
 >
-> ???<br> <br> ⬜ Linear regression makes the sum of the squares of the
-> differences between the actual responses and the predicted responses
-> zero.<br> ⬜ Linear regression makes the sum of the squares of the
-> differences between the actual responses and the predicted responses
-> infinite.<br> ⬜ Linear regression maximizes the sum of the squares of
+> How does linear regression try to optimize the sum of squares
+> metric?<br> <br> ⬜ Linear regression makes the sum of the squares of
 > the differences between the actual responses and the predicted
-> responses.<br> ⬜ Linear regression minimizes the sum of the squares
+> responses zero.<br> ⬜ Linear regression makes the sum of the squares
 > of the differences between the actual responses and the predicted
-> responses.<br>
+> responses infinite.<br> ⬜ Linear regression maximizes the sum of the
+> squares of the differences between the actual responses and the
+> predicted responses.<br> ✅ Linear regression minimizes the sum of the
+> squares of the differences between the actual responses and the
+> predicted responses.<br>
+
+Magic minimization! Sum of squares is a measure of how far the predited
+responses are from the actual responses, so a smaller number is better.
 
 ## Linear regression algorithm
 
@@ -2398,17 +2324,13 @@ sum(y_diff ^ 2)
 
 6.  Complete the function body.
 
-7.  Get the intercept from the first element of `coeffs`.
-
-8.  Get the slope from the second element of `coeffs`.
-
-9.  Calculate the predicted y-values as the intercept plus the slope
-    times the actual x-values.
-
-10. Calculate the differences between actual and predicted y-values.
-
-11. Calculate the sum of squares. Get the sum of the differences in
-    y-values, squaring each value.
+    -   Get the intercept from the first element of `coeffs`.
+    -   Get the slope from the second element of `coeffs`.
+    -   Calculate the predicted y-values as the intercept plus the slope
+        times the actual x-values.
+    -   Calculate the differences between actual and predicted y-values.
+    -   Calculate the sum of squares. Get the sum of the differences in
+        y-values, squaring each value.
 
 ``` r
 calc_sum_of_squares <- function(coeffs) {
@@ -2429,14 +2351,12 @@ calc_sum_of_squares <- function(coeffs) {
 }
 ```
 
-12. Optimize the sum of squares metric.
+7.  Optimize the sum of squares metric.
 
-13. Call an optimization function.
-
-14. Initially guess that the intercept is zero and the slope is zero by
-    passing a named vector of parameters.
-
-15. Use `calc_sum_of_squares` as the optimization function.
+    -   Call an optimization function.
+    -   Initially guess that the intercept is zero and the slope is zero
+        by passing a named vector of parameters.
+    -   Use `calc_sum_of_squares` as the optimization function.
 
 ``` r
 # From previous step
@@ -2525,8 +2445,6 @@ or close to one. That means that a 2-color gradient split at 0.5 is
 really useful: responses above 0.5 are one color, and responses below
 0.5 are another color.
 
-The bank churn dataset is available as `churn`; `ggplot2` is loaded.
-
 **Steps**
 
 1.  Using the `churn` dataset, plot the recency of purchase,
@@ -2574,8 +2492,6 @@ binomial error family.
 Here you’ll fit a model of churn status with both of the explanatory
 variables from the dataset: the length of customer relationship and the
 recency of purchase.
-
-`churn` is available.
 
 **Steps**
 
@@ -2629,18 +2545,14 @@ As with linear regression, the joy of logistic regression is that you
 can make predictions. Let’s step through the prediction flow one more
 time!
 
-`churn` and `mdl_churn_vs_both_inter` are available; `dplyr`, `tidyr`
-and `ggplot2` are loaded.
-
 **Steps**
 
 1.  Create a grid of explanatory variables.
 
-2.  Set `time_since_first_purchase` to a sequence from minus two to four
-    in steps of `0.1`.
-
-3.  Set `time_since_last_purchase` to a sequence from minus one to six
-    in steps of `0.1`.
+    -   Set `time_since_first_purchase` to a sequence from minus two to
+        four in steps of `0.1`.
+    -   Set `time_since_last_purchase` to a sequence from minus one to
+        six in steps of `0.1`.
 
 ``` r
 # Make a grid of explanatory data
@@ -2670,7 +2582,7 @@ explanatory_data
     ## 10                        -2                     -0.1
     ## # … with 4,321 more rows
 
-4.  Add a column to `explanatory_data` named `has_churned` containing
+2.  Add a column to `explanatory_data` named `has_churned` containing
     predictions using `mdl_churn_vs_both_inter` and `explanatory_data`
     with type `"response"`.
 
@@ -2709,7 +2621,7 @@ prediction_data
     ## 10                        -2                     -0.1       0.751
     ## # … with 4,321 more rows
 
-5.  Extend the plot by adding points from `prediction_data` with size 3
+3.  Extend the plot by adding points from `prediction_data` with size 3
     and shape 15.
 
 ``` r
@@ -2754,9 +2666,6 @@ cases where the customer didn’t churn did the model correctly predict?”.
 These can be found by generating a confusion matrix and calculating
 summary metrics on it. A mosaic plot is the natural way to visualize the
 results.
-
-`churn` and `mdl_churn_vs_both_inter` are available; `dplyr` and
-`yardstick` are loaded.
 
 **Steps**
 
@@ -2863,23 +2772,19 @@ curve*. An important property of this function is that it takes an input
 that can be any number from minus infinity to infinity, and returns a
 value between zero and one.
 
-`ggplot2` is loaded.
-
 **Steps**
 
 1.  Create a tibble containing three columns.
 
-2.  `x` values as a sequence from minus ten to ten in steps of `0.1`.
-
-3.  `logistic_x` made from `x` transformed with the logistic
-    distribution CDF.
-
-4.  `logistic_x_man` made from `x` transformed with a logistic function
-    calculated from the equation \\(cdf(x) = \\frac{1}{(1 +
-    exp(-x))}\\).
-
-5.  Check that both logistic transformations (`logistic_x` and
-    `logistic_x_man`) have the same values with `all.equal()`.
+    -   `x` values as a sequence from minus ten to ten in steps of
+        `0.1`.
+    -   `logistic_x` made from `x` transformed with the logistic
+        distribution CDF.
+    -   logistic_x\_man`made from`x\` transformed with a logistic
+        function calculated from the equation
+        <img src="https://render.githubusercontent.com/render/math?math={cdf(x)=\frac{1}{(1%2Bexp(-x))}}">.
+    -   Check that both logistic transformations (`logistic_x` and
+        `logistic_x_man`) have the same values with `all.equal()`.
 
 ``` r
 logistic_distn_cdf <- tibble(
@@ -2900,7 +2805,7 @@ all.equal(
 
     ## [1] TRUE
 
-6.  Using the `logistic_distn_cdf` dataset, plot `logistic_x` versus `x`
+2.  Using the `logistic_distn_cdf` dataset, plot `logistic_x` versus `x`
     as a line plot.
 
 ``` r
@@ -2938,23 +2843,18 @@ three terms mean exactly the same thing.)
 The logit function takes values between zero and one, and returns values
 between minus infinity and infinity.
 
-`dplyr` and `ggplot2` are loaded.
-
 **Steps**
 
 1.  Create a tibble containing three columns.
 
-2.  `x` values as a sequence from minus `0.001` to `0.999` in steps of
-    `0.001`.
-
-3.  `logit_p` made from `p` transformed with the logistic distribution
-    inverse CDF.
-
-4.  `logit_p_man` made from `p` transformed with the equation
-    \\(log(\\frac{p}{(1 - p)})\\).
-
-5.  Check that both logit transformations (`logit_p` and `logit_p_man`)
-    have the same values with `all.equal()`.
+    -   `x` values as a sequence from minus `0.001` to `0.999` in steps
+        of `0.001`.
+    -   `logit_p` made from `p` transformed with the logistic
+        distribution inverse CDF.
+    -   `logit_p_man` made from `p` transformed with the equation
+        <img src="https://render.githubusercontent.com/render/math?math={log(\frac{p}{1 - p})}">.
+    -   Check that both logit transformations (`logit_p` and
+        `logit_p_man`) have the same values with `all.equal()`.
 
 ``` r
 logistic_distn_inv_cdf <- tibble(
@@ -2975,7 +2875,7 @@ all.equal(
 
     ## [1] TRUE
 
-6.  Using the `logistic_distn_inv_cdf` dataset, plot `logit_p` versus
+2.  Using the `logistic_distn_inv_cdf` dataset, plot `logit_p` versus
     `p` as a line plot.
 
 ``` r
@@ -2994,7 +2894,9 @@ ggplot(logistic_distn_inv_cdf, aes(p, logit_p)) +
 
 ![](readme_files/figure-gfm/unnamed-chunk-62-1.png)<!-- -->
 
-NA
+Incredible inversing! The inverse CDF is the “opposite” transformation
+to the CDF. If you flip the x and y axes on this plot, you get the same
+plot you saw in the previous exercise.
 
 ## binomial family argument
 
@@ -3010,9 +2912,6 @@ calculations in the regression. The two most interesting functions are
 `linkinv` and `linkfun`, which are used for transforming variables from
 the whole number line (minus infinity to infinity) to probabilities
 (zero to one) and back again.
-
-A vector of values, `x`, and a vector of probabilities, `p`, are
-available.
 
 **Steps**
 
@@ -3086,19 +2985,22 @@ parameters that affect the CDF curve, the logistic distribution has
 *location* and *scale* parameters. Here, you’ll visualize how changing
 those parameters changes the CDF curve.
 
-How do changes to the parameters change the CDF curve?
-
 > ## *Question*
 >
-> ???<br> <br> ⬜ As `location` increases, the logistic CDF curve moves
-> rightwards. As `scale` increases, the steepness of the slope
-> increases.<br> ⬜ As `location` increases, the logistic CDF curve
-> moves upwards. As `scale` increases, the steepness of the slope
-> increases.<br> ⬜ As `location` increases, the logistic CDF curve
-> moves rightwards. As `scale` increases, the steepness of the slope
-> decreases.<br> ⬜ As `location` increases, the logistic CDF curve
-> moves upwards. As `scale` increases, the steepness of the slope
-> decreases.<br>
+> How do changes to the parameters change the CDF curve?<br> <br> ⬜ As
+> `location` increases, the logistic CDF curve moves rightwards. As
+> `scale` increases, the steepness of the slope increases.<br> ⬜ As
+> `location` increases, the logistic CDF curve moves upwards. As `scale`
+> increases, the steepness of the slope increases.<br> ✅ As `location`
+> increases, the logistic CDF curve moves rightwards. As `scale`
+> increases, the steepness of the slope decreases.<br> ⬜ As `location`
+> increases, the logistic CDF curve moves upwards. As `scale` increases,
+> the steepness of the slope decreases.<br>
+
+Perfect parameter play! The logistic distribution consists of a whole
+family of curves specified by the location and scale parameters. This
+allows logistic model prediction curves to have different positions or
+steepnesses.
 
 ## How logistic regression works
 
@@ -3125,17 +3027,19 @@ specify as `plogis(intercept + slope * time_since_last_purchase)`.
 Change the intercept and slope coefficients and watch how the likelihood
 and log-likelihood values change.
 
-As you get closer to the best fit line, what statement is true about
-likelihood and log-likelihood?
-
 > ## *Question*
 >
-> ???<br> <br> ⬜ Both likelihood and log-likelihood increase to a
-> maximum value.<br> ⬜ Both likelihood and log-likelihood decrease to a
-> minimum value.<br> ⬜ Likelihood increases to a maximum value;
-> log-likelihood decreases to a minimum value.<br> ⬜ Likelihood
-> decreases to a minimum value; log-likelihood increases to a maximum
-> value.<br>
+> As you get closer to the best fit line, what statement is true about
+> likelihood and log-likelihood?<br> <br> ✅ Both likelihood and
+> log-likelihood increase to a maximum value.<br> ⬜ Both likelihood and
+> log-likelihood decrease to a minimum value.<br> ⬜ Likelihood
+> increases to a maximum value; log-likelihood decreases to a minimum
+> value.<br> ⬜ Likelihood decreases to a minimum value; log-likelihood
+> increases to a maximum value.<br>
+
+It seems likely that you know what you are doing! Logistic regression
+chooses the prediction line that gives you the maximum likelihood value.
+It also gives maximum log-likelihood.
 
 ## Logistic regression algorithm
 
@@ -3154,7 +3058,8 @@ want to maximize log-likelihood, but `optim()` defaults to finding
 minimum values, it is easier to calculate the *negative* log-likelihood.
 
 The log-likelihood value for each observation is
-*l**o**g*(*y*<sub>*p**r**e**d*</sub>) \* *y*<sub>*a**c**t**u**a**l*</sub> + *l**o**g*(1−*y*<sub>*p**r**e**d*</sub>) \* (1−*y*<sub>*a**c**t**u**a**l*</sub>)
+
+<img src="https://render.githubusercontent.com/render/math?math={log(y_{pred}) * y_{actual} %2B log(1 - y_{pred}) * (1 - y_{actual})}">
 
 The metric to calculate is minus the sum of these log-likelihood
 contributions.
@@ -3196,19 +3101,16 @@ log_likelihoods <- log(y_pred) * y_actual + log(1 - y_pred) * (1 - y_actual)
 
 6.  Complete the function body.
 
-7.  Get the intercept from the first element of `coeffs`.
-
-8.  Get the slope from the second element of `coeffs`.
-
-9.  Calculate the predicted y-values as the intercept plus the slope
-    times the actual x-values, transformed with the logistic
-    distribution CDF.
-
-10. Calculate the log-likelihood for each term as the log of the
-    predicted y-values times the actual y-values, plus the log of one
-    minus the predicted y-values times one minus the actual y-values.
-
-11. Calculate minus the sum of the log-likelihoods for each term.
+    -   Get the intercept from the first element of `coeffs`.
+    -   Get the slope from the second element of `coeffs`.
+    -   Calculate the predicted y-values as the intercept plus the slope
+        times the actual x-values, transformed with the logistic
+        distribution CDF.
+    -   Calculate the log-likelihood for each term as the log of the
+        predicted y-values times the actual y-values, plus the log of
+        one minus the predicted y-values times one minus the actual
+        y-values.
+    -   Calculate minus the sum of the log-likelihoods for each term.
 
 ``` r
 calc_neg_log_likelihood <- function(coeffs) {
@@ -3229,13 +3131,11 @@ calc_neg_log_likelihood <- function(coeffs) {
 }
 ```
 
-12. Optimize the sum of squares metric.
+7.  Optimize the sum of squares metric.
 
-13. Call an optimization function.
-
-14. Initially guess that the intercept is zero and the slope is one.
-
-15. Use `calc_neg_log_likelihood` as the optimization function.
+    -   Call an optimization function.
+    -   Initially guess that the intercept is zero and the slope is one.
+    -   Use `calc_neg_log_likelihood` as the optimization function.
 
 ``` r
 # From previous step
