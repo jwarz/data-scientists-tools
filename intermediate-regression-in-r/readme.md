@@ -2782,7 +2782,7 @@ value between zero and one.
         distribution CDF.
     -   logistic_x\_man`made from`x\` transformed with a logistic
         function calculated from the equation
-        <img src="https://render.githubusercontent.com/render/math?math={cdf(x)=\frac{1}{(1%2Bexp(-x))}}">.
+        <img src="https://render.githubusercontent.com/render/math?math={\color{red}cdf(x)=\frac{1}{(1%2Bexp(-x))}}">.
     -   Check that both logistic transformations (`logistic_x` and
         `logistic_x_man`) have the same values with `all.equal()`.
 
@@ -2852,7 +2852,7 @@ between minus infinity and infinity.
     -   `logit_p` made from `p` transformed with the logistic
         distribution inverse CDF.
     -   `logit_p_man` made from `p` transformed with the equation
-        <img src="https://render.githubusercontent.com/render/math?math={log(\frac{p}{1 - p})}">.
+        <img src="https://render.githubusercontent.com/render/math?math={\color{red}log(\frac{p}{1 - p})}">.
     -   Check that both logit transformations (`logit_p` and
         `logit_p_man`) have the same values with `all.equal()`.
 
@@ -3059,7 +3059,7 @@ minimum values, it is easier to calculate the *negative* log-likelihood.
 
 The log-likelihood value for each observation is
 
-<img src="https://render.githubusercontent.com/render/math?math={log(y_{pred}) * y_{actual} %2B log(1 - y_{pred}) * (1 - y_{actual})}">
+<img src="https://render.githubusercontent.com/render/math?math={\color{red}log(y_{pred}) * y_{actual} %2B log(1 - y_{pred}) * (1 - y_{actual})}">
 
 The metric to calculate is minus the sum of these log-likelihood
 contributions.
