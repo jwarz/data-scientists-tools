@@ -4,42 +4,54 @@ Joschka Schwarz
 
 -   [1. Data cleaning and summarizing with
     dplyr](#1-data-cleaning-and-summarizing-with-dplyr)
+    -   [The United Nations Voting
+        Dataset](#the-united-nations-voting-dataset)
     -   [Filtering rows](#filtering-rows)
     -   [Adding a year column](#adding-a-year-column)
     -   [Adding a country column](#adding-a-country-column)
+    -   [Grouping and summarizing](#grouping-and-summarizing)
     -   [Summarizing the full dataset](#summarizing-the-full-dataset)
     -   [Summarizing by year](#summarizing-by-year)
     -   [Summarizing by country](#summarizing-by-country)
+    -   [Sorting and filtering summarized
+        data](#sorting-and-filtering-summarized-data)
     -   [Sorting by percentage of “yes”
         votes](#sorting-by-percentage-of-yes-votes)
     -   [Filtering summarized output](#filtering-summarized-output)
 -   [2. Data visualization with
     ggplot2](#2-data-visualization-with-ggplot2)
+    -   [Visualization with ggplot2](#visualization-with-ggplot2)
     -   [Choosing an aesthetic](#choosing-an-aesthetic)
     -   [Plotting a line over time](#plotting-a-line-over-time)
     -   [Other ggplot2 layers](#other-ggplot2-layers)
+    -   [Visualizing by country](#visualizing-by-country)
     -   [Summarizing by year and
         country](#summarizing-by-year-and-country)
     -   [Plotting just the UK over
         time](#plotting-just-the-uk-over-time)
     -   [Plotting multiple countries](#plotting-multiple-countries)
+    -   [Faceting by country](#faceting-by-country)
     -   [Faceting the time series](#faceting-the-time-series)
     -   [Faceting with free y-axis](#faceting-with-free-y-axis)
     -   [Choose your own countries](#choose-your-own-countries)
 -   [3. Tidy modeling with broom](#3-tidy-modeling-with-broom)
+    -   [Linear regression](#linear-regression)
     -   [Linear regression on the United
         States](#linear-regression-on-the-united-states)
     -   [Finding the slope of a linear
         regression](#finding-the-slope-of-a-linear-regression)
     -   [Finding the p-value of a linear
         regression](#finding-the-p-value-of-a-linear-regression)
+    -   [Tidying models with broom](#tidying-models-with-broom)
     -   [Tidying a linear regression
         model](#tidying-a-linear-regression-model)
     -   [Combining models for multiple
         countries](#combining-models-for-multiple-countries)
+    -   [Nesting for multiple models](#nesting-for-multiple-models)
     -   [Nesting a data frame](#nesting-a-data-frame)
     -   [List columns](#list-columns)
     -   [Unnesting](#unnesting)
+    -   [Fitting multiple models](#fitting-multiple-models)
     -   [Performing linear regression on each nested
         dataset](#performing-linear-regression-on-each-nested-dataset)
     -   [Tidy each linear regression
@@ -50,10 +62,12 @@ Joschka Schwarz
         countries](#filtering-for-significant-countries)
     -   [Sorting by slope](#sorting-by-slope)
 -   [4. Joining and tidying](#4-joining-and-tidying)
+    -   [Joining datasets](#joining-datasets)
     -   [Joining datasets with
         inner_join](#joining-datasets-with-inner_join)
     -   [Filtering the joined dataset](#filtering-the-joined-dataset)
     -   [Visualizing colonialism votes](#visualizing-colonialism-votes)
+    -   [Tidy data](#tidy-data)
     -   [Tidy data observations](#tidy-data-observations)
     -   [Using gather to tidy a
         dataset](#using-gather-to-tidy-a-dataset)
@@ -62,17 +76,26 @@ Joschka Schwarz
         topic](#summarize-by-country-year-and-topic)
     -   [Visualizing trends in topics for one
         country](#visualizing-trends-in-topics-for-one-country)
+    -   [Tidy modeling by topic and
+        country](#tidy-modeling-by-topic-and-country)
     -   [Nesting by topic and country](#nesting-by-topic-and-country)
     -   [Interpreting tidy models](#interpreting-tidy-models)
     -   [Steepest trends by topic](#steepest-trends-by-topic)
     -   [Checking models visually](#checking-models-visually)
 
+**Short Description**
+
+Use data manipulation and visualization skills to explore the historical
+voting of the United Nations General Assembly.
+
+**Long Description**
+
 Once you’ve started learning tools for data manipulation and
 visualization like dplyr and ggplot2, this course gives you a chance to
-use them in action on a real dataset. You’ll explore the historical
+use them in action on a real dataset. You'll explore the historical
 voting of the United Nations General Assembly, including analyzing
 differences in voting between countries, across time, and among
-international issues. In the process you’ll gain more practice with the
+international issues. In the process you'll gain more practice with the
 dplyr and ggplot2 packages, learn about the broom package for tidying
 model output, and experience the kind of start-to-finish exploratory
 analysis common in data science.
@@ -83,6 +106,10 @@ The best way to learn data wrangling skills is to apply them to a
 specific case study. Here you’ll learn how to clean and filter the
 United Nations voting dataset using the dplyr package, and how to
 summarize it into smaller, interpretable units.
+
+## The United Nations Voting Dataset
+
+Theory. Coming soon …
 
 ## Filtering rows
 
@@ -255,6 +282,10 @@ votes_processed <- votes %>%
 
     ## Warning in countrycode_convert(sourcevar = sourcevar, origin = origin, destination = dest, : Some values were not matched unambiguously: 260
 
+## Grouping and summarizing
+
+Theory. Coming soon …
+
 ## Summarizing the full dataset
 
 In this analysis, you’re going to focus on “% of votes that are yes” as
@@ -293,8 +324,8 @@ votes_processed
 2.  Summarize the dataset using the `summarize()` function to create two
     columns:
 
--   `total`: with the number of votes
--   `percent_yes`: the percentage of “yes” votes
+    -   `total`: with the number of votes
+    -   `percent_yes`: the percentage of “yes” votes
 
 ``` r
 # 2. Find total and fraction of "yes" votes
@@ -363,6 +394,10 @@ by_country <- votes_processed %>%
   summarize(total = n(),
             percent_yes = mean(vote == 1))
 ```
+
+## Sorting and filtering summarized data
+
+Theory. Coming soon …
 
 ## Sorting by percentage of “yes” votes
 
@@ -487,6 +522,10 @@ to understand trends and extract insights. Here you’ll use the ggplot2
 package to explore trends in United Nations voting within each country
 over time.
 
+## Visualization with ggplot2
+
+Theory. Coming soon …
+
 ## Choosing an aesthetic
 
 You’re going to create a line graph to show the trend over time of how
@@ -495,7 +534,10 @@ many votes are “yes”.
 > ## *Question*
 >
 > Which of the following aesthetics should you map the `year` variable
-> to?<br> <br> ✅ Color<br> ⬜ Width<br> ⬜ X-axis<br> ⬜ Y-axis<br>
+> to?<br> <br> ⬜ Color<br> ⬜ Width<br> ✅ X-axis<br> ⬜ Y-axis<br>
+
+Right! To plot a line graph to show the trend over time, the year
+variable should be on the x-axis.
 
 ## Plotting a line over time
 
@@ -510,9 +552,10 @@ visualization of the percentage of “yes” votes over time.
 
 1.  The `by_year` dataset has the number of votes and percentage of
     “yes” votes each year.
-2.  Load the `ggplot2` package.
-3.  Use `ggplot()` with the `geom_line` layer to create a line plot with
-    `year` on the x-axis and `percent_yes` on the y-axis.
+
+    -   Load the `ggplot2` package.
+    -   Use `ggplot()` with the `geom_line` layer to create a line plot
+        with `year` on the x-axis and `percent_yes` on the y-axis.
 
 ``` r
 # 1. Define by_year
@@ -555,6 +598,10 @@ ggplot(by_year, aes(year, percent_yes)) +
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
 ![](readme_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+## Visualizing by country
+
+Theory. Coming soon …
 
 ## Summarizing by year and country
 
@@ -641,9 +688,6 @@ to represent different countries.
 
 **Steps**
 
-The `by_year_country` dataset you created in the last exercise is
-available in your workspace.
-
 1.  Create a filtered version of `by_year_country` called
     `filtered_4_countries` with just the countries listed in the editor
     (you may find the `%in%` operator useful here).
@@ -665,6 +709,10 @@ ggplot(filtered_4_countries, aes(year, percent_yes, color = country)) +
 ```
 
 ![](readme_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+## Faceting by country
+
+Theory. Coming soon …
 
 ## Faceting the time series
 
@@ -769,6 +817,10 @@ interpret them together. Here you’ll learn to use the tidyr, purrr, and
 broom packages to fit linear models to each country, and understand and
 compare their outputs.
 
+## Linear regression
+
+Theory. Coming soon …
+
 ## Linear regression on the United States
 
 A linear regression is a model that lets us examine how one variable
@@ -865,6 +917,10 @@ below .05 are significant.
 > `year` and `percent_yes`?<br> <br> ⬜ 12.664<br> ⬜ -0.006<br> ⬜
 > 8.48e-08<br> ✅ 1.37e-07<br>
 
+## Tidying models with broom
+
+Theory. Coming soon …
+
 ## Tidying a linear regression model
 
 In the last section, you fit a linear model. Now, you’ll use the
@@ -933,6 +989,12 @@ bind_rows(US_tidied, UK_tidied)
     ## 2 year        -0.00624  0.000928     -6.72 0.000000137 
     ## 3 (Intercept) -3.27     1.96         -1.67 0.105       
     ## 4 year         0.00187  0.000989      1.89 0.0677
+
+Awesome! We can easily compare the two models now.
+
+## Nesting for multiple models
+
+Theory. Coming soon …
 
 ## Nesting a data frame
 
@@ -1073,6 +1135,10 @@ nested %>% unnest(data)
     ##  9 Afghanistan  1963    32       0.781
     ## 10 Afghanistan  1965    40       0.85 
     ## # … with 4,734 more rows
+
+## Fitting multiple models
+
+Theory. Coming soon …
 
 ## Performing linear regression on each nested dataset
 
@@ -1329,6 +1395,9 @@ slope_terms %>%
     ## 10 Cuba        <gro… <lm>  year   0.00461  0.000721      6.40 3.43e-7    6.31e-5
     ## # … with 51 more rows
 
+Great work! Notice that there are now only 61 countries with significant
+trends.
+
 ## Sorting by slope
 
 Now that you’ve filtered for countries where the trend is probably not
@@ -1401,6 +1470,10 @@ as incorporating information about each resolution’s topic into your
 vote analysis. You’ll also learn how to turn untidy data into tidy data,
 and see how tidy data can guide your exploration of topics and countries
 over time.
+
+## Joining datasets
+
+Theory. Coming soon …
 
 ## Joining datasets with inner_join
 
@@ -1540,6 +1613,10 @@ ggplot(US_co_by_year, aes(year, percent_yes)) +
 ```
 
 ![](readme_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+
+## Tidy data
+
+Theory. Coming soon …
 
 ## Tidy data observations
 
@@ -1738,6 +1815,10 @@ US_by_country_year_topic %>%
 
 ![](readme_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
+## Tidy modeling by topic and country
+
+Theory. Coming soon …
+
 ## Nesting by topic and country
 
 In the last chapter, you constructed a linear model for each country by
@@ -1818,6 +1899,8 @@ country_topic_coefficients
     ##  9 Afghanistan Arms co… <tibbl… <lm>  (Int… -1.38e+1  4.13         -3.33 2.53e-3
     ## 10 Afghanistan Arms co… <tibbl… <lm>  year   7.37e-3  0.00208       3.54 1.49e-3
     ## # … with 2,374 more rows
+
+Great work! You can ignore the warning messages in the console for now.
 
 ## Interpreting tidy models
 

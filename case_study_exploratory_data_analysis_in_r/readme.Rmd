@@ -11,11 +11,21 @@ output:
 knitr::opts_chunk$set(echo = TRUE, eval = T)
 ```
 
-Once you've started learning tools for data manipulation and visualization like dplyr and ggplot2, this course gives you a chance to use them in action on a real dataset. You'll explore the historical voting of the United Nations General Assembly, including analyzing differences in voting between countries, across time, and among international issues. In the process you'll gain more practice with the dplyr and ggplot2 packages, learn about the broom package for tidying model output, and experience the kind of start-to-finish exploratory analysis common in data science.
+**Short Description**
+
+Use data manipulation and visualization skills to explore the historical voting of the United Nations General Assembly.
+
+**Long Description**
+
+Once you've started learning tools for data manipulation and visualization like dplyr and ggplot2, this course gives you a chance to use them in action on a real dataset. You&#39;ll explore the historical voting of the United Nations General Assembly, including analyzing differences in voting between countries, across time, and among international issues. In the process you&#39;ll gain more practice with the dplyr and ggplot2 packages, learn about the broom package for tidying model output, and experience the kind of start-to-finish exploratory analysis common in data science.
 
 # 1. Data cleaning and summarizing with dplyr
 
 The best way to learn data wrangling skills is to apply them to a specific case study. Here you'll learn how to clean and filter the United Nations voting dataset using the dplyr package, and how to summarize it into smaller, interpretable units.
+
+## The United Nations Voting Dataset
+
+Theory. Coming soon ...
 
 ## Filtering rows
 
@@ -103,6 +113,10 @@ votes_processed <- votes %>%
          votes_processed = countrycode(ccode, "cown", "country.name"))
 ```
 
+## Grouping and summarizing
+
+Theory. Coming soon ...
+
 ## Summarizing the full dataset
 
 In this analysis, you're going to focus on "% of votes that are yes" as a metric for the "agreeableness" of countries.
@@ -119,8 +133,9 @@ votes_processed
 ```
 
 2. Summarize the dataset using the `summarize()` function to create two columns:
-  * `total`: with the number of votes
-  * `percent_yes`: the percentage of "yes" votes
+
+    * `total`: with the number of votes
+    * `percent_yes`: the percentage of "yes" votes
 
 ```{r}
 # 2. Find total and fraction of "yes" votes
@@ -163,13 +178,15 @@ by_country <- votes_processed %>%
             percent_yes = mean(vote == 1))
 ```
 
+## Sorting and filtering summarized data
+
+Theory. Coming soon ...
 
 ## Sorting by percentage of "yes" votes
 
 Now that you've summarized the dataset by country, you can start examining it and answering interesting questions.
 
 For example, you might be especially interested in the countries that voted "yes" least often, or the ones that voted "yes" most often.
-
 
 **Steps**
 
@@ -217,6 +234,10 @@ by_country %>%
 
 Once you've cleaned and summarized data, you'll want to visualize them to understand trends and extract insights. Here you'll use the ggplot2 package to explore trends in United Nations voting within each country over time.
 
+## Visualization with ggplot2
+
+Theory. Coming soon ...
+
 ## Choosing an aesthetic
 
 You're going to create a line graph to show the trend over time of how many votes are "yes". 
@@ -225,10 +246,12 @@ You're going to create a line graph to show the trend over time of how many vote
 > ---
 > Which of the following aesthetics should you map the `year` variable to?<br>
 > <br>
-> ✅ Color<br>
+> ⬜ Color<br>
 > ⬜ Width<br>
-> ⬜ X-axis<br>
+> ✅ X-axis<br>
 > ⬜ Y-axis<br>
+
+Right! To plot a line graph to show the trend over time, the year variable should be on the x-axis.
 
 ## Plotting a line over time
 
@@ -239,8 +262,9 @@ You'll now use the `ggplot2` package to turn your results into a visualization o
 **Steps**
 
 1. The `by_year` dataset has the number of votes and percentage of "yes" votes each year.
-2. Load the `ggplot2` package.
-3. Use `ggplot()` with the `geom_line` layer to create a line plot with `year` on the x-axis and `percent_yes` on the y-axis.
+
+    * Load the `ggplot2` package.
+    * Use `ggplot()` with the `geom_line` layer to create a line plot with `year` on the x-axis and `percent_yes` on the y-axis.
 
 ```{r}
 # 1. Define by_year
@@ -273,6 +297,10 @@ ggplot(by_year, aes(year, percent_yes)) +
   geom_point() +
   geom_smooth()
 ```
+
+## Visualizing by country
+
+Theory. Coming soon ...
 
 ## Summarizing by year and country
 
@@ -326,8 +354,6 @@ You'll have to filter to include all *four* of these countries and use another a
 
 **Steps**
 
-The `by_year_country` dataset you created in the last exercise is available in your workspace.
-
 1. Create a filtered version of `by_year_country` called `filtered_4_countries` with just the countries listed in the editor (you may find the `%in%` operator useful here).
 2. Show the trend for each of these countries on the same graph, using color to distinguish each country.
 
@@ -344,6 +370,10 @@ filtered_4_countries <- by_year_country %>%
 ggplot(filtered_4_countries, aes(year, percent_yes, color = country)) +
   geom_line()
 ```
+
+## Faceting by country
+
+Theory. Coming soon ...
 
 ## Faceting the time series
 
@@ -370,8 +400,6 @@ ggplot(filtered_6_countries, aes(year, percent_yes)) +
   geom_line() +
   facet_wrap(~country)
 ```
-
-
 
 ## Faceting with free y-axis
 
@@ -426,6 +454,10 @@ ggplot(filtered_countries, aes(year, percent_yes)) +
 # 3. Tidy modeling with broom
 
 While visualization helps you understand one country at a time, statistical modeling lets you quantify trends across many countries and interpret them together. Here you'll learn to use the tidyr, purrr, and broom packages to fit linear models to each country, and understand and compare their outputs.
+
+## Linear regression
+
+Theory. Coming soon ...
 
 ## Linear regression on the United States
 
@@ -483,6 +515,10 @@ Not all positive or negative slopes are necessarily real. A p-value is a way of 
 > ⬜ 8.48e-08<br>
 > ✅ 1.37e-07<br>
 
+## Tidying models with broom
+
+Theory. Coming soon ...
+
 ## Tidying a linear regression model
 
 In the last section, you fit a linear model. Now, you'll use the `tidy()` function in the `broom` package to turn that model into a tidy data frame.
@@ -529,10 +565,15 @@ UK_tidied <- tidy(UK_fit)
 bind_rows(US_tidied, UK_tidied)
 ```
 
+Awesome! We can easily compare the two models now.
+
+## Nesting for multiple models
+
+Theory. Coming soon ...
+
 ## Nesting a data frame
 
 Right now, the `by_year_country` data frame has one row per country-vote pair. So that you can model each country individually, you're going to "nest" all columns besides `country`, which will result in a data frame with one row per country. The data for each individual country will then be stored in a **list column** called `data`.
-
 
 **Steps**
 
@@ -592,11 +633,14 @@ In this exercise, you are just undoing the `nest()` operation. In the next secti
 
 1. Unnest the `data` list column, so that the table again has one row for each country-year pair, much like `by_year_country`.
 
-
 ```{r}
 # 1. Unnest the data column to return it to its original form
 nested %>% unnest(data)
 ```
+
+## Fitting multiple models
+
+Theory. Coming soon ...
 
 ## Performing linear regression on each nested dataset
 
@@ -717,6 +761,8 @@ slope_terms %>%
   filter(p.adjusted < 0.05)
 ```
 
+Great work! Notice that there are now only 61 countries with significant trends.
+
 ## Sorting by slope
 
 Now that you've filtered for countries where the trend is probably not due to chance, you may be interested in countries whose percentage of "yes" votes is changing most quickly over time. Thus, you want to find the countries with the highest and lowest slopes; that is, the `estimate` column.
@@ -748,6 +794,10 @@ filtered_countries %>%
 #  4. Joining and tidying
 
 In this chapter, you'll learn to combine multiple related datasets, such as incorporating information about each resolution's topic into your vote analysis. You'll also learn how to turn untidy data into tidy data, and see how tidy data can guide your exploration of topics and countries over time.
+
+## Joining datasets
+
+Theory. Coming soon ...
 
 ## Joining datasets with inner_join
 
@@ -827,6 +877,10 @@ ggplot(US_co_by_year, aes(year, percent_yes)) +
   geom_line()
 ```
 
+## Tidy data
+
+Theory. Coming soon ...
+
 ## Tidy data observations
 
 Insert plot (comes later)
@@ -849,8 +903,6 @@ In order to represent the joined vote-topic data in a tidy form so we can analyz
 
 1. Gather the six topic columns in `votes_joined` into one column called `topic` (containing one of `me`, `nu`, etc.) and a column called `has_topic` (containing 0 or 1). Print the result without saving it.
 2. You don't actually care about the cases where `has_topic` is 0. Perform the `pivot_longer()` / `gather()` operation again, but this time also filter for only the rows where the topic in `topic` describes the vote. Save the result as `votes_gathered`.
-
-
 
 ```{r}
 # 1. Gather the six me/nu/di/hr/co/ec columns
@@ -954,6 +1006,10 @@ US_by_country_year_topic %>%
   facet_wrap(~topic)
 ```
 
+## Tidy modeling by topic and country
+
+Theory. Coming soon ...
+
 ## Nesting by topic and country
 
 In the last chapter, you constructed a linear model for each country by nesting the data in each country, fitting a model to each dataset, then tidying each model with `broom` and unnesting the coefficients. The code looked something like this:
@@ -997,6 +1053,8 @@ country_topic_coefficients <- by_country_year_topic %>%
 # Print country_topic_coefficients
 country_topic_coefficients
 ```
+
+Great work! You can ignore the warning messages in the console for now.
 
 ## Interpreting tidy models
 
