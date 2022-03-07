@@ -3,6 +3,7 @@ Cleaning data in R
 Joschka Schwarz
 
 -   [1. Common Data Problems](#1-common-data-problems)
+    -   [Data type constraints](#data-type-constraints)
     -   [Common data types](#common-data-types)
     -   [Time and Date Classes](#time-and-date-classes)
     -   [Converting data types](#converting-data-types)
@@ -10,10 +11,12 @@ Joschka Schwarz
     -   [Constraints](#constraints)
 -   [2. Categorical and Text Data](#2-categorical-and-text-data)
     -   [Membership constraints](#membership-constraints)
+    -   [Categorical data problems](#categorical-data-problems)
     -   [Identifying inconsistent categorical
         data](#identifying-inconsistent-categorical-data)
     -   [Correcting inconsistent categorical
         data](#correcting-inconsistent-categorical-data)
+    -   [Cleaning text data](#cleaning-text-data)
     -   [Detecting inconsistent text
         data](#detecting-inconsistent-text-data)
     -   [Correcting inconsistent text
@@ -28,6 +31,13 @@ Joschka Schwarz
         distance](#fuzzyjoin-fixing-typos-with-string-distance)
     -   [reclin: Linking records with Pair
         Blocking](#reclin-linking-records-with-pair-blocking)
+
+**Short Description**
+
+Develop the skills you need to go from raw data to awesome insights as
+quickly and accurately as possible.
+
+**Long Description**
 
 It’s commonly said that data scientists spend 80% of their time cleaning
 and manipulating data and only 20% of their time analyzing it. The time
@@ -48,6 +58,10 @@ In this part, you’ll learn how to overcome some of the most common dirty
 data problems. You’ll convert data types, apply range constraints to
 remove future data points, and remove duplicated data points to avoid
 double-counting.
+
+## Data type constraints
+
+Theory. Coming soon …
 
 ## Common data types
 
@@ -365,6 +379,9 @@ summary(bike_share_rides$user_birth_year_fct)
     ## 2000 2001 
     ##  473   30
 
+Looking at the new summary statistics, more riders were born in `1988`
+than any other year.
+
 ## Trimming strings
 
 In the previous steps, you were able to identify the correct data type
@@ -471,6 +488,10 @@ mean(bike_share_rides$duration_mins)
 
     ## [1] 13.06214
 
+Great work! By removing characters and converting to a numeric type, you
+were able to figure out that the average ride duration is about 13
+minutes - not bad for a city like San Francisco!
+
 ## Constraints
 
 ### Range constraints
@@ -543,6 +564,10 @@ bike_share_rides_sample <- bike_share_rides_sample %>%
 assert_all_are_in_closed_range(bike_share_rides_sample$duration_min_const, lower = 0, upper = 1440)
 ```
 
+Radical replacing! The method of replacing erroneous data with the range
+limit works well, but you could just as easily replace these values with
+`NA`s or something else instead.
+
 ### Date constraints
 
 Something has gone wrong and it looks like you have data with dates from
@@ -610,7 +635,12 @@ bike_share_rides_past <- bike_share_rides_mod %>%
 assert_all_are_in_past(bike_share_rides_past$date)
 ```
 
+Fabulous filtering! Handling data from the future like this is much
+easier than trying to verify the data’s correctness by time traveling.
+
 ### Uniqueness constraints (Duplicates)
+
+Theory. Coming soon …
 
 #### Full duplicates
 
@@ -710,6 +740,9 @@ sum(duplicated(bike_share_rides_unique))
 
     ## [1] 0
 
+Dazzling duplicate removal! Removing full duplicates will ensure that
+summary statistics aren’t altered by repeated data points.
+
 #### Partial duplicates
 
 Whats a partial duplicate?
@@ -800,6 +833,11 @@ bike_share_rides_unique %>%
     ## # A tibble: 0 × 2
     ## # … with 2 variables: ride_id <int>, n <int>
 
+Perfect partial duplicate removing! It’s important to consider the data
+you’re working with before removing partial duplicates, since sometimes
+it’s expected that there will be partial duplicates in a dataset, such
+as if the same customer makes multiple purchases.
+
 ##### Aggregating partial duplicates
 
 Another way of handling partial duplicates is to compute a summary
@@ -847,6 +885,10 @@ bike_share_rides_mod %>%
     ## # … with 35,219 more rows, and 7 more variables: station_B_name <chr>,
     ## #   bike_id <dbl>, user_gender <chr>, user_birth_year <dbl>,
     ## #   user_birth_year_fct <fct>, duration_trimmed <chr>, duration_min_avg <dbl>
+
+Awesome aggregation! Aggregation of partial duplicates allows you to
+keep some information about all data points instead of keeping
+information about just one data point.
 
 # 2. Categorical and Text Data
 
@@ -1011,14 +1053,11 @@ sfo_survey_mod %>%
 
 > ## *Question*
 >
-> Take a closer look at your output. Which dest_size values appear to
-> violate membership constraints?<br> <br> ⬜ <code>“huge”</code>,
-> <code>“Small”</code>, <code>“Large ”</code>, and
-> <code>“Hub”</code>.<br> ✅ <code>“huge”</code>,
-> <code>“ Small ”</code>, <code>“Large ”</code>, and
-> <code>“ Hub”</code>.<br> ⬜ <code>“Small”</code>,
-> <code>“Medium”</code>, <code>“Large”</code>, and
-> <code>“Hub”</code>.<br>
+> Take a closer look at your output. Which `dest_size` values appear to
+> violate membership constraints?<br> <br> ⬜ `"huge"`, `"Small"`,
+> `"Large  "`, and `"Hub"`.<br> ✅ `"huge"`, `"  Small  "`, `"Large  "`,
+> and `" Hub"`.<br> ⬜ `"Small"`, `"Medium"`, `"Large"`, and
+> `"Hub"`.<br>
 
 2.  Use the correct type of filtering join on the `sfo_survey` data
     frame and the `dest_sizes` data frame to get the rows of
@@ -1072,6 +1111,15 @@ sfo_survey_mod %>%
     ## 2 Large       143
     ## 3 Medium      681
     ## 4 Small       225
+
+Great joining! Anti-joins can help you identify the rows that are
+causing issues, and semi-joins can remove the issue-causing rows. In the
+next lesson, you’ll learn about other ways to deal with bad values so
+that you don’t have to lose rows of data.
+
+## Categorical data problems
+
+Theory. Coming soon …
 
 ## Identifying inconsistent categorical data
 
@@ -1153,6 +1201,9 @@ sfo_survey_mod %>%
 > in `cleanliness` have inconsistent white space.<br> ⬜ The categories
 > in `cleanliness` have inconsistent capitalization and white space.<br>
 
+Incredible identification! In the next exercise, you’ll fix these
+inconsistencies to get more accurate counts.
+
 ## Correcting inconsistent categorical data
 
 ### Trimming & Case Sensitivity
@@ -1214,6 +1265,10 @@ sfo_survey_mod %>%
     ## 4 somewhat clean     1254
     ## 5 somewhat dirty       30
     ## 6 <NA>                120
+
+Lovely lowercase conversion and terrific trimming! You were able to
+convert seven-category data into four-category data, which will help
+your analysis go more smoothly.
 
 ### Collapsing categories
 
@@ -1294,6 +1349,14 @@ sfo_survey_mod %>%
     ## 8 Midwest US              281
     ## 9 West US                 975
 
+Clean collapsing! You’ve reduced the number of categories from 12 to 9,
+and you can now be confident that 401 of the survey participants were
+heading to Europe.
+
+## Cleaning text data
+
+Theory. Coming soon …
+
 ## Detecting inconsistent text data
 
 You’ve recently received some news that the customer support team wants
@@ -1358,6 +1421,10 @@ sfo_survey_mod %>%
     ## #   cleanliness <chr>, safety <chr>, satisfaction <chr>, phone <chr>,
     ## #   dest_size_trimmed <chr>, cleanliness_lower <chr>
 
+Delightful detection! Now that you’ve identified the inconsistencies in
+the `phone` column, it’s time to remove unnecessary characters to make
+the follow-up survey go as smoothly as possible.
+
 ## Correcting inconsistent text data
 
 ### Replacing and removing
@@ -1410,6 +1477,10 @@ sfo_survey_mod %>%
     ## #   cleanliness <chr>, safety <chr>, satisfaction <chr>, phone <chr>,
     ## #   dest_size_trimmed <chr>, cleanliness_lower <chr>, phone_no_parens <chr>,
     ## #   phone_clean <chr>
+
+Radical replacing and removing! Now that your phone numbers are all in a
+single format, the machines in the call center will be able to auto-dial
+the numbers, making it easier to ask participants follow-up questions.
 
 ### Invalid format
 
@@ -1467,6 +1538,9 @@ sfo_survey_mod %>%
     ## # … with 2,794 more rows, and 7 more variables: wait_min <dbl>,
     ## #   cleanliness <chr>, safety <chr>, satisfaction <chr>, phone <chr>,
     ## #   dest_size_trimmed <chr>, cleanliness_lower <chr>
+
+Mission accomplished! Thanks to your savvy string skills, the follow-up
+survey will be done in no time!
 
 ## Uniformity
 
@@ -1547,7 +1621,7 @@ formats <- c("%Y-%m-%d", "%B %d, %Y")
 
 # 1.2 Convert dates to the same format
 accounts %>%
-  mutate(date_opened_clean = parse_date_time(date_opened,  formats))
+  mutate(date_opened_clean = parse_date_time(date_opened,  orders = formats))
 ```
 
     ## # A tibble: 98 × 4
@@ -1564,6 +1638,10 @@ accounts %>%
     ##  9 4AE79EA1 2011-05-07        23338536 2011-05-07 00:00:00
     ## 10 2322DFB4 2018-04-07          189524 2018-04-07 00:00:00
     ## # … with 88 more rows
+
+Cunning calendar cleaning! Now that the `date_opened` dates are in the
+same format, you’ll be able to use them for some plotting in the next
+exercise.
 
 ### Currency uniformity
 
@@ -1663,7 +1741,13 @@ accounts %>%
 
 ![](readme_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
+Crafty currency conversion! The points in your last scatter plot all
+fall within a much smaller range now and you’ll be able to accurately
+assess the differences between accounts from different countries.
+
 ## Cross field validation
+
+Theory. Coming soon …
 
 -   Cross field validation = sanity check
 -   Does this value makes senese based on another values?
@@ -1707,6 +1791,10 @@ accounts_mod %>%
     ## 2 92C237C6 2005-12-13   85362  72556  21739  19537       16            113832
     ## 3 0E5B69F5 2018-05-07  134488  88475  44383  46475        3            179333
 
+Great job! By using cross field validation, you’ve been able to detect
+values that don’t make sense. How you choose to handle these values will
+depend on the dataset.
+
 ### Validating age
 
 Now that you found some inconsistencies in the `total` amounts, you’re
@@ -1733,13 +1821,20 @@ accounts_mod %>%
   filter(acct_age != theoretical_age)
 ```
 
-    ## # A tibble: 4 × 8
+    ## # A tibble: 6 × 8
     ##   id       date_opened  total fund_A fund_B fund_C acct_age theoretical_age
     ##   <fct>    <date>       <dbl>  <int>  <int>  <int>    <dbl>           <dbl>
     ## 1 11C3C3C0 2017-12-24  180003  84295  31591  64117        3               4
     ## 2 64EF994F 2009-02-26  161141  89269  25939  45933       12              13
     ## 3 EA7FF83A 2004-11-02  111526  86856  19406   5264       16              17
-    ## 4 3627E08A 2008-04-01  238104  60475  89011  88618       12              13
+    ## 4 14A2DDB7 2019-03-06  123163  49666  25407  48090        2               3
+    ## 5 C5C6B79D 2008-03-01  188424  61972  69266  57186       13              14
+    ## 6 3627E08A 2008-04-01  238104  60475  89011  88618       12              13
+
+Vigorous validating! There are three accounts that all have ages off by
+one year, but none of them are the same as the accounts that had `total`
+inconsistencies, so it looks like these two bookkeeping errors may not
+be related.
 
 ## Completeness
 
@@ -1839,6 +1934,10 @@ accounts_new %>%
 ```
 
 ![](readme_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+
+Fabulous visualizations! Investigating summary statistics based on
+missingness is a great way to determine if data is missing completely at
+random or missing at random.
 
 ### Treating missing data
 
@@ -1947,6 +2046,9 @@ assert_all_are_not_na(accounts_clean$cust_id)
 assert_all_are_not_na(accounts_clean$acct_amount_filled)
 ```
 
+Great job! Since your assertions passed, there’s no missing data left,
+and you can definitely *bank* on nailing your analysis!
+
 # 3. Record Linkage
 
 Record linkage is a powerful technique used to merge multiple datasets
@@ -1998,6 +2100,9 @@ strings are. As a reminder, Damerau-Levenshtein distance is the
 > inserting `"s"`.<br> ✅ 2 by substituting `"m"` for `"p"` and
 > inserting `"s"`.<br> ⬜ 3 by deleting `"p"`, adding `"m"`, and adding
 > `"s"`.<br>
+
+Crafty calculations! Substituting and inserting is the best way to get
+from “puffin” to “muffins”.
 
 **Packages**
 
@@ -2052,6 +2157,10 @@ stringdist("las angelos", "los angeles", method = "jaccard")
 > takes more operations to change a string to another.<br> ⬜ LCS
 > distance only uses insertion, deletion, and substitution, so it takes
 > more operations to change a string to another<br>
+
+Superb `stringdist()` skills! In the next exercise, you’ll use
+Damerau-Levenshtein distance to map typo-ridden cities to their true
+spellings.
 
 ## fuzzyjoin(): Fixing typos with string distance
 
@@ -2134,6 +2243,9 @@ zagat_mod %>%
     ##  9 bristol farms market cafe los anegeles los angeles
     ## 10 cafe'50s                  los angeles  los angeles
     ## # … with 300 more rows
+
+Fabulous fixing! Now that you’ve created consistent spelling for each
+city, it will be much easier to compute summary statistics by city.
 
 ## reclin: Linking records with Pair Blocking
 
@@ -2254,6 +2366,10 @@ pair_blocking(zagat, fodors, blocking_var = "city")
     ## 40531 310 422
     ## 40532 310 423
 
+Perfect pairings! By using `city` as a blocking variable, you were able
+to reduce the number of pairs you’ll need to compare from 165,230 pairs
+to 40,532.
+
 ### Comparing pairs
 
 Now that you’ve generated the pairs of restaurants, it’s time to compare
@@ -2350,6 +2466,11 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
     ## 40531 310 422 0.6204433 0.6746032 0.7774510
     ## 40532 310 423 0.4233716 0.6746032 0.7908497
 
+Crafty comparisons! Choosing a comparator and the columns to compare is
+highly dataset-dependent, so it’s best to try out different combinations
+to see which works best on the dataset you’re working with. Next, you’ll
+build on your string comparison skills and learn about record linkage!
+
 ### Score then select or select then score?
 
 Record linkage requires a number of steps that can be difficult to keep
@@ -2418,3 +2539,7 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
     ##  9     9 bristol farms market cafe los angeles   129 clearwater cafe   los ange…
     ## 10    11 cafe'50s                  los angeles   157 paty's            los ange…
     ## # … with 525 more rows
+
+Lovely linking! Now that your two datasets are merged, you can use the
+data to figure out if there are certain characteristics that make a
+restaurant more likely to be reviewed by Zagat or Fodor’s.
