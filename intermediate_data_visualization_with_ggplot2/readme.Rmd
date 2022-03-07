@@ -1,13 +1,32 @@
 ---
 title: "Intermediate Data Visualization with ggplot2"
-output: rmarkdown::github_document
+author: "Joschka Schwarz"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = F)
 ```
 
+**Short Description**
+
+Learn to use facets, coordinate systems and statistics in ggplot2 to create meaningful explanatory plots.
+
+**Long Description**
+
+This ggplot2 course builds on your knowledge from the introductory course to produce meaningful explanatory plots. Statistics will be calculated on the fly and you’ll see how Coordinates and Facets aid in communication. You’ll also explore details of data visualization best practices with ggplot2 to help make sure you have a sound understanding of what works and why. By the end of the course, you’ll have all the tools needed to make a custom plotting function to explore a large data set, combining statistics and excellent visuals.
+
 # 1. Statistics
+
+A picture paints a thousand words, which is why R ggplot2 is such a powerful tool for graphical data analysis. In this chapter, you’ll progress from simply plotting data to applying a variety of statistical methods. These include a variety of linear models, descriptive and inferential statistics (mean, standard deviation and confidence intervals) and custom functions.
+
+## Stats with geoms
+
+Theory. Coming soon ...
+
 ## Smoothing
 
 To practice on the remaining layers (statistics, coordinates and facets), we'll continue working on several datasets.
@@ -16,21 +35,16 @@ The `mtcars` dataset contains information for 32 cars from Motor Trends magazine
 
 In the previous course you learned how to effectively use some basic geometries, such as point, bar and line. In the first chapter of this course you'll explore statistics associated with specific geoms, for example, smoothing and lines.
 
-
-**Instructions:**
+**Steps**
 
 1. Look at the structure of `mtcars`.
-2. Using `mtcars`, draw a scatter plot of `mpg` vs. `wt`.
-3. Update the plot to add a smooth trend line. Use the default method, which uses the LOESS model to fit the curve.
-4. Update the smooth layer. Apply a linear model by setting `method` to `"lm"`, and turn off the model's 95% confidence interval (the ribbon) by setting `se` to `FALSE`.
-5. Draw the same plot again, swapping `geom_smooth()` for `stat_smooth()`.
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # View the structure of mtcars
 str(mtcars)
 ```
+
+2. Using `mtcars`, draw a scatter plot of `mpg` vs. `wt`.
 
 ```{r,eval=TRUE}
 # Using mtcars, draw a scatter plot of mpg vs. wt
@@ -41,12 +55,16 @@ mtcars %>%
     geom_point()
 ```
 
+3. Update the plot to add a smooth trend line. Use the default method, which uses the LOESS model to fit the curve.
+
 ```{r,eval=TRUE}
 # Amend the plot to add a smooth layer
 ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point() +
   geom_smooth()
 ```
+
+4. Update the smooth layer. Apply a linear model by setting `method` to `"lm"`, and turn off the model's 95% confidence interval (the ribbon) by setting `se` to `FALSE`.
 
 ```{r,eval=TRUE}
 # Amend the plot. Use lin. reg. smoothing; turn off std err ribbon
@@ -55,6 +73,8 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
+5. Draw the same plot again, swapping `geom_smooth()` for `stat_smooth()`.
+
 ```{r,eval=TRUE}
 # Amend the plot. Swap geom_smooth() for stat_smooth().
 ggplot(mtcars, aes(x = wt, y = mpg)) +
@@ -62,7 +82,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   stat_smooth(method = "lm", se = FALSE)
 ```
 
-
+Good job! You can use either [`stat_smooth()`](http://www.rdocumentation.org/packages/ggplot2/functions/geom_smooth) or [`geom_smooth()`](http://www.rdocumentation.org/packages/ggplot2/functions/geom_smooth) to apply a linear model. Remember to always think about how the examples and concepts we discuss throughout the data viz courses can be applied to your own datasets!
 
 ## Grouping variables
 
@@ -70,20 +90,12 @@ We'll continue with the previous exercise by considering the situation of lookin
 
 `mtcars` has been given an extra column, `fcyl`, that is the `cyl` column converted to a proper factor variable.
 
+**Steps**
 
-**Instructions:**
-
-1. 
-* Using `mtcars`, plot `mpg` vs. `wt`, colored by `fcyl`.
-* Add a point layer.
-* Add a smooth stat using a linear model, and don't show the `se` ribbon.
-
-2. 
-* Update the plot to add a second smooth stat.
-* Add a dummy `group` aesthetic to this layer, setting the value to `1`.
-* Use the same `method` and `se` values as the first stat smooth layer.
-
-**Solution:**
+1. Using `mtcars`, plot `mpg` vs. `wt`, colored by `fcyl`.
+    
+    * Add a point layer.
+    * Add a smooth stat using a linear model, and don't show the `se` ribbon.
 
 ```{r,eval=TRUE}
 # data
@@ -100,6 +112,11 @@ ggplot(mtcars, aes(wt, mpg, color = fcyl)) +
   stat_smooth(method = "lm", se=F)
 ```
 
+2. Update the plot to add a second smooth stat.
+    
+    * Add a dummy `group` aesthetic to this layer, setting the value to `1`.
+    * Use the same `method` and `se` values as the first stat smooth layer.
+
 ```{r,eval=TRUE}
 # Amend the plot to add another smooth layer with dummy grouping
 ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl)) +
@@ -108,31 +125,19 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl)) +
   stat_smooth(aes(group = 1), method = "lm", se = FALSE)
 ```
 
-
+Good job! Notice that the color aesthetic defined an invisible group aesthetic. Defining the group aesthetic for a specific geom means we can overwrite that. Here, we use a dummy variable to calculate the smoothing model for all values.
 
 ## Modifying stat_smooth
 
 In the previous exercise we used `se = FALSE` in `stat_smooth()` to remove the 95% Confidence Interval. Here we'll consider another argument, `span`, used in LOESS smoothing, and we'll take a look at a nice scenario of properly mapping different models.
 
-
-**Instructions:**
+**Steps**
 
 1. Explore the effect of the `span` argument on LOESS curves. Add three smooth LOESS stats, each without the standard error ribbon.
 
-* Color the 1st one `"red"`; set its `span` to `0.9`.
-* Color the 2nd one `"green"`; set its `span` to `0.6`.
-* Color the 3rd one `"blue"`; set its `span` to `0.3`.
-
-2. Compare LOESS and linear regression smoothing on small regions of data.
-
-* Add a smooth LOESS stat, without the standard error ribbon.
-* Add a smooth linear regression stat, again without the standard error ribbon.
-
-3. LOESS isn't great on very short sections of data; compare the pieces of linear regression to LOESS over the whole thing.
-
-* Amend the smooth LOESS stat to map `color` to a dummy variable, `"All"`.
-
-**Solution:**
+    * Color the 1st one `"red"`; set its `span` to `0.9`.
+    * Color the 2nd one `"green"`; set its `span` to `0.6`.
+    * Color the 3rd one `"blue"`; set its `span` to `0.3`.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = wt, y = mpg)) +
@@ -142,6 +147,11 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   stat_smooth(se = F, color = "green", span = 0.6) +
   stat_smooth(se = F, color = "blue", span = 0.3)
 ```
+
+2. Compare LOESS and linear regression smoothing on small regions of data.
+
+    * Add a smooth LOESS stat, without the standard error ribbon.
+    * Add a smooth linear regression stat, again without the standard error ribbon.
 
 ```{r,eval=TRUE}
 # Amend the plot to color by fcyl
@@ -153,6 +163,10 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   stat_smooth(method = "lm", se=F)
 ```
 
+3. LOESS isn't great on very short sections of data; compare the pieces of linear regression to LOESS over the whole thing.
+
+    * Amend the smooth LOESS stat to map `color` to a dummy variable, `"All"`.
+
 ```{r,eval=TRUE}
 # Amend the plot
 ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl)) +
@@ -162,7 +176,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl)) +
   stat_smooth(method = "lm", se = FALSE)
 ```
 
-
+Spantastic! The default span for LOESS is 0.9. A lower span will result in a better fit with more detail; but don't overdo it or you'll end up over-fitting!
 
 ## Modifying stat_smooth (2)
 
@@ -170,21 +184,12 @@ In this exercise we'll take a look at the standard error ribbons, which show the
 
 `Vocab` has been given an extra column, `year_group`, splitting the dates into before and after 1995.
 
+**Steps**
 
-**Instructions:**
-
-1. 
-* Using `Vocab`, plot `vocabulary` vs. `education`, colored by `year_group`.
-* Use `geom_jitter()` to add jittered points with transparency `0.25`.
-* Add a smooth linear regression stat (with the standard error ribbon).
-
-2. It's easier to read the plot if the standard error ribbons match the lines, and the lines have more emphasis.
-
-* Update the smooth stat.
-  - Map the fill color to `year_group`.
-  - Set the line size to `2`.
-
-**Solution:**
+1.  Using `Vocab`, plot `vocabulary` vs. `education`, colored by `year_group`.
+  
+    * Use `geom_jitter()` to add jittered points with transparency `0.25`.
+    * Add a smooth linear regression stat (with the standard error ribbon).
 
 ```{r,eval=TRUE}
 # data
@@ -203,6 +208,12 @@ ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
   stat_smooth(method = "lm")
 ```
 
+2. It's easier to read the plot if the standard error ribbons match the lines, and the lines have more emphasis.
+
+    * Update the smooth stat.
+      - Map the fill color to `year_group`.
+      - Set the line size to `2`.
+
 ```{r,eval=TRUE}
 # Amend the plot
 ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
@@ -211,7 +222,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
   stat_smooth(aes(fill = year_group), method = "lm", size = 2)
 ```
 
-
+You have a vast plotting vocabulary! Notice that since 1995, education has relatively smaller effect on increasing vocabulary.
 
 ## Quantiles
 
@@ -221,13 +232,9 @@ Linear regression predicts the mean response from the explanatory variables, qua
 
 Specifying many quantiles *and* color your models according to year can make plots too busy. We'll explore ways of dealing with this in the next chapter.
 
+**Steps**
 
-**Instructions:**
-
-* Update the plot to add a quantile regression stat, at `quantiles` `0.05`, `0.5`, and `0.95`.
-* Amend the plot to color according to `year_group`.
-
-**Solution:**
+1. Update the plot to add a quantile regression stat, at `quantiles` `0.05`, `0.5`, and `0.95`.
 
 ```{r,eval=TRUE}
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
@@ -236,6 +243,8 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   stat_quantile(quantiles = c(0.05, 0.5, 0.95))
 ```
 
+2. Amend the plot to color according to `year_group`.
+
 ```{r,eval=TRUE}
 # Amend the plot to color by year_group
 ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
@@ -243,7 +252,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
   stat_quantile(aes(color = year_group), quantiles = c(0.05, 0.5, 0.95))
 ```
 
-
+Quick quantiles! Quantile regression is a great tool for getting a more detailed overview of a large dataset.
 
 ## Using stat_sum
 
@@ -253,22 +262,10 @@ One solution, shown in the step 1, is jittering with transparency. Another solut
 
 `stat_sum()` allows a special variable, `..prop..`, to show the *proportion* of values within the dataset.
 
+**Steps**
 
-**Instructions:**
-
-1. 
-* Run the code to see how jittering & transparency solves overplotting.
-* Replace the jittered points with a sum stat, using `stat_sum()`.
-
-2. Modify the size *aesthetic* with the appropriate scale function.
-* Add a `scale_size()` function to set the `range` from `1` to `10`.
-
-3. Inside `stat_sum()`, set `size` to `..prop..` so circle size represents the proportion of the whole dataset.
-
-4. Update the plot to group by `education`, so that circle size represents the proportion of the group.
-
-
-**Solution:**
+1. Run the code to see how jittering & transparency solves overplotting.
+2. Replace the jittered points with a sum stat, using `stat_sum()`.
 
 ```{r,eval=TRUE}
 # Run this, look at the plot, then update it
@@ -277,6 +274,10 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   stat_sum(alpha = 0.25)
 ```
 
+3. Modify the size *aesthetic* with the appropriate scale function.
+
+    * Add a `scale_size()` function to set the `range` from `1` to `10`.
+
 ```{r,eval=TRUE}
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
   stat_sum() +
@@ -284,11 +285,15 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   scale_size(range=c(1,10))
 ```
 
+4. Inside `stat_sum()`, set `size` to `..prop..` so circle size represents the proportion of the whole dataset.
+
 ```{r,eval=TRUE}
 # Amend the stat to use proportion sizes
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
   stat_sum(aes(size = ..prop..))
 ```
+
+5. Update the plot to group by `education`, so that circle size represents the proportion of the group.
 
 ```{r,eval=TRUE}
 # Amend the plot to group by education
@@ -296,12 +301,17 @@ ggplot(Vocab, aes(x = education, y = vocabulary, group = education)) +
   stat_sum(aes(size = ..prop..))
 ```
 
+Superb stat summing! If a few data points overlap, jittering is great. When you have lots of overlaps (particularly where continuous data has been rounded), using `stat_sum()` to count the overlaps is more useful.
+
+## Stats outside geoms
+
+Theory. Coming soon ...
+
 ## Preparations
 
 In the following exercises, we'll aim to make the plot shown in the viewer. Here, we'll establish our positions and base layer of the plot.
 
 Establishing these items as independent objects will allow us to recycle them easily in many layers, or plots.
-
 
 * <a href="http://www.rdocumentation.org/packages/ggplot2/functions/position_jitter" target="_blank" rel="noopener noreferrer">`position_jitter()`</a> adds *jittering* (e.g. for points).
 * <a href="http://www.rdocumentation.org/packages/ggplot2/functions/position_dodge" target="_blank" rel="noopener noreferrer">`position_dodge()`</a> *dodges* geoms, (e.g. bar, col, boxplot, violin, errorbar, pointrange).
@@ -309,21 +319,13 @@ Establishing these items as independent objects will allow us to recycle them ea
 
 As before, we'll use `mtcars`, where `fcyl` and `fam` are proper factor variables of the original `cyl` and `am` variables.
 
+**Steps**
 
-**Instructions:**
-
-1.
-* Using these three functions, define these position objects:
-* `posn_j`: will *jitter* with a `width` of `0.2`.
-* `posn_d`: will *dodge* with a `width` of `0.1`.
-* `posn_jd` will *jitter* **and** *dodge* with a `jitter.width` of `0.2` and a `dodge.width` of `0.1`.
-
-2.
-* Plot `wt` vs. `fcyl`, colored by `fam`. Assign this base layer to `p_wt_vs_fcyl_by_fam`.
-* Plot the data using `geom_point()`.
-
-
-**Solution:**
+1. Using these three functions, define these position objects:
+    
+    * `posn_j`: will *jitter* with a `width` of `0.2`.
+    * `posn_d`: will *dodge* with a `width` of `0.1`.
+    * `posn_jd` will *jitter* **and** *dodge* with a `jitter.width` of `0.2` and a `dodge.width` of `0.1`.
 
 ```{r,eval=TRUE}
 # Define position objects
@@ -336,6 +338,10 @@ posn_d <- position_dodge(width = 0.1)
 # 3. Jitter-dodge with jitter.width 0.2 and dodge.width 0.1
 posn_jd <- position_jitterdodge(jitter.width = 0.2, dodge.width = 0.1)
 ```
+
+2. Plot `wt` vs. `fcyl`, colored by `fam`. Assign this base layer to `p_wt_vs_fcyl_by_fam`.
+
+    * Plot the data using `geom_point()`.
 
 ```{r,eval=TRUE}
 #data
@@ -350,7 +356,7 @@ p_wt_vs_fcyl_by_fam +
   geom_point()
 ```
 
-
+Patient preparation! The default positioning of the points is highly susceptible to overplotting.
 
 ## Using position objects
 
@@ -358,15 +364,9 @@ Now that the position objects have been created, you can apply them to the base 
 
 The variables from the last exercise, `posn_j`, `posn_d`, `posn_jd`, and `p_wt_vs_fcyl_by_fam` are available in your workspace.
 
+**Steps**
 
-**Instructions:**
-
-* Apply the jitter position, `posn_j`, to the base plot.
-* Apply the dodge position, `posn_d`, to the base plot.
-* Apply the jitter-dodge position, `posn_jd`, to the base plot.
-
-
-**Solution:**
+1. Apply the jitter position, `posn_j`, to the base plot.
 
 ```{r,eval=TRUE}
 # Add jittering only
@@ -374,11 +374,15 @@ p_wt_vs_fcyl_by_fam +
   geom_point(position = posn_j) 
 ```
 
+2. Apply the dodge position, `posn_d`, to the base plot.
+
 ```{r,eval=TRUE}
 # Add dodging only
 p_wt_vs_fcyl_by_fam +
   geom_point(position = posn_d)
 ```
+
+3. Apply the jitter-dodge position, `posn_jd`, to the base plot.
 
 ```{r,eval=TRUE}
 # Add jittering and dodging
@@ -386,7 +390,7 @@ p_wt_vs_fcyl_by_fam +
   geom_point(position = posn_jd)
 ```
 
-
+Perfect positioning! Although you can set position by setting the `position` argument to a string (for example `position = "dodge"`), defining objects promotes consistency between layers.
 
 ## Plotting variations
 
@@ -401,22 +405,13 @@ Arguments to the data function are passed to `stat_summary()`'s `fun.args` argum
 The position object, `posn_d`, and the plot with jittered points, `p_wt_vs_fcyl_by_fam_jit`, are available.
 
 
-**Instructions:**
+**Steps**
 
 1. Add error bars representing the standard deviation.
-  * Set the data function to `mean_sdl` (without parentheses).
-  * Draw 1 standard deviation each side of the mean, pass arguments to the `mean_sdl()` function by assigning them to `fun.args` in the form of a list.
-  * Use `posn_d` to set the position.
 
-2. The default geom for `stat_summary()` is `"pointrange"` which is already great.
-  * Update the summary stat to use an `"errorbar"` geom by assigning it to the `geom` argument.
-
-3.
-  * Update the plot to add a summary stat of 95% confidence limits.
-  * Set the data function to `mean_cl_normal` (without parentheses).
-  * Again, use the dodge position.
-
-**Solution:**
+    * Set the data function to `mean_sdl` (without parentheses).
+    * Draw 1 standard deviation each side of the mean, pass arguments to the `mean_sdl()` function by assigning them to `fun.args` in the form of a list.
+    * Use `posn_d` to set the position.
 
 ```{r,eval=TRUE}
 # data
@@ -433,11 +428,20 @@ p_wt_vs_fcyl_by_fam_jit +
   )
 ```
 
+2. The default geom for `stat_summary()` is `"pointrange"` which is already great.
+  
+    * Update the summary stat to use an `"errorbar"` geom by assigning it to the `geom` argument.
+
 ```{r,eval=TRUE}
 p_wt_vs_fcyl_by_fam_jit +
   # Change the geom to be an errorbar
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), position = posn_d, geom = "errorbar")
 ```
+
+3. Update the plot to add a summary stat of 95% confidence limits.
+  
+    * Set the data function to `mean_cl_normal` (without parentheses).
+    * Again, use the dodge position.
 
 ```{r,eval=TRUE}
 p_wt_vs_fcyl_by_fam_jit +
@@ -448,8 +452,16 @@ p_wt_vs_fcyl_by_fam_jit +
   )
 ```
 
+Good job! You can always assign your own function to the `fun.data` argument as long as the result is a data frame and the variable names match the aesthetics that you will need for the geom layer.
 
 # 2. Coordinates
+
+The Coordinates layers offer specific and very useful tools for efficiently and accurately communicating data. Here we’ll look at the various ways of effectively using these layers, so you can clearly visualize lognormal datasets, variables with units, and periodic data.
+
+## Coordinates
+
+Theory. Coming soon ...
+
 ## Zooming In
 
 In the video, you saw different ways of using the coordinates layer to zoom in. In this exercise, we'll compare zooming by changing scales and by changing coordinates.
@@ -458,14 +470,9 @@ The big difference is that the scale functions change the underlying dataset, wh
 
 A scatter plot using `mtcars` with a LOESS smoothed trend line is provided. Take a look at this before updating it.
 
-
-**Instructions:**
+**Steps**
 
 1. Update the plot by adding (`+`) a continuous x scale with `limits` from `3` to `6`. *Spoiler: this will cause a problem!*
-2. Update the plot by adding a Cartesian coordinate system with x limits, `xlim`, from `3` to `6`.
-
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # Run the code, view the plot, then update it
@@ -476,6 +483,8 @@ ggplot(mtcars, aes(x = wt, y = hp, color = fam)) +
   scale_x_continuous(limits = c(3, 6))
 ```
 
+2. Update the plot by adding a Cartesian coordinate system with x limits, `xlim`, from `3` to `6`.
+
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = wt, y = hp, color = fam)) +
   geom_point() +
@@ -484,7 +493,7 @@ ggplot(mtcars, aes(x = wt, y = hp, color = fam)) +
   coord_cartesian(xlim = c(3,6))
 ```
 
-
+Zesty zooming! Using the scale function to zoom in meant that there wasn't enough data to calculate the trend line, and `geom_smooth()` failed. When `coord_cartesian()` was applied, the full dataset was used for the trend calculation.
 
 ## Aspect ratio I: 1:1 ratios
 
@@ -494,12 +503,9 @@ All variables are measured in centimeters, so it only makes sense that one unit 
 
 A plot using the `iris` dataset, of sepal width vs. sepal length colored by species, is shown in the viewer.
 
+**Steps**
 
-**Instructions:**
-
-* Add a fixed coordinate layer to force a 1:1 aspect ratio.
-
-**Solution:**
+1. Add a fixed coordinate layer to force a 1:1 aspect ratio.
 
 ```{r,eval=TRUE}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
@@ -509,7 +515,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
   coord_fixed(ratio = 1)
 ```
 
-
+Awe-inspiring aspect alteration! A 1:1 aspect ratio is helpful when your axes show the same scales.
 
 ## Aspect ratio II: setting ratios
 
@@ -518,15 +524,6 @@ When values are not on the same scale it can be a bit tricky to set an appropria
 `sun_plot` is a plot *without* any set aspect ratio. It fills up the graphics device.
 
 To make aspect ratios clear, we've drawn an orange box that is 75 units high and 75 *years* wide. Using a 1:1 aspect ratio would make the box square. That aspect ratio would make things harder to see the oscillations: it is better to force a wider ratio.
-
-
-**Instructions:**
-
-1. Fix the coordinates to a 1:1 aspect ratio.
-2. The `y` axis is now unreadably small. Make it bigger!
-  * Change the aspect `ratio` to 20:1. This is the aspect ratio recommended by Cleveland to help make the trend among oscillations easiest to see.
-
-**Solution:**
 
 ```{r,eval=TRUE}
 sunspots <- readRDS("data/sunspots.rds")
@@ -539,12 +536,19 @@ sun_plot
 ```
 REWORK NECESSARY!
 
+**Steps**
+
+1. Fix the coordinates to a 1:1 aspect ratio.
+
 ```{r,eval=TRUE}
 # Fix the aspect ratio to 1:1
 sun_plot +
   coord_fixed()
 ```
 
+2. The `y` axis is now unreadably small. Make it bigger!
+    
+    * Change the aspect `ratio` to 20:1. This is the aspect ratio recommended by Cleveland to help make the trend among oscillations easiest to see.
 
 ```{r,eval=TRUE}
 # Change the aspect ratio to 20:1
@@ -552,27 +556,18 @@ sun_plot +
   coord_fixed(ratio = 20)
 ```
 
-
-
 ## Expand and clip
 
 The `coord_*()` layer functions offer two useful arguments that work well together: `expand` and `clip`.
-
 
 * `expand` sets a buffer margin around the plot, so data and axes don't overlap. Setting `expand` to `0` draws the axes to the limits of the data.
 * `clip` decides whether plot elements that would lie outside the plot panel are displayed or ignored ("clipped").
 
 When done properly this can make a great visual effect! We'll use `theme_classic()` and modify the axis lines in this example.
 
-
-**Instructions:**
+**Steps**
 
 1. Add Cartesian coordinates with zero expansion, to remove all buffer margins on both the x and y axes.
-2. Setting `expand` to `0` caused points at the edge of the plot panel to be cut off.
-  * Set the `clip` argument to `"off"` to prevent this.
-  * Remove the axis lines by setting the `axis.line` argument to `element_blank()` in the `theme()` layer function.
-
-**Solution:**
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) +
@@ -581,6 +576,11 @@ ggplot(mtcars, aes(wt, mpg)) +
   coord_cartesian(expand = 0) +
   theme_classic()
 ```
+
+2. Setting `expand` to `0` caused points at the edge of the plot panel to be cut off.
+  
+    * Set the `clip` argument to `"off"` to prevent this.
+    * Remove the axis lines by setting the `axis.line` argument to `element_blank()` in the `theme()` layer function.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) +
@@ -592,7 +592,11 @@ ggplot(mtcars, aes(wt, mpg)) +
   theme(axis.line = element_blank())
 ```
 
+Cool clipping! These arguments make clean and accurate plots by not cutting off data.
 
+## Coordinates vs. scales
+
+Theory. Coming soon ...
 
 ## Log-transforming scales
 
@@ -602,14 +606,9 @@ Using `coord_trans()`, setting `x = "log10"` and/or `y = "log10"` arguments, tra
 
 Let's see this in action with positively skewed data - the brain and body weight of 51 mammals from the `msleep` dataset.
 
+**Steps**
 
-**Instructions:**
-
-* Using the `msleep` dataset, plot the raw values of `brainwt` against `bodywt` values as a scatter plot.
-* Add the `scale_x_log10()` and `scale_y_log10()` layers with default values to transform the data before plotting.
-* Use `coord_trans()` to apply a `"log10"` transformation to both the `x` and `y` scales.
-
-**Solution:**
+1. Using the `msleep` dataset, plot the raw values of `brainwt` against `bodywt` values as a scatter plot.
 
 ```{r}
 # Produce a scatter plot of brainwt vs. bodywt
@@ -617,6 +616,8 @@ ggplot(msleep, aes(bodywt, brainwt)) +
   geom_point() +
   ggtitle("Raw Values")
 ```
+
+2. Add the `scale_x_log10()` and `scale_y_log10()` layers with default values to transform the data before plotting.
 
 ```{r,eval=TRUE}
 # Add scale_*_*() functions
@@ -626,6 +627,8 @@ ggplot(msleep, aes(bodywt, brainwt)) +
   scale_y_log10() +
   ggtitle("Scale_ functions")
 ```
+
+3. Use `coord_trans()` to apply a `"log10"` transformation to both the `x` and `y` scales.
 
 ```{r,eval=TRUE}
 # Perform a log10 coordinate system transformation
@@ -637,21 +640,15 @@ ggplot(msleep, aes(bodywt, brainwt)) +
   )
 ```
 
-
+Terrific transformations! Each transformation method has implications for the plot's interpretability. Think about your audience when choosing a method for applying transformations.
 
 ## Adding stats to transformed scales
 
 In the last exercise, we saw the usefulness of the `coord_trans()` function, but be careful! Remember that statistics are calculated on the untransformed data. A linear model may end up looking not-so-linear after an axis transformation. Let's revisit the two plots from the previous exercise and compare their linear models.
 
-
-**Instructions:**
+**Steps**
 
 1. Add log10 transformed scales to the x and y axes.
-2.
-  * Add a log10 coordinate transformation for both the x and y axes.
-  * *Do you notice the difference between the two plots?*
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # Plot with a scale_*_*() function:
@@ -665,6 +662,8 @@ ggplot(msleep, aes(bodywt, brainwt)) +
   ggtitle("Scale functions")
 ```
 
+2. Add a log10 coordinate transformation for both the x and y axes.
+
 ```{r,eval=TRUE}
 # Plot with transformed coordinates
 ggplot(msleep, aes(bodywt, brainwt)) +
@@ -677,7 +676,11 @@ ggplot(msleep, aes(bodywt, brainwt)) +
   )
 ```
 
+Loopy lines! The smooth trend line is calculated after scale transformations but not coordinate transformations, so the second plot doesn't make sense. Be careful when using the `coord_trans()` function!
 
+## Double and flipped axes
+
+Theory. Coming soon ...
 
 ## Useful double axes
 
@@ -687,16 +690,9 @@ Our goal plot is displayed in the viewer. The two axes are the raw temperature v
 
 You can imagine a similar scenario for Log-transformed and original values, miles and kilometers, or pounds and kilograms. A scale that is unintuitive for many people can be made easier by adding a transformation as a double axis.
 
-
-**Instructions:**
+**Steps**
 
 1. Begin with a standard line plot, of `Temp` described by `Date` in the `airquality` dataset.
-2. 
-  * Convert `y_breaks` from Fahrenheit to Celsius (subtract 32, then multiply by 5, then divide by 9).
-  * Define the secondary y-axis using `sec_axis()`. Use the `identity` transformation. Set the `breaks` and `labels` to the defined objects `y_breaks` and `y_labels`, respectively.
-3. Add your secondary y-axis to the `sec.axis` argument of `scale_y_continuous()`.
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # data
@@ -709,6 +705,9 @@ ggplot(airquality, aes(Date, Temp)) +
   geom_line() +
   labs(x = "Date (1973)", y = "Fahrenheit")
 ```
+
+2. Convert `y_breaks` from Fahrenheit to Celsius (subtract 32, then multiply by 5, then divide by 9).
+3. Define the secondary y-axis using `sec_axis()`. Use the `identity` transformation. Set the `breaks` and `labels` to the defined objects `y_breaks` and `y_labels`, respectively.
 
 ```{r,eval=TRUE}
 # Define breaks (Fahrenheit)
@@ -731,6 +730,8 @@ secondary_y_axis <- sec_axis(
 secondary_y_axis
 ```
 
+4. Add your secondary y-axis to the `sec.axis` argument of `scale_y_continuous()`.
+
 ```{r,eval=TRUE}
 # Update the plot
 ggplot(airquality, aes(Date, Temp)) +
@@ -740,7 +741,7 @@ ggplot(airquality, aes(Date, Temp)) +
   labs(x = "Date (1973)", y = "Fahrenheit")
 ```
 
-
+Dazzling double axes! Double axes are most useful when you want to display the same value in two differnt units.
 
 ## Flipping axes I
 
@@ -748,17 +749,12 @@ ggplot(airquality, aes(Date, Temp)) +
 
 There are two reasons to use this function:
 
-
 * We want a vertical geom to be horizontal, or
 * We've completed a long series of plotting functions and want to flip it without having to rewrite all our commands.
 
-**Instructions:**
+**Steps**
 
 1. Create a side-by-side ("dodged") bar chart of `fam`, filled according to `fcyl`.
-2. To get horizontal bars, add a `coord_flip()` function.
-3. Partially overlapping bars are popular with "infoviz" in magazines. Update the `position` argument to use `position_dodge()` with a width of `0.5`.
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # Plot fcyl bars, filled by fam
@@ -767,12 +763,16 @@ ggplot(mtcars, aes(fill = fam, x = fcyl)) +
   geom_bar(position = "dodge")
 ```
 
+2. To get horizontal bars, add a `coord_flip()` function.
+
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(fcyl, fill = fam)) +
   geom_bar(position = "dodge") +
   # Flip the x and y coordinates
   coord_flip()
 ```
+
+3. Partially overlapping bars are popular with "infoviz" in magazines. Update the `position` argument to use `position_dodge()` with a width of `0.5`.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(fcyl, fill = fam)) +
@@ -781,7 +781,7 @@ ggplot(mtcars, aes(fcyl, fill = fam)) +
   coord_flip()
 ```
 
-
+Flipping fantastic! Horizontal bars are especially useful when the axis labels are long.
 
 ## Flipping axes II
 
@@ -789,14 +789,9 @@ In this exercise, we'll continue to use the `coord_flip()` layer function to rev
 
 Within the `mtcars` dataset, `car` is the name of the car and `wt` is its weight.
 
-
-**Instructions:**
+**Steps**
 
 1. Create a scatter plot of `wt` versus `car` using the `mtcars` dataset. We'll flip the axes in the next step.
-2. It would be easier to read if `car` was mapped to the y axis. Flip the coordinates. *Notice that the labels also get flipped!*
-
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # data
@@ -809,6 +804,8 @@ ggplot(mtcars, aes(car, wt)) +
   labs(x = "car", y = "weight")
 ```
 
+2. It would be easier to read if `car` was mapped to the y axis. Flip the coordinates. *Notice that the labels also get flipped!*
+
 ```{r,eval=TRUE}
 # Flip the axes to set car to the y axis
 ggplot(mtcars, aes(car, wt)) +
@@ -817,7 +814,11 @@ ggplot(mtcars, aes(car, wt)) +
   coord_flip()
 ```
 
+Even funkier flips! Notice how much more interpretable the plot is after flipping the axes.
 
+## Polar coordinates
+
+Theory. Coming soon ...
 
 ## Pie charts
 
@@ -830,16 +831,10 @@ Typical pie charts omit all of the non-data ink, which we saw in the themes chap
 A bar plot using `mtcars` of the number of cylinders (as a factor), `fcyl`, is shown in the plot viewer.
 
 
-**Instructions:**
+**Steps**
 
-1. 
-  * *Run the code to see the stacked bar plot.*
-  * Add (`+`) a polar coordinate system, mapping the angle to the `y` variable by setting `theta` to `"y"`.
-2.
-  * Reduce the `width` of the bars to `0.1`.
-  * Make it a ring plot by adding a continuous x scale with limits from `0.5` to `1.5`.
-
-**Solution:**
+1. *Run the code to see the stacked bar plot.*
+2. Add (`+`) a polar coordinate system, mapping the angle to the `y` variable by setting `theta` to `"y"`.
 
 ```{r,eval=TRUE}
 # Run the code, view the plot, then update it
@@ -848,6 +843,9 @@ ggplot(mtcars, aes(x = 1, fill = fcyl)) +
   # Add a polar coordinate system
   coord_polar(theta = "y")
 ```
+
+3. Reduce the `width` of the bars to `0.1`.
+4. Make it a ring plot by adding a continuous x scale with limits from `0.5` to `1.5`.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = 1, fill = fcyl)) +
@@ -860,7 +858,7 @@ ggplot(mtcars, aes(x = 1, fill = fcyl)) +
   )
 ```
 
-
+Super-fly pie! Polar coordinates are particularly useful if you are dealing with a cycle, like yearly data, that you would like to see represented as such.
 
 ## Wind rose plots
 
@@ -886,18 +884,10 @@ wind <- mydata |>
                                             "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")))
 ```
 
-**Instructions:**
+**Steps**
 
-* Make a classic bar plot mapping `wdf` onto the `x` aesthetic and `wsf` onto `fill`.
-* Use a `geom_bar()` layer, since we want to aggregate over all date values, and set the `width` argument to 1, to eliminate any spaces between the bars.
-**Instructions:**
-
-* Convert the Cartesian coordinate space into a polar coordinate space with `coord_polar()`.
-**Instructions:**
-
-* Set the `start` argument to `-pi/16` to position North at the top of the plot.
-
-**Solution:**
+1. Make a classic bar plot mapping `wdf` onto the `x` aesthetic and `wsf` onto `fill`.
+2.  Use a `geom_bar()` layer, since we want to aggregate over all date values, and set the `width` argument to 1, to eliminate any spaces between the bars.
 
 ```{r,eval=TRUE}
 # Using wind, plot wd filled by ws
@@ -906,12 +896,16 @@ ggplot(wind, aes(wdf, fill = wsf)) +
   geom_bar(width = 1)
 ```
 
+3. Convert the Cartesian coordinate space into a polar coordinate space with `coord_polar()`.
+
 ```{r,eval=TRUE}
 # Convert to polar coordinates:
 ggplot(wind, aes(wdf, fill = wsf)) +
   geom_bar(width = 1) +
   coord_polar()
 ```
+
+4. Set the `start` argument to `-pi/16` to position North at the top of the plot.
 
 ```{r,eval=TRUE}
 # Convert to polar coordinates:
@@ -920,8 +914,12 @@ ggplot(wind, aes(wdf, fill = wsf)) +
   coord_polar(start = -pi/16)
 ```
 
+Perfect polar coordinates! They are not common, but polar coordinate plots are really useful.
 
 # 3. Facets
+
+Facets let you split plots into multiple panes, each displaying subsets of the dataset. Here you'll learn how to wrap facets and arrange them in a grid, as well as providing custom labeling.
+
 ## Facet layer basics
 
 Faceting splits the data up into groups, according to a categorical variable, then plots each group in its own panel. For splitting the data by one or two categorical variables, <a href="http://www.rdocumentation.org/packages/ggplot2/functions/facet_grid" target="_blank" rel="noopener noreferrer">`facet_grid()`</a> is best.
@@ -929,21 +927,16 @@ Faceting splits the data up into groups, according to a categorical variable, th
 Given categorical variables `A` and `B`, the code pattern is
 
 ```{r}
-  facet_grid(rows = vars(A), cols = vars(B))
+facet_grid(rows = vars(A), cols = vars(B))
 ```
 
 This draws a panel for each pairwise combination of the values of `A` and `B`.
 
 Here, we'll use the `mtcars` data set to practice. Although `cyl` and `am` are not encoded as factor variables in the data set, `ggplot2` will coerce variables to factors when used in facets.
 
+**Steps**
 
-**Instructions:**
-
-* Facet the plot in a grid, with each `am` value in its own row.
-* Facet the plot in a grid, with each `cyl` value in its own column.
-* Facet the plot in a grid, with each `am` value in its own row and each `cyl` value in its own column.
-
-**Solution:**
+1. Facet the plot in a grid, with each `am` value in its own row.
 
 ```{r}
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -952,12 +945,16 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(rows = vars(am))
 ```
 
+2. Facet the plot in a grid, with each `cyl` value in its own column.
+
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   # Facet columns by cyl
   facet_grid(cols = vars(cyl))
 ```
+
+3. Facet the plot in a grid, with each `am` value in its own row and each `cyl` value in its own column.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -967,7 +964,7 @@ ggplot(mtcars, aes(wt, mpg)) +
              cols = vars(cyl))
 ```
 
-
+Fantastic faceting! Compare the different plots that result and see which one makes most sense.
 
 ## Many variables
 
@@ -977,17 +974,10 @@ Our goal is the plot in the viewer, which contains 7 variables.
 
 Two variables are mapped onto the color aesthetic, using hue and lightness. To achieve this we combined `fcyl` and `fam` into a single <a href="https://www.rdocumentation.org/packages/base/topics/interaction" target="_blank" rel="noopener noreferrer">interaction</a> variable, `fcyl_fam`. This will allow us to take advantage of Color Brewer's *Paired* color palette.
 
+**Steps**
 
-**Instructions:**
-
-1.
-  * Map `fcyl_fam` onto the a `color` aesthetic.
-  * Add a `scale_color_brewer()` layer and set `"Paired"` as the `palette`.
-2. Map `disp`, the displacement volume from each cylinder, onto the `size` aesthetic.
-3. Add a `facet_grid()` layer, faceting the plot according to `gear` on rows and `vs` on columns.
-
-
-**Solution:**
+1. Map `fcyl_fam` onto the a `color` aesthetic.
+2. Add a `scale_color_brewer()` layer and set `"Paired"` as the `palette`.
 
 ```{r,eval=TRUE}
 # data
@@ -1004,12 +994,16 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl_fam)) +
   scale_color_brewer(palette = "Paired")
 ```
 
+3. Map `disp`, the displacement volume from each cylinder, onto the `size` aesthetic.
+
 ```{r,eval=TRUE}
 # Update the plot to map disp to size
 ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl_fam, size = disp)) +
   geom_point() +
   scale_color_brewer(palette = "Paired")
 ```
+
+4. Add a `facet_grid()` layer, faceting the plot according to `gear` on rows and `vs` on columns.
 
 ```{r,eval=TRUE}
 # Update the plot
@@ -1020,28 +1014,23 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = fcyl_fam, size = disp)) +
   facet_grid(rows = vars(gear), cols = vars(vs))
 ```
 
-
+Good job! The last plot you've created contains 7 variables (4 categorical, 3 continuous). Useful combinations of aesthetics and facets help to achieve this.
 
 ## Formula notation
 
 As well as the `vars()` notation for specifying which variables should be used to split the dataset into facets, there is also a traditional formula notation. The three cases are shown in the table.
 
-
-| Modern notation | Formula notation |
-| --- | --- |
-| `facet_grid(rows = vars(A))` | `facet_grid(A ~ .)` |
-| `facet_grid(cols = vars(B))` | `facet_grid(. ~ B)` |
-| `facet_grid(rows = vars(A), cols = vars(B))` | `facet_grid(A ~ B)` |
+|Modern notation                              |Formula notation    |
+|:--------------------------------------------|:-------------------|
+|`facet_grid(rows = vars(A))`                 |`facet_grid(A ~ .)` |
+|`facet_grid(cols = vars(B))`                 |`facet_grid(. ~ B)` |
+|`facet_grid(rows = vars(A), cols = vars(B))` |`facet_grid(A ~ B)` |
 
 `mpg_by_wt` is available again. Rework the previous plots, this time using formula notation.
 
-**Instructions:**
+**Steps**
 
-* Facet the plot in a grid, with each `am` value in its own row.
-* Facet the plot in a grid, with each `cyl` value in its own column.
-* Facet the plot in a grid, with each `am` value in its own row and each `cyl` value in its own column.
-
-**Solution:**
+1. Facet the plot in a grid, with each `am` value in its own row.
 
 ```{r}
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -1050,12 +1039,16 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(am ~ .)
 ```
 
+2. Facet the plot in a grid, with each `cyl` value in its own column.
+
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   # Facet columns by cyl using formula notation
   facet_grid(. ~ cyl)
 ```
+
+3. Facet the plot in a grid, with each `am` value in its own row and each `cyl` value in its own column.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -1064,7 +1057,11 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(am ~ cyl)
 ```
 
+Fortunate formula formulation! While many ggplots still use the traditional formula notation, using `vars()` is now preferred.
 
+## Facet labels and order
+
+Theory. Coming soon ...
 
 ## Labeling facets
 
@@ -1079,14 +1076,9 @@ Common alternatives are:
 * `label_both`: Displays both the value and the variable name
 * `label_context`: Displays only the values or both the values and variables depending on whether multiple factors are faceted
 
-**Instructions:**
+**Steps**
 
-* Add a `facet_grid()` layer and facet `cols` according to the `cyl` using `vars()`. There is no labeling.
-* Apply `label_both` to the `labeller` argument and check the output.
-* Apply `label_context` to the `labeller` argument and check the output.
-* In addition to `label_context`, let's facet by one more variable: `vs`.
-
-**Solution:**
+1. Add a `facet_grid()` layer and facet `cols` according to the `cyl` using `vars()`. There is no labeling.
 
 ```{r,eval=TRUE}
 # Plot wt by mpg
@@ -1096,6 +1088,8 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(cyl))
 ```
 
+2. Apply `label_both` to the `labeller` argument and check the output.
+
 ```{r,eval=TRUE}
 # Plot wt by mpg
 ggplot(mtcars, aes(wt, mpg)) +
@@ -1103,6 +1097,8 @@ ggplot(mtcars, aes(wt, mpg)) +
   # Displaying both the values and the variables
   facet_grid(cols = vars(cyl), labeller = label_both)
 ```
+
+3. Apply `label_context` to the `labeller` argument and check the output.
 
 ```{r,eval=TRUE}
 # Plot wt by mpg
@@ -1113,6 +1109,8 @@ ggplot(mtcars, aes(wt, mpg)) +
              labeller = label_context)
 ```
 
+4. In addition to `label_context`, let's facet by one more variable: `vs`.
+
 ```{r,eval=TRUE}
 # Plot wt by mpg
 ggplot(mtcars, aes(wt, mpg)) +
@@ -1121,7 +1119,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(vs, cyl), labeller = label_context)
 ```
 
-
+Lovely labels! Make sure there is no ambiguity in interpreting plots by using proper labels.
 
 ## Setting order
 
@@ -1131,13 +1129,9 @@ Let's see this in action with the `mtcars` transmission variable `am`. In this c
 
 Here, we'll make `am` a factor variable and relabel the numbers to proper names. The default order is alphabetical. To rearrange them we'll call `fct_rev()` from the `forcats` package to reverse the order.
 
+**Steps**
 
-**Instructions:**
-
-* Explicitly label the `0` and `1` values of the `am` column as `"automatic"` and `"manual"`, respectively.
-* Define a specific order using separate `levels` and `labels` arguments. Recall that `1` is `"manual"` and `0` is `"automatic"`.
-
-**Solution:**
+1. Explicitly label the `0` and `1` values of the `am` column as `"automatic"` and `"manual"`, respectively.
 
 ```{r,eval=TRUE}
 # Make factor, set proper labels explictly
@@ -1149,6 +1143,8 @@ ggplot(mtcars, aes(wt, mpg)) +
   geom_point() +
   facet_grid(cols = vars(fam))
 ```
+
+2. Define a specific order using separate `levels` and `labels` arguments. Recall that `1` is `"manual"` and `0` is `"automatic"`.
 
 ```{r,eval=TRUE}
 # Make factor, set proper labels explictly, and
@@ -1163,12 +1159,11 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(cols = vars(fam))
 ```
 
-
+Outstanding ordering! Arrange your facets in an intuitive order for your data.
 
 ## Variable plotting spaces I: continuous variables
 
 By default every facet of a plot has the same axes. If the data ranges vary wildly between facets, it can be clearer if each facet has its own scale. This is achieved with the `scales` argument to `facet_grid()`.
-
 
 * `"fixed"` (default): axes are shared between facets.
 * `free`: each facet has its own axes.
@@ -1177,15 +1172,9 @@ By default every facet of a plot has the same axes. If the data ranges vary wild
 
 When faceting by columns, `"free_y"` has no effect, but we can adjust the x-axis. In contrast, when faceting by rows, `"free_x"` has no effect, but we can adjust the y-axis.
 
+**Steps**
 
-**Instructions:**
-
-* Update the plot to facet columns by `cyl`.
-* Update the faceting to free the x-axis scales.
-* Facet **rows** by `cyl` (rather than columns).
-* Free the **y**-axis scales (instead of x).
-
-**Solution:**
+1. Update the plot to facet columns by `cyl`.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) +
@@ -1193,6 +1182,8 @@ ggplot(mtcars, aes(wt, mpg)) +
   # Facet columns by cyl 
   facet_grid(cols = vars(cyl))
 ```
+
+2. Update the faceting to free the x-axis scales.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) +
@@ -1202,6 +1193,9 @@ ggplot(mtcars, aes(wt, mpg)) +
             scales = "free_x")
 ```
 
+3. Facet **rows** by `cyl` (rather than columns).
+4. Free the **y**-axis scales (instead of x).
+
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point() + 
@@ -1209,7 +1203,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_grid(rows = vars(cyl), scales = "free_y")
 ```
 
-
+Freedom! Shared scales make it easy to compare between facets, but can be confusing if the data ranges are very different. In that case, used free scales.
 
 ## Variable plotting spaces II: categorical variables
 
@@ -1217,13 +1211,9 @@ When you have a categorical variable with many levels which are not all present 
 
 By default, each facet of a plot is the same size. This behavior can be changed with the `spaces` argument, which works in the same way as `scales`: `"free_x"` allows different sized facets on the x-axis, `"free_y"`, allows different sized facets on the y-axis, `"free"` allows different sizes in both directions.
 
+**Steps**
 
-**Instructions:**
-
-* Facet the plot by rows according to `gear` using `vars()`. Notice that *every* car is listed in *every* facet, resulting in many lines without data.
-* To remove blank lines, set the `scales` and `space` arguments in `facet_grid()` to `free_y`.
-
-**Solution:**
+1. Facet the plot by rows according to `gear` using `vars()`. Notice that *every* car is listed in *every* facet, resulting in many lines without data.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = mpg, y = car, color = fam)) +
@@ -1231,6 +1221,8 @@ ggplot(mtcars, aes(x = mpg, y = car, color = fam)) +
   # Facet rows by gear
   facet_grid(rows = vars(gear))
 ```
+
+2. To remove blank lines, set the `scales` and `space` arguments in `facet_grid()` to `free_y`.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = mpg, y = car, color = fam)) +
@@ -1241,7 +1233,11 @@ ggplot(mtcars, aes(x = mpg, y = car, color = fam)) +
              space  = "free_y")
 ```
 
+Super spaces! Freeing the y-scale to remove blank lines helps focus attention on the actual data present.
 
+## Facet wrap & margins
+
+Theory. Coming soon ...
 
 ## Wrapping for many levels
 
@@ -1254,15 +1250,11 @@ For this plot, we'll use the `Vocab` dataset that we've already seen. The base l
 Since we have many `years`, it doesn't make sense to use `facet_grid()`, so let's try `facet_wrap()` instead.
 
 
-**Instructions:**
+**Steps**
 
 1. Add a facet_wrap() layer and specify:
-  * The `year` variable with an argument using the `vars()` function,
-2. Add a `facet_wrap()` layer and specify the `year` variable with a formula notation (`~`).
-3. Add a `facet_wrap()` layer and specify:
-  * Formula notation as before, and `ncol` set to `11`.
 
-**Solution:**
+    * The `year` variable with an argument using the `vars()` function,
 
 ```{r,eval=TRUE}
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
@@ -1271,12 +1263,18 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   facet_wrap(vars(year))
 ```
 
+2. Add a `facet_wrap()` layer and specify the `year` variable with a formula notation (`~`).
+
 ```{r,eval=TRUE}
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
   stat_smooth(method = "lm", se = FALSE) +
   # Create facets, wrapping by year, using a formula
   facet_wrap(~ year)
 ```
+
+3. Add a `facet_wrap()` layer and specify:
+    
+    * Formula notation as before, and `ncol` set to `11`.
 
 ```{r,eval=TRUE}
 ggplot(Vocab, aes(x = education, y = vocabulary)) +
@@ -1285,7 +1283,7 @@ ggplot(Vocab, aes(x = education, y = vocabulary)) +
   facet_wrap(~ year, ncol = 11)
 ```
 
-
+It's a wrap! Start experimenting with facets in your own plots.
 
 ## Margin plots
 
@@ -1302,16 +1300,9 @@ To make it easier to follow the facets, we've created two factor variables with 
 
 *Zoom the graphics window to better view your plots.*
 
-
-**Instructions:**
+**Steps**
 
 1. Update the plot to facet the rows by `fvs` and `fam`, and columns by `gear`.
-2. Add all possible margins to the plot.
-3. Update the facets to only show margins on `"fam"`.
-4. Update the facets to only show margins on `"gear"` and `"fvs"`.
-
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # data
@@ -1326,6 +1317,8 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
              cols = vars(gear))
 ```
 
+2. Add all possible margins to the plot.
+
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point() +
@@ -1334,6 +1327,8 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
              cols = vars(gear),
              margins = T)
 ```
+
+3. Update the facets to only show margins on `"fam"`.
 
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
@@ -1344,6 +1339,8 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
              margins = "fam")
 ```
 
+4. Update the facets to only show margins on `"gear"` and `"fvs"`.
+
 ```{r,eval=TRUE}
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point() +
@@ -1351,22 +1348,27 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   facet_grid(rows = vars(fvs, fam), cols = vars(gear), margins = c("gear", "fvs"))
 ```
 
+Magic margins! It can be really helpful to show the full margin plots!
 
 # 4. Best Practices
+
+Now that you have the technical skills to make great visualizations, it’s important that you make them as meaningful as possible. In this chapter, you’ll review three plot types that are commonly discouraged in the data viz community: heat maps, pie charts, and dynamite plots. You’ll learn the pitfalls with these plots and how to avoid making these mistakes yourself.
+
+## Best practices: bar plots
+
+Theory. Coming soon ...
+
 ## Bar plots: dynamite plots
 
 In the video we saw many reasons why "dynamite plots" (bar plots with error bars) are *not* well suited for their intended purpose of depicting distributions. If you *really* want error bars on bar plots, you can of course get them, but you'll need to set the positions manually. A point geom will typically serve you much better.
 
 Nonetheless, you should know how to handle these kinds of plots, so let's give it a try.
 
+**Steps**
 
-**Instructions:**
-
-* Using `mtcars,`, plot `wt` versus `fcyl`.
-* Add a bar summary stat, aggregating the `wt`s by their mean, filling the bars in a skyblue color.
-* Add an errorbar summary stat, aggregating the `wt`s by `mean_sdl`.
-
-**Solution:**
+1. Using `mtcars,`, plot `wt` versus `fcyl`.
+2. Add a bar summary stat, aggregating the `wt`s by their mean, filling the bars in a skyblue color.
+3. Add an errorbar summary stat, aggregating the `wt`s by `mean_sdl`.
 
 ```{r,eval=TRUE}
 # Plot wt vs. fcyl
@@ -1377,7 +1379,7 @@ ggplot(mtcars, aes(x = fcyl, y = wt)) +
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)
 ```
 
-
+Excellent errors! Remember, we can specify any function in `fun.data` or `fun.y` and we can also specify any `geom`, as long as it's appropriate to the data type.
 
 ## Bar plots: position dodging
 
@@ -1385,21 +1387,9 @@ In the previous exercise we used the `mtcars` dataset to draw a dynamite plot ab
 
 In this exercise we will add a distinction between transmission type, `fam`, for the dynamite plots and explore position dodging (where bars are side-by-side).
 
-
-**Instructions:**
+**Steps**
 
 1. Add two more aesthetics so the bars are `color`ed and `fill`ed  by `fam`.
-2. The stacked bars are tricky to interpret. Make them transparent and side-by-side.
-
-  * Make the bar summary statistic transparent by setting `alpha` to `0.5`.
-  * For each of the summary statistics, set the bars' position to `"dodge"`.
-
-3. The error bars are incorrectly positioned. Use a position object.
-
-  * Define a dodge position object with width `0.9`, assigned to `posn_d`.
-  * For each of the summary statistics, set the bars' position to `posn_d`.
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # Update the aesthetics to color and fill by fam
@@ -1407,6 +1397,11 @@ ggplot(mtcars, aes(x = fcyl, y = wt, color = fam, fill = fam)) +
   stat_summary(fun = mean, geom = "bar") +
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)
 ```
+
+2. The stacked bars are tricky to interpret. Make them transparent and side-by-side.
+
+    * Make the bar summary statistic transparent by setting `alpha` to `0.5`.
+    * For each of the summary statistics, set the bars' position to `"dodge"`.
 
 ```{r,eval=TRUE}
 # Set alpha for the first and set position for each stat summary function
@@ -1423,6 +1418,11 @@ ggplot(mtcars, aes(x = fcyl, y = wt, color = fam, fill = fam)) +
     position = "dodge", 
     width    = 0.1)
 ```
+
+3. The error bars are incorrectly positioned. Use a position object.
+
+    * Define a dodge position object with width `0.9`, assigned to `posn_d`.
+    * For each of the summary statistics, set the bars' position to `posn_d`.
 
 ```{r,eval=TRUE}
 # Define a dodge position object with width 0.9
@@ -1447,7 +1447,7 @@ ggplot(mtcars, aes(x     = fcyl,
 
 ```
 
-
+Bar plots 2.0! slightly overlapping bar plots are common in the popular press and add a bit of style to your data viz.
 
 ## Bar plots: Using aggregated data
 
@@ -1458,28 +1458,12 @@ If it *is* appropriate to use bar plots (see the video!), then it nice to give a
 Here, we've created a summary data frame called `mtcars_by_cyl` which contains the average (`mean_wt`), standard deviations (`sd_wt`) and count (`n_wt`) of car weights, for each cylinder group, `cyl`. It also contains the proportion (`prop`) of each cylinder represented in the entire dataset. Use the console to familiarize yourself with the `mtcars_by_cyl` data frame.
 
 
-**Instructions:**
+**Steps**
 
 1. Draw a bar plot with `geom_bar()`.
 
-  * Using `mtcars_by_cyl`, plot `mean_wt` versus `cyl`.
-  * Add a bar layer, with `stat` set to `"identity"` an fill-color `"skyblue"`.
-
-2. Draw the same plot with `geom_col()`.
-
-  * Replace `geom_bar()` with `geom_col()`.
-  * Remove the `stat` argument.
-
-3. Change the bar widths to reflect the proportion of data they contain.
-
-  * Add a `width` aesthetic to `geom_col()`, set to `prop`. (*Ignore the warning from ggplot2.*)
-
-4.
-  * Add `geom_errorbar()`.
-  * Set the `ymin` aesthetic to `mean_wt` minus `sd_wt`. Set the `ymax` aesthetic to the mean weight plus the standard deviation of the weight.
-  * Set the width to `0.1`.
-
-**Solution:**
+    * Using `mtcars_by_cyl`, plot `mean_wt` versus `cyl`.
+    * Add a bar layer, with `stat` set to `"identity"` an fill-color `"skyblue"`.
 
 ```{r,eval=TRUE}
 # data
@@ -1496,11 +1480,20 @@ ggplot(mtcars_by_cyl, aes(cyl, mean_wt)) +
   geom_bar(stat="identity", fill="skyblue")
 ```
 
+2. Draw the same plot with `geom_col()`.
+
+    * Replace `geom_bar()` with `geom_col()`.
+    * Remove the `stat` argument.
+
 ```{r,eval=TRUE}
 ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
   # Swap geom_bar() for geom_col()
   geom_col(fill = "skyblue")
 ```
+
+3. Change the bar widths to reflect the proportion of data they contain.
+
+    * Add a `width` aesthetic to `geom_col()`, set to `prop`. (*Ignore the warning from ggplot2.*)
 
 ```{r,eval=TRUE}
 ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
@@ -1508,6 +1501,11 @@ ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
   geom_col(fill = "skyblue",
            aes(width = prop))
 ```
+
+4. Add `geom_errorbar()`.
+  
+    * Set the `ymin` aesthetic to `mean_wt` minus `sd_wt`. Set the `ymax` aesthetic to the mean weight plus the standard deviation of the weight.
+    * Set the width to `0.1`.
 
 ```{r,eval=TRUE}
 ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
@@ -1522,7 +1520,11 @@ ggplot(mtcars_by_cyl, aes(x = cyl, y = mean_wt)) +
   )
 ```
 
+Awesome Aggregrates! This is a good start, but it's difficult to adjust the spacing between the bars.
 
+## Heatmaps use case scenario
+
+Theory. Coming soon ...
 
 ## Heat maps
 
@@ -1533,21 +1535,10 @@ To produce them, map two categorical variables onto the `x` and `y` aesthetics, 
 We'll produce the heat map we saw in the video (in the viewer) with the built-in `barley` dataset. The `barley` dataset is in the `lattice` package and has already been loaded for you. Use <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a> to explore the structure.
 
 
-**Instructions:**
+**Steps**
 
-1. 
-  * Using `barley`, plot `variety` versus `year`, filled by `yield`.
-  * Add a <a href="http://www.rdocumentation.org/packages/ggplot2/functions/geom_tile" target="_blank" rel="noopener noreferrer">`geom_tile()`</a> layer.
-
-2. 
-  * Add a <a href="http://www.rdocumentation.org/packages/ggplot2/functions/facet_wrap" target="_blank" rel="noopener noreferrer">`facet_wrap()`</a> function with facets as `vars(site)` and `ncol = 1`. *Strip names will be above the panels, not to the side (as with `facet_grid()`).*
-  * Give the heat maps a 2-color palette using <a href="http://www.rdocumentation.org/packages/ggplot2/functions/scale_gradient" target="_blank" rel="noopener noreferrer">`scale_fill_gradient()`</a>. Set `low` and `high` to `"white"` and `"red"`, respectively.
-**Instructions:**
-
-3. A color palette of 9 reds, made with <a href="http://www.rdocumentation.org/packages/RColorBrewer/functions/ColorBrewer" target="_blank" rel="noopener noreferrer">`brewer.pal()`</a>, is provided as `red_brewer_palette`.
-  * Update the fill scale to use an *n*-color gradient with <a href="http://www.rdocumentation.org/packages/ggplot2/functions/scale_gradient" target="_blank" rel="noopener noreferrer">`scale_fill_gradientn()`</a> (note the `n`). Set the scale `colors` to the red brewer palette.
-
-**Solution:**
+1. Using `barley`, plot `variety` versus `year`, filled by `yield`.
+2. Add a <a href="http://www.rdocumentation.org/packages/ggplot2/functions/geom_tile" target="_blank" rel="noopener noreferrer">`geom_tile()`</a> layer.
 
 ```{r,eval=TRUE}
 # data
@@ -1559,6 +1550,9 @@ ggplot(barley, aes(year, variety, fill = yield)) +
   geom_tile()
 ```
 
+3.. Add a <a href="http://www.rdocumentation.org/packages/ggplot2/functions/facet_wrap" target="_blank" rel="noopener noreferrer">`facet_wrap()`</a> function with facets as `vars(site)` and `ncol = 1`. *Strip names will be above the panels, not to the side (as with `facet_grid()`).*
+4. Give the heat maps a 2-color palette using <a href="http://www.rdocumentation.org/packages/ggplot2/functions/scale_gradient" target="_blank" rel="noopener noreferrer">`scale_fill_gradient()`</a>. Set `low` and `high` to `"white"` and `"red"`, respectively.
+
 ```{r,eval=TRUE}
 # Previously defined
 ggplot(barley, aes(x = year, y = variety, fill = yield)) +
@@ -1568,6 +1562,10 @@ ggplot(barley, aes(x = year, y = variety, fill = yield)) +
   # Add a fill scale using an 2-color gradient
   scale_fill_gradient(low = "white", high = "red")
 ```
+
+5. A color palette of 9 reds, made with <a href="http://www.rdocumentation.org/packages/RColorBrewer/functions/ColorBrewer" target="_blank" rel="noopener noreferrer">`brewer.pal()`</a>, is provided as `red_brewer_palette`.
+  
+    * Update the fill scale to use an *n*-color gradient with <a href="http://www.rdocumentation.org/packages/ggplot2/functions/scale_gradient" target="_blank" rel="noopener noreferrer">`scale_fill_gradientn()`</a> (note the `n`). Set the scale `colors` to the red brewer palette.
 
 ```{r,eval=TRUE}
 # A palette of 9 reds
@@ -1582,37 +1580,24 @@ ggplot(barley, aes(x = year, y = variety, fill = yield)) +
   scale_fill_gradientn(colors = red_brewer_palette)
 ```
 
+Good job! You can continue by using breaks, limits and labels to modify the fill scale and update the theme, but this is a pretty good start.
 
 ## Useful heat maps
 
-Heat maps are often a poor data viz solution because they typically don't convey useful information. We saw a nice alternative in the last exercise. But sometimes they *are* really good. Which of the following scenarios is *not* one of those times?
+> *Question*
+> ---
+> Heat maps are often a poor data viz solution because they typically don't convey useful information. We saw a nice alternative in the last exercise. But sometimes they *are* really good. Which of the following scenarios is *not* one of those times?<br>
+> <br>
+> ⬜ When data has been sorted, e.g. according to a clustering algorithm, and we can see clear trends.<br>
+> ⬜ When there are few groups with large differences.<br>
+> ✅ When we have a large data set and we want to impress our colleagues with how complex our work is!<br>
+> ⬜ When using explanatory plots to communicate a clear message to a non-scientific audience.<br>
 
-**Possible Answers:**
-
-:white_large_square: When data has been sorted, e.g. according to a clustering algorithm, and we can see clear trends.<br>
-:white_large_square: When there are few groups with large differences.<br>
-:white_check_mark: When we have a large data set and we want to impress our colleagues with how complex our work is!<br>
-:white_large_square: When using explanatory plots to communicate a clear message to a non-scientific audience.<br>
-
+Yes. This is typical and it's why many people dislike heatmaps.
 
 ## Heat map alternatives
 
 There are several alternatives to heat maps. The best choice really depends on the data and the story you want to tell with this data. If there is a time component, the most obvious choice is a line plot.
-
-
-**Instructions:**
-
-1.
-  * Using `barley`, plot `yield` versus `year`, colored and grouped by `variety`.
-  * Add a line layer.
-  * Facet, wrapping by `site`, with 1 row.
-
-2. Display only means and ribbons for spread.
-  * Map `site` onto `color`, `group` and `fill`.
-  * Add a <a href="http://www.rdocumentation.org/packages/ggplot2/functions/stat_summary" target="_blank" rel="noopener noreferrer">`stat_summary()`</a> layer. set `fun.y = mean`, and `geom = "line"`.
-  * In the second <a href="http://www.rdocumentation.org/packages/ggplot2/functions/stat_summary" target="_blank" rel="noopener noreferrer">`stat_summary()`</a>, set `geom = "ribbon"`, `color = NA` and `alpha = 0.1`.
-
-**Solution:**
 
 ```{r,eval=TRUE}
 # The heat map we want to replace
@@ -1623,6 +1608,12 @@ ggplot(barley, aes(x = year, y = variety, fill = yield)) +
   scale_fill_gradientn(colors = brewer.pal(9, "Reds"))
 ```
 
+**Steps**
+
+1. Using `barley`, plot `yield` versus `year`, colored and grouped by `variety`.
+2. Add a line layer.
+3. Facet, wrapping by `site`, with 1 row.
+
 ```{r,eval=TRUE}
 # Using barley, plot yield vs. year, colored and grouped by variety
 ggplot(barley, aes(year, yield, color = variety, group = variety)) +
@@ -1631,6 +1622,12 @@ ggplot(barley, aes(year, yield, color = variety, group = variety)) +
   # Facet, wrapping by site, with 1 row
   facet_wrap( ~ site, nrow = 1)
 ```
+
+4. Display only means and ribbons for spread.
+
+    * Map `site` onto `color`, `group` and `fill`.
+    * Add a <a href="http://www.rdocumentation.org/packages/ggplot2/functions/stat_summary" target="_blank" rel="noopener noreferrer">`stat_summary()`</a> layer. set `fun.y = mean`, and `geom = "line"`.
+    * In the second <a href="http://www.rdocumentation.org/packages/ggplot2/functions/stat_summary" target="_blank" rel="noopener noreferrer">`stat_summary()`</a>, set `geom = "ribbon"`, `color = NA` and `alpha = 0.1`.
 
 ```{r,eval=TRUE}
 # Using barely, plot yield vs. year, colored, grouped, and filled by site
@@ -1645,33 +1642,35 @@ ggplot(barley, aes(x = year,
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "ribbon", alpha = 0.1, color = NA)
 ```
 
-
+Good job! Whenever you see a heat map, ask yourself it it's really necessary. Many people use them because they look fancy and complicated - signs of poor communication skills.
 
 ## Suppression of the origin
 
-Suppression of the origin refers to *not* showing 0 on a continuous scale. When is it inappropriate to suppress the origin?
+> *Question*
+> ---
+> Suppression of the origin refers to *not* showing 0 on a continuous scale. When is it inappropriate to suppress the origin?<br>
+> <br>
+> ✅ When the scale *has* a natural zero, like height or distance.<br>
+> ⬜ When the scale *doesn't have* a natural zero, like temperature (in C or F).<br>
+> ⬜ When there is a large amount of whitespace between the origin and the actual data.<br>
+> ⬜ When it does not obscure the shape of the data.<br>
 
-**Possible Answers:**
-
-:white_check_mark: When the scale <em>has</em> a natural zero, like height or distance. <br>
-:white_large_square: When the scale <em>doesn't have</em> a natural zero, like temperature (in C or F).<br>
-:white_large_square: When there is a large amount of whitespace between the origin and the actual data.<br>
-:white_large_square: When it does not obscure the shape of the data.<br>
-
+Correct. This would be a good reason to begin at 0, but it's not strictly necessary and not always appropriate.
 
 ## Color blindness
 
 Red-Green color blindness is surprisingly prevalent, which means that part of your audience will not be able to ready your plot if you are relying on color aesthetics.
 
-Why would it be appropriate to use red and green in a plot?
+> *Question*
+> ---
+> Why would it be appropriate to use red and green in a plot?<br>
+> <br>
+> ⬜ When red and green are the actual colors in the sample (e.g. fluorescence in biological assays).<br>
+> ⬜ When red means stop/bad and green means go/good.<br>
+> ⬜ Because red and green are complimentary colors and look great together.<br>
+> ✅ When red and green have different intensities (e.g. light red and dark green).<br>
 
-**Possible Answers:**
-
-:white_large_square: When red and green are the actual colors in the sample (e.g. fluorescence in biological assays).<br>
-:white_large_square: When red means stop/bad and green means go/good.<br>
-:white_large_square: Because red and green are complimentary colors and look great together.<br>
-:white_check_mark: When red and green have different intensities (e.g. light red and dark green).<br>
-
+If you really want to use red and green, this is a way to make them accessible to color blind people, since they sill still be able to distinguish intensity. It's not as salient as hue, but it still works. 
 
 ## Typical problems
 
@@ -1684,23 +1683,11 @@ The data comes from an experiment where the effect of two different types of vit
 The data is stored in the `TG` data frame, which contains three variables: `dose`, `len`, and `supp`.
 
 
-**Instructions:**
+**Steps**
 
 1. The first plot contains purposely illegible labels. It's a common problem that can occur when resizing plots. There is also too much non-data ink.
-  * Change `theme_gray(3)` to `theme_classic()`.
-
-2. Our previous plot still has a major problem, `dose` is stored as a `factor` variable. That's why the spacing is off between the levels.
-  * Use `as.character()` wrapped in `as.numeric()` to convert the factor variable to real (continuous) numbers.
-
-3. Use the appropriate geometry for the data:
-  * In the new `stat_summary()` function, set `fun.y` to to calculate the `mean` and the `geom` to a `"line"` to connect the points at their mean values.
-
-4. Make sure the labels are informative:
-  * Add the units `"(mg/day)"` and `"(mean, standard deviation)"` to the x and y labels, respectively.
-  * Use the `"Set1"` palette.
-  * Set the legend labels to `"Orange juice"` and `"Ascorbic acid"`.
-
-**Solution:**
+  
+    * Change `theme_gray(3)` to `theme_classic()`.
 
 ```{r,eval=TRUE}
 # data
@@ -1718,6 +1705,10 @@ growth_by_dose <- ggplot(TG, aes(dose, len, color = supp)) +
 growth_by_dose
 ```
 
+2. Our previous plot still has a major problem, `dose` is stored as a `factor` variable. That's why the spacing is off between the levels.
+  
+    * Use `as.character()` wrapped in `as.numeric()` to convert the factor variable to real (continuous) numbers.
+
 ```{r,eval=TRUE}
 
 # Change type
@@ -1733,6 +1724,10 @@ growth_by_dose <- ggplot(TG, aes(dose, len, color = supp)) +
 # View plot
 growth_by_dose
 ```
+
+3. Use the appropriate geometry for the data:
+
+    * In the new `stat_summary()` function, set `fun.y` to to calculate the `mean` and the `geom` to a `"line"` to connect the points at their mean values.
 
 ```{r,eval=TRUE}
 # Change type
@@ -1752,6 +1747,12 @@ growth_by_dose <- ggplot(TG, aes(dose, len, color = supp)) +
 # View plot
 growth_by_dose
 ```
+
+4. Make sure the labels are informative:
+  
+    * Add the units `"(mg/day)"` and `"(mean, standard deviation)"` to the x and y labels, respectively.
+    * Use the `"Set1"` palette.
+    * Set the legend labels to `"Orange juice"` and `"Ascorbic acid"`.
 
 ```{r,eval=TRUE}
 # Change type
