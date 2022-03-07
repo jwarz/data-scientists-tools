@@ -1,7 +1,129 @@
 Intermediate R
 ================
+Joschka Schwarz
+
+-   [1. Conditionals and Control Flow](#1-conditionals-and-control-flow)
+    -   [Relational Operators](#relational-operators)
+    -   [Equality](#equality)
+    -   [Greater and less than](#greater-and-less-than)
+    -   [Compare vectors](#compare-vectors)
+    -   [Compare matrices](#compare-matrices)
+    -   [Logical Operators](#logical-operators)
+    -   [& and \|](#-and-)
+    -   [& and \| (2)](#-and--2)
+    -   [Reverse the result: !](#reverse-the-result-)
+    -   [Blend it all together](#blend-it-all-together)
+    -   [Conditional Statements](#conditional-statements)
+    -   [The if statement](#the-if-statement)
+    -   [Add an else](#add-an-else)
+    -   [Customize further: else if](#customize-further-else-if)
+    -   [Else if 2.0](#else-if-20)
+    -   [Take control!](#take-control)
+-   [2. Loops](#2-loops)
+    -   [While Loop](#while-loop)
+    -   [Write a while loop](#write-a-while-loop)
+    -   [Throw in more conditionals](#throw-in-more-conditionals)
+    -   [Stop the while loop: break](#stop-the-while-loop-break)
+    -   [Build a while loop from
+        scratch](#build-a-while-loop-from-scratch)
+    -   [For loop](#for-loop)
+    -   [Loop over a vector](#loop-over-a-vector)
+    -   [Loop over a list](#loop-over-a-list)
+    -   [Loop over a matrix](#loop-over-a-matrix)
+    -   [Mix it up with control flow](#mix-it-up-with-control-flow)
+    -   [Next, you break it](#next-you-break-it)
+    -   [Build a for loop from scratch](#build-a-for-loop-from-scratch)
+-   [3. Functions](#3-functions)
+    -   [Introduction to Functions](#introduction-to-functions)
+    -   [Function documentation](#function-documentation)
+    -   [Use a function](#use-a-function)
+    -   [Use a function (2)](#use-a-function-2)
+    -   [Use a function (3)](#use-a-function-3)
+    -   [Functions inside functions](#functions-inside-functions)
+    -   [Required, or optional?](#required-or-optional)
+    -   [Writing Functions](#writing-functions)
+    -   [Write your own function](#write-your-own-function)
+    -   [Write your own function (2)](#write-your-own-function-2)
+    -   [Write your own function (3)](#write-your-own-function-3)
+    -   [Function scoping](#function-scoping)
+    -   [R passes arguments by value](#r-passes-arguments-by-value)
+    -   [R you functional?](#r-you-functional)
+    -   [R you functional? (2)](#r-you-functional-2)
+    -   [Load an R Package](#load-an-r-package)
+    -   [Different ways to load a
+        package](#different-ways-to-load-a-package)
+-   [4. The apply family](#4-the-apply-family)
+    -   [lapply](#lapply)
+    -   [Use lapply with a built-in R
+        function](#use-lapply-with-a-built-in-r-function)
+    -   [Use lapply with your own
+        function](#use-lapply-with-your-own-function)
+    -   [lapply and anonymous
+        functions](#lapply-and-anonymous-functions)
+    -   [Use lapply with additional
+        arguments](#use-lapply-with-additional-arguments)
+    -   [Apply functions that return
+        NULL](#apply-functions-that-return-null)
+    -   [sapply](#sapply)
+    -   [How to use sapply](#how-to-use-sapply)
+    -   [sapply with your own function](#sapply-with-your-own-function)
+    -   [sapply with function returning
+        vector](#sapply-with-function-returning-vector)
+    -   [sapply can’t simplify, now
+        what?](#sapply-cant-simplify-now-what)
+    -   [sapply with functions that return
+        NULL](#sapply-with-functions-that-return-null)
+    -   [Reverse engineering sapply](#reverse-engineering-sapply)
+    -   [vapply](#vapply)
+    -   [Use vapply](#use-vapply)
+    -   [Use vapply (2)](#use-vapply-2)
+    -   [From sapply to vapply](#from-sapply-to-vapply)
+-   [5. Utilities](#5-utilities)
+    -   [Mathematical utilities](#mathematical-utilities)
+    -   [Find the error](#find-the-error)
+    -   [Data Utilities](#data-utilities)
+    -   [Find the error (2)](#find-the-error-2)
+    -   [Beat Gauss using R](#beat-gauss-using-r)
+    -   [Regular Expressions](#regular-expressions)
+    -   [grepl & grep](#grepl--grep)
+    -   [grepl & grep (2)](#grepl--grep-2)
+    -   [sub & gsub](#sub--gsub)
+    -   [sub & gsub (2)](#sub--gsub-2)
+    -   [Times & Dates](#times--dates)
+    -   [Right here, right now](#right-here-right-now)
+    -   [Create and format dates](#create-and-format-dates)
+    -   [Create and format times](#create-and-format-times)
+    -   [Calculations with Dates](#calculations-with-dates)
+    -   [Calculations with Times](#calculations-with-times)
+    -   [Time is of the essence](#time-is-of-the-essence)
+
+**Sshort Description**
+
+Discover conditional statements, loops, and functions to power your own
+R scripts, and learn to make your R code more efficient using the apply
+functions.
+
+**Long Description**
+
+Intermediate R is the next stop on your journey in mastering the R
+programming language. In this R training, you will learn about
+conditional statements, loops, and functions to power your own R
+scripts. Next, make your R code more efficient and readable using the
+apply functions. Finally, the utilities chapter gets you up to speed
+with regular expressions in R, data structure manipulations, and times
+and dates. This course will allow you to take the next step in advancing
+your overall knowledge and capabilities while programming in R.
 
 # 1. Conditionals and Control Flow
+
+In this chapter, you’ll learn about relational operators for comparing R
+objects, and logical operators like “and” and “or” for combining TRUE
+and FALSE values. Then, you’ll use this knowledge to build conditional
+statements.
+
+## Relational Operators
+
+Theory. Coming soon …
 
 ## Equality
 
@@ -30,17 +152,15 @@ Notice from the last expression that R is case sensitive: “R” is not
 equal to “r”. Keep this in mind when solving the exercises in this
 chapter!
 
-**Instructions:**
+**Steps**
 
--   In the editor on the right, write R code to see if `TRUE` equals
+1.  In the editor on the right, write R code to see if `TRUE` equals
     `FALSE`.
--   Likewise, check if `-6 * 14` is *not* equal to `17 - 101`.
--   Next up: comparison of character strings. Ask R whether the strings
+2.  Likewise, check if `-6 * 14` is *not* equal to `17 - 101`.
+3.  Next up: comparison of character strings. Ask R whether the strings
     “useR” and “user” are equal.
--   Finally, find out what happens if you compare logicals to numerics:
+4.  Finally, find out what happens if you compare logicals to numerics:
     are `TRUE` and 1 equal?
-
-**Solution:**
 
 ``` r
 # Comparison of logicals
@@ -62,6 +182,10 @@ TRUE == 1
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Awesome! Since `TRUE` coerces to `1` under the hood, `TRUE == 1`
+evaluates to `TRUE`. Make sure not to mix up `==` (comparison) and `=`
+(assignment), `==` is what need to check the equality of R objects.
 
 ## Greater and less than
 
@@ -90,15 +214,13 @@ relationship based on alphabetical order. Also, keep in mind that `TRUE`
 is treated as `1` for arithmetic, and `FALSE` is treated as `0`.
 Therefore, `FALSE < TRUE` is `TRUE`.
 
-**Instructions:**
+**Steps**
 
-Write R expressions to check whether:
+1.  Write R expressions to check whether:
 
--   `-6 * 5 + 2` is greater than or equal to `-10 + 1`.
--   “raining” is less than or equal to “raining dogs”.
--   TRUE is greater than FALSE.
-
-**Solution:**
+    -   `-6 * 5 + 2` is greater than or equal to `-10 + 1`.
+    -   “raining” is less than or equal to “raining dogs”.
+    -   TRUE is greater than FALSE.
 
 ``` r
 # Comparison of numerics
@@ -117,6 +239,9 @@ TRUE > FALSE
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Great job! Make sure to have a look at the console output to see if R
+returns the results you expected.
+
 ## Compare vectors
 
 You are already aware that R is very good with vectors. Without having
@@ -130,17 +255,16 @@ code in the editor initializes the vectors `linkedin` and `facebook`.
 Each of the vectors contains the number of profile views your LinkedIn
 and Facebook profiles had over the last seven days.
 
-**Instructions:**
+**Steps**
 
-Using relational operators, find a logical answer, i.e. `TRUE` or
-`FALSE`, for the following questions:
+1.  Using relational operators, find a logical answer, i.e. `TRUE` or
+    `FALSE`, for the following questions:
 
--   On which days did the number of LinkedIn profile views exceed 15?
--   When was your LinkedIn profile viewed only 5 times or fewer?
--   When was your LinkedIn profile visited more often than your Facebook
-    profile?
-
-**Solution:**
+    -   On which days did the number of LinkedIn profile views exceed
+        15?
+    -   When was your LinkedIn profile viewed only 5 times or fewer?
+    -   When was your LinkedIn profile visited more often than your
+        Facebook profile?
 
 ``` r
 # The linkedin and facebook vectors have already been created for you
@@ -163,6 +287,10 @@ linkedin > facebook
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Wonderful! Have a look at the console output. Your LinkedIn profile was
+pretty popular on the sixth day, but less so on the fourth and fifth
+day.
+
 ## Compare matrices
 
 R’s ability to deal with different data structures for comparisons does
@@ -175,17 +303,15 @@ contains the LinkedIn information; the second row the Facebook
 information. The original vectors `facebook` and `linkedin` are still
 available as well.
 
-**Instructions:**
+**Steps**
 
-Using the relational operators you’ve learned so far, try to discover
-the following:
+1.  Using the relational operators you’ve learned so far, try to
+    discover the following:
 
--   When were the views exactly equal to 13? Use the `views` matrix to
-    return a logical matrix.
--   For which days were the number of views less than or equal to 14?
-    Again, have R return a logical matrix.
-
-**Solution:**
+    -   When were the views exactly equal to 13? Use the `views` matrix
+        to return a logical matrix.
+    -   For which days were the number of views less than or equal to
+        14? Again, have R return a logical matrix.
 
 ``` r
 # The social data has been created for you
@@ -206,6 +332,14 @@ views <= 14
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Nice job! This exercise concludes the part on comparators. Now that you
+know how to query the relation between R objects, the next step will be
+to use the results to alter the behavior of your programs.
+
+## Logical Operators
+
+Theory. Coming soon …
 
 ## & and \|
 
@@ -235,15 +369,13 @@ worked with previously. The `linkedin` vector represents the number of
 LinkedIn views your profile had in the last seven days, remember? Both
 the variables `linkedin` and `last` have been pre-defined for you.
 
-**Instructions:**
+**Steps**
 
-Write R expressions to solve the following questions concerning the
-variable `last`:
+1.  Write R expressions to solve the following questions concerning the
+    variable `last`:
 
--   Is `last` under 5 or above 10?
--   Is `last` between 15 and 20, excluding 15 but including 20?
-
-**Solution:**
+    -   Is `last` under 5 or above 10?
+    -   Is `last` between 15 and 20, excluding 15 but including 20?
 
 ``` r
 last <- tail(linkedin, 1)
@@ -260,6 +392,8 @@ last > 15 & last <= 20
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Great! Do the results of the different expressions make sense?
+
 ## & and \| (2)
 
 Like relational operators, logical operators work perfectly fine with
@@ -270,17 +404,15 @@ matrix - `views` - has been defined; its first and second row correspond
 to the `linkedin` and `facebook` vectors, respectively. Ready for some
 advanced queries to gain more insights into your social outreach?
 
-**Instructions:**
+**Steps**
 
--   When did LinkedIn views exceed 10 *and* did Facebook views fail to
+1.  When did LinkedIn views exceed 10 *and* did Facebook views fail to
     reach 10 for a particular day? Use the `linkedin` and `facebook`
     vectors.
--   When were one or both of your LinkedIn and Facebook profiles visited
+2.  When were one or both of your LinkedIn and Facebook profiles visited
     at least 12 times?
--   When is the `views` matrix equal to a number between 11 and 14,
+3.  When is the `views` matrix equal to a number between 11 and 14,
     excluding 11 and including 14?
-
-**Solution:**
 
 ``` r
 # linkedin exceeds 10 but facebook below 10
@@ -301,6 +433,12 @@ views > 11 & views <= 14
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Bravo! You’ll have noticed how easy it is to use logical operators to
+vectors and matrices. What do these results tell us? The third day of
+the recordings was the only day where your LinkedIn profile was visited
+more than 10 times, while your Facebook profile wasn’t. Can you draw
+similar conclusions for the other results?
+
 ## Reverse the result: !
 
 On top of the `&` and `|` operators, you also learned about the `!`
@@ -319,7 +457,11 @@ are some R expressions that use `!`. They all evaluate to `FALSE`:
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
-What would the following set of R expressions return?
+> ## *Question*
+>
+> What would the following set of R expressions return?<br> <br> ⬜
+> `TRUE`<br> ⬜ `FALSE`<br> ⬜ Running this piece of code would throw an
+> error.<br>
 
 ``` r
 x <- 5
@@ -330,12 +472,6 @@ y <- 7
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
-
-**Possible Answers:**
-
-:white_large_square: `TRUE`<br> :white_check_mark: `FALSE`<br>
-:white_large_square: Running this piece of code would throw an
-error.<br>
 
 ## Blend it all together
 
@@ -349,20 +485,18 @@ their profile has had over the past seven days. You stored the results
 in a data frame called `li_df`. This data frame is available in the
 workspace; type `li_df` in the console to check it out.
 
-**Instructions:**
+**Steps**
 
--   Select the entire second column, named `day2`, from the `li_df` data
+1.  Select the entire second column, named `day2`, from the `li_df` data
     frame as a vector and assign it to `second`.
--   Use `second` to create a logical vector, that contains `TRUE` if the
+2.  Use `second` to create a logical vector, that contains `TRUE` if the
     corresponding number of views is strictly greater than 25 or
     strictly lower than 5 and `FALSE` otherwise. Store this logical
     vector as `extremes`.
--   Use `sum()` on the `extremes` vector to calculate the number of
+3.  Use `sum()` on the `extremes` vector to calculate the number of
     `TRUE`s in `extremes` (i.e. to calculate the number of employees
     that are either very popular or very low-profile). Simply print this
     number to the console.
-
-**Solution:**
 
 ``` r
 # load li_df in your workspace
@@ -383,6 +517,13 @@ x
 
     ## [1] 16
 
+Great! Head over to the next video and learn how relational and logical
+operators can be used to alter the flow of your R scripts.
+
+## Conditional Statements
+
+Theory. Coming soon …
+
 ## The if statement
 
 Before diving into some exercises on the `if` statement, have another
@@ -400,15 +541,13 @@ website; the `num_views` variable denotes the actual number of views
 that particular `medium` had on the last day of your recordings. Both
 variables have been pre-defined for you.
 
-**Instructions:**
+**Steps**
 
--   Examine the `if` statement that prints out
+1.  Examine the `if` statement that prints out
     `"Showing LinkedIn information"` if the `medium` variable equals
     `"LinkedIn"`.
--   Code an `if` statement that prints `"You are popular!"` to the
+2.  Code an `if` statement that prints `"You are popular!"` to the
     console if the `num_views` variable exceeds 15.
-
-**Solution:**
 
 ``` r
 # Variables related to your last day of recordings
@@ -429,6 +568,10 @@ if (num_views > 15) {
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Great! Try to see what happens if you change the `medium` and
+`num_views` variables and run your code again. Let’s further customize
+these if statements in the next exercise.
 
 ## Add an else
 
@@ -452,16 +595,14 @@ Both `if` statements that you coded in the previous exercises are
 already available to use. It’s now up to you to extend them with the
 appropriate `else` statements!
 
-**Instructions:**
+**Steps**
 
-Add an `else` statement to both control structures, such that
+1.  Add an `else` statement to both control structures, such that
 
--   “Unknown medium” gets printed out to the console when the
-    if-condition on `medium` does not hold.
--   R prints out “Try to be more visible!” when the if-condition on
-    `num_views` is not met.
-
-**Solution:**
+    -   “Unknown medium” gets printed out to the console when the
+        if-condition on `medium` does not hold.
+    -   R prints out “Try to be more visible!” when the if-condition on
+        `num_views` is not met.
 
 ``` r
 # Control structure for medium
@@ -483,6 +624,9 @@ if (num_views > 15) {
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Great job! You also had Facebook information available, remember? Time
+to add some more statements to our control structures using `else if`!
 
 ## Customize further: else if
 
@@ -509,19 +653,18 @@ if (condition1) {
 line as the closing bracket of the previous part of the control
 construct!*
 
-**Instructions:**
+**Steps**
 
-Add code to both control structures such that:
+1.  Add code to both control structures such that:
 
--   R prints out “Showing Facebook information” if `medium` is equal to
-    “Facebook”. Remember that R is case sensitive!
--   “Your number of views is average” is printed if `num_views` is
-    between 15 (inclusive) and 10 (exclusive). Feel free to change the
-    variables `medium` and `num_views` to see how the control structure
-    respond. In both cases, the existing code should be extended in the
-    `else if` statement. No existing code should be modified.
-
-**Solution:**
+    -   R prints out “Showing Facebook information” if `medium` is equal
+        to “Facebook”. Remember that R is case sensitive!
+    -   “Your number of views is average” is printed if `num_views` is
+        between 15 (inclusive) and 10 (exclusive).free to change the
+        variables `medium` and `num_views` to see how the control
+        structure respond. In both cases, the existing code should be
+        extended in the `else if` statement. No existing code should be
+        modified.
 
 ``` r
 # Control structure for medium
@@ -580,12 +723,10 @@ Have a look at the following statements:
 4.  If `number` is set to 2500, R will generate an error, as `result`
     will not be defined.
 
-Select the option that lists <u>all</u> the true statements.
-
-**Possible Answers:**
-
-:white_large_square: 2 and 4<br> :white_check_mark: 1 and 4<br>
-:white_large_square: 1 and 3<br> :white_large_square: 2 and 3<br>
+> ## *Question*
+>
+> Select the option that lists <u>all</u> the true statements.<br> <br>
+> ⬜ 2 and 4<br> ⬜ 1 and 4<br> ✅ 1 and 3<br> ⬜ 2 and 3<br>
 
 ## Take control!
 
@@ -599,18 +740,16 @@ of recordings. Go through the instructions to create R code that
 generates a ‘social media score’, `sms`, based on the values of `li` and
 `fb`.
 
-**Instructions:**
+**Steps**
 
-Finish the control-flow construct with the following behavior:
+1.  Finish the control-flow construct with the following behavior:
 
--   If both `li` and `fb` are 15 or higher, set `sms` equal to double
-    the sum of `li` and `fb`.
--   If both `li` and `fb` are strictly below 10, set `sms` equal to half
-    the sum of `li` and `fb`.
--   In all other cases, set `sms` equal to `li + fb`.
--   Finally, print the resulting `sms` variable.
-
-**Solution:**
+    -   If both `li` and `fb` are 15 or higher, set `sms` equal to
+        double the sum of `li` and `fb`.
+    -   If both `li` and `fb` are strictly below 10, set `sms` equal to
+        half the sum of `li` and `fb`.
+    -   In all other cases, set `sms` equal to `li + fb`.
+    -   Finally, print the resulting `sms` variable.
 
 ``` r
 # Variables related to your last day of recordings
@@ -636,6 +775,14 @@ package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 # 2. Loops
 
+Loops can come in handy on numerous occasions. While loops are like
+repeated if statements, the for loop is designed to iterate over all
+elements in a sequence. Learn about them in this chapter.
+
+## While Loop
+
+Theory. Coming soon …
+
 ## Write a while loop
 
 Let’s get you started with building a `while` loop from the ground up.
@@ -658,19 +805,17 @@ Have a look at the sample code provided; it initializes the `speed`
 variables and already provides a `while` loop template to get you
 started.
 
-**Instructions:**
+**Steps**
 
-Code a `while` loop with the following characteristics:
+1.  Code a `while` loop with the following characteristics:
 
--   The condition of the `while` loop should check if `speed` is higher
-    than 30.
--   Inside the body of the `while` loop, print out `"Slow down!"`.
--   Inside the body of the `while` loop, decrease the `speed` by 7 units
-    and assign this new value to `speed` again. This step is crucial;
-    otherwise your `while` loop will never stop and *your session will
-    expire*.
-
-**Solution:**
+    -   The condition of the `while` loop should check if `speed` is
+        higher than 30.
+    -   Inside the body of the `while` loop, print out `"Slow down!"`.
+    -   Inside the body of the `while` loop, decrease the `speed` by 7
+        units and assign this new value to `speed` again. This step is
+        crucial; otherwise your `while` loop will never stop and *your
+        session will expire*.
 
 ``` r
 # Initialize the speed variable
@@ -713,18 +858,16 @@ is already available for you to use. It prints out your current speed,
 but there’s no code that decreases the `speed` variable yet, which is
 pretty dangerous. Can you make the appropriate changes?
 
-**Instructions:**
+**Steps**
 
--   If the speed is greater than 48, have R print out “Slow down big
+1.  If the speed is greater than 48, have R print out “Slow down big
     time!”, and decrease the speed by `11`.
--   Otherwise, have R simply print out “Slow down!”, and decrease the
+2.  Otherwise, have R simply print out “Slow down!”, and decrease the
     speed by `6`.
 
 If the session keeps timing out and throwing an error, you are probably
 stuck in an infinite loop! Check the body of your `while` loop and make
 sure you are assigning new values to `speed`.
-
-**Solution:**
 
 ``` r
 # Extend/adapt the while loop
@@ -767,13 +910,11 @@ the `while` loop you’ve been working on. Remember that the `break`
 statement is a control statement. When R encounters it, the `while` loop
 is abandoned completely.
 
-**Instructions:**
+**Steps**
 
-Adapt the `while` loop such that it is abandoned when the `speed` of the
-vehicle is greater than 80. This time, the `speed` variable has been
-initialized to 88; keep it that way.
-
-**Solution:**
+1.  Adapt the `while` loop such that it is abandoned when the `speed` of
+    the vehicle is greater than 80. This time, the `speed` variable has
+    been initialized to 88; keep it that way.
 
 ``` r
 # Initialize the speed variable
@@ -809,15 +950,13 @@ updates as determined by control flow constructs. If you manage to solve
 this comprehensive exercise using a `while` loop, you’re totally ready
 for the next topic: the `for` loop.
 
-**Instructions:**
+**Steps**
 
-Finish the `while` loop so that it:
+1.  Finish the `while` loop so that it:
 
--   prints out the triple of `i`, so `3 * i`, at each run.
--   is abandoned with a `break` if the triple of `i` is divisible by 8,
-    but still prints out this triple before breaking.
-
-**Solution:**
+    -   prints out the triple of `i`, so `3 * i`, at each run.
+    -   is abandoned with a `break` if the triple of `i` is divisible by
+        8, but still prints out this triple before breaking.
 
 ``` r
 # Initialize i as 1 
@@ -843,6 +982,10 @@ while (i <= 10) {
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+## For loop
+
+Theory. Coming soon …
 
 ## Loop over a vector
 
@@ -884,13 +1027,12 @@ of views your LinkedIn profile had in the last seven days. The
 `linkedin` vector has been pre-defined so that you can fully focus on
 the instructions!
 
-**Instructions:**
+**Steps**
 
-Write a `for` loop that iterates over all the elements of `linkedin` and
-prints out every element separately. Do this in two ways: using the
-*loop version 1* and the *loop version 2* in the example code above.
-
-**Solution:**
+1.  Write a `for` loop that iterates over all the elements of `linkedin`
+    and prints out every element separately. Do this in two ways: using
+    the *loop version 1* and the *loop version 2* in the example code
+    above.
 
 ``` r
 # The linkedin vector has already been defined for you
@@ -966,16 +1108,14 @@ its population size, the names of the boroughs, and whether it is the
 capital of the United States. We’ve already defined a list `nyc`
 containing this information (source: Wikipedia).
 
-**Instructions:**
+**Steps**
 
-As in the previous exercise, loop over the `nyc` list in two different
-ways to print its elements:
+1.  As in the previous exercise, loop over the `nyc` list in two
+    different ways to print its elements:
 
--   Loop directly over the `nyc` list (loop version 1).
--   Define a looping index and do subsetting using double brackets (loop
-    version 2).
-
-**Solution:**
+    -   Loop directly over the `nyc` list (loop version 1).
+    -   Define a looping index and do subsetting using double brackets
+        (loop version 2).
 
 ``` r
 # The nyc list is already specified
@@ -1009,6 +1149,9 @@ for(j in 1:length(nyc)) {
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+`for` loops can also be used for matrices. Let’s put that to a test in
+the next exercise.
+
 ## Loop over a matrix
 
 In your workspace, there’s a matrix `ttt`, that represents the status of
@@ -1030,19 +1173,18 @@ for (var1 in seq1) {
 }
 ```
 
-**Instructions:**
+**Steps**
 
-Finish the nested `for` loops to go over the elements in `ttt`:
+1.  Finish the nested `for` loops to go over the elements in `ttt`:
 
--   The outer loop should loop over the rows, with loop index `i` (use
-    `1:nrow(ttt)`).
--   The inner loop should loop over the columns, with loop index `j`
-    (use `1:ncol(ttt)`).
--   Inside the inner loop, make use of `print()` and `paste()` to print
-    out information in the following format: “On row i and column j the
-    board contains x”, where `x` is the value on that position.
-
-**Solution:**
+    -   The outer loop should loop over the rows, with loop index `i`
+        (use `1:nrow(ttt)`).
+    -   The inner loop should loop over the columns, with loop index `j`
+        (use `1:ncol(ttt)`).
+    -   Inside the inner loop, make use of `print()` and `paste()` to
+        print out information in the following format: “On row i and
+        column j the board contains x”, where `x` is the value on that
+        position.
 
 ``` r
 # The tic-tac-toe matrix ttt has already been defined for you
@@ -1079,17 +1221,15 @@ interpretation of this data wouldn’t hurt, right? Time to throw in some
 conditionals! As with the `while` loop, you can use the `if` and `else`
 statements inside the `for` loop.
 
-**Instructions:**
+**Steps**
 
-Add code to the `for` loop that loops over the elements of the
-`linkedin` vector:
+1.  Add code to the `for` loop that loops over the elements of the
+    `linkedin` vector:
 
--   If the vector element’s value exceeds 10, print out “You’re
-    popular!”.
--   If the vector element’s value does not exceed 10, print out “Be more
-    visible!”
-
-**Solution:**
+    -   If the vector element’s value exceeds 10, print out “You’re
+        popular!”.
+    -   If the vector element’s value does not exceed 10, print out “Be
+        more visible!”
 
 ``` r
 # The linkedin vector has already been defined for you
@@ -1123,6 +1263,9 @@ for (li in linkedin) {
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Outstanding! In the next exercise, you’ll customize this `for` loop even
+further with `break` and `next` statements.
+
 ## Next, you break it
 
 A possible solution to the previous exercise has been provided for you.
@@ -1136,17 +1279,15 @@ In this exercise, you will use the `break` and `next` statements:
 -   The `next` statement skips the remainder of the code in the loop,
     but continues the iteration.
 
-**Instructions:**
+**Steps**
 
-Extend the `for` loop with two new, separate `if` tests as follows:
+1.  Extend the `for` loop with two new, separate `if` tests as follows:
 
--   If the vector element’s value exceeds 16, print out “This is
-    ridiculous, I’m outta here!” and have R abandon the `for` loop
-    (`break`).
--   If the value is lower than 5, print out “This is too embarrassing!”
-    and fast-forward to the next iteration (`next`).
-
-**Solution:**
+    -   If the vector element’s value exceeds 16, print out “This is
+        ridiculous, I’m outta here!” and have R abandon the `for` loop
+        (`break`).
+    -   If the value is lower than 5, print out “This is too
+        embarrassing!” and fast-forward to the next iteration (`next`).
 
 ``` r
 # The linkedin vector has already been defined for you
@@ -1204,17 +1345,15 @@ function.
 Can you write code that counts the number of r’s that come before the
 first u in `rquote`?
 
-**Instructions:**
+**Steps**
 
--   Initialize the variable `rcount`, as 0.
--   Finish the `for` loop:
--   if `char` equals `"r"`, increase the value of `rcount` by 1.
--   if `char` equals `"u"`, leave the `for` loop entirely with a
+1.  Initialize the variable `rcount`, as 0.
+2.  Finish the `for` loop:
+3.  if `char` equals `"r"`, increase the value of `rcount` by 1.
+4.  if `char` equals `"u"`, leave the `for` loop entirely with a
     `break`.
--   Finally, print out the variable `rcount` to the console to see if
+5.  Finally, print out the variable `rcount` to the console to see if
     your code is correct.
-
-**Solution:**
 
 ``` r
 # Pre-defined variables
@@ -1251,6 +1390,14 @@ package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 # 3. Functions
 
+Functions are an extremely important concept in almost every programming
+language, and R is no different. Learn what functions are and how to use
+them—then take charge by writing your own functions.
+
+## Introduction to Functions
+
+Theory. Coming soon …
+
 ## Function documentation
 
 Before even thinking of using an R function, you should clarify which
@@ -1285,18 +1432,16 @@ is get acquainted with the
 <a href="http://www.rdocumentation.org/packages/base/functions/mean" target="_blank" rel="noopener noreferrer">`mean()`</a>
 function.
 
-**Instructions:**
+**Steps**
 
--   Consult the documentation on the
+1.  Consult the documentation on the
     <a href="http://www.rdocumentation.org/packages/base/functions/mean" target="_blank" rel="noopener noreferrer">`mean()`</a>
     function: `?mean` or `help(mean)`.
--   Inspect the arguments of the
+2.  Inspect the arguments of the
     <a href="http://www.rdocumentation.org/packages/base/functions/mean" target="_blank" rel="noopener noreferrer">`mean()`</a>
     function using the
     <a href="http://www.rdocumentation.org/packages/base/functions/args" target="_blank" rel="noopener noreferrer">`args()`</a>
     function.
-
-**Solution:**
 
 ``` r
 # Consult the documentation on the mean() function
@@ -1331,14 +1476,12 @@ Once more, you’ll be working with the view counts of your social network
 profiles for the past 7 days. These are stored in the `linkedin` and
 `facebook` vectors and have already been created for you.
 
-**Instructions:**
+**Steps**
 
--   Calculate the average number of views for both `linkedin` and
+1.  Calculate the average number of views for both `linkedin` and
     `facebook` and assign the result to `avg_li` and `avg_fb`,
     respectively. Experiment with different types of argument matching!
--   Print out both `avg_li` and `avg_fb`.
-
-**Solution:**
+2.  Print out both `avg_li` and `avg_fb`.
 
 ``` r
 # The linkedin and facebook vectors have already been created for you
@@ -1358,6 +1501,10 @@ avg_fb
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Nice! I’m sure you’ve already called more advanced R functions in your
+history as a programmer. Now you also know what actually happens under
+the hood ;-)
 
 ## Use a function (2)
 
@@ -1392,16 +1539,14 @@ For the remainder of this exercise, just work with the second usage of
 the mean function. Notice that both `trim` and `na.rm` have default
 values. This makes them **optional arguments**.
 
-**Instructions:**
+**Steps**
 
--   Calculate the mean of the element-wise sum of `linkedin` and
+1.  Calculate the mean of the element-wise sum of `linkedin` and
     `facebook` and store the result in a variable `avg_sum`.
--   Calculate the mean once more, but this time set the `trim` argument
+2.  Calculate the mean once more, but this time set the `trim` argument
     equal to 0.2 and assign the result to `avg_sum_trimmed`.
--   Print out both `avg_sum` and `avg_sum_trimmed`; can you spot the
+3.  Print out both `avg_sum` and `avg_sum_trimmed`; can you spot the
     difference?
-
-**Solution:**
 
 ``` r
 # Calculate the mean of the sum
@@ -1419,6 +1564,9 @@ avg_sum_trimmed
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Nice! When the `trim` argument is not zero, it chops off a fraction
+(equal to `trim`) of the vector you pass as argument `x`.
 
 ## Use a function (3)
 
@@ -1445,15 +1593,13 @@ mean(x, trim = 0, na.rm = FALSE, ...)
 Let’s see what happens if your vectors `linkedin` and `facebook` contain
 missing values (`NA`).
 
-**Instructions:**
+**Steps**
 
--   Calculate the average number of LinkedIn profile views, without
+1.  Calculate the average number of LinkedIn profile views, without
     specifying any optional arguments. Simply print the result to the
     console.
--   Calculate the average number of LinkedIn profile views, but this
+2.  Calculate the average number of LinkedIn profile views, but this
     time tell R to strip missing values from the input vector.
-
-**Solution:**
 
 ``` r
 # Basic average of linkedin
@@ -1490,15 +1636,13 @@ and
 functions use the ellipsis - `...` - as an argument. Can you figure out
 how they’re used?
 
-**Instructions:**
+**Steps**
 
-Use `abs()` on `linkedin - facebook` to get the absolute differences
-between the daily Linkedin and Facebook profile views. Place the call to
-`abs()` *inside* `mean()` to calculate the Mean Absolute Deviation. In
-the `mean()` call, make sure to specify `na.rm` to treat missing values
-correctly!
-
-**Solution:**
+1.  Use `abs()` on `linkedin - facebook` to get the absolute differences
+    between the daily Linkedin and Facebook profile views. Place the
+    call to `abs()` *inside* `mean()` to calculate the Mean Absolute
+    Deviation. In the `mean()` call, make sure to specify `na.rm` to
+    treat missing values correctly!
 
 ``` r
 # Calculate the mean absolute deviation
@@ -1525,22 +1669,20 @@ mean(x, trim = 0, na.rm = FALSE, ...)
 and `na.rm` are optional arguments: they have a default value which is
 used if the arguments are not explicitly specified.
 
-Which of the following statements about the
-<a href="http://www.rdocumentation.org/packages/utils/functions/read.table" target="_blank" rel="noopener noreferrer">`read.table()`</a>
-function are true?
+> ## *Question*
+>
+> Which of the following statements about the
+> <a href="http://www.rdocumentation.org/packages/utils/functions/read.table" target="_blank" rel="noopener noreferrer">`read.table()`</a>
+> function are true?<br> 1. `header`, `sep` and `quote` are all optional
+> arguments. 2. `row.names` and `fileEncoding` don’t have default
+> values. 3. `read.table("myfile.txt", "-", TRUE)` will throw an error.
+> 4. `read.table("myfile.txt", sep = "-", header = TRUE)` will throw an
+> error. <br> ✅ (1) and (3)<br> ⬜ (2) and (4)<br> ⬜ (1), (2), and
+> (3)<br> ⬜ (1), (2), and (4)<br>
 
-1.  `header`, `sep` and `quote` are all optional arguments.
-2.  `row.names` and `fileEncoding` don’t have default values.
-3.  `read.table("myfile.txt", "-", TRUE)` will throw an error. 4.\*
-    `read.table("myfile.txt", sep = "-", header = TRUE)` will throw an
-    error.
+## Writing Functions
 
-**Possible Answers:**
-
-<input type="checkbox" disabled checked /> (1) and (3)<br>
-<input type="checkbox" disabled /> (2) and (4)<br>
-<input type="checkbox" disabled /> (1), (2) and (3)<br>
-<input type="checkbox" disabled /> (1), (2) and (3)<br>
+Theory. Coming soon …
 
 ## Write your own function
 
@@ -1562,17 +1704,15 @@ new R variable `my_fun`, that becomes available in the workspace as soon
 as you execute the definition. From then on, you can use the `my_fun` as
 a function.
 
-**Instructions:**
+**Steps**
 
--   Create a function `pow_two()`: it takes one argument and returns
+1.  Create a function `pow_two()`: it takes one argument and returns
     that number squared (that number times itself).
--   Call this newly defined function with `12` as input.
--   Next, create a function `sum_abs()`, that takes two arguments and
+2.  Call this newly defined function with `12` as input.
+3.  Next, create a function `sum_abs()`, that takes two arguments and
     returns the sum of the absolute values of both arguments.
--   Finally, call the function `sum_abs()` with arguments `-2` and `3`
+4.  Finally, call the function `sum_abs()` with arguments `-2` and `3`
     afterwards.
-
-**Solution:**
 
 ``` r
 # Create a function pow_two()
@@ -1618,13 +1758,11 @@ throw_die()
 
 Up to you to code a function that doesn’t take any arguments!
 
-**Instructions:**
+**Steps**
 
--   Define a function, `hello()`. It prints out “Hi there!” and returns
+1.  Define a function, `hello()`. It prints out “Hi there!” and returns
     `TRUE`. It has no arguments.
--   Call the function `hello()`, without specifying arguments of course.
-
-**Solution:**
+2.  Call the function `hello()`, without specifying arguments of course.
 
 ``` r
 # Define the function hello()
@@ -1668,16 +1806,14 @@ my_fun <- function(arg1, arg2 = val2) {
 The editor on the right already includes an extended version of the
 `pow_two()` function from before. Can you finish it?
 
-**Instructions:**
+**Steps**
 
--   Add an optional argument, named `print_info`, that is `TRUE` by
+1.  Add an optional argument, named `print_info`, that is `TRUE` by
     default.
--   Wrap an `if` construct around the `print()` function: this function
+2.  Wrap an `if` construct around the `print()` function: this function
     should only be executed if `print_info` is `TRUE`.
--   Feel free to experiment with the `pow_two()` function you’ve just
+3.  Feel free to experiment with the `pow_two()` function you’ve just
     coded.
-
-**Solution:**
 
 ``` r
 # Finish the pow_two() function
@@ -1698,6 +1834,10 @@ pow_two(5)
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Wonderful! Have you tried calling this `pow_two()` function? Try
+`pow_two(5)`, `pow_two(5, TRUE)` and `pow_two(5, FALSE)`. Which ones
+give different results?
 
 ## Function scoping
 
@@ -1720,7 +1860,14 @@ x
 accessible outside of that function. This is also true for the
 function’s arguments of course - `x` in this case.
 
-Which statement is correct about the following chunk of code?
+> ## *Question*
+>
+> Which statement is correct about the following chunk of code?<br> <br>
+> ⬜ Executing `two_dice()` causes an error.<br> ⬜ Executing
+> `res <- two_dice()` makes the contents of `dice1` and `dice2`
+> available outside the function.<br> ✅ Whatever the way of calling the
+> `two_dice()` function, R won’t have access to `dice1` and `dice2`
+> outside the function.<br>
 
 ``` r
 two_dice <- function() {
@@ -1730,14 +1877,6 @@ two_dice <- function() {
   dice1 + dice2
 }
 ```
-
-**Possible Answers:**
-
-:white_large_square: Executing `two_dice()` causes an error.<br>
-:white_large_square: Executing `res <- two_dice()` makes the contents of
-dice1 and dice2 available outside the function.<br> :white_check_mark:
-Whatever the way of calling the `two_dice()` function, R won’t have
-access to `dice1` and `dice2` outside the function.
 
 ## R passes arguments by value
 
@@ -1766,8 +1905,15 @@ value*, so the R objects you pass to a function can never change unless
 you do an explicit assignment. `a` remains equal to 5, even after
 calling `triple(a)`.
 
-Can you tell which one of the following statements is <u>false</u> about
-the following piece of code?
+> ## *Question*
+>
+> Can you tell which one of the following statements is <u>false</u>
+> about the following piece of code?<br> <br> ⬜ `a` and `b` equal 7 and
+> 6 respectively after executing this code block.<br> ⬜ After the first
+> call of `increment()`, where `a` is defined, `a` equals 7 and `count`
+> equals 5.<br> ✅ In the end, `count` will equal 10.<br> ⬜ In the last
+> expression, the value of `count` was actually changed because of the
+> explicit assignment.<br>
 
 ``` r
 increment <- function(x, inc = 1) {
@@ -1779,15 +1925,6 @@ a <- increment(count, 2)
 b <- increment(count)
 count <- increment(count, 2)
 ```
-
-**Possible Answers:**
-
-:white_large_square: `a` and `b` equal 7 and 6 respectively after
-executing this code block.<br> :white_large_square: After the first call
-of `increment()`, where `a` is defined, `a` equals 7 and `count` equals
-5.<br> :white_check_mark: In the end, `count` will equal 10.<br>
-:white_large_square: In the last expression, the value of `count` was
-actually changed because of the explicit assignment.<br>
 
 ## R you functional?
 
@@ -1803,20 +1940,18 @@ straight away. As a first step, you will be writing a function that can
 interpret a single value of this vector. In the next exercise, you will
 write another function that can handle an entire vector at once.
 
-**Instructions:**
+**Steps**
 
--   Finish the function definition for `interpret()`, that interprets
+1.  Finish the function definition for `interpret()`, that interprets
     the number of profile views on a single day:
--   The function takes one argument, `num_views`.
--   If `num_views` is greater than 15, the function prints out “You’re
+2.  The function takes one argument, `num_views`.
+3.  If `num_views` is greater than 15, the function prints out “You’re
     popular!” to the console and returns `num_views`.
--   Else, the function prints out “Try to be more visible!” and returns
+4.  Else, the function prints out “Try to be more visible!” and returns
     0.
--   Finally, call the `interpret()` function twice: on the first value
+5.  Finally, call the `interpret()` function twice: on the first value
     of the `linkedin` vector and on the second element of the `facebook`
     vector.
-
-**Solution:**
 
 ``` r
 # Define the interpret function
@@ -1846,6 +1981,10 @@ interpret(facebook[2])
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Funkadelic! The annoying thing here is that `interpret()` only takes one
+argument. Proceed to the next exercise to implement something more
+useful.
+
 ## R you functional? (2)
 
 A possible implementation of the `interpret()` function has been
@@ -1857,22 +1996,22 @@ function will return the sum of views on popular days, if asked for. A
 ability to return the sum of views on popular days is something you can
 code through a function argument with a default value.
 
-**Instructions:**
+**Steps**
 
-Finish the template for the `interpret_all()` function:
+1.  Finish the template for the `interpret_all()` function:
 
--   Make `return_sum` an optional argument, that is `TRUE` by default.
--   Inside the `for` loop, iterate over all `views`: on every iteration,
-    add the result of `interpret(v)` to `count`. Remember that
-    `interpret(v)` returns `v` for popular days, and `0` otherwise. At
-    the same time, `interpret(v)` will also do some printouts.
--   Finish the `if` construct:
--   If `return_sum` is `TRUE`, return `count`.
--   Else, return `NULL`.
+    -   Make `return_sum` an optional argument, that is `TRUE` by
+        default.
+    -   Inside the `for` loop, iterate over all `views`: on every
+        iteration, add the result of `interpret(v)` to `count`. Remember
+        that `interpret(v)` returns `v` for popular days, and `0`
+        otherwise. At the same time, `interpret(v)` will also do some
+        printouts.
+    -   Finish the `if` construct:
+    -   If `return_sum` is `TRUE`, return `count`.
+    -   Else, return `NULL`.
 
 Call this newly defined function on both `linkedin` and `facebook`.
-
-**Solution:**
 
 ``` r
 # The linkedin and facebook vectors have already been created for you
@@ -1933,6 +2072,10 @@ interpret_all(facebook)
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Perfect! Have a look at the results; it appears that the sum of views on
+popular days are the same for Facebook and LinkedIn, what a coincidence!
+Your different social profiles must be fairly balanced ;-)
+
 ## Load an R Package
 
 There are basically two extremely important functions when it comes down
@@ -1964,18 +2107,16 @@ Before starting, execute the following commands in the console:
 An error should occur, because you haven’t loaded the `ggplot2` package
 yet!
 
-**Instructions:**
+**Steps**
 
--   To fix the error you saw in the console, **load** the
+1.  To fix the error you saw in the console, **load** the
     <a href="http://www.rdocumentation.org/packages/ggplot2" target="_blank" rel="noopener noreferrer">`ggplot2`</a>
     package. Make sure you are *loading* (and not *installing*) the
     package!
--   Now, retry calling the
+2.  Now, retry calling the
     <a href="http://www.rdocumentation.org/packages/ggplot2/functions/qplot" target="_blank" rel="noopener noreferrer">`qplot()`</a>
     function with the same arguments.
--   Finally, check out the currently attached packages again.
-
-**Solution:**
+3.  Finally, check out the currently attached packages again.
 
 ``` r
 # Load the ggplot2 package
@@ -1996,6 +2137,9 @@ search()
     ##  [4] "package:graphics"  "package:grDevices" "package:utils"    
     ##  [7] "package:datasets"  "package:methods"   "Autoloads"        
     ## [10] "package:base"
+
+Awesome! Notice how `search()` and `library()` are closely
+interconnected functions.
 
 ## Different ways to load a package
 
@@ -2027,16 +2171,22 @@ require(rjson, character.only = TRUE)
 library(c("data.table", "rjson"))
 ```
 
-Select the option that lists <u>all</u> of the chunks that do not
-generate an error. The console is yours to experiment in.
-
-**Possible Answers:**
-
-:white_large_square: Only (1)<br> :white_check_mark: (1) and (2)<br>
-:white_large_square: (1), (2) and (3)<br> :white_large_square: All of
-them are valid<br>
+> ## *Question*
+>
+> Select the option that lists <u>all</u> of the chunks that do not
+> generate an error.<br> <br> ⬜ Only (1)<br> ✅ (1) and (2)<br> ⬜ (1),
+> (2) and (3)<br> ⬜ All of them are valid<br>
 
 # 4. The apply family
+
+Whenever you’re using a for loop, you may want to revise your code to
+see whether you can use the lapply function instead. Learn all about
+this intuitive way of applying a function over a list or a vector, and
+how to use its variants, sapply and vapply.
+
+## lapply
+
+Theory. Coming soon …
 
 ## Use lapply with a built-in R function
 
@@ -2061,25 +2211,23 @@ revisit some of the most relevant figures in data science history. We’ve
 compiled a vector of famous mathematicians/statisticians and the year
 they were born. Up to you to extract some information!
 
-**Instructions:**
+**Steps**
 
--   Have a look at the
+1.  Have a look at the
     <a href="http://www.rdocumentation.org/packages/base/functions/strsplit" target="_blank" rel="noopener noreferrer">`strsplit()`</a>
     calls, that splits the strings in `pioneers` on the `:` sign. The
     result, `split_math` is a list of 4 character vectors: the first
     vector element represents the name, the second element the birth
     year.
--   Use
+2.  Use
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     to convert the character vectors in `split_math` to lowercase
     letters: apply
     <a href="http://www.rdocumentation.org/packages/base/functions/chartr" target="_blank" rel="noopener noreferrer">`tolower()`</a>
     on each of the elements in `split_math`. Assign the result, which is
     a list, to a new variable `split_low`.
--   Finally, inspect the contents of `split_low` with
+3.  Finally, inspect the contents of `split_low` with
     <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>.
-
-**Solution:**
 
 ``` r
 # The vector pioneers has already been created for you
@@ -2135,17 +2283,15 @@ The sample code already includes code that defined `select_first()`,
 that takes a vector as input and returns the first element of this
 vector.
 
-**Instructions:**
+**Steps**
 
--   Apply `select_first()` over the elements of `split_low` with
+1.  Apply `select_first()` over the elements of `split_low` with
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     and assign the result to a new variable `names`.
--   Next, write a function `select_second()` that does the exact same
+2.  Next, write a function `select_second()` that does the exact same
     thing for the second element of an inputted vector.
--   Finally, apply the `select_second()` function over `split_low` and
+3.  Finally, apply the `select_second()` function over `split_low` and
     assign the output to the variable `years`.
-
-**Solution:**
 
 ``` r
 # Code from previous exercise:
@@ -2198,17 +2344,15 @@ function(x) { 3 * x }
 lapply(list(1,2,3), function(x) { 3 * x })
 ```
 
-**Instructions:**
+**Steps**
 
--   Transform the first call of
+1.  Transform the first call of
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     such that it uses an anonymous function that does the same thing.
--   In a similar fashion, convert the second call of `lapply` to use an
+2.  In a similar fashion, convert the second call of `lapply` to use an
     anonymous version of the `select_second()` function.
--   Remove both the definitions of `select_first()` and
+3.  Remove both the definitions of `select_first()` and
     `select_second()`, as they are no longer useful.
-
-**Solution:**
 
 ``` r
 # Transform: use anonymous function inside lapply
@@ -2220,6 +2364,11 @@ years <- lapply(split_low, function(x){x[2]})
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Great! Now, there’s another way to solve the issue of using the
+`select_*()` functions only once: you can make a more generic function
+that can be used in more places. Find out more about this in the next
+exercise.
 
 ## Use lapply with additional arguments
 
@@ -2241,14 +2390,12 @@ that you’ve coded earlier: `select_el()`. It takes a vector as its first
 argument, and an index as its second argument. It returns the vector’s
 element at the specified index.
 
-**Instructions:**
+**Steps**
 
-Use `lapply()` twice to call `select_el()` over all elements in
-`split_low`: once with the `index` equal to 1 and a second time with the
-index equal to 2. Assign the result to `names` and `years`,
-respectively.
-
-**Solution:**
+1.  Use `lapply()` twice to call `select_el()` over all elements in
+    `split_low`: once with the `index` equal to 1 and a second time with
+    the index equal to 2. Assign the result to `names` and `years`,
+    respectively.
 
 ``` r
 # Generic select function
@@ -2298,9 +2445,13 @@ result of
 <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>
 is not assigned.
 
-What will the following code chunk return (`split_low` is already
-available in the workspace)? Try to reason about the result before
-simply executing it in the console!
+> ## *Question*
+>
+> What will the following code chunk return? Try to reason about the
+> result before simply executing it in the console!<br> <br> ⬜
+> `list(NULL, NULL, "1623", "1857")`<br> ⬜
+> `list("gauss", "bayes", NULL, NULL)`<br> ✅
+> `list("1777", "1702", NULL, NULL)`<br> ⬜ `list("1777", "1702")`<br>
 
 ``` r
 lapply(split_low, function(x) {
@@ -2312,12 +2463,13 @@ lapply(split_low, function(x) {
 })
 ```
 
-**Possible Answers:**
+Did you notice that lapply() always returns a list, no matter the input?
+This can be kind of annoying. In the next video tutorial you’ll learn
+about sapply() to solve this.
 
-:white_large_square: `list(NULL, NULL, "1623", "1857")`<br>
-:white_large_square: `list("gauss", "bayes", NULL, NULL)`<br>
-:white_check_mark: `list("1777", "1702", NULL, NULL)`<br>
-:white_large_square: `list("1777", "1702")`<br>
+## sapply
+
+Theory. Coming soon …
 
 ## How to use sapply
 
@@ -2341,30 +2493,28 @@ list of length 7, where each element is a vector of length 5,
 representing 5 measurements on a given day. This variable has already
 been defined in the workspace: type `str(temp)` to see its structure.
 
-**Instructions:**
+**Steps**
 
--   Use
+1.  Use
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     to calculate the minimum (built-in function
     <a href="http://www.rdocumentation.org/packages/base/functions/Extremes" target="_blank" rel="noopener noreferrer">`min()`</a>)
     of the temperature measurements for every day.
--   Do the same thing but this time with
+2.  Do the same thing but this time with
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>.
     See how the output differs.
--   Use
+3.  Use
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     to compute the the maximum
     (<a href="http://www.rdocumentation.org/packages/base/functions/Extremes" target="_blank" rel="noopener noreferrer">`max()`</a>)
     temperature for each day.
--   Again, use
+4.  Again, use
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>
     to solve the same question and see how
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     and
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>
     differ.
-
-**Solution:**
 
 ``` r
 # temp has already been defined in the workspace
@@ -2434,6 +2584,12 @@ sapply(temp, max)
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Nice! Can you tell the difference between the output of `lapply()` and
+`sapply()`? The former returns a list, while the latter returns a vector
+that is a simplified version of this list. Notice that this time, unlike
+in the cities example of the instructional video, the vector is not
+named.
+
 ## sapply with your own function
 
 Like
@@ -2450,19 +2606,17 @@ Here, `FUN` can be one of R’s built-in functions, but it can also be a
 function you wrote. This self-written function can be defined before
 hand, or can be inserted directly as an anonymous function.
 
-**Instructions:**
+**Steps**
 
--   Finish the definition of `extremes_avg()`: it takes a vector of
+1.  Finish the definition of `extremes_avg()`: it takes a vector of
     temperatures and calculates the average of the minimum and maximum
     temperatures of the vector.
--   Next, use this function inside
+2.  Next, use this function inside
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>
     to apply it over the vectors inside `temp`.
--   Use the same function over `temp` with
+3.  Use the same function over `temp` with
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     and see how the outputs differ.
-
-**Solution:**
 
 ``` r
 # Finish function definition of extremes_avg
@@ -2501,6 +2655,11 @@ lapply(temp, extremes_avg)
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Great job! Of course, you could have solved this exercise using an
+anonymous function, but this would require you to use the code inside
+the definition of `extremes_avg()` twice. Duplicating code should be
+avoided as much as possible!
+
 ## sapply with function returning vector
 
 In the previous exercises, you’ve seen how
@@ -2512,19 +2671,17 @@ you’re applying over a list or a vector returns a vector of length
 greater than 1? If you don’t remember from the video, don’t waste more
 time in the valley of ignorance and head over to the instructions!
 
-**Instructions:**
+**Steps**
 
--   Finish the definition of the `extremes()` function. It takes a
+1.  Finish the definition of the `extremes()` function. It takes a
     vector of numerical values and returns a vector containing the
     minimum and maximum values of a given vector, with the names “min”
     and “max”, respectively.
--   Apply this function over the vector `temp` using
+2.  Apply this function over the vector `temp` using
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>.
--   Finally, apply this function over the vector `temp` using
+3.  Finally, apply this function over the vector `temp` using
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>
     as well.
-
-**Solution:**
 
 ``` r
 # Create a function that returns min and max of a vector: extremes
@@ -2572,6 +2729,10 @@ lapply(temp, extremes)
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Wonderful! Have a final look at the console and see how `sapply()` did a
+great job at simplifying the rather uninformative ‘list of vectors’ that
+`lapply()` returns. It actually returned a nicely formatted matrix!
+
 ## sapply can’t simplify, now what?
 
 It seems like we’ve hit the jackpot with
@@ -2588,19 +2749,17 @@ We already created a function, `below_zero()`, that takes a vector of
 numerical values and returns a vector that only contains the values that
 are strictly below zero.
 
-**Instructions:**
+**Steps**
 
--   Apply `below_zero()` over `temp` using
+1.  Apply `below_zero()` over `temp` using
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>
     and store the result in `freezing_s`.
--   Apply `below_zero()` over `temp` using
+2.  Apply `below_zero()` over `temp` using
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>.
     Save the resulting list in a variable `freezing_l`.
--   Compare `freezing_s` to `freezing_l` using the
+3.  Compare `freezing_s` to `freezing_l` using the
     <a href="http://www.rdocumentation.org/packages/base/functions/identical" target="_blank" rel="noopener noreferrer">`identical()`</a>
     function.
-
-**Solution:**
 
 ``` r
 # Definition of below_zero()
@@ -2662,6 +2821,12 @@ identical(freezing_s, freezing_l)
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Nice one! Given that the length of the output of `below_zero()` changes
+for different input vectors, `sapply()` is not able to nicely convert
+the output of `lapply()` to a nicely formatted matrix. Instead, the
+output values of `sapply()` and `lapply()` are exactly the same, as
+shown by the `TRUE` output of `identical()`.
+
 ## sapply with functions that return NULL
 
 You already have some apply tricks under your sleeve, but you’re surely
@@ -2675,15 +2840,13 @@ this vector, has already been created for you. It uses the
 <a href="http://www.rdocumentation.org/packages/base/functions/cat" target="_blank" rel="noopener noreferrer">`cat()`</a>
 function.
 
-**Instructions:**
+**Steps**
 
--   Apply `print_info()` over the contents of `temp` with
+1.  Apply `print_info()` over the contents of `temp` with
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>.
--   Repeat this process with
+2.  Repeat this process with
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`lapply()`</a>.
     Do you notice the difference?
-
-**Solution:**
 
 ``` r
 # Definition of print_info()
@@ -2755,6 +2918,11 @@ lapply(temp, print_info)
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Great! Notice here that, quite surprisingly, `sapply()` does not
+simplify the list of `NULL's`. That’s because the ‘vector-version’ of a
+list of `NULL`’s would simply be a `NULL`, which is no longer a vector
+with the same length as the input. Proceed to the next exercise.
+
 ## Reverse engineering sapply
 
 ``` r
@@ -2775,13 +2943,15 @@ through which of the following statements are correct and why.
     is anonymous.<br>
 4.  The resulting data structure does not contain any names.
 
-Select the option that lists <u>all</u> correct statements.
+> ## *Question*
+>
+> Select the option that lists <u>all</u> correct statements.<br> <br>
+> ⬜ (1) and (3)<br> ✅ (2) and (3)<br> ⬜ (1) and (4)<br> ⬜ (2), (3)
+> and (4)<br>
 
-**Possible Answers:**
+## vapply
 
-:white_large_square: (1) and (3)<br> :white_check_mark: (2) and (3)<br>
-:white_large_square: (1) and (4)<br> :white_large_square: (2), (3) and
-(4)<br>
+Theory. Coming soon …
 
 ## Use vapply
 
@@ -2807,15 +2977,13 @@ function `basics()` that takes a vector, and returns a named vector of
 length 3, containing the minimum, mean and maximum value of the vector
 respectively.
 
-**Instructions:**
+**Steps**
 
--   Apply the function `basics()` over the list of temperatures, `temp`,
+1.  Apply the function `basics()` over the list of temperatures, `temp`,
     using
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`vapply()`</a>.
     This time, you can use `numeric(3)` to specify the `FUN.VALUE`
     argument.
-
-**Solution:**
 
 ``` r
 # Definition of basics()
@@ -2834,6 +3002,10 @@ vapply(temp, basics, numeric(3))
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Perfect! Notice how, just as with `sapply()`, `vapply()` neatly
+transfers the names that you specify in the `basics()` function to the
+row names of the matrix that it returns.
+
 ## Use vapply (2)
 
 So far you’ve seen that
@@ -2849,18 +3021,16 @@ correspond to the template you specify in `FUN.VALUE`. In that case,
 will throw an error that informs you about the misalignment between
 expected and actual output.
 
-**Instructions:**
+**Steps**
 
--   Inspect the pre-loaded code and try to run it. If you haven’t
+1.  Inspect the pre-loaded code and try to run it. If you haven’t
     changed anything, an error should pop up. That’s because
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`vapply()`</a>
     still expects `basics()` to return a vector of length 3. The error
     message gives you an indication of what’s wrong.
--   Try to fix the error by editing the
+2.  Try to fix the error by editing the
     <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`vapply()`</a>
     command.
-
-**Solution:**
 
 ``` r
 # Definition of the basics() function
@@ -2893,17 +3063,15 @@ expressions in your own R scripts to
 <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`vapply()`</a>
 expressions is therefore a good practice (and also a breeze!).
 
-**Instructions:**
+**Steps**
 
-Convert all the
-<a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>
-expressions on the right to their
-<a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`vapply()`</a>
-counterparts. Their results should be exactly the same; you’re only
-adding robustness. You’ll need the templates `numeric(1)` and
-`logical(1)`.
-
-**Solution:**
+1.  Convert all the
+    <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`sapply()`</a>
+    expressions on the right to their
+    <a href="http://www.rdocumentation.org/packages/base/functions/lapply" target="_blank" rel="noopener noreferrer">`vapply()`</a>
+    counterparts. Their results should be exactly the same; you’re only
+    adding robustness. You’ll need the templates `numeric(1)` and
+    `logical(1)`.
 
 ``` r
 # Convert to vapply() expression
@@ -2919,6 +3087,12 @@ vapply(temp, function(x, y) { mean(x) > y }, y = 5, logical(1))
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
 # 5. Utilities
+
+Mastering R programming is not only about understanding its programming
+concepts. Having a solid understanding of a wide range of R functions is
+also important. This chapter introduces you to many useful functions for
+data structure manipulation, regular expressions, and working with times
+and dates.
 
 ## Mathematical utilities
 
@@ -2942,13 +3116,11 @@ see that the training error of your model is quite regular, showing both
 positive and negative values. A vector `errors` containing the error
 values has been pre-defined for you.
 
-**Instructions:**
+**Steps**
 
-Calculate the sum of the absolute rounded values of the training errors.
-You can work in parts, or with a single one-liner. There’s no need to
-store the result in a variable, just have R print it.
-
-**Solution:**
+1.  Calculate the sum of the absolute rounded values of the training
+    errors. You can work in parts, or with a single one-liner. There’s
+    no need to store the result in a variable, just have R print it.
 
 ``` r
 # The errors vector has already been defined for you
@@ -2973,14 +3145,12 @@ and
 <a href="http://www.rdocumentation.org/packages/base/functions/rev" target="_blank" rel="noopener noreferrer">`rev()`</a>
 are a single command away; simply execute the code `?sum` and `?rev`.
 
-**Instructions:**
+**Steps**
 
-Fix the error by *including* code on the last line. Remember: you want
-to call
-<a href="http://www.rdocumentation.org/packages/base/functions/mean" target="_blank" rel="noopener noreferrer">`mean()`</a>
-only once!
-
-**Solution:**
+1.  Fix the error by *including* code on the last line. Remember: you
+    want to call
+    <a href="http://www.rdocumentation.org/packages/base/functions/mean" target="_blank" rel="noopener noreferrer">`mean()`</a>
+    only once!
 
 ``` r
 # Don't edit these two lines
@@ -2995,9 +3165,15 @@ mean(c(abs(vec1), abs(vec2)))
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Nice work! If you check out the documentation of `mean()`, you’ll see
+that only the first argument, `x`, should be a vector. If you also
+specify a second argument, R will match the arguments by position and
+expect a specification of the `trim` argument. Therefore, merging the
+two vectors is a must!
+
 ## Data Utilities
 
-R features a bunch of functions to juggle around with data structures::
+R features a bunch of functions to juggle around with data structures:
 
 -   <a href="http://www.rdocumentation.org/packages/base/functions/seq" target="_blank" rel="noopener noreferrer">`seq()`</a>:
     Generate sequences, by specifying the `from`, `to`, and `by`
@@ -3022,16 +3198,14 @@ R features a bunch of functions to juggle around with data structures::
 Remember the social media profile views data? Your LinkedIn and Facebook
 view counts for the last seven days have been pre-defined as lists.
 
-**Instructions:**
+**Steps**
 
--   Convert both `linkedin` and `facebook` lists to a vector, and store
+1.  Convert both `linkedin` and `facebook` lists to a vector, and store
     them as `li_vec` and `fb_vec` respectively.
--   Next, append `fb_vec` to the `li_vec` (Facebook data comes last).
+2.  Next, append `fb_vec` to the `li_vec` (Facebook data comes last).
     Save the result as `social_vec`.
--   Finally, sort `social_vec` *from high to low*. Print the resulting
+3.  Finally, sort `social_vec` *from high to low*. Print the resulting
     vector.
-
-**Solution:**
 
 ``` r
 # The linkedin and facebook lists have already been created for you
@@ -3051,24 +3225,27 @@ sort(append(unlist(linkedin), unlist(facebook)), decreasing = TRUE)
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Wonderful! These instructions required you to solve this challenge in a
+step-by-step approach. If you’re comfortable with the functions, you can
+combine some of these steps into powerful one-liners.
+
 ## Find the error (2)
 
 Just as before, let’s switch roles. It’s up to you to see what
 unforgivable mistakes we’ve made. Go fix them!
 
-**Instructions:**
+**Steps**
 
-Correct the expression. Make sure that your fix still uses the functions
-<a href="http://www.rdocumentation.org/packages/base/functions/rep" target="_blank" rel="noopener noreferrer">`rep()`</a>
-and
-<a href="http://www.rdocumentation.org/packages/base/functions/seq" target="_blank" rel="noopener noreferrer">`seq()`</a>.
+1.  Correct the expression. Make sure that your fix still uses the
+    functions
+    <a href="http://www.rdocumentation.org/packages/base/functions/rep" target="_blank" rel="noopener noreferrer">`rep()`</a>
+    and
+    <a href="http://www.rdocumentation.org/packages/base/functions/seq" target="_blank" rel="noopener noreferrer">`seq()`</a>.
 
 ``` r
 # Fix me
 seq(rep(1, 7, by = 2), times = 7)
 ```
-
-**Solution:**
 
 ``` r
 rep(seq(1, 7, by = 2), 7)
@@ -3077,6 +3254,9 @@ rep(seq(1, 7, by = 2), 7)
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Wonderful! Debugging code is also a big part of the daily routine of a
+data scientist, and you seem to be great at it!
 
 ## Beat Gauss using R
 
@@ -3089,24 +3269,22 @@ the sum of an arithmetic series with different starting values and
 increments. Instead of deriving such a formula, why not use R to
 calculate the sum of a sequence?
 
-**Instructions:**
+**Steps**
 
--   Using the function
+1.  Using the function
     <a href="http://www.rdocumentation.org/packages/base/functions/seq" target="_blank" rel="noopener noreferrer">`seq()`</a>,
     create a sequence that ranges from 1 to 500 in increments of 3.
     Assign the resulting vector to a variable `seq1`.
--   Again with the function
+2.  Again with the function
     <a href="http://www.rdocumentation.org/packages/base/functions/seq" target="_blank" rel="noopener noreferrer">`seq()`</a>,
     create a sequence that ranges from 1200 to 900 in increments of -7.
     Assign it to a variable `seq2`.
--   Calculate the total sum of the sequences, either by using the
+3.  Calculate the total sum of the sequences, either by using the
     <a href="http://www.rdocumentation.org/packages/base/functions/sum" target="_blank" rel="noopener noreferrer">`sum()`</a>
     function twice and adding the two results, or by first concatenating
     the sequences and then using the
     <a href="http://www.rdocumentation.org/packages/base/functions/sum" target="_blank" rel="noopener noreferrer">`sum()`</a>
     function once. Print the result to the console.
-
-**Solution:**
 
 ``` r
 # Create first sequence: seq1
@@ -3122,6 +3300,10 @@ sum(seq1,seq2)
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+## Regular Expressions
+
+Theory. Coming soon …
 
 ## grepl & grep
 
@@ -3144,19 +3326,17 @@ In this and the following exercises, you’ll be querying and manipulating
 a character vector of email addresses! The vector `emails` has been
 pre-defined so you can begin with the instructions straight away!
 
-**Instructions:**
+**Steps**
 
--   Use
+1.  Use
     <a href="http://www.rdocumentation.org/packages/base/functions/grep" target="_blank" rel="noopener noreferrer">`grepl()`</a>
     to generate a vector of logicals that indicates whether these email
     addressess contain `"edu"`. Print the result to the output.
--   Do the same thing with
+2.  Do the same thing with
     <a href="http://www.rdocumentation.org/packages/base/functions/grep" target="_blank" rel="noopener noreferrer">`grep()`</a>,
     but this time save the resulting indexes in a variable `hits`.
--   Use the variable `hits` to select from the `emails` vector only the
+3.  Use the variable `hits` to select from the `emails` vector only the
     emails that contain `"edu"`.
-
-**Solution:**
 
 ``` r
 # The emails vector has already been defined for you
@@ -3179,6 +3359,12 @@ emails[hits]
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
 
+Bellissimo! You can probably guess what we’re trying to achieve here:
+select all the emails that end with \\“.edu\\”. However, the strings
+`education@world.gov` and `invalid.edu` were also matched. Let’s see in
+the next exercise what you can do to improve our pattern and remove
+these false positives.
+
 ## grepl & grep (2)
 
 You can use the caret, `^`, and the dollar sign, `$` to match the
@@ -3196,19 +3382,17 @@ can be added to make the pattern more robust:
     string. The `\\` part *escapes* the dot: it tells R that you want to
     use the `.` as an actual character.
 
-**Instructions:**
+**Steps**
 
--   Use
+1.  Use
     <a href="http://www.rdocumentation.org/packages/base/functions/grep" target="_blank" rel="noopener noreferrer">`grepl()`</a>
     with the more advanced regular expression to return a logical
     vector. Simply print the result.
--   Do a similar thing with
+2.  Do a similar thing with
     <a href="http://www.rdocumentation.org/packages/base/functions/grep" target="_blank" rel="noopener noreferrer">`grep()`</a>
     to create a vector of indices. Store the result in the variable
     `hits`.
--   Use `emails[hits]` again to subset the `emails` vector.
-
-**Solution:**
+3.  Use `emails[hits]` again to subset the `emails` vector.
 
 ``` r
 # Use grepl() to match for .edu addresses more robustly
@@ -3225,6 +3409,12 @@ emails[hits]
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Great! A careful construction of our regular expression leads to more
+meaningful matches. However, even our robust email selector will often
+match some incorrect email addresses (for instance kiara@@fakemail.edu).
+Let’s not worry about this too much and continue with `sub()` and
+`gsub()` to actually edit the email addresses!
 
 ## sub & gsub
 
@@ -3252,14 +3442,12 @@ quite a powerful marketing stunt: Online education is taking over
 traditional learning institutions! Convert your email and be a part of
 the new generation!
 
-**Instructions:**
+**Steps**
 
-With the advanced regular expression `"@.*\\.edu$"`, use `sub()` to
-replace the match with `"@datacamp.edu"`. Since there will only be one
-match per character string, `gsub()` is not necessary here. Inspect the
-resulting output.
-
-**Solution:**
+1.  With the advanced regular expression `"@.*\\.edu$"`, use `sub()` to
+    replace the match with `"@datacamp.edu"`. Since there will only be
+    one match per character string, `gsub()` is not necessary here.
+    Inspect the resulting output.
 
 ``` r
 # Use sub() to convert the email domains to datacamp.edu
@@ -3271,6 +3459,10 @@ sub("@.*\\.edu$", "@datacamp.edu", emails)
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Awesome! Notice how only the valid .edu addresses are changed while the
+other emails remain unchanged. To get a taste of other things you can
+accomplish with regex, head over to the next exercise.
 
 ## sub & gsub (2)
 
@@ -3291,6 +3483,15 @@ used:
     gets set to the string that is captured by the regular expression
     `[0-9]+`.
 
+> ## *Question*
+>
+> What does this code chunk return?<br> <br> ⬜ A vector of integers
+> containing: 1, 24, 2, 3, 2, 1.<br> ⬜ The vector `awards` gets
+> returned as there isn’t a single element in `awards` that matches the
+> regular expression.<br> ⬜ A vector of character strings containing
+> “1”, “24”, “2”, “3”, “2”, “1”.<br> ✅ A vector of character strings
+> containing “Won 1 Oscar.”, “24”, “2”, “3”, “2”, “1”.<br>
+
 ``` r
 awards <- c("Won 1 Oscar.",
   "Won 1 Oscar. Another 9 wins & 24 nominations.",
@@ -3302,18 +3503,9 @@ awards <- c("Won 1 Oscar.",
 sub(".*\\s([0-9]+)\\snomination.*$", "\\1", awards)
 ```
 
-What does this code chunk return? `awards` is already defined in the
-workspace so you can start playing in the console straight away.
+## Times & Dates
 
-:white_large_square: A vector of integers containing: 1, 24, 2, 3, 2,
-1.<br> :white_large_square: The vector `awards` gets returned as there
-isn’t a single element in `awards` that matches the regular
-expression.<br> :white_large_square: A vector of character strings
-containing “1”, “24”, “2”, “3”, “2”, “1”.<br> :white_check_mark: A
-vector of character strings containing “Won 1 Oscar.”, “24”, “2”, “3”,
-“2”, “1”.<br>
-
-# Time & Dates
+Theory. Coming soon …
 
 ## Right here, right now
 
@@ -3329,22 +3521,19 @@ particular reason for this; it is a simple convention. Of course, it’s
 also possible to create dates and times before 1970; the corresponding
 numerical values are simply negative in this case.
 
-**Instructions:**
+**Steps**
 
--   Ask R for the current date, and store the result in a variable
+1.  Ask R for the current date, and store the result in a variable
     `today`.
--   To see what `today` looks like under the hood, call
+2.  To see what `today` looks like under the hood, call
     <a href="http://www.rdocumentation.org/packages/base/functions/class" target="_blank" rel="noopener noreferrer">`unclass()`</a>
     on it.
--   Ask R for the current time, and store the result in a variable,
+3.  Ask R for the current time, and store the result in a variable,
     `now`.
--   To see the numerical value that corresponds to `now`, call
+4.  To see the numerical value that corresponds to `now`, call
     <a href="http://www.rdocumentation.org/packages/base/functions/class" target="_blank" rel="noopener noreferrer">`unclass()`</a>
     on it.
 
-**Solution:**
-
-``` r
 ``` r
 # Get the current date: today
 today <- Sys.Date()
@@ -3364,6 +3553,10 @@ unclass(now)
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+Great! Using R to get the current date and time is nice, but you should
+also know how to create dates and times from character strings. Find out
+how in the next exercises!
 
 ## Create and format dates
 
@@ -3406,20 +3599,18 @@ format(Sys.Date(), format = "%d %B, %Y")
 format(Sys.Date(), format = "Today is a %A!")
 ```
 
-**Instructions:**
+**Steps**
 
--   Three character strings representing dates have been created for
+1.  Three character strings representing dates have been created for
     you. Convert them to dates using
     <a href="http://www.rdocumentation.org/packages/base/functions/as.Date" target="_blank" rel="noopener noreferrer">`as.Date()`</a>,
     and assign them to `date1`, `date2`, and `date3` respectively. The
     code for `date1` is already included.
--   Extract useful information from the dates as character strings using
+2.  Extract useful information from the dates as character strings using
     <a href="http://www.rdocumentation.org/packages/base/functions/format" target="_blank" rel="noopener noreferrer">`format()`</a>.
     From the first date, select the weekday. From the second date,
     select the day of the month. From the third date, you should select
     the abbreviated month and the 4-digit year, separated by a space.
-
-**Solution:**
 
 ``` r
 # Definition of character strings representing dates
@@ -3444,6 +3635,9 @@ format(date3, "%b %Y")
 
 <sup>Created on 2022-01-19 by the [reprex
 package](https://reprex.tidyverse.org) (v2.0.1)</sup>
+
+You’re a date magician! You can use `POSIXct` objects, i.e. time objects
+in R, in a similar fashion.
 
 ## Create and format times
 
@@ -3473,18 +3667,16 @@ uses a default format to match character strings. In this case, it’s
 `%Y-%m-%d %H:%M:%S`. In this exercise, abstraction is made of different
 time zones.
 
-**Instructions:**
+**Steps**
 
--   Convert two strings that represent timestamps, `str1` and `str2`, to
+1.  Convert two strings that represent timestamps, `str1` and `str2`, to
     `POSIXct` objects called `time1` and `time2`.
--   Using
+2.  Using
     <a href="http://www.rdocumentation.org/packages/base/functions/format" target="_blank" rel="noopener noreferrer">`format()`</a>,
     create a string from `time1` containing only the minutes.
--   From `time2`, extract the hours and minutes as “hours:minutes
+3.  From `time2`, extract the hours and minutes as “hours:minutes
     AM/PM”. Refer to the assignment text above to find the correct
     conversion symbols!
-
-**Solution:**
 
 ``` r
 # Definition of character strings representing times
@@ -3529,18 +3721,16 @@ the last five days that you ate pizza. In the workspace, these dates are
 defined as five `Date` objects, `day1` to `day5`. A vector `pizza`
 containing these 5 `Date` objects has been pre-defined for you.
 
-**Instructions:**
+**Steps**
 
--   Calculate the number of days that passed between the last and the
+1.  Calculate the number of days that passed between the last and the
     first day you ate pizza. Print the result.
--   Use the function
+2.  Use the function
     <a href="http://www.rdocumentation.org/packages/base/functions/diff" target="_blank" rel="noopener noreferrer">`diff()`</a>
     on `pizza` to calculate the differences between consecutive pizza
     days. Store the result in a new variable `day_diff`.
--   Calculate the average period between two consecutive pizza days.
+3.  Calculate the average period between two consecutive pizza days.
     Print the result.
-
-**Solution:**
 
 ``` r
 # day1, day2, day3, day4 and day5 are already available in the workspace
@@ -3595,16 +3785,14 @@ user spends on your website. This user has logged in 5 times and logged
 out 5 times as well. These times are gathered in the vectors `login` and
 `logout`, which are already defined in the workspace.
 
-**Instructions:**
+**Steps**
 
--   Calculate the difference between the two vectors `logout` and
+1.  Calculate the difference between the two vectors `logout` and
     `login`, i.e. the time the user was online in each independent
     session. Store the result in a variable `time_online`.
--   Inspect the variable `time_online` by printing it.
--   Calculate the total time that the user was online. Print the result.
--   Calculate the average time the user was online. Print the result.
-
-**Solution:**
+2.  Inspect the variable `time_online` by printing it.
+3.  Calculate the total time that the user was online. Print the result.
+4.  Calculate the average time the user was online. Print the result.
 
 ``` r
 # login and logout are already defined in the workspace
@@ -3647,22 +3835,20 @@ dates on which the 4 astronomical seasons start, has been defined on
 your workspace. Similarly, a vector `meteo` has already been created for
 you, with the meteorological beginnings of a season.
 
-**Instructions:**
+**Steps**
 
--   Use `as.Date()` to convert the `astro` vector to a vector containing
+1.  Use `as.Date()` to convert the `astro` vector to a vector containing
     `Date` objects. You will need the `%d`, `%b` and `%Y` symbols to
     specify the `format`. Store the resulting vector as `astro_dates`.
--   Use `as.Date()` to convert the `meteo` vector to a vector with
+2.  Use `as.Date()` to convert the `meteo` vector to a vector with
     `Date` objects. This time, you will need the `%B`, `%d` and `%y`
     symbols for the `format` argument. Store the resulting vector as
     `meteo_dates`.
--   With a combination of `max()`, `abs()` and `-`, calculate the
+3.  With a combination of `max()`, `abs()` and `-`, calculate the
     maximum absolute difference between the astronomical and the
     meteorological beginnings of a season, i.e. `astro_dates` and
     `meteo_dates`. Simply print this maximum difference to the console
     output.
-
-**Solution:**
 
 ``` r
 # data
