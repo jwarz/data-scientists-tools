@@ -3,6 +3,7 @@ Cleaning data in R
 Joschka Schwarz
 
 -   [1. Exploring Categorical Data](#1-exploring-categorical-data)
+    -   [Exploring categorical data](#exploring-categorical-data)
     -   [Intro Bar charts](#intro-bar-charts)
     -   [table() / tabyl(): Contingency
         tables](#table--tabyl-contingency-tables)
@@ -29,11 +30,15 @@ Joschka Schwarz
         outliers](#geom_boxplot-box-plots-for-outliers)
     -   [geom_boxplot() vs. geom_density(): Plot
         selection](#geom_boxplot-vs-geom_density-plot-selection)
+    -   [Visualization in higher
+        dimensions](#visualization-in-higher-dimensions)
     -   [facet_grid(): 3 variable plot](#facet_grid-3-variable-plot)
 -   [3. Numerical Summaries](#3-numerical-summaries)
+    -   [Measures of center](#measures-of-center)
     -   [Choice of center measure](#choice-of-center-measure)
     -   [summarize(): Calculate center
         measures](#summarize-calculate-center-measures)
+    -   [Measures of variability](#measures-of-variability)
     -   [Choice of spread measure](#choice-of-spread-measure)
     -   [sd(), IQR(), n(): Calculate spread
         measures](#sd-iqr-n-calculate-spread-measures)
@@ -43,11 +48,32 @@ Joschka Schwarz
     -   [log(): Transformations](#log-transformations)
     -   [Identify outliers](#identify-outliers)
 -   [4. Case Study: Spam Emails](#4-case-study-spam-emails)
+    -   [Introducing the data](#introducing-the-data)
+
+**Short Description**
+
+Learn how to use graphical and numerical techniques for exploratory data
+analysis while generating insightful and beautiful graphics in R.
+
+**Long Description**
+
+When your dataset is represented as a table or a database, it’s
+difficult to observe much about it beyond its size and the types of
+variables it contains. In this course, you’ll learn how to use graphical
+and numerical techniques to begin uncovering the structure of your data.
+Which variables suggest interesting relationships? Which observations
+are unusual? By the end of the course, you’ll be able to answer these
+questions and more, while generating graphics that are both insightful
+and beautiful.
 
 # 1. Exploring Categorical Data
 
 In this section, you will learn how to create graphical and numerical
 summaries of two categorical variables.
+
+## Exploring categorical data
+
+Theory. Coming soon …
 
 ## Intro Bar charts
 
@@ -386,6 +412,10 @@ comics_filtered |>
 > Approximately what proportion of all female characters are good?<br>
 > <br> ⬜ 44%<br> ⬜ 1.3%<br> ⬜ 13%<br> ✅ 51%<br>
 
+Nice! To answer this question, you needed to look at how align was
+distributed within each gender. That is, you wanted to condition on the
+gender variable.
+
 ## Barcharts: Counts vs. proportions
 
 Bar charts can tell dramatically different stories depending on whether
@@ -425,6 +455,10 @@ comics_filtered |>
 ```
 
 ![](readme_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+Excellent work! By adding `position = "fill"` to `geom_bar()`, you are
+saying you want the bars to fill the entire height of the plotting
+window, thus displaying proportions and not raw counts.
 
 ## fct_relevel() / fct_infreq(): Order Barcharts
 
@@ -646,6 +680,10 @@ ggplot(cars, aes(x = city_mpg)) +
 
 ![](readme_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
+In this step, you faceted by the `suv` variable, but it’s important to
+note that you can facet a plot by any categorical variable using
+`facet_wrap()`.
+
 ## geom_boxplot() & geom_density(): Boxplots and density plots
 
 The mileage of a car tends to be associated with the size of its engine
@@ -705,6 +743,9 @@ common_cyl |>
 > the most efficient 8 cylinder cars.<br> ✅ The variability in mileage
 > of 8 cylinder cars is similar to the variability in mileage of 4
 > cylinder cars.<br>
+
+The variability in mileage of 8 cylinder cars seem much smaller than
+that of 4 cylinder cars.
 
 ## geom_histogram(): Marginal and conditional histograms
 
@@ -821,6 +862,9 @@ cars %>%
 > tendency for cars to have horsepower right at 200 or 300
 > horsepower.br\> ⬜ There is a second mode around 300 horsepower.br\>
 
+Plot A is the only histogram that shows the count for cars with exactly
+200 and 300 horsepower.
+
 ## geom_boxplot(): Box plots for outliers
 
 In addition to indicating the center and spread of a distribution, a box
@@ -899,6 +943,13 @@ cars %>%
 
 ![](readme_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
+Because the `city_mpg` variable has a much wider range with its
+outliers, it’s best to display its distribution as a box plot.
+
+## Visualization in higher dimensions
+
+Theory. Coming soon …
+
 ## facet_grid(): 3 variable plot
 
 Faceting is a valuable technique for looking at several conditional
@@ -924,7 +975,7 @@ common_cyl %>%
   ggplot(aes(x = hwy_mpg)) +
   geom_histogram() +
   facet_grid(ncyl ~ suv) +
-  ggtitle("facet")
+  ggtitle("Mileage by suv and ncyl")
 ```
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -946,6 +997,10 @@ common_cyl %>%
 Now that we’ve looked at exploring categorical and numerical data,
 you’ll learn some useful statistics for describing distributions of
 data.
+
+## Measures of center
+
+Theory. Coming soon …
 
 ## Choice of center measure
 
@@ -1024,6 +1079,10 @@ gap2007 %>%
 ```
 
 ![](readme_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+
+## Measures of variability
+
+Theory. Coming soon …
 
 ## Choice of spread measure
 
@@ -1244,6 +1303,10 @@ gap_asia %>%
 
 Apply what you’ve learned to explore and summarize a real world dataset
 in this case study of email spam.
+
+## Introducing the data
+
+Theory. Coming soon …
 
 ### Spam and num_char
 

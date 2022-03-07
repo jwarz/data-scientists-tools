@@ -11,9 +11,21 @@ output:
 knitr::opts_chunk$set(echo = TRUE, eval = T)
 ```
 
+**Short Description**
+
+Learn how to use graphical and numerical techniques for exploratory data analysis while generating insightful and beautiful graphics in R.
+
+**Long Description**
+
+When your dataset is represented as a table or a database, it's difficult to observe much about it beyond its size and the types of variables it contains. In this course, you'll learn how to use graphical and numerical techniques to begin uncovering the structure of your data. Which variables suggest interesting relationships? Which observations are unusual? By the end of the course, you'll be able to answer these questions and more, while generating graphics that are both insightful and beautiful.
+
 # 1. Exploring Categorical Data
 
 In this section, you will learn how to create graphical and numerical summaries of two categorical variables.
+
+## Exploring categorical data
+
+Theory. Coming soon ...
 
 ## Intro Bar charts
 
@@ -229,6 +241,7 @@ comics_filtered |>
 > ⬜ 13%<br>
 > ✅ 51%<br>
 
+Nice! To answer this question, you needed to look at how align was distributed within each gender. That is, you wanted to condition on the gender variable. 
 
 ## Barcharts: Counts vs. proportions
 
@@ -258,6 +271,8 @@ comics_filtered |>
   geom_bar(position = "fill") +
   ylab("proportion")
 ```
+
+Excellent work! By adding `position = "fill"` to `geom_bar()`, you are saying you want the bars to fill the entire height of the plotting window, thus displaying proportions and not raw counts.
 
 ## fct_relevel() / fct_infreq(): Order Barcharts
 ### fct_relevel()
@@ -396,6 +411,8 @@ ggplot(cars, aes(x = city_mpg)) +
   facet_wrap(~ suv)
 ```
 
+In this step, you faceted by the `suv` variable, but it's important to note that you can facet a plot by any categorical variable using `facet_wrap()`.
+
 ## geom_boxplot() & geom_density(): Boxplots and density plots
 
 The mileage of a car tends to be associated with the size of its engine (as measured by the number of cylinders). To explore the relationship between these two variables, you could stick to using histograms, but in this exercise you'll try your hand at two alternatives: 
@@ -438,6 +455,8 @@ common_cyl |>
 > ⬜ The typical 4 cylinder car gets better mileage than the typical 6 cylinder car, which gets better mileage than the typical 8 cylinder car.<br>
 > ⬜ Most of the 4 cylinder cars get better mileage than even the most efficient 8 cylinder cars.<br>
 > ✅ The variability in mileage of 8 cylinder cars is similar to the variability in mileage of 4 cylinder cars.<br>
+
+The variability in mileage of 8 cylinder cars seem much smaller than that of 4 cylinder cars. 
 
 ## geom_histogram(): Marginal and conditional histograms
 
@@ -523,6 +542,8 @@ cars %>%
 > ✅ There is a tendency for cars to have horsepower right at 200 or 300 horsepower.br>
 > ⬜ There is a second mode around 300 horsepower.br>
 
+Plot A is the only histogram that shows the count for cars with exactly 200 and 300 horsepower. 
+
 ## geom_boxplot(): Box plots for outliers
 
 In addition to indicating the center and spread of a distribution, a box plot provides a graphical means to detect outliers. You can apply this method to the `msrp` column (manufacturer's suggested retail price) to detect if there are unusually expensive or cheap cars.
@@ -578,6 +599,12 @@ cars %>%
   geom_density()
 ```
 
+Because the `city_mpg` variable has a much wider range with its outliers, it's best to display its distribution as a box plot.
+
+## Visualization in higher dimensions
+
+Theory. Coming soon ...
+
 ## facet_grid(): 3 variable plot
 
 Faceting is a valuable technique for looking at several conditional distributions at the same time. If the faceted distributions are laid out in a grid, you can consider the association between a variable and two others, one on the rows of the grid and the other on the columns.
@@ -598,7 +625,7 @@ common_cyl %>%
   ggplot(aes(x = hwy_mpg)) +
   geom_histogram() +
   facet_grid(ncyl ~ suv) +
-  ggtitle("facet")
+  ggtitle("Mileage by suv and ncyl")
 ```
 
 > *Question*
@@ -612,6 +639,10 @@ common_cyl %>%
 # 3. Numerical Summaries
 
 Now that we've looked at exploring categorical and numerical data, you'll learn some useful statistics for describing distributions of data.
+
+## Measures of center
+
+Theory. Coming soon ...
 
 ## Choice of center measure
 
@@ -666,6 +697,10 @@ gap2007 %>%
   ggplot(aes(x = continent, y = lifeExp)) +
   geom_boxplot()
 ```
+
+## Measures of variability
+
+Theory. Coming soon ...
 
 ## Choice of spread measure
 
@@ -823,6 +858,10 @@ gap_asia %>%
 # 4. Case Study: Spam Emails
 
 Apply what you've learned to explore and summarize a real world dataset in this case study of email spam.
+
+## Introducing the data
+
+Theory. Coming soon ...
 
 ### Spam and num_char
 
