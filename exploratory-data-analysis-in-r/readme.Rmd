@@ -1,5 +1,5 @@
 ---
-title: "Cleaning data in R"
+title: "Exploratory Data Analysis in R"
 author: "Joschka Schwarz"
 output: 
   github_document:

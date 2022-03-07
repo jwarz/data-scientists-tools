@@ -1,4 +1,4 @@
-Cleaning data in R
+Exploratory Data Analysis in R
 ================
 Joschka Schwarz
 
