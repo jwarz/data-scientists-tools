@@ -1,7 +1,95 @@
 Intermediate Importing Data in R
 ================
+Joschka Schwarz
+
+-   [1. Importing data from databases (Part
+    1)](#1-importing-data-from-databases-part-1)
+    -   [Connect to a database](#connect-to-a-database)
+    -   [Establish a connection](#establish-a-connection)
+    -   [Inspect the connection](#inspect-the-connection)
+    -   [Import table data](#import-table-data)
+    -   [List the database tables](#list-the-database-tables)
+    -   [Import users](#import-users)
+    -   [Import all tables](#import-all-tables)
+    -   [How do the tables relate?](#how-do-the-tables-relate)
+-   [2. Importing data from databases (Part
+    2)](#2-importing-data-from-databases-part-2)
+    -   [Query tweater (1)](#query-tweater-1)
+    -   [Query tweater (2)](#query-tweater-2)
+    -   [Query tweater (3)](#query-tweater-3)
+    -   [Query tweater (4)](#query-tweater-4)
+    -   [Join the query madness!](#join-the-query-madness)
+    -   [DBI internals](#dbi-internals)
+    -   [Send - Fetch - Clear](#send---fetch---clear)
+    -   [Be polite and …](#be-polite-and-)
+-   [3. Importing data from the web (Part
+    1)](#3-importing-data-from-the-web-part-1)
+    -   [HTTP](#http)
+    -   [Import flat files from the
+        web](#import-flat-files-from-the-web)
+    -   [Secure importing](#secure-importing)
+    -   [Downloading files](#downloading-files)
+    -   [Import Excel files from the
+        web](#import-excel-files-from-the-web)
+    -   [Downloading any file, secure or
+        not](#downloading-any-file-secure-or-not)
+    -   [Reading a text file from the
+        web](#reading-a-text-file-from-the-web)
+    -   [HTTP? httr! (1)](#http-httr-1)
+    -   [HTTP? httr! (2)](#http-httr-2)
+-   [4. Importing data from the web (Part
+    2)](#4-importing-data-from-the-web-part-2)
+    -   [APIs & JSON](#apis--json)
+    -   [From JSON to R](#from-json-to-r)
+    -   [Quandl API](#quandl-api)
+    -   [OMDb API](#omdb-api)
+    -   [JSON & jsonlite](#json--jsonlite)
+    -   [JSON practice (1)](#json-practice-1)
+    -   [JSON practice (2)](#json-practice-2)
+    -   [toJSON()](#tojson)
+    -   [Minify and prettify](#minify-and-prettify)
+-   [5. Importing data from statistical software
+    packages](#5-importing-data-from-statistical-software-packages)
+    -   [Import SAS data with haven](#import-sas-data-with-haven)
+    -   [Import STATA data with haven](#import-stata-data-with-haven)
+    -   [What does the graphic tell?](#what-does-the-graphic-tell)
+    -   [Import SPSS data with haven](#import-spss-data-with-haven)
+    -   [Factorize, round two](#factorize-round-two)
+    -   [foreign](#foreign)
+    -   [Import STATA data with foreign
+        (1)](#import-stata-data-with-foreign-1)
+    -   [Import STATA data with foreign
+        (2)](#import-stata-data-with-foreign-2)
+    -   [Do you know your data?](#do-you-know-your-data)
+    -   [Import SPSS data with foreign
+        (1)](#import-spss-data-with-foreign-1)
+    -   [Excursion: Correlation](#excursion-correlation)
+    -   [Import SPSS data with foreign
+        (2)](#import-spss-data-with-foreign-2)
+
+**Short Description**
+
+Parse data in any format. Whether it’s flat files, statistical software,
+databases, or data right from the web.
+
+**Long Description**
+
+In this course, you will take a deeper dive into the wide range of data
+formats out there. More specifically, you’ll learn how to import data
+from relational databases and how to import and work with data coming
+from the web. Finally, you’ll get hands-on experience with importing
+data from statistical software packages such as SAS, STATA, and SPSS.
 
 # 1. Importing data from databases (Part 1)
+
+Many companies store their information in relational databases. The R
+community has also developed R packages to get data from these
+architectures. You’ll learn how to connect to a database and how to
+retrieve data from it.
+
+## Connect to a database
+
+Theory. Coming soon …
 
 ## Establish a connection
 
@@ -23,16 +111,14 @@ also have to specify the following arguments in
 `dbname`, `host`, `port`, `user` and `password`. Most of these details
 have already been provided.
 
-**Instructions:**
+**Steps**
 
--   Load the `DBI` library, which is already installed on DataCamp’s
+1.  Load the `DBI` library, which is already installed on DataCamp’s
     servers.
--   Edit the
+2.  Edit the
     <a href="http://www.rdocumentation.org/packages/DBI/functions/dbConnect" target="_blank" rel="noopener noreferrer">`dbConnect()`</a>
     call to connect to the MySQL database. Change the `port` argument
     (`3306`) and `user` argument (`"student"`).
-
-**Solution:**
 
 ``` r
 # Load the DBI package
@@ -50,15 +136,19 @@ con <- dbConnect(RMySQL::MySQL(),
 ## Inspect the connection
 
 Now that you’ve successfully created the database connection, let’s have
-a closer look at it. With the object `con` available in your workspace,
-can you tell which of the following statements is true?
+a closer look at it.
 
-**Possible Answers:**
+> ## *Question*
+>
+> With the object `con` available in your workspace, can you tell which
+> of the following statements is true?<br> <br> ⬜ `con` is an
+> `SQLConnection` object.<br> ⬜ `con` is a `PostgreSQLConnection`
+> object.<br> ✅ `con` is an `MySQLConnection` object.<br> ⬜ `con` is
+> an `NoSQLConnection` object.<br>
 
-:white_large_square: con is an SQLConnection object.<br>
-:white_large_square: con is a PostgreSQLConnection object.<br>
-:white_check_mark: con is an MySQLConnection object.<br>
-:white_large_square: con is an NoSQLConnection object.<br>
+## Import table data
+
+Theory. Coming soon …
 
 ## List the database tables
 
@@ -70,14 +160,12 @@ function. As you might remember from the video, this function requires
 the connection object as an input, and outputs a character vector with
 the table names.
 
-**Instructions:**
+**Steps**
 
--   Add code to create a vector `tables`, that contains the tables in
+1.  Add code to create a vector `tables`, that contains the tables in
     the tweater database. You can connect to this database through the
     `con` object.
--   Display the structure of `tables`; what’s the class of this vector?
-
-**Solution:**
+2.  Display the structure of `tables`; what’s the class of this vector?
 
 ``` r
 # Build a vector of table names: tables
@@ -88,6 +176,11 @@ str(tables)
 ```
 
     ##  chr [1:3] "comments" "tweats" "users"
+
+Good!
+[`dbListTables()`](http://www.rdocumentation.org/packages/DBI/functions/dbListTables)
+can be very useful to get a first idea about the contents of your
+database. Can you guess what kind of information this database contains?
 
 ## Import users
 
@@ -105,13 +198,11 @@ function. Simply pass it the connection object (`con`), followed by the
 name of the table you want to import. The resulting object is a standard
 R data frame.
 
-**Instructions:**
+**Steps**
 
--   Add code that imports the `"users"` table from the tweater database
-    and store the resulting data frame as `users`.
--   Print the `users` data frame.
-
-**Solution:**
+1 Add code that imports the `"users"` table from the tweater database
+and store the resulting data frame as `users`. 2. Print the `users` data
+frame.
 
 ``` r
 # Import the users table from tweater: users
@@ -139,14 +230,12 @@ duplication. Remember about the `lapply()` function? You can use it
 again here! A connection is already coded for you, as well as a vector
 `table_names`, containing the names of all the tables in the database.
 
-**Instructions:**
+**Steps**
 
--   Finish the `lapply()` function to import the `users`, `tweats` and
+1.  Finish the `lapply()` function to import the `users`, `tweats` and
     `comments` tables in a single call. The result, a list of data
     frames, will be stored in the variable `tables`.
--   Print `tables` to check if you got it right.
-
-**Solution:**
+2.  Print `tables` to check if you got it right.
 
 ``` r
 # Get table names
@@ -207,6 +296,10 @@ tables
     ## 6  6      kate  katebenn
     ## 7  7    anjali    lianja
 
+Wonderful! Now that you have an R version of all data that is contained
+in the database, you can dive a little deeper into the relations between
+the different data frames.
+
 ## How do the tables relate?
 
 The connection to the MySQL database `con` has already been created for
@@ -219,17 +312,20 @@ refer to the users that have posted the tweat. Similarly, the `comments`
 contain both a `user_id` and a `tweat_id` column. It specifies which
 user posted a comment on which tweat.
 
-With this new knowledge, can you tell **who** posted the **tweat** on
-which somebody **commented** “awesome! thanks!” (comment 1012)?
-
-**Possible Answers:**
-
-:white_large_square: The user with id 1, so Kate.<br>
-:white_large_square: There is not enough information to solve this.<br>
-:white_large_square: The user with id 4, so Thomas.<br>
-:white_check_mark: The user with user_id 5, so Oliver.<br>
+> ## *Question*
+>
+> With this new knowledge, can you tell **who** posted the **tweat** on
+> which somebody **commented** “awesome! thanks!” (comment 1012)?<br>
+> <br> ⬜ The user with id 1, so Kate.<br> ⬜ There is not enough
+> information to solve this.<br> ⬜ The user with id 4, so Thomas.<br>
+> ✅ The user with user_id 5, so Oliver.<br>
 
 # 2. Importing data from databases (Part 2)
+
+Importing an entire table from a database while you might only need a
+tiny bit of information seems like a lot of unncessary work. In this
+chapter, you’ll learn about SQL queries, which will help you make things
+more efficient by performing some computations on the database side.
 
 ## Query tweater (1)
 
@@ -249,19 +345,15 @@ This example selects the `age` variable from the `people` dataset where
 dbGetQuery(con, "SELECT age FROM people WHERE gender = 'male'")
 ```
 
-A connection to the `tweater` database has already been coded for you.
+**Steps**
 
-**Instructions:**
-
--   Use
+1.  Use
     <a href="http://www.rdocumentation.org/packages/DBI/functions/dbGetQuery" target="_blank" rel="noopener noreferrer">`dbGetQuery()`</a>
     to create a data frame, `elisabeth`, that **selects** the `tweat_id`
     column **from** the `comments` table **where** elisabeth is the
     commenter, her `user_id` is 1
--   Print out `elisabeth` so you can see if you queried the database
+2.  Print out `elisabeth` so you can see if you queried the database
     correctly.
-
-**Solution:**
 
 ``` r
 # Import tweat_id column of comments where user_id is 1: elisabeth
@@ -277,27 +369,27 @@ elisabeth
     ## 3       77
     ## 4       77
 
+Nice! To make sure you understood SQL’s `SELECT` - `FROM` - `WHERE`
+syntax, let’s practice some more.
+
 ## Query tweater (2)
 
 Apart from checking equality, you can also check for *less than* and
 *greater than* relationships, with `<` and `>`, just like in R.
 
-`con`, a connection to the `tweater` database, is again available.
+**Steps**
 
-**Instructions:**
-
--   Create a data frame, `latest`, that **selects** the `post` column
+1.  Create a data frame, `latest`, that **selects** the `post` column
     **from** the `tweats` table observations **where** the `date` is
     higher than `'2015-09-21'`.
--   Print out `latest`.
-
-**Solution:**
+2.  Print out `latest`.
 
 ``` r
 # Import post column of tweats where date is higher than '2015-09-21': latest
-latest <- dbGetQuery(con, "SELECT post
-                           FROM tweats
-                           WHERE date > \"2015-09-21\"")
+# Import post column of tweats where date is higher than '2015-09-21': latest
+latest <- dbGetQuery(con, "SELECT post 
+                           FROM tweats 
+                           WHERE date > '2015-09-21'")
 
 # Print latest
 latest
@@ -307,6 +399,9 @@ latest
     ## 1               open and crush avocado. add shrimps. perfect starter.
     ## 2 nachos. add tomato sauce, minced meat and cheese. oven for 10 mins.
     ## 3                              just eat an apple. simply and healthy.
+
+Nice! To make sure you understood SQL’s `SELECT` - `FROM` - `WHERE`
+syntax, let’s practice some more.
 
 ## Query tweater (3)
 
@@ -324,14 +419,12 @@ SELECT age, country
 Can you use a similar approach for a more specialized query on the
 `tweater` database?
 
-**Instructions:**
+**Steps**
 
--   Create an R data frame, `specific`, that **selects** the `message`
+1.  Create an R data frame, `specific`, that **selects** the `message`
     column **from** the `comments` table **where** the `tweat_id` is 77
     **and** the `user_id` is greater than 4.
--   Print `specific`.
-
-**Solution:**
+2.  Print `specific`.
 
 ``` r
 # Create data frame specific
@@ -352,14 +445,12 @@ There are also dedicated SQL functions that you can use in the `WHERE`
 clause of an SQL query. For example, `CHAR_LENGTH()` returns the number
 of characters in a string.
 
-**Instructions:**
+**Steps**
 
--   Create a data frame, `short`, that **selects** the `id` and `name`
+1.  Create a data frame, `short`, that **selects** the `id` and `name`
     columns **from** the `users` table **where** the number of
     characters in the `name` is strictly less than 5.
--   Print `short`.
-
-**Solution:**
+2.  Print `short`.
 
 ``` r
 # Create data frame short
@@ -394,7 +485,14 @@ possible because the `id` column in the `users` table corresponds to the
 `users` table, and `post` and `date`, from the `tweats` table, can be
 referenced to without problems.
 
-Can you predict the outcome of the following query?
+> ## *Question*
+>
+> Can you predict the outcome of the following query?<br> <br> ⬜ Trying
+> to get the results of this SQL query throws an error.<br> ✅ A table
+> with four observations, containing two columns: `post` and
+> `message`.<br> ⬜ A table with six observations, containing all
+> columns in the `tweats` table.<br> ⬜ A table with six observations,
+> containing the columns `post` and `message`.<br>
 
 ``` sql
 SELECT post, message
@@ -402,16 +500,9 @@ SELECT post, message
     WHERE tweat_id = 77
 ```
 
-Feel free to experiment with the `con` object!
+## DBI internals
 
-**Possible Answers:**
-
-:white_large_square: Trying to get the results of this SQL query throws
-an error.<br> :white_check_mark: A table with four observations,
-containing two columns: post and message.<br> :white_large_square: A
-table with six observations, containing all columns in the tweats
-table.<br> :white_large_square: A table with six observations,
-containing the columns post and message.<br>
+Theory. Coming soon …
 
 ## Send - Fetch - Clear
 
@@ -435,22 +526,20 @@ it gives you the ability to fetch the query’s result in chunks rather
 than all at once. You can do this by specifying the `n` argument inside
 <a href="http://www.rdocumentation.org/packages/DBI/functions/dbFetch" target="_blank" rel="noopener noreferrer">`dbFetch()`</a>.
 
-**Instructions:**
+**Steps**
 
--   Inspect the
+1.  Inspect the
     <a href="http://www.rdocumentation.org/packages/DBI/functions/dbSendQuery" target="_blank" rel="noopener noreferrer">`dbSendQuery()`</a>
     call that has already been coded for you. It selects the comments
     for the users with an id above 4.
--   Use
+2.  Use
     <a href="http://www.rdocumentation.org/packages/DBI/functions/dbFetch" target="_blank" rel="noopener noreferrer">`dbFetch()`</a>
     twice. In the first call, import only two records of the query
     result by setting the `n` argument to `2`. In the second call,
     import all remaining queries (don’t specify `n`). In both calls,
     simply print the resulting data frames.
--   Clear `res` with
+3.  Clear `res` with
     <a href="http://www.rdocumentation.org/packages/DBI/functions/dbClearResult" target="_blank" rel="noopener noreferrer">`dbClearResult()`</a>.
-
-**Solution:**
 
 ``` r
 # Send query to the database
@@ -480,6 +569,10 @@ dbClearResult(res)
 
     ## [1] TRUE
 
+Perfect! In our toy example, chopping up the fetches doesn’t make a lot
+of sense, but make sure to remember this technique when you’re
+struggling with huge databases!
+
 ## Be polite and …
 
 Every time you connect to a database using
@@ -494,17 +587,15 @@ function.
 The code that connects you to the database is already available, can you
 finish the script?
 
-**Instructions:**
+**Steps**
 
--   Using the technique you prefer, build a data frame `long_tweats`. It
+1.  Using the technique you prefer, build a data frame `long_tweats`. It
     **selects** the `post` and `date` columns **from** the observations
     in `tweats` **where** the character length of the `post` variable
     exceeds `40`.
--   Print `long_tweats`.
--   Disconnect from the database by using
+2.  Print `long_tweats`.
+3.  Disconnect from the database by using
     <a href="http://www.rdocumentation.org/packages/DBI/functions/dbDisconnect" target="_blank" rel="noopener noreferrer">`dbDisconnect()`</a>.
-
-**Solution:**
 
 ``` r
 # Create the data frame  long_tweats
@@ -534,7 +625,21 @@ dbDisconnect(con)
 
     ## [1] TRUE
 
+Wonderful! This concludes the chapter on databases. Of course, there is
+tons more to learn about interfacing to databases and working with them
+as efficiently as possible, but that’s something for more advanced
+courses.
+
 # 3. Importing data from the web (Part 1)
+
+More and more of the information that data scientists are using resides
+on the web. Importing this data into R requires an understanding of the
+protocols used on the web. In this chapter, you’ll get a crash course in
+HTTP and learn to perform your own HTTP requests from inside R.
+
+## HTTP
+
+Theory. Coming soon …
 
 ## Import flat files from the web
 
@@ -552,21 +657,19 @@ URLs for both a `.csv` file as well as a `.delim` file are already coded
 for you. It’s up to you to actually import the data. If it works, that
 is…
 
-**Instructions:**
+**Steps**
 
--   Load the `readr` package. It’s already installed on DataCamp’s
+1.  Load the `readr` package. It’s already installed on DataCamp’s
     servers.
--   Use `url_csv` to read in the `.csv` file it is pointing to. Use the
+2.  Use `url_csv` to read in the `.csv` file it is pointing to. Use the
     <a href="https://cran.r-project.org/web/packages/readr/readr.pdf" target="_blank" rel="noopener noreferrer">`read_csv()`</a>
     function. The `.csv` contains column names in the first row. Save
     the resulting data frame as `pools`.
--   Similarly, use `url_delim` to read in the online `.txt` file. Use
+3.  Similarly, use `url_delim` to read in the online `.txt` file. Use
     the
     <a href="https://cran.r-project.org/web/packages/readr/readr.pdf" target="_blank" rel="noopener noreferrer">`read_tsv()`</a>
     function and store the result as `potatoes`.
--   Print `pools` and `potatoes`. Looks correct?
-
-**Solution:**
+4.  Print `pools` and `potatoes`. Looks correct?
 
 ``` r
 # Load the readr package
@@ -654,6 +757,8 @@ print(potatoes)
     ## 10     1     1     1       2      5     2      2.8       1.9
     ## # … with 150 more rows
 
+Great! It seems to work without any additional problems!
+
 ## Secure importing
 
 In the previous exercises, you have been working with URLs that all
@@ -664,21 +769,19 @@ remember this: HTTPS is relatively safe, HTTP is not.
 Luckily for us, you can use the standard importing functions with
 `https://` connections since R version 3.2.2.
 
-**Instructions:**
+**Steps**
 
--   Take a look at the URL in `url_csv`. It uses a secure connection,
+1.  Take a look at the URL in `url_csv`. It uses a secure connection,
     `https://`.
--   Use
+2.  Use
     <a href="http://www.rdocumentation.org/packages/utils/functions/read.table" target="_blank" rel="noopener noreferrer">`read.csv()`</a>
     to import the file at `url_csv`. The `.csv` file it is referring to
     contains column names in the first row. Call it `pools1`.
--   Use
+3.  Use
     <a href="https://cran.r-project.org/web/packages/readr/readr.pdf" target="_blank" rel="noopener noreferrer">`read_csv()`</a>
     to read in the same `.csv` file in `url_csv`. Call it `pools2`.
--   Print out the structure of `pools1` and `pools2`. Looks like the
+4.  Print out the structure of `pools1` and `pools2`. Looks like the
     importing went equally well as with a normal `http` connection!
-
-**Solution:**
 
 ``` r
 # https URL to the swimming_pools csv file.
@@ -731,6 +834,12 @@ str(pools2)
     ##   .. )
     ##  - attr(*, "problems")=<externalptr>
 
+Great! It seems to work without any additional problems!
+
+## Downloading files
+
+Theory. Coming soon …
+
 ## Import Excel files from the web
 
 When you learned about `gdata`, it was already mentioned that `gdata`
@@ -739,27 +848,25 @@ least not yet. The URL with which you’ll be working is already available
 in the sample code. You will import it once using `gdata` and once with
 the `readxl` package via a workaround.
 
-**Instructions:**
+**Steps**
 
--   Load the `readxl` and `gdata` packages. They are already installed
+1.  Load the `readxl` and `gdata` packages. They are already installed
     on DataCamp’s servers.
--   Import the `.xls` file located at the URL `url_xls` using
+2.  Import the `.xls` file located at the URL `url_xls` using
     <a href="http://www.rdocumentation.org/packages/gdata/functions/read.xls" target="_blank" rel="noopener noreferrer">`read.xls()`</a>
     from `gdata`. Store the resulting data frame as `excel_gdata`.
--   You can not use
+3.  You can not use
     <a href="https://cran.r-project.org/web/packages/readxl/readxl.pdf" target="_blank" rel="noopener noreferrer">`read_excel()`</a>
     directly with a URL. Complete the following instructions to work
     around this problem:
--   Use
+4.  Use
     <a href="http://www.rdocumentation.org/packages/utils/functions/download.file" target="_blank" rel="noopener noreferrer">`download.file()`</a>
     to download the `.xls` file behind the URL and store it locally as
     `"local_latitude.xls"`.
--   Call
+5.  Call
     <a href="https://cran.r-project.org/web/packages/readxl/readxl.pdf" target="_blank" rel="noopener noreferrer">`read_excel()`</a>
     to import the local file, `"local_latitude.xls"`. Name the resulting
     data frame `excel_readxl`.
-
-**Solution:**
 
 ``` r
 # Load the readxl and gdata package
@@ -802,6 +909,11 @@ download.file(url_xls, "data//local_latitude.xls")
 excel_readxl <- read_excel("data//local_latitude.xls")
 ```
 
+Nice! It appears that `readxl` is not (yet?) able to deal with Excel
+files that are on the web. However, a simply workaround with
+[`download.file()`](http://www.rdocumentation.org/packages/utils/functions/download.file)
+fixes this.
+
 ## Downloading any file, secure or not
 
 In the previous exercise you’ve seen how you can read excel files on the
@@ -822,24 +934,22 @@ function, but this function does not accept a URL string as an argument.
 In this exercise, you’ll first download the `RData` file securely, and
 then import the local data file.
 
-**Instructions:**
+**Steps**
 
--   Take a look at the URL in `url_rdata`. It uses a secure connection,
+1.  Take a look at the URL in `url_rdata`. It uses a secure connection,
     `https://`. This URL points to an `RData` file containing a data
     frame with some metrics on different kinds of wine.
--   Download the file at `url_rdata` using
+2.  Download the file at `url_rdata` using
     <a href="http://www.rdocumentation.org/packages/utils/functions/download.file" target="_blank" rel="noopener noreferrer">`download.file()`</a>.
     Call the file `"wine_local.RData"` in your working directory.
--   Load the file you created, `wine_local.RData`, using the
+3.  Load the file you created, `wine_local.RData`, using the
     <a href="http://www.rdocumentation.org/packages/base/functions/load" target="_blank" rel="noopener noreferrer">`load()`</a>
     function. It takes one argument, the path to the file, which is just
     the filename in our case. After running this command, the variable
     `wine` will automatically be available in your workspace.
--   Print out the
+4.  Print out the
     <a href="http://www.rdocumentation.org/packages/base/functions/summary" target="_blank" rel="noopener noreferrer">`summary()`</a>
     of the `wine` dataset.
-
-**Solution:**
 
 ``` r
 # https URL to the wine RData file.
@@ -877,31 +987,36 @@ summary(wine)
     ##  3rd Qu.:1.950   3rd Qu.: 6.200   3rd Qu.:3.170   3rd Qu.: 985.0  
     ##  Max.   :3.580   Max.   :13.000   Max.   :4.000   Max.   :1680.0
 
+Great! Another way to load remote `RData` files is to use the
+[`url()`](http://www.rdocumentation.org/packages/base/functions/connections)
+function inside
+[`load()`](http://www.rdocumentation.org/packages/base/functions/load).
+However, this will not save the `RData` file to a local file.
+
 ## Reading a text file from the web
 
 Wow, you’ve learned a lot of ways to import a data file from the web in
 the previous exercises. Let’s see if you can remember what’s possible
 and what’s not.
 
-Which way of importing data is *NOT* possible?
-
-**Possible Answers:**
-
-:white_large_square: Importing a .csv file residing on the web using the
-URL with read.csv():
-`read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/swimming_pools.csv")`
-
-:white_large_square: Downloading a remote excel and saving it to your
-working directory using download.file():
-`download.file("http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/latitude.xlsx", "lat.xlsx")`
-
-:white_large_square: Importing a .txt file residing on the web using the
-URL with read_tsv():
-`read_tsv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/potatoes.txt")`
-
-:white_check_mark: Using the load() function to load a remote RData file
-into the workspace with only the URL string:
-`load("https://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/wine.RData"`
+> ## *Question*
+>
+> Which way of importing data is *NOT* possible?<br> <br> ⬜ Importing a
+> `.csv` file residing on the web using the URL with
+> <a href="http://www.rdocumentation.org/packages/utils/functions/read.table">`read.csv()`</a>:
+> `read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/swimming_pools.csv")`<br>
+> ⬜ Downloading a remote excel and saving it to your working directory
+> using
+> <a href="http://www.rdocumentation.org/packages/utils/functions/download.file">`download.file()`</a>:
+> `download.file("http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/latitude.xlsx", "lat.xlsx")`<br>
+> ⬜ Importing a `.txt` file residing on the web using the URL with
+> <a href="https://cran.r-project.org/web/packages/readr/readr.pdf">`read_tsv()`</a>:
+> `read_tsv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/potatoes.txt")`<br>
+> ✅ Using the
+> <a href="http://www.rdocumentation.org/packages/base/functions/load">`load()`</a>
+> function to load a remote `RData` file into the workspace with only
+> the URL string:
+> `load("https://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/wine.RData")`<br>
 
 ## HTTP? httr! (1)
 
@@ -925,23 +1040,21 @@ how to retrieve the content through the `as` argument, it’ll try its
 best to figure out which type is most appropriate based on the
 content-type.
 
-**Instructions:**
+**Steps**
 
--   Load the `httr` package. It’s already installed on DataCamp’s
+1.  Load the `httr` package. It’s already installed on DataCamp’s
     servers.
--   Use
+2.  Use
     <a href="http://www.rdocumentation.org/packages/httr/functions/GET" target="_blank" rel="noopener noreferrer">`GET()`</a>
     to get the URL stored in `url`. Store the result of this `GET()`
     call as `resp`.
--   Print the `resp` object. What information does it contain?
--   Get the content of `resp` using
+3.  Print the `resp` object. What information does it contain?
+4.  Get the content of `resp` using
     <a href="http://www.rdocumentation.org/packages/httr/functions/content" target="_blank" rel="noopener noreferrer">`content()`</a>
     and set the `as` argument to `"raw"`. Assign the resulting vector to
     `raw_content`.
--   Print the first values in `raw_content` with
+5.  Print the first values in `raw_content` with
     <a href="http://www.rdocumentation.org/packages/utils/functions/head" target="_blank" rel="noopener noreferrer">`head()`</a>.
-
-**Solution:**
 
 ``` r
 # Load the httr package
@@ -956,7 +1069,7 @@ resp
 ```
 
     ## Response [http://www.example.com/]
-    ##   Date: 2022-01-20 22:50
+    ##   Date: 2022-03-07 16:09
     ##   Status: 200
     ##   Content-Type: text/html; charset=UTF-8
     ##   Size: 1.26 kB
@@ -982,6 +1095,12 @@ head(raw_content)
 
     ## [1] 3c 21 64 6f 63 74
 
+Great! The raw content of the response doesn’t make a lot of sense, does
+it? Luckily, the
+[`content()`](http://www.rdocumentation.org/packages/httr/functions/content)
+function by default, if you don’t specify the `as` argument, figures out
+what type of data you’re dealing with and parses it for you.
+
 ## HTTP? httr! (2)
 
 Web content does not limit itself to HTML pages and files stored on
@@ -994,24 +1113,22 @@ more complicated ways.
 You’ll learn about Web APIs and JSON in the video and exercises that
 follow, but some experimentation never hurts, does it?
 
-**Instructions:**
+**Steps**
 
--   Use
+1.  Use
     <a href="http://www.rdocumentation.org/packages/httr/functions/GET" target="_blank" rel="noopener noreferrer">`GET()`</a>
     to get the `url` that has already been specified in the sample code.
     Store the response as `resp`.
--   Print `resp`. What is the content-type?
--   Use
+2.  Print `resp`. What is the content-type?
+3.  Use
     <a href="http://www.rdocumentation.org/packages/httr/functions/content" target="_blank" rel="noopener noreferrer">`content()`</a>
     to get the content of `resp`. Set the `as` argument to `"text"`.
     Simply print out the result. What do you see?
--   Use
+4.  Use
     <a href="http://www.rdocumentation.org/packages/httr/functions/content" target="_blank" rel="noopener noreferrer">`content()`</a>
     to get the content of `resp`, but this time do not specify a second
     argument. R figures out automatically that you’re dealing with a
     JSON, and converts the JSON to a named R list.
-
-**Solution:**
 
 ``` r
 # Get the url
@@ -1023,7 +1140,7 @@ print(resp)
 ```
 
     ## Response [http://www.omdbapi.com/?apikey=72bc447a&t=Annie+Hall&y=&plot=short&r=json]
-    ##   Date: 2022-01-20 22:50
+    ##   Date: 2022-03-07 16:09
     ##   Status: 200
     ##   Content-Type: application/json; charset=utf-8
     ##   Size: 1.02 kB
@@ -1033,7 +1150,7 @@ print(resp)
 print(content(resp, as = "text"))
 ```
 
-    ## [1] "{\"Title\":\"Annie Hall\",\"Year\":\"1977\",\"Rated\":\"PG\",\"Released\":\"20 Apr 1977\",\"Runtime\":\"93 min\",\"Genre\":\"Comedy, Romance\",\"Director\":\"Woody Allen\",\"Writer\":\"Woody Allen, Marshall Brickman\",\"Actors\":\"Woody Allen, Diane Keaton, Tony Roberts\",\"Plot\":\"Alvy Singer, a divorced Jewish comedian, reflects on his relationship with ex-lover Annie Hall, an aspiring nightclub singer, which ended abruptly just like his previous marriages.\",\"Language\":\"English, German\",\"Country\":\"United States\",\"Awards\":\"Won 4 Oscars. 31 wins & 8 nominations total\",\"Poster\":\"https://m.media-amazon.com/images/M/MV5BZDg1OGQ4YzgtM2Y2NS00NjA3LWFjYTctMDRlMDI3NWE1OTUyXkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_SX300.jpg\",\"Ratings\":[{\"Source\":\"Internet Movie Database\",\"Value\":\"8.0/10\"},{\"Source\":\"Rotten Tomatoes\",\"Value\":\"96%\"},{\"Source\":\"Metacritic\",\"Value\":\"92/100\"}],\"Metascore\":\"92\",\"imdbRating\":\"8.0\",\"imdbVotes\":\"259,768\",\"imdbID\":\"tt0075686\",\"Type\":\"movie\",\"DVD\":\"05 Jul 2000\",\"BoxOffice\":\"$38,251,425\",\"Production\":\"N/A\",\"Website\":\"N/A\",\"Response\":\"True\"}"
+    ## [1] "{\"Title\":\"Annie Hall\",\"Year\":\"1977\",\"Rated\":\"PG\",\"Released\":\"20 Apr 1977\",\"Runtime\":\"93 min\",\"Genre\":\"Comedy, Romance\",\"Director\":\"Woody Allen\",\"Writer\":\"Woody Allen, Marshall Brickman\",\"Actors\":\"Woody Allen, Diane Keaton, Tony Roberts\",\"Plot\":\"Alvy Singer, a divorced Jewish comedian, reflects on his relationship with ex-lover Annie Hall, an aspiring nightclub singer, which ended abruptly just like his previous marriages.\",\"Language\":\"English, German\",\"Country\":\"United States\",\"Awards\":\"Won 4 Oscars. 31 wins & 8 nominations total\",\"Poster\":\"https://m.media-amazon.com/images/M/MV5BZDg1OGQ4YzgtM2Y2NS00NjA3LWFjYTctMDRlMDI3NWE1OTUyXkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_SX300.jpg\",\"Ratings\":[{\"Source\":\"Internet Movie Database\",\"Value\":\"8.0/10\"},{\"Source\":\"Rotten Tomatoes\",\"Value\":\"96%\"},{\"Source\":\"Metacritic\",\"Value\":\"92/100\"}],\"Metascore\":\"92\",\"imdbRating\":\"8.0\",\"imdbVotes\":\"261,237\",\"imdbID\":\"tt0075686\",\"Type\":\"movie\",\"DVD\":\"05 Jul 2000\",\"BoxOffice\":\"$38,251,425\",\"Production\":\"N/A\",\"Website\":\"N/A\",\"Response\":\"True\"}"
 
 ``` r
 # Print content of resp
@@ -1115,7 +1232,7 @@ print(content(resp))
     ## [1] "8.0"
     ## 
     ## $imdbVotes
-    ## [1] "259,768"
+    ## [1] "261,237"
     ## 
     ## $imdbID
     ## [1] "tt0075686"
@@ -1138,7 +1255,18 @@ print(content(resp))
     ## $Response
     ## [1] "True"
 
+Great! The fact that `httr` converts the JSON response body
+automatically to an R list is very convenient.
+
 # 4. Importing data from the web (Part 2)
+
+Importing data from the web is one thing; actually being able to extract
+useful information is another. Learn more about the JSON format to get
+one step closer to web domination.
+
+## APIs & JSON
+
+Theory. Coming soon …
 
 ## From JSON to R
 
@@ -1147,15 +1275,13 @@ In the simplest setting,
 can convert character strings that represent JSON data into a nicely
 structured R list. Give it a try!
 
-**Instructions:**
+**Steps**
 
--   Load the `jsonlite` package. It’s already installed on DataCamp’s
+1.  Load the `jsonlite` package. It’s already installed on DataCamp’s
     servers.
--   `wine_json` represents a JSON. Use `fromJSON()` to convert it to a
+2.  `wine_json` represents a JSON. Use `fromJSON()` to convert it to a
     list, named `wine`.
--   Display the structure of `wine`
-
-**Solution:**
+3.  Display the structure of `wine`
 
 ``` r
 # Load the jsonlite package
@@ -1186,13 +1312,11 @@ also works if you pass a URL as a character string or the path to a
 local file that contains JSON data. Let’s try this out on the Quandl
 API, where you can fetch all sorts of financial and economical data.
 
-**Instructions:**
+**Steps**
 
--   `quandl_url` represents a URL. Use `fromJSON()` directly on this URL
+1.  `quandl_url` represents a URL. Use `fromJSON()` directly on this URL
     and store the result in `quandl_data`.
--   Display the structure of `quandl_data`.
-
-**Solution:**
+2.  Display the structure of `quandl_data`.
 
 ``` r
 # Definition of quandl_url
@@ -1218,6 +1342,10 @@ str(quandl_data)
     ##   ..$ collapse    : NULL
     ##   ..$ order       : NULL
 
+Great! You successfully imported JSON data directly from the web. If you
+have a close look at the structure of `quandl_data`, you’ll see that the
+`data` element is a matrix.
+
 ## OMDb API
 
 In the video, you saw how easy it is to interact with an API once you
@@ -1238,17 +1366,15 @@ will get your data into R. In this exercise, you will be using this
 technique to compare the release year of two movies in the Open Movie
 Database.
 
-**Instructions:**
+**Steps**
 
--   Two URLs are included in the sample code, as well as a `fromJSON()`
+1.  Two URLs are included in the sample code, as well as a `fromJSON()`
     call to build `sw4`. Add a similar call to build `sw3`.
--   Print out the element named `Title` of both `sw4` and `sw3`. You can
+2.  Print out the element named `Title` of both `sw4` and `sw3`. You can
     use the `$` operator. What movies are we dealing with here?
--   Write an expression that evaluates to `TRUE` if `sw4` was released
+3.  Write an expression that evaluates to `TRUE` if `sw4` was released
     later than `sw3`. This information is stored in the `Year` element
     of the named lists.
-
-**Solution:**
 
 ``` r
 # Definition of the URLs
@@ -1279,6 +1405,15 @@ sw4$Year > sw3$Year
 
     ## [1] FALSE
 
+Well done! The fourth episode of the Star Wars saga was released before
+the third one! Enough of the
+[`fromJSON()`](http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON)
+now. Let’s try to convert some R data into JSON format now.
+
+## JSON & jsonlite
+
+Theory. Coming soon …
+
 ## JSON practice (1)
 
 JSON is built on two structures: objects and arrays. To help you
@@ -1287,20 +1422,18 @@ It’s up to you to change them appropriately and then call `jsonlite`’s
 <a href="http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON" target="_blank" rel="noopener noreferrer">`fromJSON()`</a>
 function on them each time.
 
-**Instructions:**
+**Steps**
 
--   Change the assignment of `json1` such that the R vector after
+1.  Change the assignment of `json1` such that the R vector after
     conversion contains the numbers 1 up to 6, in ascending order. Next,
     call
     <a href="http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON" target="_blank" rel="noopener noreferrer">`fromJSON()`</a>
     on `json1`.
--   Adapt the code for `json2` such that it’s converted to a named list
+2.  Adapt the code for `json2` such that it’s converted to a named list
     with two elements: `a`, containing the numbers 1, 2 and 3 and `b`,
     containing the numbers 4, 5 and 6. Next, call
     <a href="http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON" target="_blank" rel="noopener noreferrer">`fromJSON()`</a>
     on `json2`.
-
-**Solution:**
 
 ``` r
 # Challenge 1
@@ -1329,19 +1462,17 @@ them and call `jsonlite`’s
 <a href="http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON" target="_blank" rel="noopener noreferrer">`fromJSON()`</a>
 function on them, similar to the previous exercise?
 
-**Instructions:**
+**Steps**
 
--   Remove characters from `json1` to build a 2 by 2 matrix containing
+1.  Remove characters from `json1` to build a 2 by 2 matrix containing
     only 1, 2, 3 and 4. Call
     <a href="http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON" target="_blank" rel="noopener noreferrer">`fromJSON()`</a>
     on `json1`.
--   Add characters to `json2` such that the data frame in which the json
+2.  Add characters to `json2` such that the data frame in which the json
     is converted contains an additional observation in the last row. For
     this observations, `a` equals 5 and `b` equals 6. Call
     <a href="http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON" target="_blank" rel="noopener noreferrer">`fromJSON()`</a>
     one last time, on `json2`.
-
-**Solution:**
 
 ``` r
 # Challenge 1
@@ -1364,6 +1495,9 @@ fromJSON(json2)
     ## 2 3 4
     ## 3 5 6
 
+Great! As you can see different JSON data structures will lead to
+different data structures in `R`.
+
 ## toJSON()
 
 Apart from converting JSON to R with
@@ -1380,17 +1514,15 @@ information on the amount of desalinated water that is produced around
 the world. As you’ll see, it contains a lot of missing values. This data
 can be found on the URL that is specified in the sample code.
 
-**Instructions:**
+**Steps**
 
--   Use a function of the `utils` package to import the `.csv` file
+1.  Use a function of the `utils` package to import the `.csv` file
     directly from the URL specified in `url_csv`. Save the resulting
     data frame as `water`. Make sure that strings are *not* imported as
     factors.
--   Convert the data frame `water` to a JSON. Call the resulting object
+2.  Convert the data frame `water` to a JSON. Call the resulting object
     `water_json`.
--   Print out `water_json`.
-
-**Solution:**
+3.  Print out `water_json`.
 
 ``` r
 # URL pointing to the .csv file
@@ -1407,6 +1539,10 @@ print(water_json)
 ```
 
     ## [{"water":"Algeria","X1992":0.064,"X2002":0.017},{"water":"American Samoa"},{"water":"Angola","X1992":0.0001,"X2002":0.0001},{"water":"Antigua and Barbuda","X1992":0.0033},{"water":"Argentina","X1992":0.0007,"X1997":0.0007,"X2002":0.0007},{"water":"Australia","X1992":0.0298,"X2002":0.0298},{"water":"Austria","X1992":0.0022,"X2002":0.0022},{"water":"Bahamas","X1992":0.0013,"X2002":0.0074},{"water":"Bahrain","X1992":0.0441,"X2002":0.0441,"X2007":0.1024},{"water":"Barbados","X2007":0.0146},{"water":"British Virgin Islands","X2007":0.0042},{"water":"Canada","X1992":0.0027,"X2002":0.0027},{"water":"Cape Verde","X1992":0.002,"X1997":0.0017},{"water":"Cayman Islands","X1992":0.0033},{"water":"Central African Rep."},{"water":"Chile","X1992":0.0048,"X2002":0.0048},{"water":"Colombia","X1992":0.0027,"X2002":0.0027},{"water":"Cuba","X1992":0.0069,"X1997":0.0069,"X2002":0.0069},{"water":"Cyprus","X1992":0.003,"X1997":0.003,"X2002":0.0335},{"water":"Czech Rep.","X1992":0.0002,"X2002":0.0002},{"water":"Denmark","X1992":0.015,"X2002":0.015},{"water":"Djibouti","X1992":0.0001,"X2002":0.0001},{"water":"Ecuador","X1992":0.0022,"X1997":0.0022,"X2002":0.0022},{"water":"Egypt","X1992":0.025,"X1997":0.025,"X2002":0.1},{"water":"El Salvador","X1992":0.0001,"X2002":0.0001},{"water":"Finland","X1992":0.0001,"X2002":0.0001},{"water":"France","X1992":0.0117,"X2002":0.0117},{"water":"Gibraltar","X1992":0.0077},{"water":"Greece","X1992":0.01,"X2002":0.01},{"water":"Honduras","X1992":0.0002,"X2002":0.0002},{"water":"Hungary","X1992":0.0002,"X2002":0.0002},{"water":"India","X1997":0.0005,"X2002":0.0005},{"water":"Indonesia","X1992":0.0187,"X2002":0.0187},{"water":"Iran","X1992":0.003,"X1997":0.003,"X2002":0.003,"X2007":0.2},{"water":"Iraq","X1997":0.0074,"X2002":0.0074},{"water":"Ireland","X1992":0.0002,"X2002":0.0002},{"water":"Israel","X1992":0.0256,"X2002":0.0256,"X2007":0.14},{"water":"Italy","X1992":0.0973,"X2002":0.0973},{"water":"Jamaica","X1992":0.0005,"X1997":0.0005,"X2002":0.0005},{"water":"Japan","X1997":0.04,"X2002":0.04},{"water":"Jordan","X1997":0.002,"X2007":0.0098},{"water":"Kazakhstan","X1997":1.328,"X2002":1.328},{"water":"Kuwait","X1992":0.507,"X1997":0.231,"X2002":0.4202},{"water":"Lebanon","X2007":0.0473},{"water":"Libya","X2002":0.018},{"water":"Malaysia","X1992":0.0043,"X2002":0.0043},{"water":"Maldives","X1992":0.0004},{"water":"Malta","X1992":0.024,"X1997":0.031,"X2002":0.031},{"water":"Marshall Islands","X1992":0.0007},{"water":"Mauritania","X1992":0.002,"X2002":0.002},{"water":"Mexico","X1992":0.0307,"X2002":0.0307},{"water":"Morocco","X1992":0.0034,"X1997":0.0034,"X2002":0.007},{"water":"Namibia","X1992":0.0003,"X2002":0.0003},{"water":"Netherlands Antilles","X1992":0.063},{"water":"Nicaragua","X1992":0.0002,"X2002":0.0002},{"water":"Nigeria","X1992":0.003,"X2002":0.003},{"water":"Norway","X1992":0.0001,"X2002":0.0001},{"water":"Oman","X1997":0.034,"X2002":0.034,"X2007":0.109},{"water":"Peru","X1992":0.0054,"X2002":0.0054},{"water":"Poland","X1992":0.007,"X2002":0.007},{"water":"Portugal","X1992":0.0016,"X2002":0.0016},{"water":"Qatar","X1992":0.065,"X1997":0.099,"X2002":0.099,"X2007":0.18},{"water":"Saudi Arabia","X1992":0.683,"X1997":0.727,"X2002":0.863,"X2007":1.033},{"water":"Senegal","X1992":0,"X2002":0},{"water":"Somalia","X1992":0.0001,"X2002":0.0001},{"water":"South Africa","X1992":0.018,"X2002":0.018},{"water":"Spain","X1992":0.1002,"X2002":0.1002},{"water":"Sudan","X1992":0.0004,"X1997":0.0004,"X2002":0.0004},{"water":"Sweden","X1992":0.0002,"X2002":0.0002},{"water":"Trinidad and Tobago","X2007":0.036},{"water":"Tunisia","X1992":0.008,"X2002":0.013},{"water":"Turkey","X1992":0.0005,"X2002":0.0005,"X2007":0.0005},{"water":"United Arab Emirates","X1992":0.163,"X1997":0.385,"X2007":0.95},{"water":"United Kingdom","X1992":0.0333,"X2002":0.0333},{"water":"United States","X1992":0.58,"X2002":0.58},{"water":"Venezuela","X1992":0.0052,"X2002":0.0052},{"water":"Yemen, Rep.","X1992":0.01,"X2002":0.01}]
+
+Congratulations! As you can see, the JSON you printed out isn’t easy to
+read. In the next exercise, you will print out some more JSONs, and
+explore ways to prettify or minify the output.
 
 ## Minify and prettify
 
@@ -1441,25 +1577,18 @@ or
 <a href="http://www.rdocumentation.org/packages/jsonlite/functions/prettify" target="_blank" rel="noopener noreferrer">`minify()`</a>
 to make the JSON pretty or as concise as possible.
 
-**Instructions:**
+**Steps**
 
--   Convert the `mtcars` dataset, which is available in R by default, to
+1.  Convert the `mtcars` dataset, which is available in R by default, to
     a *pretty* `JSON`. Call the resulting JSON `pretty_json`.
--   Print out `pretty_json`. Can you understand the output easily?
--   Convert `pretty_json` to a minimal version using
-    <a href="http://www.rdocumentation.org/packages/jsonlite/functions/prettify" target="_blank" rel="noopener noreferrer">`minify()`</a>.
-    Store this version under a new variable, `mini_json`.
--   Print out `mini_json`. Which version do you prefer, the pretty one
-    or the minified one?
-
-**Solution:**
+2.  Print out `pretty_json`. Can you understand the output easily?
 
 ``` r
 # Convert mtcars to a pretty JSON: pretty_json
 pretty_json <- toJSON(mtcars, pretty = T)
 
 # Print pretty_json
-print(pretty_json)
+pretty_json
 ```
 
     ## [
@@ -1913,17 +2042,32 @@ print(pretty_json)
     ##   }
     ## ]
 
+3.  Convert `pretty_json` to a minimal version using
+    <a href="http://www.rdocumentation.org/packages/jsonlite/functions/prettify" target="_blank" rel="noopener noreferrer">`minify()`</a>.
+    Store this version under a new variable, `mini_json`.
+4.  Print out `mini_json`. Which version do you prefer, the pretty one
+    or the minified one?
+
 ``` r
 # Minify pretty_json: mini_json
 mini_json <- minify(pretty_json)
 
 # Print mini_json
-print(mini_json)
+mini_json
 ```
 
     ## [{"mpg":21,"cyl":6,"disp":160,"hp":110,"drat":3.9,"wt":2.62,"qsec":16.46,"vs":0,"am":1,"gear":4,"carb":4,"_row":"Mazda RX4"},{"mpg":21,"cyl":6,"disp":160,"hp":110,"drat":3.9,"wt":2.875,"qsec":17.02,"vs":0,"am":1,"gear":4,"carb":4,"_row":"Mazda RX4 Wag"},{"mpg":22.8,"cyl":4,"disp":108,"hp":93,"drat":3.85,"wt":2.32,"qsec":18.61,"vs":1,"am":1,"gear":4,"carb":1,"_row":"Datsun 710"},{"mpg":21.4,"cyl":6,"disp":258,"hp":110,"drat":3.08,"wt":3.215,"qsec":19.44,"vs":1,"am":0,"gear":3,"carb":1,"_row":"Hornet 4 Drive"},{"mpg":18.7,"cyl":8,"disp":360,"hp":175,"drat":3.15,"wt":3.44,"qsec":17.02,"vs":0,"am":0,"gear":3,"carb":2,"_row":"Hornet Sportabout"},{"mpg":18.1,"cyl":6,"disp":225,"hp":105,"drat":2.76,"wt":3.46,"qsec":20.22,"vs":1,"am":0,"gear":3,"carb":1,"_row":"Valiant"},{"mpg":14.3,"cyl":8,"disp":360,"hp":245,"drat":3.21,"wt":3.57,"qsec":15.84,"vs":0,"am":0,"gear":3,"carb":4,"_row":"Duster 360"},{"mpg":24.4,"cyl":4,"disp":146.7,"hp":62,"drat":3.69,"wt":3.19,"qsec":20,"vs":1,"am":0,"gear":4,"carb":2,"_row":"Merc 240D"},{"mpg":22.8,"cyl":4,"disp":140.8,"hp":95,"drat":3.92,"wt":3.15,"qsec":22.9,"vs":1,"am":0,"gear":4,"carb":2,"_row":"Merc 230"},{"mpg":19.2,"cyl":6,"disp":167.6,"hp":123,"drat":3.92,"wt":3.44,"qsec":18.3,"vs":1,"am":0,"gear":4,"carb":4,"_row":"Merc 280"},{"mpg":17.8,"cyl":6,"disp":167.6,"hp":123,"drat":3.92,"wt":3.44,"qsec":18.9,"vs":1,"am":0,"gear":4,"carb":4,"_row":"Merc 280C"},{"mpg":16.4,"cyl":8,"disp":275.8,"hp":180,"drat":3.07,"wt":4.07,"qsec":17.4,"vs":0,"am":0,"gear":3,"carb":3,"_row":"Merc 450SE"},{"mpg":17.3,"cyl":8,"disp":275.8,"hp":180,"drat":3.07,"wt":3.73,"qsec":17.6,"vs":0,"am":0,"gear":3,"carb":3,"_row":"Merc 450SL"},{"mpg":15.2,"cyl":8,"disp":275.8,"hp":180,"drat":3.07,"wt":3.78,"qsec":18,"vs":0,"am":0,"gear":3,"carb":3,"_row":"Merc 450SLC"},{"mpg":10.4,"cyl":8,"disp":472,"hp":205,"drat":2.93,"wt":5.25,"qsec":17.98,"vs":0,"am":0,"gear":3,"carb":4,"_row":"Cadillac Fleetwood"},{"mpg":10.4,"cyl":8,"disp":460,"hp":215,"drat":3,"wt":5.424,"qsec":17.82,"vs":0,"am":0,"gear":3,"carb":4,"_row":"Lincoln Continental"},{"mpg":14.7,"cyl":8,"disp":440,"hp":230,"drat":3.23,"wt":5.345,"qsec":17.42,"vs":0,"am":0,"gear":3,"carb":4,"_row":"Chrysler Imperial"},{"mpg":32.4,"cyl":4,"disp":78.7,"hp":66,"drat":4.08,"wt":2.2,"qsec":19.47,"vs":1,"am":1,"gear":4,"carb":1,"_row":"Fiat 128"},{"mpg":30.4,"cyl":4,"disp":75.7,"hp":52,"drat":4.93,"wt":1.615,"qsec":18.52,"vs":1,"am":1,"gear":4,"carb":2,"_row":"Honda Civic"},{"mpg":33.9,"cyl":4,"disp":71.1,"hp":65,"drat":4.22,"wt":1.835,"qsec":19.9,"vs":1,"am":1,"gear":4,"carb":1,"_row":"Toyota Corolla"},{"mpg":21.5,"cyl":4,"disp":120.1,"hp":97,"drat":3.7,"wt":2.465,"qsec":20.01,"vs":1,"am":0,"gear":3,"carb":1,"_row":"Toyota Corona"},{"mpg":15.5,"cyl":8,"disp":318,"hp":150,"drat":2.76,"wt":3.52,"qsec":16.87,"vs":0,"am":0,"gear":3,"carb":2,"_row":"Dodge Challenger"},{"mpg":15.2,"cyl":8,"disp":304,"hp":150,"drat":3.15,"wt":3.435,"qsec":17.3,"vs":0,"am":0,"gear":3,"carb":2,"_row":"AMC Javelin"},{"mpg":13.3,"cyl":8,"disp":350,"hp":245,"drat":3.73,"wt":3.84,"qsec":15.41,"vs":0,"am":0,"gear":3,"carb":4,"_row":"Camaro Z28"},{"mpg":19.2,"cyl":8,"disp":400,"hp":175,"drat":3.08,"wt":3.845,"qsec":17.05,"vs":0,"am":0,"gear":3,"carb":2,"_row":"Pontiac Firebird"},{"mpg":27.3,"cyl":4,"disp":79,"hp":66,"drat":4.08,"wt":1.935,"qsec":18.9,"vs":1,"am":1,"gear":4,"carb":1,"_row":"Fiat X1-9"},{"mpg":26,"cyl":4,"disp":120.3,"hp":91,"drat":4.43,"wt":2.14,"qsec":16.7,"vs":0,"am":1,"gear":5,"carb":2,"_row":"Porsche 914-2"},{"mpg":30.4,"cyl":4,"disp":95.1,"hp":113,"drat":3.77,"wt":1.513,"qsec":16.9,"vs":1,"am":1,"gear":5,"carb":2,"_row":"Lotus Europa"},{"mpg":15.8,"cyl":8,"disp":351,"hp":264,"drat":4.22,"wt":3.17,"qsec":14.5,"vs":0,"am":1,"gear":5,"carb":4,"_row":"Ford Pantera L"},{"mpg":19.7,"cyl":6,"disp":145,"hp":175,"drat":3.62,"wt":2.77,"qsec":15.5,"vs":0,"am":1,"gear":5,"carb":6,"_row":"Ferrari Dino"},{"mpg":15,"cyl":8,"disp":301,"hp":335,"drat":3.54,"wt":3.57,"qsec":14.6,"vs":0,"am":1,"gear":5,"carb":8,"_row":"Maserati Bora"},{"mpg":21.4,"cyl":4,"disp":121,"hp":109,"drat":4.11,"wt":2.78,"qsec":18.6,"vs":1,"am":1,"gear":4,"carb":2,"_row":"Volvo 142E"}]
 
+Great! Hopefully you agree that the pretty format is way easier to read
+and understand than the minified format! This exercise concludes the
+course on importing data!
+
 # 5. Importing data from statistical software packages
+
+Next to R, there are also other commonly used statistical software
+packages: SAS, STATA and SPSS. Each of them has their own file format.
+Learn how to use the haven and foreign packages to get them into R with
+remarkable ease!
 
 ## Import SAS data with haven
 
@@ -1956,18 +2100,16 @@ available in your current working directory. You can also download the
 data
 <a href="http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/sales.sas7bdat" target="_blank" rel="noopener noreferrer">here</a>.
 
-**Instructions:**
+**Steps**
 
--   Load the `haven` package; it’s already installed on DataCamp’s
+1.  Load the `haven` package; it’s already installed on DataCamp’s
     servers.
--   Import the data file `"sales.sas7bdat"`. Call the imported data
+2.  Import the data file `"sales.sas7bdat"`. Call the imported data
     frame `sales`.
--   Display the structure of `sales` with
+3.  Display the structure of `sales` with
     <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>.
     Some columns represent categorical variables, so they should be
     factors.
-
-**Solution:**
 
 ``` r
 # Load the haven package
@@ -1985,6 +2127,10 @@ str(sales)
     ##  $ age     : num [1:431] 41 47 41 39 32 32 33 45 43 40 ...
     ##  $ gender  : chr [1:431] "Female" "Female" "Female" "Female" ...
     ##  $ income  : chr [1:431] "Low" "Low" "Low" "Low" ...
+
+Congratulations! As you can see,
+[`read_sas()`](http://cran.r-project.org/web/packages/haven/haven.pdf)
+enables you to import <b>SAS</b> data files easily.
 
 ## Import STATA data with haven
 
@@ -2005,18 +2151,16 @@ In this exercise, you will work with data on yearly import and export
 numbers of sugar, both in USD and in weight. The data can be found at:
 <a href="http://assets.datacamp.com/production/course_1478/datasets/trade.dta" target="_blank" rel="noopener noreferrer">http://assets.datacamp.com/production/course_1478/datasets/trade.dta</a>
 
-**Instructions:**
+**Steps**
 
--   Import the data file directly from the URL using
+1.  Import the data file directly from the URL using
     <a href="http://cran.r-project.org/web/packages/haven/haven.pdf" target="_blank" rel="noopener noreferrer">`read_dta()`</a>,
     and store it as `sugar`.
--   Print out the structure of `sugar`. The `Date` column has class
+2.  Print out the structure of `sugar`. The `Date` column has class
     `labelled`.
--   Convert the values in the `Date` column of `sugar` to dates, using
+3.  Convert the values in the `Date` column of `sugar` to dates, using
     `as.Date(as_factor(___))`.
--   Print out the structure of `sugar` once more. Looks better now?
-
-**Solution:**
+4.  Print out the structure of `sugar` once more. Looks better now?
 
 ``` r
 # Import the data from the URL: sugar
@@ -2081,22 +2225,18 @@ second one will be plotted on the y-axis.
 The sugar trading data is again available at
 <a href="http://assets.datacamp.com/production/course_1478/datasets/trade.dta" target="_blank" rel="noopener noreferrer">http://assets.datacamp.com/production/course_1478/datasets/trade.dta</a>.
 
-After you’ve imported the data frame, you should plot two of its
-variables, `Import` against `Weight_I`, and describe their relationship!
-`haven` is already loaded in your R session, so you can start importing
-straight away.
-
-**Possible Answers:**
-
-:white_large_square: The relation between the import figures in USD and
-the import figures in weight can be described with a quadratic function
-that has a local maximum.<br> :white_check_mark: The import figures in
-USD and the import figures in weight are rather positively
-correlated.<br> :white_large_square: The import figures in USD and the
-import figures in weight are negatively associated. Along the points
-there is a monotonic decreasing trend.<br> :white_large_square: No
-relationship can be guessed between the weight and the value of the
-imported sugar.<br>
+> ## *Question*
+>
+> After you’ve imported the data frame, you should plot two of its
+> variables, `Import` against `Weight_I`, and describe their
+> relationship!<br> <br> ⬜ The relation between the import figures in
+> USD and the import figures in weight can be described with a quadratic
+> function that has a local maximum.<br> ✅ The import figures in USD
+> and the import figures in weight are rather positively correlated.<br>
+> ⬜ The import figures in USD and the import figures in weight are
+> negatively associated. Along the points there is a monotonic
+> decreasing trend.<br> ⬜ No relationship can be guessed between the
+> weight and the value of the imported sugar.<br>
 
 ## Import SPSS data with haven
 
@@ -2117,20 +2257,18 @@ personality. The SPSS dataset is called
 <a href="http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/person.sav" target="_blank" rel="noopener noreferrer">`person.sav`</a>
 and is available in your working directory.
 
-**Instructions:**
+**Steps**
 
--   Use
+1.  Use
     <a href="http://cran.r-project.org/web/packages/haven/haven.pdf" target="_blank" rel="noopener noreferrer">`read_sav()`</a>
     to import the SPSS data in `"person.sav"`. Name the imported data
     frame `traits`.
--   `traits` contains several missing values, or `NA`s. Run
+2.  `traits` contains several missing values, or `NA`s. Run
     <a href="http://www.rdocumentation.org/packages/base/functions/summary" target="_blank" rel="noopener noreferrer">`summary()`</a>
     on it to find out how many `NA`s are contained in each variable.
--   Print out a subset of those individuals that scored high on
+3.  Print out a subset of those individuals that scored high on
     Extroversion *and* on Agreeableness, i.e. scoring higher than 40 on
     each of these two categories. You can use `subset()` for this.
-
-**Solution:**
 
 ``` r
 # Import person.sav: traits
@@ -2166,6 +2304,9 @@ subset(traits, Extroversion > 40 & Agreeableness > 40)
     ## 7       27           45            55                23
     ## 8       18           43            57                34
 
+Great! You imported a data file from SPSS correctly using `read_sav()`.
+Deepen your knowledge in the following exercise!
+
 ## Factorize, round two
 
 In the last exercise you learned how to import a data file using the
@@ -2184,19 +2325,17 @@ The data can be found on the following URL:
 
 <a href="http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/employee.sav" target="_blank" rel="noopener noreferrer">http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/employee.sav</a>
 
-**Instructions:**
+**Steps**
 
--   Import the SPSS data straight from the URL and store the resulting
+1.  Import the SPSS data straight from the URL and store the resulting
     data frame as `work`.
--   Display the summary of the `GENDER` column of `work`. This
+2.  Display the summary of the `GENDER` column of `work`. This
     information doesn’t give you a lot of useful information, right?
--   Convert the `GENDER` column in `work` to a factor, the class to
+3.  Convert the `GENDER` column in `work` to a factor, the class to
     denote categorical variables in R. Use
     <a href="http://cran.r-project.org/web/packages/haven/haven.pdf" target="_blank" rel="noopener noreferrer">`as_factor()`</a>.
--   Once again display the summary of the `GENDER` column. This time,
+4.  Once again display the summary of the `GENDER` column. This time,
     the printout makes much more sense.
-
-**Solution:**
 
 ``` r
 # Import SPSS data from the URL: work
@@ -2220,6 +2359,15 @@ summary(work$GENDER)
     ## Female   Male 
     ##    216    258
 
+Well done! The
+[`as_factor()`](http://cran.r-project.org/web/packages/haven/haven.pdf)
+function has more arguments you can specify, have a look at its
+documentation to discover more! Proceed to the next video.
+
+## foreign
+
+Theory. Coming soon …
+
 ## Import STATA data with foreign (1)
 
 The `foreign` package offers a simple function to import and read
@@ -2236,17 +2384,15 @@ directory, you can download it
 <a href="http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/florida.dta" target="_blank" rel="noopener noreferrer">here</a>
 if you want to experiment some more.
 
-**Instructions:**
+**Steps**
 
--   Load the `foreign` package; it’s already installed on DataCamp’s
+1.  Load the `foreign` package; it’s already installed on DataCamp’s
     servers.
--   Import the data on the elections in Florida, `"florida.dta"`, and
+2.  Import the data on the elections in Florida, `"florida.dta"`, and
     name the resulting data frame `florida`. Use
     <a href="http://www.rdocumentation.org/packages/foreign/functions/read.dta" target="_blank" rel="noopener noreferrer">`read.dta()`</a>
     without specifying extra arguments.
--   Check out the last 6 observations of `florida` with `tail()`
-
-**Solution:**
+3.  Check out the last 6 observations of `florida` with `tail()`
 
 ``` r
 # Load the foreign package
@@ -2266,6 +2412,12 @@ tail(florida)
     ## 65  3835  4511       46   149   8541
     ## 66  5637 12176      120   265  18198
     ## 67  2796  4983       88    93   7960
+
+Congratulations! Your first exercise on using `foreign` to import STATA
+data is complete. Proceed to the next exercise to learn the proper
+handling of the arguments that
+[`read.dta()`](http://www.rdocumentation.org/packages/foreign/functions/read.dta)
+includes!
 
 ## Import STATA data with foreign (2)
 
@@ -2288,27 +2440,23 @@ Bank</a>). This data is available as
 <a href="http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/edequality.dta" target="_blank" rel="noopener noreferrer">`edequality.dta`</a>,
 which is located in the `worldbank` folder in your working directory.
 
-**Instructions:**
+**Steps**
 
--   Specify the path to the file using
+1.  Specify the path to the file using
     <a href="http://www.rdocumentation.org/packages/base/functions/file.path" target="_blank" rel="noopener noreferrer">`file.path()`</a>.
     Call it `path`. Remember the `"edequality.dta"` file is located in
     the `"worldbank"` folder.
 
--   Use the `path` variable to import the data file in three different
+2.  Use the `path` variable to import the data file in three different
     ways; each time show its structure with
     <a href="http://www.rdocumentation.org/packages/utils/functions/str" target="_blank" rel="noopener noreferrer">`str()`</a>:
 
--   `edu_equal_1`: By passing only the file `path` to
-    <a href="http://www.rdocumentation.org/packages/foreign/functions/read.dta" target="_blank" rel="noopener noreferrer">`read.dta()`</a>.
-
--   `edu_equal_2`: By passing the file `path`, and setting
-    `convert.factors` to `FALSE`.
-
--   `edu_equal_3`: By passing the file `path`, and setting
-    `convert.underscore` to `TRUE`.
-
-**Solution:**
+    -   `edu_equal_1`: By passing only the file `path` to
+        <a href="http://www.rdocumentation.org/packages/foreign/functions/read.dta" target="_blank" rel="noopener noreferrer">`read.dta()`</a>.
+    -   `edu_equal_2`: By passing the file `path`, and setting
+        `convert.factors` to `FALSE`.
+    -   `edu_equal_3`: By passing the file `path`, and setting
+        `convert.underscore` to `TRUE`.
 
 ``` r
 # Specify the file path using file.path(): path
@@ -2553,6 +2701,12 @@ str(edu_equal_3)
     ##   ..$         : Named int [1:2] 1 2
     ##   .. ..- attr(*, "names")= chr [1:2] "no" "yes"
 
+Great! Can you tell the difference between the different versions of
+[`read.dta()`](http://www.rdocumentation.org/packages/foreign/functions/read.dta)?
+For this data, the first version (where you simply specified the file
+path) will be most useful to work with. Head over to the next exercise
+to see if you actually understand your data!
+
 ## Do you know your data?
 
 The previous exercise dealt about socio-economic indicators and access
@@ -2577,13 +2731,11 @@ nrow(subset(edu_equal_1, age > 40 & literate == "yes"))
 
 Up to you to answer a similar question now:
 
-*How many observations/individuals of Bulgarian ethnicity have an income
-above 1000?*
-
-**Possible Answers:**
-
-:white_large_square: 9457<br> :white_large_square: 1000<br>
-:white_check_mark: 8997<br> :white_large_square: 10840<br>
+> ## *Question*
+>
+> How many observations/individuals of Bulgarian ethnicity have an
+> income above 1000?<br> <br> ⬜ 9457<br> ⬜ 1000<br> ✅ 8997<br> ⬜
+> 10840<br>
 
 ## Import SPSS data with foreign (1)
 
@@ -2604,13 +2756,11 @@ download it
 <a href="http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/international.sav" target="_blank" rel="noopener noreferrer">here</a>
 if you want to play around with it some more.
 
-**Instructions:**
+**Steps**
 
--   Import the data file `"international.sav"` and have R convert it to
+1.  Import the data file `"international.sav"` and have R convert it to
     a data frame. Store this data frame as `demo`.
--   Create a boxplot of the `gdp` variable of `demo`.
-
-**Solution:**
+2.  Create a boxplot of the `gdp` variable of `demo`.
 
 ``` r
 # Import international.sav as a data frame: demo
@@ -2624,35 +2774,23 @@ demo <- read.spss("data/international.sav", to.data.frame = TRUE)
 boxplot(demo$gdp)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
 ## Excursion: Correlation
 
 If you’re familiar with statistics, you’ll have heard about Pearson’s
 Correlation. It is a measurement to evaluate the linear dependency
-between two variables, say
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="8"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44B TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>X</mi></math></mjx-assistive-mml></mjx-container>
-and
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="9"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44C TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Y</mi></math></mjx-assistive-mml></mjx-container>.
-It can range from -1 to 1; if it’s close to 1 it means that there is a
-strong positive association between the variables. If
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="10"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44B TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>X</mi></math></mjx-assistive-mml></mjx-container>
-is high, also
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="11"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44C TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Y</mi></math></mjx-assistive-mml></mjx-container>
+between two variables, say \\(X\\) and \\(Y\\). It can range from -1 to
+1; if it’s close to 1 it means that there is a strong positive
+association between the variables. If \\(X\\) is high, also \\(Y\\)
 tends to be high. If it’s close to -1, there is a strong negative
-association: If
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="12"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44B TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>X</mi></math></mjx-assistive-mml></mjx-container>
-is high,
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="13"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44C TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Y</mi></math></mjx-assistive-mml></mjx-container>
-tends to be low. When the Pearson correlation between two variables is
-0, these variables are possibly independent: there is no association
-between
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="14"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44B TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>X</mi></math></mjx-assistive-mml></mjx-container>
-and
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="15"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44C TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Y</mi></math></mjx-assistive-mml></mjx-container>.
+association: If \\(X\\) is high, \\(Y\\) tends to be low. When the
+Pearson correlation between two variables is 0, these variables are
+possibly independent: there is no association between \\(X\\) and
+\\(Y\\).
 
 You can calculate the correlation between two vectors with the
-<a href="http://www.rdocumentation.org/packages/stats/functions/cor" target="_blank" rel="noopener noreferrer">`cor()`</a>
+<a href="http://www.rdocumentation.org/packages/stats/functions/cor">`cor()`</a>
 function. Take this code for example, that computes the correlation
 between the columns `height` and `width` of a fictional data frame
 `size`:
@@ -2666,19 +2804,17 @@ The data you’ve worked with in the previous exercise,
 is again available in your working directory. It’s now up to import it
 and undertake the correct calculations to answer the following question:
 
-*What is the correlation coefficient for the two numerical variables
-`gdp` and `f_illit` (female illiteracy rate)?*
-
-**Possible Answers:**
-
-:white_large_square: The correlation is very close to 0. Therefore, no
-association is existing between female illiteracy and GDP for the data
-set that is used.<br> :white_check_mark: The correlation is around
--0.45. There is a negative correlation, but it is rather weak.<br>
-:white_large_square: The correlation is almost equal to +1. GDP and
-female illiteracy are almost perfectly, positive correlated.<br>
-:white_large_square: The correlation is around +0.45. There is a
-positive correlation, but it is rather weak.<br>
+> ## *Question*
+>
+> What is the correlation coefficient for the two numerical variables
+> `gdp` and `f_illit` (female illiteracy rate)?<br> <br> ⬜ The
+> correlation is very close to 0. Therefore, no association is existing
+> between female illiteracy and GDP for the data set that is used.<br>
+> ✅ The correlation is around -0.45. There is a negative correlation,
+> but it is rather weak.<br> ⬜ The correlation is almost equal to +1.
+> GDP and female illiteracy are almost perfectly, positive
+> correlated.<br> ⬜ The correlation is around +0.45. There is a
+> positive correlation, but it is rather weak.<br>
 
 ## Import SPSS data with foreign (2)
 
@@ -2697,20 +2833,18 @@ You’ll again be working with the
 <a href="http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/international.sav" target="_blank" rel="noopener noreferrer">international.sav</a>
 data, which is available in your current working directory.
 
-**Instructions:**
+**Steps**
 
--   Import the data file `"international.sav"` as a data frame,
+1.  Import the data file `"international.sav"` as a data frame,
     `demo_1`.
--   Print the first few rows of `demo_1` using the
+2.  Print the first few rows of `demo_1` using the
     <a href="http://www.rdocumentation.org/packages/utils/functions/head" target="_blank" rel="noopener noreferrer">`head()`</a>
     function.
--   Import the data file `"international.sav"` as a data frame,
+3.  Import the data file `"international.sav"` as a data frame,
     `demo_2`, but this time in a way such that variables with value
     labels are *not* converted to R factors.
--   Again, print the first few rows of `demo_2`. Can you tell the
+4.  Again, print the first few rows of `demo_2`. Can you tell the
     difference between the two data frames?
-
-**Solution:**
 
 ``` r
 # foreign is already loaded
