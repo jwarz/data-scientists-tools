@@ -3,11 +3,14 @@ Introduction to Statistics in R
 Joschka Schwarz
 
 -   [1. Summary Statistics](#1-summary-statistics)
+    -   [What is statistics?](#what-is-statistics)
     -   [Descriptive and inferential
         statistics](#descriptive-and-inferential-statistics)
     -   [Data type classification](#data-type-classification)
+    -   [Measures of center](#measures-of-center)
     -   [Mean and median](#mean-and-median)
     -   [Mean vs. median](#mean-vs-median)
+    -   [Measures of spread](#measures-of-spread)
     -   [Quartiles, quantiles, and
         quintiles](#quartiles-quantiles-and-quintiles)
     -   [Variance and standard
@@ -15,9 +18,11 @@ Joschka Schwarz
     -   [Finding outliers using IQR](#finding-outliers-using-iqr)
 -   [2. Random Numbers and
     Probability](#2-random-numbers-and-probability)
+    -   [What are the chances?](#what-are-the-chances)
     -   [With or without replacement?](#with-or-without-replacement)
     -   [Calculating probabilities](#calculating-probabilities)
     -   [Sampling deals](#sampling-deals)
+    -   [Discrete distributions](#discrete-distributions)
     -   [Creating a probability
         distribution](#creating-a-probability-distribution)
     -   [Identifying distributions](#identifying-distributions)
@@ -25,6 +30,8 @@ Joschka Schwarz
     -   [Which distribution?](#which-distribution)
     -   [Data back-ups](#data-back-ups)
     -   [Simulating wait times](#simulating-wait-times)
+    -   [The binomial distribution](#the-binomial-distribution)
+    -   [Simulating sales deals](#simulating-sales-deals)
     -   [Calculating binomial
         probabilities](#calculating-binomial-probabilities)
     -   [How many sales will be won?](#how-many-sales-will-be-won)
@@ -45,22 +52,36 @@ Joschka Schwarz
     -   [The Poisson distribution](#the-poisson-distribution)
     -   [Identifying lambda](#identifying-lambda)
     -   [Tracking lead responses](#tracking-lead-responses)
+    -   [More probability
+        distributions](#more-probability-distributions)
     -   [Too many distributions](#too-many-distributions)
     -   [Modeling time between leads](#modeling-time-between-leads)
     -   [The t-distribution](#the-t-distribution)
 -   [4. Correlation and Experimental
     Design](#4-correlation-and-experimental-design)
     -   [Correlation](#correlation)
+    -   [Guess the correlation](#guess-the-correlation)
     -   [Relationships between
         variables](#relationships-between-variables)
+    -   [Correlation caveats](#correlation-caveats)
     -   [What can’t correlation
         measure?](#what-cant-correlation-measure)
     -   [Transforming variables](#transforming-variables)
     -   [Does sugar improve happiness?](#does-sugar-improve-happiness)
     -   [Confounders](#confounders)
+    -   [Design of experiments](#design-of-experiments)
     -   [Study types](#study-types)
     -   [Longitudinal vs. cross-sectional
         studies](#longitudinal-vs-cross-sectional-studies)
+
+**Short Description**
+
+Grow your statistical skills and learn how to collect, analyze, and draw
+accurate conclusions from data. Learn how to work with variables,
+plotting, and standard deviation in R. It covers histograms,
+distributions and more.
+
+**Long Description**
 
 Statistics is the study of how to collect, analyze, and draw conclusions
 from data. It’s a hugely valuable tool that you can use to bring the
@@ -76,6 +97,17 @@ statistical reasoning, and learn how to conduct a well-designed study to
 draw your own conclusions from data.
 
 # 1. Summary Statistics
+
+Summary statistics gives you the tools you need to boil down massive
+datasets to reveal the highlights. In this chapter, you’ll explore
+summary statistics including mean, median, and standard deviation, and
+learn how to accurately interpret them. You’ll also develop your
+critical thinking skills, allowing you to choose the best summary
+statistics for your data.
+
+## What is statistics?
+
+Theory. Coming soon …
 
 ## Descriptive and inferential statistics
 
@@ -109,17 +141,20 @@ Map each variable to its data type by dragging and dropping.
 | Air temperature               | Number of DataCamp courses taken | Postal Code        |
 |                               | Number of clicks on an ad        |                    |
 
+## Measures of center
+
+Theory. Coming soon …
+
 ## Mean and median
 
 In this chapter, you’ll be working with the
-<a href="https://www.nu3.de/blogs/nutrition/food-carbon-footprint-index-2018" target="_blank" rel="noopener noreferrer">2018
+<a href="https://www.nu3.de/blogs/nutrition/food-carbon-footprint-index-2018">2018
 Food Carbon Footprint Index</a> from nu3. The `food_consumption` dataset
 contains information about the kilograms of food consumed per person per
 year in each country in each food category (`consumption`) as well as
 information about the carbon footprint of that food category
-(`co2_emissions`) measured in kilograms of carbon dioxide, or
-CO<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="1"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msub><mjx-mi class="mjx-n" noic="true"></mjx-mi><mjx-script style="vertical-align: -0.15em;"><mjx-mn class="mjx-n" size="s"><mjx-c class="mjx-c32"></mjx-c></mjx-mn></mjx-script></mjx-msub></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi></mi><mn>2</mn></msub></math></mjx-assistive-mml></mjx-container>,
-per person per year in each country.
+(`co2_emissions`) measured in kilograms of carbon dioxide, or CO2, per
+person per year in each country.
 
 In this exercise, you’ll compute measures of center to compare food
 consumption in the US and Belgium using your `dplyr` skills.
@@ -211,6 +246,11 @@ food_consumption  |>
     ## 1 Belgium             42.1               12.6
     ## 2 USA                 44.6               14.6
 
+Marvelous mean and median calculation! When you want to compare summary
+statistics between groups, it’s much easier to do a `group_by()` and one
+`summarize()` instead of filtering and calling the same functions
+multiple times.
+
 ## Mean vs. median
 
 In the video, you learned that the mean is the sum of all the data
@@ -287,6 +327,13 @@ food_consumption  |>
 > summarizes the kilograms of CO2 emissions per person per year for
 > rice?<br> <br> ⬜ Mean<br> ✅ Median<br> ⬜ Both mean and median<br>
 
+Great work! The mean is substantially higher than the median since it’s
+being pulled up by the high values over 100 kg/person/year.
+
+## Measures of spread
+
+Theory. Coming soon …
+
 ## Quartiles, quantiles, and quintiles
 
 Quantiles are a great way of summarizing numerical data since they can
@@ -334,6 +381,10 @@ quantile(food_consumption$co2_emission, probs = seq(0,1,0.1))
     ##    0.000    0.668    3.540    7.040   11.026   16.530   25.590   44.271 
     ##      80%      90%     100% 
     ##   99.978  203.629 1712.000
+
+Those are some high-quality quantiles! While calculating more quantiles
+gives you a more detailed look at the data, it also produces more
+numbers, making the summary more difficult to quickly understand.
 
 ## Variance and standard deviation
 
@@ -394,18 +445,19 @@ ggplot(food_consumption, aes(co2_emission)) +
 
 ![](readme_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
+Superb spread measurement! Beef has the biggest amount of variation in
+its CO<sub>2</sub> emissions, while eggs, nuts, and soybeans have
+relatively small amounts of variation.
+
 ## Finding outliers using IQR
 
 Outliers can have big effects on statistics like mean, as well as
 statistics that rely on the mean, such as variance and standard
 deviation. Interquartile range, or IQR, is another way of measuring
 spread that’s less influenced by outliers. IQR is also often used to
-find outliers. If a value is less than
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="2"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mtext class="mjx-n"><mjx-c class="mjx-c51"></mjx-c><mjx-c class="mjx-c31"></mjx-c></mjx-mtext><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2212"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c2E"></mjx-c><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-cD7"></mjx-c></mjx-mo><mjx-mtext class="mjx-n" space="3"><mjx-c class="mjx-c49"></mjx-c><mjx-c class="mjx-c51"></mjx-c><mjx-c class="mjx-c52"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>Q1</mtext><mo>−</mo><mn>1.5</mn><mo>×</mo><mtext>IQR</mtext></math></mjx-assistive-mml></mjx-container>
-or greater than
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="3"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mtext class="mjx-n"><mjx-c class="mjx-c51"></mjx-c><mjx-c class="mjx-c33"></mjx-c></mjx-mtext><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-c2B"></mjx-c></mjx-mo><mjx-mn class="mjx-n" space="3"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c2E"></mjx-c><mjx-c class="mjx-c35"></mjx-c></mjx-mn><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-cD7"></mjx-c></mjx-mo><mjx-mtext class="mjx-n" space="3"><mjx-c class="mjx-c49"></mjx-c><mjx-c class="mjx-c51"></mjx-c><mjx-c class="mjx-c52"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>Q3</mtext><mo>+</mo><mn>1.5</mn><mo>×</mo><mtext>IQR</mtext></math></mjx-assistive-mml></mjx-container>,
-it’s considered an outlier. In fact, this is how the lengths of the
-whiskers in a `ggplot2` box plot are calculated.
+find outliers. If a value is less than Q1 - 1.5 \* IQR or greater than
+Q3 + 1.5 \* IQR, it’s considered an outlier. In fact, this is how the
+lengths of the whiskers in a `ggplot2` box plot are calculated.
 
 <img src="https://assets.datacamp.com/production/repositories/5758/datasets/ca7e6e1832be7ec1842f62891815a9b0488efa83/Screen%20Shot%202020-04-28%20at%2010.04.54%20AM.png" alt="Diagram of a box plot showing median, quartiles, and outliers">
 
@@ -475,6 +527,10 @@ emissions_by_country %>%
     ##   <chr>              <dbl>
     ## 1 Argentina          2172.
 
+Outstanding outlier detection! It looks like Argentina has a
+substantially higher amount of CO<sub>2</sub> emissions per person than
+other countries in the world.
+
 # 2. Random Numbers and Probability
 
 In this chapter, you’ll learn how to generate random samples and measure
@@ -482,6 +538,10 @@ chance using probability. You’ll work with real-world sales data to
 calculate the probability of a salesperson being successful. Finally,
 you’ll use the binomial distribution to model events with binary
 outcomes.
+
+## What are the chances?
+
+Theory. Coming soon …
 
 ## With or without replacement?
 
@@ -510,9 +570,8 @@ you can look at them more deeply. Before you start selecting deals,
 you’ll first figure out what the chances are of selecting certain deals.
 
 Recall that the probability of an event can be calculated by
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" display="true" role="presentation" tabindex="0" ctxtmenu_counter="1"><mjx-math display="true" style="margin-left: 0px; margin-right: 0px;" class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D443 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c28"></mjx-c></mjx-mo><mjx-mtext class="mjx-n"><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c76"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c6E"></mjx-c><mjx-c class="mjx-c74"></mjx-c></mjx-mtext><mjx-mo class="mjx-n"><mjx-c class="mjx-c29"></mjx-c></mjx-mo><mjx-mo class="mjx-n" space="4"><mjx-c class="mjx-c3D"></mjx-c></mjx-mo><mjx-mfrac space="4"><mjx-frac type="d"><mjx-num><mjx-nstrut type="d"></mjx-nstrut><mjx-mtext class="mjx-n"><mjx-c class="mjx-c23"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c77"></mjx-c><mjx-c class="mjx-c61"></mjx-c><mjx-c class="mjx-c79"></mjx-c><mjx-c class="mjx-c73"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c76"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c6E"></mjx-c><mjx-c class="mjx-c74"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c63"></mjx-c><mjx-c class="mjx-c61"></mjx-c><mjx-c class="mjx-c6E"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c68"></mjx-c><mjx-c class="mjx-c61"></mjx-c><mjx-c class="mjx-c70"></mjx-c><mjx-c class="mjx-c70"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c6E"></mjx-c></mjx-mtext></mjx-num><mjx-dbox><mjx-dtable><mjx-line type="d"></mjx-line><mjx-row><mjx-den><mjx-dstrut type="d"></mjx-dstrut><mjx-mtext class="mjx-n"><mjx-c class="mjx-c74"></mjx-c><mjx-c class="mjx-c6F"></mjx-c><mjx-c class="mjx-c74"></mjx-c><mjx-c class="mjx-c61"></mjx-c><mjx-c class="mjx-c6C"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c23"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c6F"></mjx-c><mjx-c class="mjx-c66"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c70"></mjx-c><mjx-c class="mjx-c6F"></mjx-c><mjx-c class="mjx-c73"></mjx-c><mjx-c class="mjx-c73"></mjx-c><mjx-c class="mjx-c69"></mjx-c><mjx-c class="mjx-c62"></mjx-c><mjx-c class="mjx-c6C"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c20"></mjx-c><mjx-c class="mjx-c6F"></mjx-c><mjx-c class="mjx-c75"></mjx-c><mjx-c class="mjx-c74"></mjx-c><mjx-c class="mjx-c63"></mjx-c><mjx-c class="mjx-c6F"></mjx-c><mjx-c class="mjx-c6D"></mjx-c><mjx-c class="mjx-c65"></mjx-c><mjx-c class="mjx-c73"></mjx-c></mjx-mtext></mjx-den></mjx-row></mjx-dtable></mjx-dbox></mjx-frac></mjx-mfrac></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>P</mi><mo stretchy="false">(</mo><mtext>event</mtext><mo stretchy="false">)</mo><mo>=</mo><mfrac><mtext>\#
-ways event can happen</mtext><mtext>total \# of possible
-outcomes</mtext></mfrac></math></mjx-assistive-mml></mjx-container>
+
+<img src="https://render.githubusercontent.com/render/math?math={\color{red}P(x)=\frac{%23ways event can happen}{total %23 of possible outcomes}}">
 
 **Steps**
 
@@ -567,6 +626,9 @@ amir_deals %>%
 > If you randomly select one of Amir’s deals, what’s the probability
 > that the deal will involve Product C?<br> <br> ⬜ 15%<br> ⬜
 > 80.43%<br> ✅ 8.43%<br> ⬜ 22.5%<br>
+
+Perfect probability calculations! Now that you know what the chances
+are, it’s time to start sampling.
 
 ## Sampling deals
 
@@ -623,6 +685,14 @@ amir_deals %>%
 > What type of sampling is better to use for this situation?<br> <br> ⬜
 > With replacement<br> ✅ Without replacement<br> ⬜ It doesn’t
 > matter<br>
+
+Spectactular sampling! It’s important to consider how you’ll take a
+sample since there’s no one-size-fits-all way to sample, and this can
+have an effect on your results.
+
+## Discrete distributions
+
+Theory. Coming soon …
 
 ## Creating a probability distribution
 
@@ -710,6 +780,10 @@ size_distribution %>%
     ##            <dbl>
     ## 1            0.3
 
+Dexterous distribution utilization! You’ll continue to build upon these
+skills since many statistical tests and methods use probability
+distributions as their foundation.
+
 ## Identifying distributions
 
 ``` r
@@ -724,6 +798,10 @@ p1 + p2 + p3
 >
 > Which sample is most likely to have been taken from a uniform
 > distribution?<br> <br> ✅ A<br> ⬜ B<br> ⬜ C<br>
+
+Impressive identification! Since the histogram depicts a sample and not
+the actual probability distribution, each outcome won’t happen the exact
+same number of times due to randomness, but they’re similar in number.
 
 ## Expected value vs. sample mean
 
@@ -762,6 +840,10 @@ You can adjust the size of the samples by changing the values of
 > less than 4. There’s a catch: you get to pick the sample’s size. Which
 > sample size is most likely to win you the twenty dollars?<br> <br> ✅
 > 10<br> ⬜ 100<br> ⬜ 1000<br> ⬜ 5000<br> ⬜ 10000<br>
+
+Nice work! Since the sample mean will likely be closer to 5 (the
+expected value) with larger sample sizes, you have a better chance of
+getting a sample mean further away from 5 with a smaller sample.
 
 ## Which distribution?
 
@@ -836,6 +918,10 @@ prob_between_10_and_20
 
     ## [1] 0.3333333
 
+Wonderful wait-time calculations! There’s a 33% chance that Amir will
+wait 10-20 minutes. In the next exercise, you’ll make sure this
+calculation holds up by simulating some wait times.
+
 ## Simulating wait times
 
 To give Amir a better idea of how long he’ll have to wait, you’ll
@@ -892,8 +978,17 @@ wait_times %>%
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](readme_files/figure-gfm/unnamed-chunk-30-1.png)<!-- --> \## The
-binomial distribution \## Simulating sales deals
+![](readme_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+
+Superb simulating! Unless Amir figures out exactly what time each backup
+happens, he won’t be able to time his data entry so it gets backed up
+sooner, but it looks like he’ll wait about 15 minutes on average.
+
+## The binomial distribution
+
+Theory. Coming soon …
+
+## Simulating sales deals
 
 Assume that Amir usually works on 3 deals per week, and overall, he wins
 30% of deals he works on. Each deal has a binary outcome: it’s either
@@ -944,6 +1039,9 @@ mean(deals)
 
     ## [1] 0.8076923
 
+Brilliant binomial simulation! In this simulated year, Amir won 0.8
+deals on average each week.
+
 ## Calculating binomial probabilities
 
 Just as in the last exercise, assume that Amir wins 30% of deals. He
@@ -981,14 +1079,16 @@ pbinom(1,3,0.3,lower.tail=F)
 
     ## [1] 0.216
 
+Powerful probability calculations! Amir has about a 22% chance of
+closing more than one deal in a week.
+
 ## How many sales will be won?
 
 Now Amir wants to know how many deals he can expect to close each week
 if his win rate changes. Luckily, you can use your binomial distribution
 knowledge to help him calculate the expected value in different
 situations. Recall from the video that the expected value of a binomial
-distribution can be calculated by
-<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" style="font-size: 116.7%; position: relative;" role="presentation" tabindex="0" ctxtmenu_counter="1"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D45B TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n" space="3"><mjx-c class="mjx-cD7"></mjx-c></mjx-mo><mjx-mi class="mjx-i" space="3"><mjx-c class="mjx-c1D45D TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml role="presentation" unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>×</mo><mi>p</mi></math></mjx-assistive-mml></mjx-container>.
+distribution can be calculated by (n \* p).
 
 **Steps**
 
@@ -1025,6 +1125,9 @@ won_35pct
 
     ## [1] 1.05
 
+Excellent expectation experimentation! If Amir’s win rate goes up by 5%,
+he can expect to close more than 1 deal on average each week.
+
 # 3. More Distributions and the Central Limit Theorem
 
 It’s time to explore one of the most important probability distributions
@@ -1034,6 +1137,8 @@ theorem, before expanding your knowledge of statistical functions by
 adding the Poisson, exponential, and t-distributions to your repertoire.
 
 ## The normal distribution
+
+Theory. Coming soon …
 
 ## Distribution of Amir’s sales
 
@@ -1062,6 +1167,10 @@ ggplot(amir_deals, aes(amount)) +
 > Which probability distribution do the sales amounts most closely
 > follow?<br> <br> ⬜ Uniform<br> ⬜ Binomial<br> ✅ Normal<br> ⬜ None
 > of the above<br>
+
+Fabulous work! Now that you’ve visualized the data, you know that you
+can approximate probabilities of different `amount`s using the normal
+distribution.
 
 ## Probabilities from the normal distribution
 
@@ -1111,6 +1220,10 @@ qnorm(0.75, 5000, 2000, lower.tail =F)
 
     ## [1] 3651.02
 
+Nifty normal distribution usage! You know that you can count on Amir 75%
+of the time to make a sale worth at least $3651.02, and this information
+will be useful in making company-wide sales projections.
+
 ## Simulating sales under new market conditions
 
 The company’s financial analyst is predicting that next quarter, the
@@ -1158,6 +1271,11 @@ ggplot(new_sales, aes(amount)) +
 
 ![](readme_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
+Successful simulating! Although the average sale amount went up, the
+variation also increased, so it’s not straightforward to decide whether
+these sales are better than his current ones. In the next exercise,
+you’ll explore the effects of higher variation.
+
 ## Which market is better?
 
 The key metric that the company uses to evaluate salespeople is the
@@ -1177,7 +1295,15 @@ quarter’s market have a mean of $6000 and a standard deviation of $2600.
 > performs much better in next quarter’s predicted market.<br> ✅ Amir
 > performs about equally in both markets.<br>
 
+Great work! In the current market, Amir makes sales over $1000 about
+97.7% of the time, and about 97.3% of the time in the predicted market,
+so there’s not much of a difference. However, his average sale amount is
+higher in the predicted market, so the company may want to consider
+other metrics as well.
+
 ## The central limit theorem
+
+Theory. Coming soon …
 
 ## Visualizing sampling distributions
 
@@ -1254,9 +1380,9 @@ ggplot(aes(values)) +
 > distribution<br> ⬜ Continuous uniform distribution<br> ⬜ Binomial
 > distribution<br> ⬜ All of the above<br> ✅ None of the above<br>
 
-Regardless of the shape of the distribution you’re taking sample means
-from, the central limit theorem will apply if the sampling distribution
-contains enough sample means.
+Victorious visualizing! Regardless of the shape of the distribution
+you’re taking sample means from, the central limit theorem will apply if
+the sampling distribution contains enough sample means.
 
 ## The CLT in action
 
@@ -1326,6 +1452,10 @@ ggplot(samples, aes(mean)) +
 
 ![](readme_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
+Fabulous job! You’ve just seen the central limit thorem at work. Even
+though the distribution of `num_users` is not normal, the distribution
+of its sample mean resembles the normal distribution.
+
 ## The mean of means
 
 You want to know what the average number of users (`num_users`) is per
@@ -1370,7 +1500,13 @@ mean(amir_deals$num_users)
 
     ## [1] 37.65169
 
+Magnificent mean calculation! Amir’s average number of users is very
+close to the overall average, so it looks like he’s meeting
+expectations. Make sure to note this in his performance review!
+
 ## The Poisson distribution
+
+Theory. Coming soon …
 
 ## Identifying lambda
 
@@ -1448,6 +1584,14 @@ ppois(10, 4, lower.tail =F)
 
     ## [1] 0.002839766
 
+Perfect Poisson probabilities! Note that if you provide `dpois()` or
+`ppois()` with a non-integer, it returns 0 and throws a warning since
+the Poisson distribution only applies to integers.
+
+## More probability distributions
+
+Theory. Coming soon …
+
 ## Too many distributions
 
 By this point, you’ve learned about so many different probability
@@ -1501,6 +1645,10 @@ pexp(4, 0.4) - pexp(3, 0.4)
 
     ## [1] 0.09929769
 
+Excellent exponential computations! There’s only about a 20% chance it
+will take Amir more than 4 hours to respond, so he’s pretty speedy in
+his responses.
+
 ## The t-distribution
 
 > ## *Question*
@@ -1511,6 +1659,10 @@ pexp(4, 0.4) - pexp(3, 0.4)
 > resembles the normal distribution.<br> ⬜ The number of degrees of
 > freedom affects the distribution’s variance.<br> ✅ The t-distribution
 > is skewed.<br>
+
+Terrific! The t-distribution is not skewed, just like the normal
+distribution, but it does have thicker tails and higher variance than
+the normal distribution.
 
 # 4. Correlation and Experimental Design
 
@@ -1523,6 +1675,10 @@ of your conclusions.
 
 ## Correlation
 
+Theory. Coming soon …
+
+## Guess the correlation
+
 > ## *Question*
 >
 > Which of the following statements is NOT true about correlation?<br>
@@ -1531,6 +1687,9 @@ of your conclusions.
 > Correlation can be written as *r*.<br> ⬜ If `x` and `y` are
 > negatively correlated, values of `y` decrease as values of `x`
 > increase.<br> ✅ Correlation cannot be 0.<br>
+
+Spot on! When correlation is 0, that means there is no relationship
+between two variables and the points appear to be randomly scattered.
 
 ## Relationships between variables
 
@@ -1591,6 +1750,13 @@ cor(world_happiness$life_exp, world_happiness$happiness_score)
 
     ## [1] 0.7737615
 
+Vibrant visualizations! Scatterplots with trendlines are a great way to
+verify that a relationship between two variables is indeed linear.
+
+## Correlation caveats
+
+Theory. Coming soon …
+
 ## What can’t correlation measure?
 
 While the correlation coefficient is a convenient way to quantify the
@@ -1629,6 +1795,9 @@ cor(world_happiness$gdp_per_cap, world_happiness$life_exp)
 > affects another.<br> ✅ Correlation only measures linear
 > relationships.<br> ⬜ Correlation cannot properly measure
 > relationships between numeric variables.<br>
+
+Correct! The correlation coefficient can’t account for any relationships
+that aren’t linear, regardless of strength.
 
 ## Transforming variables
 
@@ -1685,6 +1854,11 @@ cor(world_happiness$log_gdp_per_cap, world_happiness$happiness_score)
 
     ## [1] 0.7965484
 
+Terrific transforming! The relationship between GDP per capita and
+happiness became more linear by applying a log transformation. Log
+transformations are great to use on variables with a skewed
+distribution, such as GDP.
+
 ## Does sugar improve happiness?
 
 A new column has been added to `world_happiness` called
@@ -1725,6 +1899,10 @@ cor(world_happiness$grams_sugar_per_day, world_happiness$happiness_score)
 > is associated with a higher happiness score.<br> ⬜ Sugar consumption
 > is not related to happiness.<br>
 
+Nice interpretation of correlation! If correlation always implied that
+one thing causes another, people may do some nonsensical things, like
+eat more sugar to be happier.
+
 ## Confounders
 
 A study is investigating the relationship between neighborhood residence
@@ -1738,6 +1916,14 @@ have similar smoking habits and a similar gender breakdown.
 > Which of the following could be a *confounder* in this study?<br> <br>
 > ⬜ Lung capacity<br> ⬜ Neighborhood<br> ✅ Air pollution<br> ⬜
 > Smoking status<br> ⬜ Gender<br>
+
+Correct! You would expect there to be more air pollution in the
+neighborhood situated near the highway, which can cause lower lung
+capacity.
+
+## Design of experiments
+
+Theory. Coming soon …
 
 ## Study types
 
@@ -1775,3 +1961,7 @@ cross-sectional?
 >
 > Which of the following could be a *confounder* in this study?<br> <br>
 > ⬜ Longitudinal<br> ✅ Cross-sectional<br> ⬜ Both<br> ⬜ Neither<br>
+
+Perfect! This is a cross-sectional study since researchers aren’t
+following the same set of thermometers over time and repeatedly
+measuring their accuracy at different ages.
