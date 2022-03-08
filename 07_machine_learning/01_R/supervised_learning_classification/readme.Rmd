@@ -13,11 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = T)
 
 **Short Description**
 
-In this course you will learn the basics of machine learning for classification.
-
-**SEO Description**
-
-In this course you will learn the basics of machine learning for classification.
+Basics of machine learning for classification.
 
 **Long Description**
 
@@ -55,6 +51,13 @@ The dataset `signs` is loaded in your workspace along with the dataframe `next_s
 ```{r}
 # Load the 'class' package
 library(class)
+library(dplyr)
+
+# Load & create data
+signs_all  <- readr::read_csv("data/knn_traffic_signs.csv")
+signs      <- signs_all |> filter(sample == "train")   |> select(-c(1:2))
+next_sign  <- signs_all |> filter(sample == "example") |> select(-c(1:3))
+signs_test <- signs_all |> filter(sample == "test")    |> select(-c(1:2))
 
 # Create a vector of labels
 sign_types <- signs$sign_type
@@ -69,21 +72,16 @@ Awesome! You've trained your first nearest neighbor classifier!
 
 With your help, the test car successfully identified the sign and stopped safely at the intersection.
 
-How did the `knn()` function correctly classify the stop sign?
-
 > *Question*
 > ---
-> ???<br>
+> How did the `knn()` function correctly classify the stop sign?<br>
 > <br>
 > ⬜ It learned that stop signs are red<br>
-> ⬜ [The sign was in some way similar to another stop sign]<br>
+> ✅ The sign was in some way similar to another stop sign<br>
 > ⬜ Stop signs have eight sides<br>
 > ⬜ The other types of signs were less likely<br>
 
-Sorry, kNN can't learn this type of pattern.
 Correct! kNN isn't really learning anything; it simply looks for the most similar example.
-Sorry, kNN can't learn this type of pattern.
-Sorry, kNN doesn't estimate a probability of each potential outcome.
 
 ## Exploring the traffic sign dataset
 
@@ -101,15 +99,28 @@ The result is a dataset that records the `sign_type` as well as 16 x 3 = 48 colo
 2. Use `table()` to count the number of observations of each sign type by passing it the column containing the labels.
 3. Run the provided `aggregate()` command to see whether the average red level might vary by sign type.
 
-```{r}
+```{r,eval=FALSE}
 # Examine the structure of the signs dataset
-str(signs)
+str(signs[1:5])
+#> tibble [146 × 5] (S3: tbl_df/tbl/data.frame)
+#>  $ sign_type: chr [1:146] "pedestrian" "pedestrian" "pedestrian" "pedestrian" ...
+#>  $ r1       : num [1:146] 155 142 57 22 169 75 136 149 13 123 ...
+#>  $ g1       : num [1:146] 228 217 54 35 179 67 149 225 34 124 ...
+#>  $ b1       : num [1:146] 251 242 50 41 170 60 157 241 28 107 ...
+#>  $ r2       : num [1:146] 135 166 187 171 231 131 200 34 5 83 ...
 
 # Count the number of signs of each type
 table(signs$sign_type)
+#> 
+#> pedestrian      speed       stop 
+#>         46         49         51
 
 # Check r10's average red level by sign type
 aggregate(r10 ~ sign_type, data = signs, mean)
+#>    sign_type       r10
+#> 1 pedestrian 113.71739
+#> 2      speed  80.63265
+#> 3       stop 132.39216
 ```
 
 Great work! As you might have expected, stop signs tend to have a higher average red value. This is how kNN identifies similar signs.
@@ -131,23 +142,29 @@ The `class` package and the dataset `signs` are already loaded in your workspace
 **Steps**
 
 1. Classify the `test_signs` data using `knn()`.\nSet `train` equal to the observations in `signs` *without* labels.\nUse `test_signs` for the `test` argument, again without labels.\nFor the `cl` argument, use the vector of labels provided for you.
-2. Set `train` equal to the observations in `signs` *without* labels.
-3. Use `test_signs` for the `test` argument, again without labels.
-4. For the `cl` argument, use the vector of labels provided for you.
-5. Use `table()` to explore the classifier's performance at identifying the three sign types (the confusion matrix).\nCreate the vector `signs_actual` by extracting the labels from `test_signs`.\nPass the vector of predictions and the vector of actual signs to `table()` to cross tabulate them.
-6. Create the vector `signs_actual` by extracting the labels from `test_signs`.
-7. Pass the vector of predictions and the vector of actual signs to `table()` to cross tabulate them.
-8. Compute the overall accuracy of the kNN learner using the `mean()` function.
+
+    * Set `train` equal to the observations in `signs` *without* labels.
+    * Use `test_signs` for the `test` argument, again without labels.
+    * For the `cl` argument, use the vector of labels provided for you.
+
+2.. Use `table()` to explore the classifier's performance at identifying the three sign types (the confusion matrix).\nCreate the vector `signs_actual` by extracting the labels from `test_signs`.\nPass the vector of predictions and the vector of actual signs to `table()` to cross tabulate them.
+    
+    * Create the vector `signs_actual` by extracting the labels from `test_signs`.
+    * Pass the vector of predictions and the vector of actual signs to `table()` to cross tabulate them.
 
 ```{r}
 # Use kNN to identify the test road signs
 sign_types <- signs$sign_type
-signs_pred <- knn(train = signs[-1], test = test_signs[-1], cl = sign_types)
+signs_pred <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types)
 
 # Create a confusion matrix of the predicted versus actual values
-signs_actual <- test_signs$sign_type
+signs_actual <- signs_test$sign_type
 table(signs_pred, signs_actual)
+```
 
+3. Compute the overall accuracy of the kNN learner using the `mean()` function.
+
+```{r}
 # Compute the accuracy
 mean(signs_pred == signs_actual)
 ```
@@ -162,20 +179,15 @@ Theory. Coming soon ...
 
 There is a complex relationship between k and classification accuracy. Bigger is not always better.
 
-Which of these is a valid reason for keeping k as small as possible (but no smaller)?
-
 > *Question*
 > ---
-> ???<br>
+> Which of these is a valid reason for keeping k as small as possible (but no smaller)?<br>
 > <br>
 > ⬜ A smaller k requires less processing power<br>
 > ⬜ A smaller k reduces the impact of noisy data<br>
 > ⬜ A smaller k minimizes the chance of a tie vote<br>
-> ⬜ [A smaller k may utilize more subtle patterns]<br>
+> ✅ A smaller k may utilize more subtle patterns<br>
 
-kNN needs to compute distance for all examples regardless of k.
-A smaller k actually INCREASES the impact of noisy data!
-A smaller k doesn't impact the chances of a tie vote.
 Yes! With smaller neighborhoods, kNN can identify more subtle patterns in the data.
 
 ## Testing other 'k' values
@@ -191,18 +203,24 @@ The `class` package is already loaded in your workspace along with the datasets 
 **Steps**
 
 1. Compute the accuracy of the default `k = 1` model using the given code, then find the accuracy of the model using `mean()` to compare `signs_actual` and the model's predictions.
-2. Modify the `knn()` function call by setting `k = 7` and again find accuracy value.
-3. Revise the code once more by setting `k = 15`, plus find the accuracy value one more time.
 
 ```{r}
 # Compute the accuracy of the baseline model (default k = 1)
 k_1 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types)
 mean(signs_actual == k_1)
+```
 
+2. Modify the `knn()` function call by setting `k = 7` and again find accuracy value.
+
+```{r}
 # Modify the above to set k = 7
 k_7 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types, k = 7)
 mean(signs_actual == k_7)
+```
 
+3. Revise the code once more by setting `k = 15`, plus find the accuracy value one more time.
+
+```{r}
 # Set k = 15 and compare to the above
 k_15 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types, k = 15)
 mean(signs_actual == k_15)
@@ -224,7 +242,6 @@ The `class` package has already been loaded in your workspace along with the dat
 
 1. Build a kNN model with the `prob = TRUE` parameter to compute the vote proportions. Set `k = 7`.
 2. Use the `attr()` function to obtain the vote proportions for the predicted class. These are stored in the attribute `"prob"`.
-3. Examine the first several vote outcomes and percentages using the `head()` function to see how the confidence varies from sign to sign.
 
 ```{r}
 # Use the prob parameter to get the proportion of votes for the winning class
@@ -235,7 +252,11 @@ sign_prob <- attr(sign_pred, "prob")
 
 # Examine the first several predictions
 head(sign_pred)
+```
 
+3. Examine the first several vote outcomes and percentages using the `head()` function to see how the confidence varies from sign to sign.
+
+```{r}
 # Examine the proportion of votes for the winning class
 head(sign_prob)
 ```
@@ -248,21 +269,18 @@ Theory. Coming soon ...
 
 ## Why normalize data?
 
-Before applying kNN to a classification task, it is common practice to rescale the data using a technique like **min-max normalization**. What is the purpose of this step?
+Before applying kNN to a classification task, it is common practice to rescale the data using a technique like **min-max normalization**. 
 
 > *Question*
 > ---
-> ???<br>
+> What is the purpose of this step?<br>
 > <br>
-> ⬜ [To ensure all data elements may contribute equal shares to distance.]<br>
+> ✅ To ensure all data elements may contribute equal shares to distance.<br>
 > ⬜ To help the kNN algorithm converge on a solution faster.<br>
 > ⬜ To convert all of the data elements to numbers.<br>
 > ⬜ To redistribute the data as a normal bell curve.<br>
 
 Yes! Rescaling reduces the influence of extreme values on kNN's distance function.
-Normalization doesn't affect how quickly kNN can compute similarity.
-Before rescaling, the data should ALREADY be in numeric format.
-Redistributing data as a bell curve is not necessary for kNN.
 
 # 2. Chapter 2: Naive Bayes
 
@@ -278,9 +296,7 @@ The `where9am` data frame contains 91 days (thirteen weeks) worth of data in whi
 
 Using the conditional probability formula below, you can compute the probability that Brett is working in the office, given that it is a weekday.
 
-$$
-P(A|B) = \\frac{P(A \\text{ and } B)}{P(B)}
-$$
+<img src="https://render.githubusercontent.com/render/math?math={\color{red}P(A|B)=\frac{P(A%20and%20B)}{P(B)}}">
 
 Calculations like these are the basis of the Naive Bayes destination prediction model you'll develop in later exercises.
 
@@ -293,6 +309,16 @@ Calculations like these are the basis of the Naive Bayes destination prediction 
 5. Print the value of `p_A_given_B`.
 
 ```{r}
+# Load package
+library(readr)
+
+# Load data
+locations <- read_csv("data/locations.csv")
+where9am  <- locations |> 
+                filter(hour == 9) |> 
+                select(daytype, location) |> 
+                mutate(across(everything(), as.factor))
+
 # Compute P(A) 
 p_A <- nrow(subset(where9am, location == "office")) / nrow(where9am)
 
@@ -311,20 +337,15 @@ Great work! In a lot of cases, calculating probabilities is as simple as countin
 
 ## Understanding dependent events
 
-In the previous exercise, you found that there is a 60% chance Brett is in the office at 9am given that it is a weekday. On the other hand, if Brett is never in the office on a weekend, which of the following is/are true?
-
 > *Question*
 > ---
-> ???<br>
+> In the previous exercise, you found that there is a 60% chance Brett is in the office at 9am given that it is a weekday. On the other hand, if Brett is never in the office on a weekend, which of the following is/are true?<br>
 > <br>
 > ⬜ P(office and weekend) = 0.<br>
 > ⬜ P(office | weekend) = 0.<br>
 > ⬜ Brett's location is dependent on the day of the week.<br>
-> ⬜ [All of the above.]<br>
+> ✅ All of the above.<br>
 
-This is true, but not the BEST answer…
-This is true, but not the BEST answer…
-This is true, but not the BEST answer…
 Correct! Because the events do not overlap, knowing that one occurred tells you much about the status of the other.
 
 ## A simple Naive Bayes location model
@@ -341,8 +362,6 @@ The data frame `where9am` is available in your workspace. This dataset contains 
 
 1. Load the `naivebayes` package.
 2. Use `naive_bayes()` with a formula like `y ~ x` to build a model of `location` as a function of `daytype`.
-3. Forecast the Thursday 9am location using `predict()` with the `thursday9am` object as the `newdata` argument. 
-4. Do the same for predicting the `saturday9am` location.
 
 ```{r}
 # Load the naivebayes package
@@ -350,9 +369,21 @@ library(naivebayes)
 
 # Build the location prediction model
 locmodel <- naive_bayes(location ~ daytype, data = where9am)
+```
+
+3. Forecast the Thursday 9am location using `predict()` with the `thursday9am` object as the `newdata` argument. 
+
+```{r}
+thursday9am <- tibble(daytype = factor("weekday", levels = c("weekday", "weekend")))
 
 # Predict Thursday's 9am location
 predict(locmodel, thursday9am)
+```
+
+4. Do the same for predicting the `saturday9am` location.
+
+```{r}
+saturday9am <- tibble(daytype = factor("weekend", levels = c("weekday", "weekend")))
 
 # Predict Saturdays's 9am location
 predict(locmodel, saturday9am)
@@ -373,8 +404,6 @@ Using these methods, examine how the model's predicted 9am location probability 
 **Steps**
 
 1. Print the `locmodel` object to the console to view the computed *a priori* and conditional probabilities.
-2. Use the `predict()` function similarly to the previous exercise, but with `type = "prob"` to see the predicted probabilities for Thursday at 9am.
-3. Compare these to the predicted probabilities for Saturday at 9am.
 
 ```{r}
 # The 'naivebayes' package is loaded into the workspace
@@ -382,10 +411,18 @@ Using these methods, examine how the model's predicted 9am location probability 
 
 # Examine the location prediction model
 locmodel
+```
 
+2. Use the `predict()` function similarly to the previous exercise, but with `type = "prob"` to see the predicted probabilities for Thursday at 9am.
+
+```{r}
 # Obtain the predicted probabilities for Thursday at 9am
 predict(locmodel, thursday9am, type = "prob")
+```
 
+3. Compare these to the predicted probabilities for Saturday at 9am.
+
+```{r}
 # Obtain the predicted probabilities for Saturday at 9am
 predict(locmodel, saturday9am, type = "prob")
 ```
@@ -394,21 +431,16 @@ Fantastic! Did you notice the predicted probability of Brett being at the office
 
 ## Understanding independence
 
-Understanding the idea of event independence will become important as you learn more about how "naive" Bayes got its name. Which of the following is true about independent events?
-
 > *Question*
 > ---
-> ???<br>
+> Understanding the idea of event independence will become important as you learn more about how "naive" Bayes got its name. Which of the following is true about independent events?<br>
 > <br>
 > ⬜ The events cannot occur at the same time.<br>
 > ⬜ A Venn diagram will always show no intersection.<br>
-> ⬜ [Knowing the outcome of one event does not help predict the other.]<br>
+> ✅ Knowing the outcome of one event does not help predict the other.<br>
 > ⬜ At least one of the events is completely random.<br>
 
-If I flip a coin two times in a row, both flips are independent.
-The Venn diagram shows an intersection if the events can occur together, but this doesn't mean they're dependent.
 Yes! One event is independent of another if knowing one doesn't give you information about how likely the other is. For example, knowing if it's raining in New York doesn't help you predict the weather in San Francisco. The weather events in the two cities are independent of each other.
-All of the events you're learning about are random to a certain extent.
 
 ## Understanding NB's "naivety"
 
@@ -418,21 +450,16 @@ Theory. Coming soon ...
 
 The Naive Bayes algorithm got its name because it makes a "naive" assumption about event independence. 
 
-What is the purpose of making this assumption?
-
 > *Question*
 > ---
-> ???<br>
+> What is the purpose of making this assumption?<br>
 > <br>
 > ⬜ Independent events can never have a joint probability of zero.<br>
-> ⬜ [The joint probability calculation is simpler for independent events.]<br>
+> ✅ The joint probability calculation is simpler for independent events.<br>
 > ⬜ Conditional probability is undefined for dependent events.<br>
 > ⬜ Dependent events cannot be used to make predictions.<br>
 
-Independent events CAN have a joint probability of zero if they cannot occur together.
 Yes! The joint probability of independent events can be computed much more simply by multiplying their individual probabilities.
-Conditional probability is REQUIRED for understanding event dependency.
-Dependent events are in fact very important for making predictions.
 
 ## A more sophisticated location model
 
@@ -446,16 +473,27 @@ You can specify additional independent variables in your formula using the `+` s
 
 1. Use the R formula interface to build a model where location depends on both `daytype` and `hourtype`. Recall that the function `naive_bayes()` takes 2 arguments: `formula` and `data`.
 2. Predict Brett's location on a weekday afternoon using the dataframe `weekday_afternoon` and the `predict()` function.
-3. Do the same for a `weekday_evening`.
 
 ```{r}
-# The 'naivebayes' package is loaded into the workspace already
-
 # Build a NB model of location
 locmodel <- naive_bayes(location ~ daytype + hourtype, data = locations)
 
+# Data
+weekday_afternoon <- tibble(daytype  = factor("weekday",   levels = c("weekday", "weekend")),
+                            hourtype = factor("afternoon", levels = c("afternoon", "evening", "morning", "night")),
+                            location = factor("office",    levels = c("appointment", "campus", "home", "office", "restaurant", "store", "theater")))
+
 # Predict Brett's location on a weekday afternoon
 predict(locmodel, weekday_afternoon)
+```
+
+3. Do the same for a `weekday_evening`.
+
+```{r}
+# Data
+weekday_evening <- tibble(daytype  = factor("weekday", levels = c("weekday", "weekend")),
+                          hourtype = factor("evening", levels = c("afternoon", "evening", "morning", "night")),
+                          location = factor("home",    levels = c("appointment", "campus", "home", "office", "restaurant", "store", "theater")))
 
 # Predict Brett's location on a weekday evening
 predict(locmodel, weekday_evening)
@@ -474,16 +512,24 @@ The model `locmodel` is already in your workspace, along with the dataframe `wee
 **Steps**
 
 1. Use the `locmodel` to output predicted probabilities for a weekend afternoon by using the `predict()` function. Remember to set the `type` argument.
-2. Create a new naive Bayes model with the Laplace smoothing parameter set to `1`. You can do this by setting the `laplace` argument in your call to `naive_bayes()`. Save this as `locmodel2`.
-3. See how the new predicted probabilities compare by using the `predict()` function on your new model.
 
 ```{r}
 # The 'naivebayes' package is loaded into the workspace already
 # The Naive Bayes location model (locmodel) has already been built
 
+# Data
+weekend_afternoon <- tibble(daytype  = factor("weekend",   levels = c("weekday", "weekend")),
+                            hourtype = factor("afternoon", levels = c("afternoon", "evening", "morning", "night")),
+                            location = factor("home",      levels = c("appointment", "campus", "home", "office", "restaurant", "store", "theater")))
+
 # Observe the predicted probabilities for a weekend afternoon
 predict(locmodel, weekend_afternoon, type = "prob")
+```
 
+2. Create a new naive Bayes model with the Laplace smoothing parameter set to `1`. You can do this by setting the `laplace` argument in your call to `naive_bayes()`. Save this as `locmodel2`.
+3. See how the new predicted probabilities compare by using the `predict()` function on your new model.
+
+```{r}
 # Build a new model using the Laplace correction
 locmodel2 <- naive_bayes(location ~ daytype + hourtype, data = locations, laplace = 1)
 
@@ -495,21 +541,16 @@ Fantastic work! Adding the Laplace correction allows for the small chance that B
 
 ## Understanding the Laplace correction
 
-By default, the `naive_bayes()` function in the `naivebayes` package does not use the Laplace correction. What is the risk of leaving this parameter unset?
-
 > *Question*
 > ---
-> ???<br>
+> By default, the `naive_bayes()` function in the `naivebayes` package does not use the Laplace correction. What is the risk of leaving this parameter unset?<br>
 > <br>
-> ⬜ [Some potential outcomes may be predicted to be impossible.]<br>
+> ✅ Some potential outcomes may be predicted to be impossible.<br>
 > ⬜ The algorithm may have a divide by zero error.<br>
 > ⬜ Naive Bayes will ignore features with zero values.<br>
 > ⬜ The model may not estimate probabilities for some cases.<br>
 
 Correct! The small probability added to every outcome ensures that they are all possible even if never previously observed.
-A probability of zero doesn't cause this error.
-Naive Bayes does NOT actually exclude the zero values.
-Actually, the model will still estimate a probability for all cases.
 
 ## Applying Naive Bayes to other problems
 
@@ -526,11 +567,8 @@ Numeric data is often **binned** before it is used with Naive Bayes. Which of th
 > ⬜ age values recoded as 'child' or 'adult' categories<br>
 > ⬜ geographic coordinates recoded into geographic regions (West, East, etc.)<br>
 > ⬜ test scores divided into four groups by percentile<br>
-> ⬜ [income values standardized to follow a normal bell curve]<br>
+> ✅ income values standardized to follow a normal bell curve<br>
 
-This converts numeric ages into bins for children and adults.
-This converts numeric coordinates into bins for regions.
-This converts numeric scores into four bins.
 Right! Transforming income values into a bell curve doesn't create a set of categories.
 
 # 3. Chapter 3: Logistic Regression
@@ -554,19 +592,30 @@ In this exercise, you will use these three factors to create a simple model of d
 **Steps**
 
 1. Examine `donors` using the `str()` function.
+
+```{r}
+# Load data
+donors <- read_csv("data/donors.csv") |> 
+              mutate(across(where(is.numeric), as.integer),
+                     across(where(is.character), as.factor))
+
+# Examine the dataset to identify potential independent variables
+str(donors)
+```
+
 2. Count the number of occurrences of each level of the `donated` variable using the `table()` function.
+
+```{r}
+# Explore the dependent variable
+table(donors$donated)
+```
+
 3. Fit a logistic regression model using the formula interface and the three independent variables described above. \nCall `glm()` with the formula as its first argument and the dataframe as the `data` argument.\nSave the result as `donation_model`.
 4. Call `glm()` with the formula as its first argument and the dataframe as the `data` argument.
 5. Save the result as `donation_model`.
 6. Summarize the model object with `summary()`.
 
 ```{r}
-# Examine the dataset to identify potential independent variables
-str(donors)
-
-# Explore the dependent variable
-table(donors$donated)
-
 # Build the donation model
 donation_model <- glm(donated ~ bad_address + interest_religion + interest_veterans, 
                       data = donors, family = "binomial")
@@ -589,8 +638,6 @@ The dataset `donors` and the model `donation_model` are already loaded in your w
 
 1. Use the `predict()` function to estimate each person's donation probability. Use the `type` argument to get probabilities. Assign the predictions to a new column called `donation_prob`.
 2. Find the actual probability that an average person would donate by passing the `mean()` function the appropriate column of the `donors` dataframe.
-3. Use `ifelse()` to predict a donation if their predicted donation probability is greater than average. Assign the predictions to a new column called `donation_pred`.
-4. Use the `mean()` function to calculate the model's accuracy.
 
 ```{r}
 # Estimate the donation probability
@@ -598,7 +645,12 @@ donors$donation_prob <- predict(donation_model, type = "response")
 
 # Find the donation probability of the average prospect
 mean(donors$donated)
+```
 
+3. Use `ifelse()` to predict a donation if their predicted donation probability is greater than average. Assign the predictions to a new column called `donation_pred`.
+4. Use the `mean()` function to calculate the model's accuracy.
+
+```{r}
 # Predict a donation if probability of donation is greater than average
 donors$donation_pred <- ifelse(donors$donation_prob > 0.0504, 1, 0)
 
@@ -612,11 +664,9 @@ Nice work! With an accuracy of nearly 80%, the model seems to be doing its job. 
 
 In the previous exercise, you found that the logistic regression model made a correct prediction nearly 80% of the time. Despite this relatively high accuracy, the result is misleading due to the rarity of outcome being predicted.
 
-The `donors` dataset is available in your workspace. What would the accuracy have been if a model had simply predicted "no donation" for each person?
-
 > *Question*
 > ---
-> ???<br>
+> What would the accuracy have been if a model had simply predicted "no donation" for each person?<br>
 > <br>
 > ⬜ 80%<br>
 > ⬜ 85%<br>
@@ -635,14 +685,11 @@ The previous exercises have demonstrated that accuracy is a very misleading meas
 
 In this exercise you will create a ROC curve and compute the area under the curve (AUC) to evaluate the logistic regression model of donations you built earlier. 
 
-The dataset `donors` with the column of predicted probabilities, `donation_prob` ,is already loaded in your workspace.
-
 **Steps**
 
 1. Load the `pROC` package.
 2. Create a ROC curve with `roc()` and the columns of actual and predicted donations. Store the result as `ROC`.
 3. Use `plot()` to draw the `ROC` object. Specify `col = "blue"` to color the curve blue.
-4. Compute the area under the curve with `auc()`.
 
 ```{r}
 # Load the pROC package
@@ -653,7 +700,11 @@ ROC <- roc(donors$donated, donors$donation_prob)
 
 # Plot the ROC curve
 plot(ROC, col = "blue")
+```
 
+4. Compute the area under the curve with `auc()`.
+
+```{r}
 # Calculate the area under the curve (AUC)
 auc(ROC)
 ```
@@ -673,11 +724,8 @@ Which of the following ROC curves illustrates the best model?
 > ⬜ AUC 0.55<br>
 > ⬜ AUC 0.59<br>
 > ⬜ AUC 0.62<br>
-> ⬜ [I need more information!]<br>
+> ✅ I need more information!<br>
 
-One might argue that this is actually the WORST model.
-For some applications, this might perform better or worse than the AUC 0.62 model.
-Despite the higher AUC, this might perform worse than the AUC 0.59 model in some applications.
 Correct! When AUC values are very close, it's important to know more about how the model will be used.
 
 ## Dummy variables, missing data, and interactions
@@ -690,11 +738,11 @@ Sometimes a dataset contains numeric values that represent a categorical feature
 
 In the `donors` dataset, `wealth_rating` uses numbers to indicate the donor's wealth level:
 
-
 * **0** = Unknown
 * **1** = Low
 * **2** = Medium
 * **3** = High
+
 This exercise illustrates how to prepare this type of categorical feature and examines its impact on a logistic regression model. The dataframe `donors` is loaded in your workspace.
 
 **Steps**
@@ -711,7 +759,8 @@ donors$wealth_levels <- factor(donors$wealth_rating, levels = c(0, 1, 2, 3), lab
 donors$wealth_levels <- relevel(donors$wealth_levels, ref = "Medium")
 
 # See how our factor coding impacts the model
-summary(glm(donated ~ wealth_levels, data = donors, family = "binomial"))
+model <- glm(donated ~ wealth_levels, data = donors, family = "binomial") 
+summary(model)
 ```
 
 Great job! What would the model output have looked like if this variable had been left as a numeric column?
@@ -722,18 +771,24 @@ Some of the prospective donors have missing `age` data. Unfortunately, R will ex
 
 One workaround is to replace, or **impute**, the missing values with an estimated value. After doing so, you may also create a missing data indicator to model the possibility that cases with missing data are different in some way from those without.
 
-The dataframe `donors` is loaded in your workspace.
-
 **Steps**
 
 1. Use `summary()` on `donors$age` to find the average age of prospects with non-missing data.
+
+```{r}
+# Load data
+donors <- read_csv("data/donors.csv") |> 
+              mutate(across(where(is.numeric), as.integer),
+                     across(where(is.character), as.factor))
+
+# Find the average age among non-missing values
+summary(donors$age)
+```
+
 2. Use `ifelse()` and the test `is.na(donors$age)` to impute the average (rounded to 2 decimal places) for cases with missing `age`. Be sure to also ignore `NA`s.
 3. Create a binary dummy variable named `missing_age` indicating the presence of missing data using another `ifelse()` call and the same test.
 
 ```{r}
-# Find the average age among non-missing values
-summary(donors$age)
-
 # Impute missing age values with the mean age
 donors$imputed_age <- ifelse(is.na(donors$age), round(mean(donors$age, na.rm = TRUE), 2), donors$age)
 
@@ -747,30 +802,25 @@ Super! This is one way to handle missing data, but be careful! Sometimes missing
 
 A missing value indicator provides a reminder that, before imputation, there was a missing value present on the record.
 
-Why is it often useful to include this indicator as a predictor in the model?
-
 > *Question*
 > ---
-> ???<br>
+> Why is it often useful to include this indicator as a predictor in the model?<br>
 > <br>
 > ⬜ A missing value may represent a unique category by itself<br>
 > ⬜ There may be an important difference between records with and without missing data<br>
 > ⬜ Whatever caused the missing value may also be related to the outcome<br>
-> ⬜ [All of the above]<br>
+> ✅ All of the above<br>
 
-This is true, but not the BEST answer…
-This is true, but not the BEST answer…
-This is true, but not the BEST answer…
 Yes! Sometimes a missing value says a great deal about the record it appeared on!
 
 ## Building a more sophisticated model
 
 One of the best predictors of future giving is a history of recent, frequent, and large gifts. In marketing terms, this is known as R/F/M:
 
-
 * Recency
 * Frequency
 * Money
+
 Donors that haven't given both recently and frequently may be especially likely to give again; in other words, the *combined* impact of recency and frequency may be greater than the sum of the separate effects.
 
 Because these predictors together have a greater impact on the dependent variable, their joint effect must be modeled as an interaction. The `donors` dataset has been loaded for you.
@@ -779,9 +829,6 @@ Because these predictors together have a greater impact on the dependent variabl
 
 1. Create a logistic regression model of `donated` as a function of `money` plus the interaction of `recency` and `frequency`. Use `*` to add the interaction term.
 2. Examine the model's `summary()` to confirm the interaction effect was added.
-3. Save the model's predicted probabilities as `rfm_prob`. Use the `predict()` function, and remember to set the `type` argument.
-4. Plot a ROC curve by using the function `roc()`. Remember, this function takes the column of outcomes and the vector of predictions.
-5. Compute the AUC for the new model with the function `auc()` and compare performance to the simpler model.
 
 ```{r}
 # Build a recency, frequency, and money (RFM) model
@@ -789,14 +836,23 @@ rfm_model <- glm(donated ~ recency * frequency + money, data = donors, family = 
 
 # Summarize the RFM model to see how the parameters were coded
 summary(rfm_model)
+```
 
+3. Save the model's predicted probabilities as `rfm_prob`. Use the `predict()` function, and remember to set the `type` argument.
+4. Plot a ROC curve by using the function `roc()`. Remember, this function takes the column of outcomes and the vector of predictions.
+
+```{r}
 # Compute predicted probabilities for the RFM model
 rfm_prob <- predict(rfm_model, data = donors, type = "response")
 
 # Plot the ROC curve for the new model
-library(pROC)
 ROC <- roc(donors$donated, rfm_prob)
 plot(ROC, col = "red")
+```
+
+5. Compute the AUC for the new model with the function `auc()` and compare performance to the simpler model.
+
+```{r}
 auc(ROC)
 ```
 
@@ -808,21 +864,16 @@ Theory. Coming soon ...
 
 ## The dangers of stepwise regression
 
-In spite of its utility for feature selection, stepwise regression is not frequently used in disciplines outside of machine learning due to some important caveats. Which of these is NOT one of these concerns?
-
 > *Question*
 > ---
-> ???<br>
+> In spite of its utility for feature selection, stepwise regression is not frequently used in disciplines outside of machine learning due to some important caveats. Which of these is NOT one of these concerns?<br>
 > <br>
 > ⬜ It is not guaranteed to find the best possible model<br>
-> ⬜ [A stepwise model's predictions can not be trusted]<br>
+> ✅ A stepwise model's predictions can not be trusted<br>
 > ⬜ The stepwise regression procedure violates some statistical assumptions<br>
 > ⬜ It can result in a model that makes little sense in the real world<br>
 
-Stepwise is definitely NOT guaranteed to find the best possible model.
 Correct! Though stepwise regression is frowned upon, it may still be useful for building predictive models in the absence of another starting place.
-Statisticians certainly have concerns about the stepwise approach.
-A model built on stepwise may violate common sense or be difficult to interpret.
 
 ## Building a stepwise regression model
 
@@ -849,10 +900,9 @@ full_model <- glm(donated ~ ., data = donors, family = "binomial")
 step_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "forward")
 
 # Estimate the stepwise donation probability
-step_prob <- predict(step_model, type = "response")
+step_prob  <- predict(step_model, type = "response")
 
 # Plot the ROC of the stepwise model
-library(pROC)
 ROC <- roc(donors$donated, step_prob)
 plot(ROC, col = "red")
 auc(ROC)
@@ -882,20 +932,41 @@ The dataset `loans` is already in your workspace.
 
 1. Load the `rpart` package.
 2. Fit a decision tree model with the function `rpart()`.\nSupply the R formula that specifies `outcome` as a function of `loan_amount` and `credit_score` as the first argument. \nLeave the `control` argument alone for now. (You'll learn more about that later!)
-3. Supply the R formula that specifies `outcome` as a function of `loan_amount` and `credit_score` as the first argument. 
-4. Leave the `control` argument alone for now. (You'll learn more about that later!)
-5. Use `predict()` with the resulting loan model to predict the outcome for the `good_credit` applicant. Use the `type` argument to predict the `"class"` of the outcome.
-6. Do the same for the `bad_credit` applicant.
+    
+    * Supply the R formula that specifies `outcome` as a function of `loan_amount` and `credit_score` as the first argument. 
+    * Leave the `control` argument alone for now. (You'll learn more about that later!)
+
 
 ```{r}
 # Load the rpart package
 library(rpart)
+library(forcats)
+
+# Load data
+loans <- read_csv("data/loans.csv", col_types = cols(.default = "f")) |> 
+            filter(keep == "1") |> 
+            mutate(outcome = default |> fct_recode(default = "1", repaid = "0") |> fct_rev()) |> 
+            select(-c(keep, rand, default))
 
 # Build a lending model predicting loan outcome versus loan amount and credit score
 loan_model <- rpart(outcome ~ loan_amount + credit_score, data = loans, method = "class", control = rpart.control(cp = 0))
+```
+
+3. Use `predict()` with the resulting loan model to predict the outcome for the `good_credit` applicant. Use the `type` argument to predict the `"class"` of the outcome.
+
+```{r}
+# Create good_credit applicant
+good_credit <- loans |> slice(8)
 
 # Make a prediction for someone with good credit
 predict(loan_model, good_credit, type = "class")
+```
+
+4. Do the same for the `bad_credit` applicant.
+
+```{r}
+# Create bad_credit applicant
+bad_credit <- loans |> slice(3)
 
 # Make a prediction for someone with bad credit
 predict(loan_model, bad_credit, type = "class")
@@ -914,7 +985,6 @@ The structure of classification trees can be depicted visually, which helps to u
 1. Type `loan_model` to see a text representation of the classification tree.
 2. Load the `rpart.plot` package.
 3. Apply the `rpart.plot()` function to the loan model to visualize the tree.
-4. See how changing other plotting parameters impacts the visualization by running the supplied command.
 
 ```{r}
 # Examine the loan_model object
@@ -925,7 +995,11 @@ library(rpart.plot)
 
 # Plot the loan_model with default settings
 rpart.plot(loan_model)
+```
 
+4. See how changing other plotting parameters impacts the visualization by running the supplied command.
+
+```{r}
 # Plot the loan_model with customized settings
 rpart.plot(loan_model, type = 3, box.palette = c("red", "green"), fallen.leaves = TRUE)
 ```
@@ -947,11 +1021,8 @@ Based on this tree structure, which of the following applicants would be predict
 > ⬜ Someone with an average credit score and a low requested loan amount.<br>
 > ⬜ Someone with a low credit score and a medium requested loan amount.<br>
 > ⬜ Someone with a high requested loan amount and average credit.<br>
-> ⬜ [Someone with a low requested loan amount and high credit.]<br>
+> ✅ Someone with a low requested loan amount and high credit.<br>
 
-Average credit and low loan amount is predicted to default.
-Low credit is always predicted to default regardless of amount.
-Average credit and a high loan amount is predicted to default.
 Correct! Using the tree structure, you can clearly see how the tree makes its decisions.
 
 ## Growing larger classification trees
@@ -962,21 +1033,16 @@ Theory. Coming soon ...
 
 A classification tree grows using a **divide-and-conquer** process. Each time the tree grows larger, it splits groups of data into smaller subgroups, creating new branches in the tree.
 
-Given a dataset to divide-and-conquer, which groups would the algorithm prioritize to split first?
-
 > *Question*
 > ---
-> ???<br>
+> Given a dataset to divide-and-conquer, which groups would the algorithm prioritize to split first?<br>
 > <br>
 > ⬜ The group with the largest number of examples.<br>
 > ⬜ The group creating branches that improve the model's prediction accuracy.<br>
-> ⬜ [The group it can split to create the greatest improvement in subgroup homogeneity.]<br>
+> ✅ The group it can split to create the greatest improvement in subgroup homogeneity.<br>
 > ⬜ The group that has not been split already.<br>
 
-The number of examples doesn't directly impact the splitting choice.
-Unfortunately, the tree doesn't know how the choice of split will impact its prediction accuracy.
 Correct! Divide-and-conquer always looks to create the split resulting in the greatest improvement to purity.
-The number of previous splits doesn't directly impact the splitting choice.
 
 ## Creating random test datasets
 
@@ -993,14 +1059,17 @@ Use the resulting vector of row IDs to subset the loans into training and testin
 **Steps**
 
 1. Apply the `nrow()` function to determine how many observations are in the `loans` dataset, and the number needed for a 75% sample.
+
+```{r}
+# Determine the number of rows for training
+nrow(loans) * 0.75
+```
+
 2. Use the `sample()` function to create an integer vector of row IDs for the 75% sample. The first argument of `sample()` should be the number of rows in the data set, and the second is the number of rows you need in your training set.
 3. Subset the `loans` data using the row IDs to create the training dataset. Save this as `loans_train`.
 4. Subset `loans` again, but this time select all the rows that are *not* in `sample_rows`. Save this as `loans_test`
 
 ```{r}
-# Determine the number of rows for training
-nrow(loans) * 0.75
-
 # Create a random sample of row IDs
 sample_rows <- sample(nrow(loans), nrow(loans) * 0.75)
 
@@ -1028,7 +1097,6 @@ The `rpart` package is loaded into the workspace and the `loans_train` and `loan
 1. Use `rpart()` to build a loan model using the training dataset and all of the available predictors. Again, leave the `control` argument alone.
 2. Applying the `predict()` function to the testing dataset, create a vector of predicted outcomes. Don't forget the `type` argument.
 3. Create a `table()` to compare the predicted values to the actual `outcome` values.
-4. Compute the accuracy of the predictions using the `mean()` function.
 
 ```{r}
 # Grow a tree using all of the available applicant data
@@ -1039,7 +1107,11 @@ loans_test$pred <- predict(loan_model, loans_test, type = "class")
 
 # Examine the confusion matrix
 table(loans_test$pred, loans_test$outcome)
+```
 
+4. Compute the accuracy of the predictions using the `mean()` function.
+
+```{r}
 # Compute the accuracy on the test dataset
 mean(loans_test$pred == loans_test$outcome)
 ```
@@ -1057,14 +1129,11 @@ Which of these is NOT true about the evaluation of decision tree performance?
 > ???<br>
 > <br>
 > ⬜ Decision trees sometimes overfit the training data.<br>
-> ⬜ [The model's accuracy is unaffected by the rarity of the outcome.]<br>
+> ✅ The model's accuracy is unaffected by the rarity of the outcome.<br>
 > ⬜ Performance on the training dataset can overestimate performance on future data.<br>
 > ⬜ Creating a test dataset simulates the model's performance on unseen data.<br>
 
-Trees are certainly prone to overfitting the training data.
 Right! Rare events cause problems for many machine learning approaches.
-Due to overfitting, training set accuracy often exaggerates the tree's true performance.
-Test dataset is a reasonable estimate of future performance.
 
 ## Tending to classification trees
 
@@ -1081,10 +1150,12 @@ Using the **pre-pruning** methods for early stopping, you can prevent a tree fro
 **Steps**
 
 1. Use `rpart()` to build a loan model using the training dataset and all of the available predictors. \nSet the model `control`s using `rpart.control()` with parameters `cp` set to `0` and `maxdepth` set to `6`.
-2. Set the model `control`s using `rpart.control()` with parameters `cp` set to `0` and `maxdepth` set to `6`.
-3. See how the test set accuracy of the simpler model compares to the original accuracy of 58.3%.\nFirst create a vector of predictions using the `predict()` function.\nCompare the predictions to the actual outcomes and use `mean()` to calculate the accuracy.
-4. First create a vector of predictions using the `predict()` function.
-5. Compare the predictions to the actual outcomes and use `mean()` to calculate the accuracy.
+    
+    * Set the model `control`s using `rpart.control()` with parameters `cp` set to `0` and `maxdepth` set to `6`.
+2.. See how the test set accuracy of the simpler model compares to the original accuracy of 58.3%.\nFirst create a vector of predictions using the `predict()` function.\nCompare the predictions to the actual outcomes and use `mean()` to calculate the accuracy.
+    
+    * First create a vector of predictions using the `predict()` function.
+    * Compare the predictions to the actual outcomes and use `mean()` to calculate the accuracy.
 
 ```{r}
 # Grow a tree with maxdepth of 6
@@ -1097,8 +1168,7 @@ loans_test$pred <- predict(loan_model, loans_test, type = "class")
 mean(loans_test$pred == loans_test$outcome)
 ```
 
-6. In the model controls, remove `maxdepth` and add a minimum split parameter, `minsplit`, set to `500`.
-
+3. In the model controls, remove `maxdepth` and add a minimum split parameter, `minsplit`, set to `500`.
 
 ```{r}
 # Swap maxdepth for a minimum split of 500 
@@ -1125,8 +1195,6 @@ The `rpart` package is loaded into the workspace, along with `loans_test` and `l
 
 1. Use all of the applicant variables and no pre-pruning to create an overly complex tree. Make sure to set `cp = 0` in `rpart.control()` to prevent pre-pruning.
 2. Create a complexity plot by using `plotcp()` on the model.
-3. Based on the complexity plot, prune the tree to a complexity of 0.0014 using the `prune()` function with the tree and the complexity parameter.
-4. Compare the accuracy of the pruned tree to the original accuracy of 58.3%. To calculate the accuracy use the `predict()` and `mean()` functions.
 
 ```{r}
 # Grow an overly complex tree
@@ -1134,7 +1202,12 @@ loan_model <- rpart(outcome ~ ., data = loans_train, method = "class", control =
 
 # Examine the complexity plot
 plotcp(loan_model)
+```
 
+3. Based on the complexity plot, prune the tree to a complexity of 0.0014 using the `prune()` function with the tree and the complexity parameter.
+4. Compare the accuracy of the pruned tree to the original accuracy of 58.3%. To calculate the accuracy use the `predict()` and `mean()` functions.
+
+```{r}
 # Prune the tree
 loan_model_pruned <- prune(loan_model, cp = 0.0014)
 
@@ -1151,20 +1224,15 @@ Classification trees can grow indefinitely, until they are told to stop or run o
 
 Just like trees in nature, classification trees that grow overly large can require pruning to reduce the excess growth. However, this generally results in a tree that classifies fewer training examples correctly.
 
-Why, then, are pre-pruning and post-pruning almost always used?
-
 > *Question*
 > ---
-> ???<br>
+> Why, then, are pre-pruning and post-pruning almost always used?<br>
 > <br>
 > ⬜ Simpler trees are easier to interpret<br>
 > ⬜ Simpler trees using early stopping are faster to train<br>
 > ⬜ Simpler trees may perform better on the testing data<br>
-> ⬜ [All of the above]<br>
+> ✅ All of the above<br>
 
-This is true, but not the BEST answer…
-This is true, but not the BEST answer…
-This is true, but not the BEST answer…
 Yes! There are many benefits to creating carefully pruned decision trees!
 
 ## Seeing the forest from the trees
@@ -1175,21 +1243,16 @@ Theory. Coming soon ...
 
 Groups of classification trees can be combined into an **ensemble** that generates a single prediction by allowing the trees to "vote" on the outcome.
 
-Why might someone think that this could result in more accurate predictions than a single tree?
-
 > *Question*
 > ---
-> ???<br>
+> Why might someone think that this could result in more accurate predictions than a single tree?<br>
 > <br>
 > ⬜ Each tree in the forest is larger and more complex than a typical single tree.<br>
 > ⬜ Every tree in a random forest uses the complete set of predictors.<br>
-> ⬜ [The diversity among the trees may lead it to discover more subtle patterns.]<br>
+> ✅ [The diversity among the trees may lead it to discover more subtle patterns.]<br>
 > ⬜ The random forest is not affected by noisy data.<br>
 
-Actually, the forest typically uses a set of simpler trees.
-In a random forest, each tree may receive only a subset of all predictors.
 Yes! The teamwork-based approach of the random forest may help it find important trends a single tree may miss.
-A random forest may still be affected by noisy data.
 
 ## Building a random forest model
 
@@ -1218,4 +1281,3 @@ mean(loans_test$pred == loans_test$outcome)
 ```
 
 Wow! Great job! Now you're really a classification pro! Classification is only one of the problems you'll have to tackle as a data scientist. Check out some other machine learning courses to learn more about supervised and unsupervised learning.
-
