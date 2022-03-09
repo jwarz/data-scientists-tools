@@ -1303,7 +1303,7 @@ add another tool to your arsenal for finding **k**.
 Based on the elbow plot you generated in the previous exercise for the
 `lineup` data:
 
-<img src="http://s3.amazonaws.com/assets.datacamp.com/production/course_5724/datasets/soccer_elbow.png" alt="lineup elbow plot">
+<img src="http://s3.amazonaws.com/assets.datacamp.com/production/course_5724/datasets/soccer_elbow.png">
 
 > ## *Question*
 >
