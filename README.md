@@ -83,3 +83,43 @@
 	</tbody>
 </table>
 
+---
+
+<table>
+  <thead>
+    <tr>
+      <th>Topic</th>
+      <th>Content</th>
+      <th>Packages</th>
+    </tr>
+  </thead>
+	<tbody>
+		<tr>
+			<td rowspan="6"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a></td>
+			<td rowspan="6">
+			  <ol>
+          <li>k-Nearest Neighbors (kNN)</li>
+          <li>Naive Bayes</li>
+          <li>Logistic Regression</li>
+          <li>Classification Trees</li>
+        </ol>
+			</td>
+			<td><a href="https://CRAN.R-project.org/package=class">class</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/xrobin/pROC">pROC</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/bethatkinson/rpart">rpart</a></td>
+    </tr>
+		<tr>
+			<td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td>
+		</tr>
+	</tbody>
+</table>
