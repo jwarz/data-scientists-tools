@@ -90,6 +90,49 @@
     <tr>
       <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Topic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
       <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+      <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Packages&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    </tr>
+  </thead>
+	<tbody>
+		<tr>
+			<td rowspan="6"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a></td>
+			<td rowspan="6">
+			  <ol>
+          <li>k-Nearest Neighbors (kNN)</li>
+          <li>Naive Bayes</li>
+          <li>Logistic Regression</li>
+          <li>Classification Trees</li>
+        </ol>
+			</td>
+			<td rowspan="3">Topic 1</td>
+			<td><a href="https://CRAN.R-project.org/package=class">class</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/xrobin/pROC">pROC</a></td>
+		</tr>
+		<tr>
+		  <td rowspan="3">Topic 2</td>
+		  <td><a href="https://github.com/bethatkinson/rpart">rpart</a></td>
+		</tr>
+		<tr>
+			<td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td>
+		</tr>
+		<tr>
+			<td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td>
+		</tr>
+	</tbody>
+</table>
+
+---
+
+<table>
+  <thead>
+    <tr>
+      <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Topic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+      <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
       <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Packages&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
     </tr>
   </thead>
@@ -122,13 +165,13 @@
           <li>Tree-Based Methods</li>
         </ol>
 			</td>
-			<td><a href="https://CRAN.R-project.org/package=class">broom</a></td>
+			<td><a href="https://broom.tidymodels.org">broom</a></td>
 		</tr>
-		<tr><td><a href="">sigr</a></td></tr>
-		<tr><td><a href="">WVPlots</a></td></tr>
-		<tr><td><a href="">vtreat</a></td></tr>
-		<tr><td><a href="">mgcv</a></td></tr>
-		<tr><td><a href="">ranger</a></td></tr>
-		<tr><td><a href="">xgboost</a></td></tr>
+		<tr><td><a href="https://winvector.github.io/sigr/index.html">sigr</a></td></tr>
+		<tr><td><a href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></td></tr>
+		<tr><td><a href="https://winvector.github.io/vtreat/">vtreat</a></td></tr>
+		<tr><td><a href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></td></tr>
+		<tr><td><a href="https://github.com/imbs-hl/ranger">ranger</a></td></tr>
+		<tr><td><a href="https://github.com/dmlc/xgboost">xgboost</a></td></tr>
 	</tbody>
 </table>
