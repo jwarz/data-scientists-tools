@@ -29,14 +29,7 @@
 | [Cluster Analysis](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis) | 1. Calculating distance between observations<br/>2. Hierarchical clustering<br/>3. K-means clustering | --- |
 
 
-
-|                               Topic |       Content | Packages | Functions |
-| ----------------------------------: | ------------: | -------: | --------: |
-| Supervised Learning: Classification | 1. A<br/>2. B | class    | knn()     |
-| ^^                                  | ^^            | broom    | glance()  |
-| ^^                                  | ^^            | ^^       | augment() |
-
-<table border="1" width="100%">
+<table width="100%">
   <thead>
     <tr>
       <th align="left">Topic</th>
