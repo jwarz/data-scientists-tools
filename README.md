@@ -29,9 +29,17 @@
 | [Cluster Analysis](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis) | 1. Calculating distance between observations<br/>2. Hierarchical clustering<br/>3. K-means clustering | --- |
 
 <table>
+  <thead>
+    <tr>
+      <th>Topic</th>
+      <th>Content</th>
+      <th>Packages</th>
+      <th>Functions</th>
+    </tr>
+  </thead>
 	<tbody>
 		<tr>
-			<td rowspan="9">Supervised Learning: Classification</td>
+			<td rowspan="9"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a></td>
 			<td rowspan="9">
 			  <ol>
           <li>k-Nearest Neighbors (kNN)</li>
@@ -40,22 +48,22 @@
           <li>Classification Trees</li>
         </ol>
 			</td>
-			<td>class</td>
+			<td><a href="https://CRAN.R-project.org/package=class">class</a></td>
 			<td>knn()</td>
 		</tr>
 		<tr>
-			<td>naivebayes</td>
+			<td><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></td>
 			<td>naivebayes()</td>
 		</tr>
 		<tr>
-			<td rowspan="2">pROC</td>
+			<td rowspan="2"><a href="https://github.com/xrobin/pROC">pROC</a></td>
 			<td>roc()</td>
 		</tr>
 		<tr>
 			<td>auc()</td>
 		</tr>
 		<tr>
-			<td rowspan="3">rpart</td>
+			<td rowspan="3"><a href="https://github.com/bethatkinson/rpart">rpart</a></td>
 			<td>rpart()</td>
 		</tr>
 		<tr>
@@ -65,38 +73,13 @@
 			<td>prune()</td>
 		</tr>
 		<tr>
-			<td>rpart.plot</td>
+			<td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td>
 			<td>rpart.plot()</td>
 		</tr>
 		<tr>
-			<td>randomForest</td>
+			<td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td>
 			<td>randomForest()</td>
 		</tr>
 	</tbody>
 </table>
 
-
-<ol>
-   <li>knn
-      <ul>
-         <li><a href="https://CRAN.R-project.org/package=class">class</a></li>
-      </ul>
-   </li>
-   <li>Naive Bayes
-      <ul>
-         <li><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></li>
-      </ul>
-   </li>
-   <li>ROC Curves
-      <ul>
-         <li><a href="https://github.com/xrobin/pROC">pROC</a></li>
-      </ul>
-   </li>
-   <li>Classification Trees
-      <ul>
-          <li><a href="https://github.com/bethatkinson/rpart">rpart</a></li>
-          <li><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></li>
-          <li><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></li>
-      </ul>
-   </li>
-</ol>
