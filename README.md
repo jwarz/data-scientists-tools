@@ -29,7 +29,7 @@
 | [Cluster Analysis](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis) | 1. Calculating distance between observations<br/>2. Hierarchical clustering<br/>3. K-means clustering | --- |
 
 
-<table width="100%">
+<table">
   <thead>
     <tr>
       <th align="left">Topic</th>
