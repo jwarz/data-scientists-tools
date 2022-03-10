@@ -3,3 +3,9 @@
 .RData
 .Ruserdata
 .DS_Store
+.Renviron
+dc_content_scraper.R
+dc_content_scraper2.R
+dc_content_scraper3.R
+dc_content_scraper_functions.R
+**/slides
