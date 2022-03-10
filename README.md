@@ -29,6 +29,12 @@
 | [Cluster Analysis](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis) | 1. Calculating distance between observations<br/>2. Hierarchical clustering<br/>3. K-means clustering | --- |
 
 
+|                               Topic |       Content | Packages | Functions |
+| ----------------------------------: | ------------: | -------: | --------: |
+| Supervised Learning: Classification | 1. A<br/>2. B | class    | knn()     |
+| ^^                                  | ^^            | broom    | glance()  |
+| ^^                                  | ^^            | ^^       | augment() |
+
 
 
 <ol>
@@ -55,9 +61,3 @@
       </ul>
    </li>
 </ol>
-
-
-
-
-<ol><li>knn<ul><li><a href="https://CRAN.R-project.org/package=class">class</a></li></ul></li><li>NaiveBayes<ul><li><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></li></ul></li><li>ROCCurves<ul><li><a href="https://github.com/xrobin/pROC">pROC</a></li></ul></li><li>ClassificationTrees<ul><li><a href="https://github.com/bethatkinson/rpart">rpart</a></li><li><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></li><li><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></li></ul></li></ol>
-
