@@ -165,7 +165,7 @@
           <li>Tree-Based Methods</li>
         </ol>
 			</td>
-			<td><img height="50px" src="logo_broom.svg"/><a href="https://broom.tidymodels.org">     broom</a></td>
+			<td style="border-width: 5px 5px 5px 0px;"><img height="50px" src="logo_broom.svg"/><a href="https://broom.tidymodels.org">     broom</a></td>
 		</tr>
 		<tr><td><a href="https://winvector.github.io/sigr/index.html">sigr</a></td></tr>
 		<tr><td><a href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></td></tr>
