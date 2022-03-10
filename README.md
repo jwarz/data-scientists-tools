@@ -88,9 +88,9 @@
 <table>
   <thead>
     <tr>
-      <th>Topic</th>
-      <th>Content</th>
-      <th>Packages</th>
+      <th>     Topic     </th>
+      <th>     Content     </th>
+      <th>     Packages     </th>
     </tr>
   </thead>
 	<tbody>
