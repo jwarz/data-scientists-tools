@@ -106,20 +106,29 @@
 			</td>
 			<td><a href="https://CRAN.R-project.org/package=class">class</a></td>
 		</tr>
+		<tr><td><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></td></tr>
+		<tr><td><a href="https://github.com/xrobin/pROC">pROC</a></td></tr>
+		<tr><td><a href="https://github.com/bethatkinson/rpart">rpart</a></td></tr>
+		<tr><td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td></tr>
+		<tr><td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td></tr>
 		<tr>
-			<td><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></td>
+			<td rowspan="7"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_regression">Supervised Learning: Regression</a></td>
+			<td rowspan="7">
+			  <ol>
+          <li>k-What is Regression?</li>
+          <li>Training and Evaluating Regression Models</li>
+          <li>Issues to Consider</li>
+          <li>Dealing with Non-Linear Responses</li>
+          <li>Tree-Based Methods</li>
+        </ol>
+			</td>
+			<td><a href="https://CRAN.R-project.org/package=class">broom</a></td>
 		</tr>
-		<tr>
-			<td><a href="https://github.com/xrobin/pROC">pROC</a></td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/bethatkinson/rpart">rpart</a></td>
-    </tr>
-		<tr>
-			<td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td>
-		</tr>
-		<tr>
-			<td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td>
-		</tr>
+		<tr><td><a href="">sigr</a></td></tr>
+		<tr><td><a href="">WVPlots</a></td></tr>
+		<tr><td><a href="">vtreat</a></td></tr>
+		<tr><td><a href="">mgcv</a></td></tr>
+		<tr><td><a href="">ranger</a></td></tr>
+		<tr><td><a href="">xgboost</a></td></tr>
 	</tbody>
 </table>
