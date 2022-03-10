@@ -128,7 +128,7 @@
 
 ---
 
-<table border>
+<table>
   <thead>
     <tr>
       <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Topic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -147,11 +147,11 @@
           <li>Classification Trees</li>
         </ol>
 			</td>
-			<td><a href="https://CRAN.R-project.org/package=class">class</a></td>
+			<td><img height="50px" align="center" src="img/logo_class.png"/><a href="https://CRAN.R-project.org/package=class">&nbsp;&nbsp;class</a></td>
 		</tr>
-		<tr><td><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></td></tr>
+		<tr><td><img height="50px" align="center" src="img/logo_naivebayes.png"/><a href="https://github.com/majkamichal/naivebayes">&nbsp;&nbsp;naivebayes</a></td></tr>
 		<tr><td><a href="https://github.com/xrobin/pROC">pROC</a></td></tr>
-		<tr><td><a href="https://github.com/bethatkinson/rpart">rpart</a></td></tr>
+		<tr><td><img height="50px" align="center" src="img/logo_rpart.png"/><a href="https://github.com/bethatkinson/rpart">&nbsp;&nbsp;rpart</a></td></tr>
 		<tr><td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td></tr>
 		<tr><td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td></tr>
 		<tr>
@@ -165,7 +165,7 @@
           <li>Tree-Based Methods</li>
         </ol>
 			</td>
-			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&nbsp;&nbsp;broom</a></td>
+			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;broom</a></td>
 		</tr>
 		<tr><td><a href="https://winvector.github.io/sigr/index.html">sigr</a></td></tr>
 		<tr><td><a href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></td></tr>
