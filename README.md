@@ -28,45 +28,52 @@
 | [Machine Learning in the tidyverse](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_in_the_tidyverse) | 1. Foundations of "tidy" Machine learning<br/>2. Multiple Models with broom<br/>3. Build, Tune & Evaluate Regression Models<br/>4. Build, Tune & Evaluate Classification Models | --- |
 | [Cluster Analysis](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis) | 1. Calculating distance between observations<br/>2. Hierarchical clustering<br/>3. K-means clustering | --- |
 
-
 <table>
-  <thead>
-    <tr>
-      <th align="left">Topic</th>
-      <th align="left">Content</th>
-      <th align="left">Packages</th>
-      <th align="left">Functions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left" rowspan="3">Supervised Learning: Classification</td>
-      <td align="left" rowspan="3">
-        <ol>
-          <li>A</li>
-          <li>B</li>
+	<tbody>
+		<tr>
+			<td rowspan="9">Supervised Learning: Classification</td>
+			<td rowspan="9">
+			  <ol>
+          <li>k-Nearest Neighbors (kNN)</li>
+          <li>Naive Bayes</li>
+          <li>Logistic Regression</li>
+          <li>Classification Trees</li>
         </ol>
-      </td>
-      <td align="left" rowspan="1">class</td>
-      <td align="left" rowspan="1">knn()</td>
-    </tr>
-    <tr>
-    <td align="left" rowspan="2">broom</td>
-    <td align="left" rowspan="1">glance()</td>
-    </tr>
-    <tr>
-    <td align="left" rowspan="1">augment()</td>
-    </tr>
-  </tbody>
+			</td>
+			<td>class</td>
+			<td>knn()</td>
+		</tr>
+		<tr>
+			<td>naivebayes</td>
+			<td>naivebayes()</td>
+		</tr>
+		<tr>
+			<td rowspan="2">pROC</td>
+			<td>roc()</td>
+		</tr>
+		<tr>
+			<td>auc()</td>
+		</tr>
+		<tr>
+			<td rowspan="3">rpart</td>
+			<td>rpart()</td>
+		</tr>
+		<tr>
+			<td>plotcp()</td>
+		</tr>
+		<tr>
+			<td>prune()</td>
+		</tr>
+		<tr>
+			<td>rpart.plot</td>
+			<td>rpart.plot()</td>
+		</tr>
+		<tr>
+			<td>randomForest</td>
+			<td>randomForest()</td>
+		</tr>
+	</tbody>
 </table>
-
-
-
-| One    | Two | Three | Four    | Five  | Six 
-| -
-| Span <td colspan=3>triple  <td colspan=2>double
-
-
 
 
 <ol>
