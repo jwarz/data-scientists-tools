@@ -13,7 +13,9 @@ Joschka Schwarz
     -   [read.table](#readtable)
     -   [Arguments](#arguments)
     -   [Column classes](#column-classes)
+    -   [Final Thoughts](#final-thoughts)
 -   [2. readr & data.table](#2-readr--datatable)
+    -   [readr: read_csv & read_tsv](#readr-read_csv--read_tsv)
     -   [read_csv](#read_csv)
     -   [read_tsv](#read_tsv)
     -   [readr: read_delim](#readr-read_delim)
@@ -21,6 +23,7 @@ Joschka Schwarz
     -   [skip and n_max](#skip-and-n_max)
     -   [col_types](#col_types)
     -   [col_types with collectors](#col_types-with-collectors)
+    -   [data.table: fread](#datatable-fread)
     -   [fread](#fread)
     -   [fread: more advanced use](#fread-more-advanced-use)
     -   [Dedicated classes](#dedicated-classes)
@@ -77,6 +80,99 @@ base R functions.
 ## Introduction & read.csv
 
 Theory. Coming soon …
+
+**1. Introduction & read.csv**
+
+Hi, and welcome to the first importing data in R course.
+
+**2. Importing data in R**
+
+Imagine this situation: A colleague of yours is still doing his analyses
+in Excel and finally decided to transition to R. He needs an easy way to
+convert the Excel spreadsheets into R data frames,
+
+**3. Importing data in R**
+
+but he can’t seem to find the tools to do so. Well, getting to know
+these tools is exactly what we’ll do here.
+
+**4. 5 types**
+
+In this two-part course, we will focus on 5 types of data:
+
+**5. 5 types**
+
+data from flat files,
+
+**6. 5 types**
+
+data from Excel,
+
+**7. 5 types**
+
+data from databases,
+
+**8. 5 types**
+
+data from the web,
+
+**9. 5 types**
+
+and finally data from other statistical software like SAS, SPSS, and
+Stata.
+
+**10. 5 types**
+
+You’ll learn to convert each data format, one after the other, into an R
+data frame, ready to do some fancy analyses.
+
+**11. Flat files**
+
+Let’s start off with flat files. Flat files are typically simple text
+files that display data as tables. Have a look at this example,
+states-dot-csv, a flat file where CSV stands for comma-separated values.
+The data lists basic information on some US states. The first line here
+gives the names of the different columns or fields. After that, each
+line is a record, and the fields are separated by a comma, hence the
+extension CSV. For example, there’s the state Hawaii with the capital
+Honolulu and a total population of 1-point-42 million. What would this
+data look like in R? Well, actually, the structure nicely corresponds to
+a data frame in R, that ideally looks like this: the rows in the data
+frame correspond to the records and the columns of the data frame
+correspond to the fields. The field names are used to name the columns
+of the data frame. But how to go from the CSV file to this data frame?
+We’re in luck, because the standard distribution of R provides
+functionality to import these flat files into R as a data frame.
+
+**12. utils - read.csv**
+
+These functions belong to the utils package that is loaded by default
+when you start R. More specifically, we’ll need the read-dot-csv
+function, as follows: The first argument of read-dot-csv is the path to
+the file you want to import in R. If the file is in your current working
+directory, simply passing the filename as a character string works. If
+your file is located somewhere else, things get tricky. Depending on the
+platform you’re working on, Linux, Microsoft, Mac, whatever, file paths
+are specified differently. To build a path to a file in a
+platform-independent way, you can use the file-dot-path function.
+Suppose our states-dot-csv file is located in the datasets folder of the
+home directory. You can use file-dot-path like this: Because I’m working
+on a Mac, this is the resulting path. I can now use this path inside
+read-dot-csv to point to the correct file, like this. The second
+argument, stringsAsFactors, is pretty important. Say we have columns
+that are strings. We can choose to import these columns as actual
+strings, or as factors, which R uses to store categorical variables. By
+default, the stringsAsFactors argument is TRUE, so it would convert
+strings into factors. In our case, however, the state and capital names
+shouldn’t be categorical variables, so we set stringsAsFactors to FALSE.
+
+**13. read.csv()**
+
+If we run this call now, we can see we get a data frame with 5
+observations and 4 variables. This corresponds nicely to the CSV file we
+started with. If we print out the structure of this data frame, with
+str, we see that indeed, the two first columns are strings, and not
+factors, exactly like we wanted it!
 
 ## read.csv
 
@@ -185,6 +281,52 @@ pools <- read.csv("swimming_pools.csv", stringsAsFactors = FALSE)
 ## read.delim & read.table
 
 Theory. Coming soon …
+
+**1. read.delim & read.table**
+
+In the previous video you learned about read-dot-csv, which is an R
+function that specifically exists for importing CSV data. However, flat
+file data doesn’t come as comma separated values alone.
+
+**2. Tab-delimited file**
+
+Another common format of flat file data is the tab-delimited file, like
+this states-dot-txt, with the same data as before:To import it, we’ll
+need read-dot-delim this time. As usual, you simply specify the path to
+the file, and also that we want to import strings as strings, and not as
+factors. Works like a charm!If your data comes in this typical comma
+separated or tab-delimited format, your life is easy and importing the
+data is a walk in the park. If it’s not, you’ll have to some more
+customization work.
+
+**3. Exotic file format**
+
+Say we have the same states data again, but this time, the values are
+separated by a forward slash instead of commas or tabs, in a file
+states2.txt. How to go about this? read-dot-csv and read-dot-delim won’t
+do you much good in this case.
+
+**4. read.table()**
+
+Here, you’ll want to use read-dot-table. It’s the main importing
+function in the utils package, allowing you to read in any file in table
+format and create a data frame from it.The number of arguments you can
+specify for this function is huge, so I won’t go through each and every
+one of these arguments. Instead, let’s have a look at the read-dot-table
+call that imports states2.txt and try to understand what happens.As
+usual, the first argument is the path to the file you want to import.The
+header argument is something we haven’t seen before. If you set this to
+TRUE, you tell R that the first row of the text file contains the
+variable names, which is the case here. read-dot-table sets this
+argument to FALSE by default, which would mean that the first row is
+always read as an observation, even if it’s a row of variable
+names.Next, sep is the argument that specifies how fields in a record
+are separated. For our file here, the field separator is a forward
+slash, like this.Finally, there’s again the stringsAsFactors argument,
+which we set to FALSE again because we want to import strings as
+strings. The result looks just as we’d want, nice!Apart from the
+arguments we discussed here, there are also ways to specify column names
+and column types.
 
 ## read.delim
 
@@ -390,11 +532,134 @@ hotdogs2 <- read.delim("hotdogs.txt", header = FALSE,
 str(hotdogs2)
 ```
 
+## Final Thoughts
+
+Theory. Coming soon …
+
+**1. Final Thoughts**
+
+There’s something I haven’t told you yet. When I said that
+read-dot-table was utils’ main importing functions, I was serious.
+
+**2. Wrappers**
+
+Actually, read-dot-csv and read-dot-delim, the functions to import
+comma-separated values and tab-delimited files, are so-called wrapper
+functions around read-dot-table. They call read-dot-table behind the
+scenes, but with different default arguments to match the specific
+formats.
+
+**3. read.csv**
+
+For read-dot-csv, the default for header is TRUE and for sep is a comma,
+so you don’t have to manually specify these anymore. This means that
+this read-dot-table call to import the CSV version of states, is exactly
+the same as this read-dot-csv call. Shorter and easier to read, if you
+ask me.
+
+**4. read.delim**
+
+Likewise, read-dot-delim sets the header and sep argument, among some
+others. This call to import the tab-delimited version of states, is
+exactly the same as this read-dot-delim call.
+
+**5. Documentation**
+
+If you have a look at the documentation of read-dot-table, you’ll see
+that there are two more functions in there that we haven’t discussed
+yet. read-dot-csv2 and read-dot-delim2. These functions exist to deal
+with regional differences in representing numbers.
+
+**6. Locale differences**
+
+Have a look at this csv file, states_aye-dot-csv, typical for the US and
+Great Britain, and its counterpart, states_nay-dot-csv.You’ll notice
+that the states_nay use commas for decimal points, as opposed to the dot
+for states_aye-dot-csv. This means that they can’t use the comma as the
+field-delimiter anymore, they need a semicolon.
+
+**7. Locale differences**
+
+That’s why the read-dot-csv2 and read-dot-delim2 functions exist. Can
+you spot the difference in default arguments again?
+
+**8. states_nay.csv**
+
+Let’s try to import the states_nay-dot-csv file with the basic
+read-dot-csv function.R gives a result, but it clearly is not the result
+we want. It’s a dataset with 5 observations but a single variable.If we
+try again with read-dot-csv2, it works perfectly this time!These were
+just some side notes to wrap up on this chapter. By now, you now how to
+import comma-separated, tab-delimited and even more exotic data formats.
+But there’s much more to learn!
+
 # 2. readr & data.table
 
 In addition to base R, there are dedicated packages to easily and
 efficiently import flat file data. We’ll talk about two such packages:
 readr and data.table.
+
+## readr: read_csv & read_tsv
+
+Theory. Coming soon …
+
+**1. readr: read_csv & read_tsv**
+
+By now, you already now how to import flat files using
+
+**2. Overview**
+
+the utils package. The utils package is loaded by default when you start
+R. Of course, R wouldn’t be R if there aren’t specialized packages to
+import your data. In this chapter, I’m going to talk about two such
+packages: readr and data-dot-table.
+
+**3. readr**
+
+First, let’s dive into the “readr” package, written by Hadley Wickham!
+It’s a fast and very easy to use package with very consistent naming,
+while utils is more verbose and multiple times slower.We’ll start with
+installing and loading the readr package, like this.
+
+**4. CSV files**
+
+Before, you used read dot csv to import CSV files as a data frame, like
+this call, to import the states dot csv file. To do this the readr way,
+you’ll want to use read underscore csv. This will do the trick:The
+result is pretty much the same. The only difference is that read_delim
+outputs a tibble, which is a supercharged version of a dataframe that
+Hadley Wickham introduced; you can work with it as a normal data frame,
+but can do additional stuff with it. The printout conveniently shows the
+column classes. In general, all of Hadley’s packages work with tibbles;
+whether or not they show this convienent printout depends on which
+packages you have loaded in.In both calls, the first argument is the
+path to the file you want to import. Notice that in readr, strings are
+not imported as factors by default, so an equivalent of the
+stringsAsFactors argument is not required.Remember that utils also
+featured the read-dot-delim function to import tab-delimited files.
+
+**5. TSV files**
+
+This call imported states-dot-txt. readr also provides a similar
+function, but it’s called read underscore tsv, short for tab separated
+value. This is the call you need. Again, no need to specify
+stringsAsFactors explicitly, which is practical.
+
+**6. Wrapping in utils and readr**
+
+Just like in utils, both the read_csv and read_tsv functions are
+wrappers around a ‘mother import function’,
+
+**7. Wrapping in utils and readr**
+
+called read_delim. This table summarizes how the wrapping works for
+utils and readr, make sure not to mix things up.
+
+**8. Let’s practice!**
+
+I suggest you already head over to the exercises for some practice
+before we dive into some more customization possibilities for
+read_delim. I’ll see you again in the next video!
 
 ## read_csv
 
@@ -430,11 +695,9 @@ potatoes <- read_csv("data/potatoes.csv")
 ```
 
     ## Rows: 160 Columns: 8
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## dbl (8): area, temp, size, storage, method, texture, flavor, moistness
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -473,11 +736,9 @@ potatoes <- read_tsv("data/potatoes.txt" , col_names = properties)
 ```
 
     ## Rows: 160 Columns: 8
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: "\t"
     ## dbl (8): area, temp, size, storage, method, texture, flavor, moistness
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -500,6 +761,83 @@ head(potatoes)
 ## readr: read_delim
 
 Theory. Coming soon …
+
+**1. readr: read_delim**
+
+Remember the states2.txt file from before,
+
+**2. states2.txt**
+
+that uses forward slashes as separators? Before, we’ve already written
+
+**3. states2.txt**
+
+this customized read-dot-table call for it. Let’s now use readr’s more
+low-level read_delim function to do the same thing:As usual, the first
+argument is the path the file. Next, the delim argument specifies the
+character that is used to separate fields within a record; it’s the
+equivalent of the sep argument in read-dot-table.The output corresponds
+to the output fo the read-dot-table call, but the readr version outputs
+a tibble again.Let’s compare the utils and the readr calls here. First
+off, we didn’t have to specify something like header is TRUE, because by
+default, read_delim expects the first row to contain the column names.
+It does this with the col_names argument. Also, strings are not imported
+as factors by default, so a stringsAsFactors equivalent is not
+necessary. To control the types of the columns, readr uses the col_types
+argument, similar to the colClasses argument from utils. Let me dive
+into col_names first, and then talk some more about col_types.
+
+**4. col_names**
+
+col_names is TRUE by default. Suppose you have another version of the
+states file, without column names this time, states3.txt. The first line
+is already a record now.
+
+**5. col_names**
+
+Setting col_names to FALSE, leads to automatic generation of column
+names, like in this example. You can also manually set col_names to a
+character vector. The names you pass will be used as the names of the
+columns, and the first line is read as a record, like here:
+
+**6. col_types**
+
+Next, there’s also col_types, to control the column classes. If we just
+import states2.txt, the file with header names, like before, without
+specifying col_types, the column types will be guessed from the first 30
+rows on the input. The printout of the tibble shows us the class of each
+column, which is very practical. The first two columns are character,
+the third is double, and the fourth is integer.You can also specify the
+column classes manually. In this call, we enforce the state and city to
+be a character and the population and area to be both numeric. I used
+short string representations here: c stands for character, d for double
+or numeric, i for integer, and l for logical. The result is what we’d
+expect: the fourth column is a double now.Instead of c, d, i and l, you
+can also use an underscore, to skip a column. A totally different way to
+control the types of the columns is through collector functions.
+Although more complicated, they are more versatile. You’ll learn more
+about this in the exercises.
+
+**7. skip and n_max**
+
+If you’re working on huge flat files, say one million lines, you might
+be interested in handling the data in chunks of 50-point-000 lines for
+example. This keeps your work tractable and you can easily follow up on
+the progress of your algorithms. In readr, You can do this with a
+combination of the skip and n_max arguments. Have a look at the output
+of this call:We skipped 2 rows, and then read in three records. There’s
+a problem though! Because col_names is TRUE by default, the first row
+that’s read is used for the column names, but this information has been
+skipped! We’ll have to manually specify some column names this time, by
+setting col_names to a character vector. This time, the two first rows,
+so the column names and the first observation are skipped, and the next
+three observations are read in. Perfect.
+
+**8. Let’s practice!**
+
+Let’s see your importing skills progress in the exercises. In the last
+video of this chapter, we’ll talk about the amazing fread function from
+the data-dot-table package!
 
 ## read_delim
 
@@ -582,11 +920,9 @@ potatoes_fragment <- read_tsv("data/potatoes.txt", skip = 6, n_max = 5, col_name
 ```
 
     ## Rows: 5 Columns: 8
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: "\t"
     ## dbl (8): area, temp, size, storage, method, texture, flavor, moistness
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -689,12 +1025,10 @@ hotdogs <- read_tsv("data/hotdogs.txt", col_names = c("type", "calories", "sodiu
 ```
 
     ## Rows: 54 Columns: 3
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: "\t"
     ## chr (1): type
     ## dbl (2): calories, sodium
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -736,6 +1070,56 @@ summary(hotdogs_factor)
 
 Awesome! The summary of `hotdogs_factor` clearly contains more
 interesting information for the `type` column, right?
+
+## data.table: fread
+
+Theory. Coming soon …
+
+**1. data.table: fread**
+
+The other package I wanted to discuss is data-dot-table.
+
+**2. data.table**
+
+The key performance metric for the authors of data table, Matt Dowle and
+Arun Srinivasan, is speed. The package is mainly about data manipulation
+in R, but also features a super powerful function to read your data into
+R: fread. If you have huge files you have to import and munge in R,
+you’ll want to go with the data-dot-table package. Let’s start with
+installing and loading the library:If you want to learn everything about
+data-dot-table, DataCamp offers course material dedicated to this
+package. In this course, we’ll stick to the fread function. It is pretty
+similar to the “read-dot-table” function you’ve seen before but it is
+more convenient to use. Let me introduce it with an example.
+
+**3. fread()**
+
+Suppose we have two versions of the states csv file, one with and one
+without column names in the first row.
+
+**4. fread()**
+
+Let’s call fread on both these csv files, without additional arguments.
+fread automatically deals with these two different cases. In the first
+case, the column names are correctly transfered to the data frame, while
+in the second case, fread made up some column names itself.
+
+**5. fread()**
+
+Next to automatically handling the names, fread can also infer the
+column types and the field separators without having to specify these.
+That’s the cool thing about fread: it just works. On top of that, it’s
+ridiculously fast.Of course, the fread function does much more than
+automatically finding out all column types and conventions in the files
+you want to read. You can also manually specify the separator, the
+colClasses, the number of lines to skip and the number of lines to read
+in manually. Think of fread as an improved version of read-dot-table
+which is faster, more convenient and adds functionality.
+
+**6. Let’s practice!**
+
+With these pointers on data-dot-table it’s time for you to get some
+hands-on practice yourself. Enjoy!
 
 ## fread
 
@@ -890,6 +1274,67 @@ to do so.
 ## readxl (1)
 
 Theory. Coming soon …
+
+**1. readxl (1)**
+
+Another tool that is extremely common in data analysis is
+
+**2. Microsoft Excel**
+
+Microsoft Excel. It shouldn’t be a surprise that there are a lot of
+packages out there that interact with Excel so that you can work with
+the data inside R. In this chapter, we’ll cover everything you need to
+know to get started with excel files in R with practically no extra
+work. In this video, I’ll be taking about Hadley Wickham’s readxl
+package.
+
+**3. Typical Structure Excel Data**
+
+Before we dive into the R side of things, it’s a good idea to quickly
+recap on what an excel file typically is. For most data related tasks,
+an excel file contains different sheets that contain tabular data. Take
+this excel file for example, cities-dot-xlsx, that contains two sheets
+containing data of the total population of some capitals for two
+different years.When you’re working in R, you’ll typically want to
+explore your excel file first and then import some data from it. But how
+do you go about this?
+
+**4. readxl**
+
+This is where the readxl package comes in. It basically contains two
+main functions: excel_sheets and read_excel. The first one is used to
+list the different sheets in your excel file, while the second one is
+used to actually import a sheet into your R session. readxl is able to
+handle both dot-xls as dot-xlsx files.So, let’s try it out! Let’s first
+install and load the readxl package and then
+
+**5. excel_sheets()**
+
+start with the excel_sheets function. You simply pass it the file path,
+which is the location of the dot-xls file on your own system. The file
+is already in our working directory, as dir reveals, so we can simply
+use the following call.The result is a simple character vector, that
+contains the names of the different sheets. Indeed, you saw before that
+the two sheets in the excel file are named year_1990 and year_2000.
+Great.We already know about the sheet names now, but that’s just the
+names, not the actual population data.
+
+**6. read_excel()**
+
+Fortunately, readxl also features the read_excel function to actually
+import the sheet data into your R session.In its most basic use, you
+simply specify the path to the excel file again.By default, the first
+sheet, year_1990 in this case, is imported as a tibble. You can also
+explicitly tell read_excel which sheet to import, by setting the sheet
+argument. You can use both an index or the sheet name. Suppose you want
+to load in the second sheet, named year_2000. The following two calls
+both do that.In all of these read_excel calls, an R data frame results
+that contains the Excel data. You can start your analyses right away!
+
+**7. Let’s practice!**
+
+Give it a first try in the exercises. In the next video, I’ll dive a
+little deeper into the read_excel function!
 
 ## List the sheets of an Excel file
 
@@ -1106,6 +1551,73 @@ require a lot of coding at all!
 
 Theory. Coming soon …
 
+**1. readxl (2)**
+
+Next to the path and sheet arguments that we discussed in the previous
+video,
+
+**2. read_excel()**
+
+there are also other arguments you can specify. Have a look at the usage
+of the read_excel function as it appears in the documentation; can you
+tell the meaning of these arguments? path and sheets have no secrets for
+you anymore.
+
+**3. read_excel() - col_names**
+
+Then, there’s col_names, which can be three things: TRUE, the default,
+which means what the first row of the Excel sheet contains the column
+names. It can also be FALSE, in which case R comes up with its own
+names. Finally, you can also set it a character vector specifying the
+column names. Excel can contain different data types, such as text,
+numerics and dates. How this converts to R classes is controlled in the
+col_types argument:
+
+**4. read_excel() - col_types**
+
+By default it is NULL, which has R guess the data types of the different
+columns. But you can also manually specify the col_types. Suppose you
+want to import all the columns of the first sheet as text. This command
+will do the trick: The column classes we can see in the printout reveal
+that indeed, the pop_data variable contains two columns that two are
+character now, perfect. Other keywords to enforce a type are “numeric”,
+“date” and “blank”. “numeric” and “date” are straightforward, but what
+about “blank”?
+
+**5. read_excel() - col_types**
+
+Well, if you use blank, you’re simply ignoring that column. If we adapt
+the previous call like this: You’ll see that the population column is
+missing. This “blank” keyword can come in handy when you have an Excel
+file with a lot of columns and you only need some of them in R.
+
+**6. read_excel() - skip**
+
+Next, there’s the skip argument. It specifies the number of rows in your
+excel sheet R has to skip before actually importing the data. Let’s say
+the first two rows in the first sheet of cities-dot-xlsx are not
+necessary for our analysis. To ignore them, we can simply set the skip
+argument to 2 and read_excel will not import these lines. we’ll also
+have to set the col_names argument, because the first row with the
+column names is skipped as well. if we try out this code, indeed 2 rows
+were skipped: the row containing the column names and the first
+observations. That leaves us with the last three observations. In readr,
+there was also the n_max argument, to specify the number of records to
+read. Currently this functionality is not available in readxl, but this
+might be added in the future. The package is still under development as
+we speak.
+
+**7. Wrap-up**
+
+Actually, the excel_sheets and read_excel are the only functions that
+are available in the readxl package. These two functions and the
+customization possibilities are all you need to get started with your
+excel data in R. On top of all that, readxl is extremely fast. You might
+have recognized many of the arguments of the readr package of the
+previous chapter. Hadley Wickham made reading data from different data
+sources pretty consistent. This can only make your job of importing data
+easier, right?
+
 ## The col_names argument
 
 Apart from `path` and `sheet`, there are several other arguments you can
@@ -1280,6 +1792,75 @@ Excel: gdata.
 ## gdata
 
 Theory. Coming soon …
+
+**1. gdata**
+
+Before, I introduced the readxl package, which is a very efficient
+package to import data from excel to R. But there are of course
+alternatives to readxl. In this video, I’ll be discussing one of those
+alternatives:
+
+**2. gdata**
+
+the gdata package, currently maintained by Gregory Warnes.Actually, the
+gdata package is an entire suite of tools for performing data
+manipulation in all sorts of fields. It kind of supercharges your basic
+R distribution to make handling your data less painful. Among these
+tools, there is also a function that allows you to import Excel data:
+read dot xls. Out of the box, gdata can only handle the xls format, but
+you can easily install a driver to support the newer xlsx format as
+well. There’s no function to list the different sheets in an excel file,
+like excel_sheets in readxl.
+
+**3. gdata**
+
+To import data from Excel, gdata uses Perl, another interpreted
+programming language. The Perl code converts the data in the excel sheet
+to a csv file.
+
+**4. gdata**
+
+Next, this csv file is read into R using the default read-dot-csv
+function from the utils package.
+
+**5. gdata**
+
+read-dot-csv itself is a wrapper around read-dot-table, remember?
+
+**6. gdata**
+
+This function can be customized in millions of ways; there are more than
+15 arguments you can specify. All these read-dot-table arguments are
+also available for gdata read-dot-xls function. In this respect, the
+read-dot-xls function is an extension of the data input functions from
+the utils package to Excel files. This makes it easy to use for people
+who are familiar with the import functions of the utils package and
+their arguments.On the other hand, first converting an entire xls file
+to a csv file, to next import it into R with the slow read dot csv
+function is extremely inefficient. What if you’re dealing with huge
+Excel files? You’d have to convert the entire file, and then read it.
+That’s quite some extra work you’re doing. Wickham’s readxl package is
+way faster here.So why use gdata in the first place then? Well, we
+believe that readxl will become the standard package to import Excel
+data. However, as we speak, the readxl package is still under
+development: the version we’re working with is pre-V1. If you don’t want
+to rely on packages that are still under heavy development and whose
+syntax can still change, you can stick to more established packages like
+gdata.Now, let’s get practical. Still remember the cities dot xlsx file?
+
+**7. cities.xls**
+
+Here it is as a xls file this time, cities dot xls. Two sheets,
+containing the population of some capitals in 1990 and 2000.
+
+**8. read.xls()**
+
+Let’s first install and load gdata, and then try gdata’s read-dot-xls
+function to import the excel data.As before, the first argument you pass
+it is the path to the file; in our case, cities-dot-xls is still in the
+working directory. If your Excel file contains multiple sheets, only the
+first sheet is imported. You can again choose to specify a different
+sheet by sheet number or by sheet name, like this example.
 
 ## Import a local file
 
@@ -1620,6 +2201,84 @@ Excel.
 ## Reading sheets
 
 Theory. Coming soon …
+
+**1. Reading sheets**
+
+You already got to know two very useful packages to work with Excel
+data - the readxl package and the gdata package. Now imagine this
+situation.
+
+**2. Insert title here…**
+
+You’re working in a big company that uses Excel for all there analysis
+work. You are forced to work on and deliver these Excel files, but you
+want to work on the data through R, so that you can modify the files in
+a reproducible way? I’m happy to tell you that there is a package that
+does just that:
+
+**3. XLConnect**
+
+XLConnect, written and maintained by Martin Studer. He created one of
+the most comprehensive packages for working with Excel files through
+R.You can think of XLConnect as a bridge between Excel and R. That means
+you can do practically any action you could do within Excel but you do
+it from inside R. Editing Excel sheets, formatting data and adapting
+entire calculation sheets, you name it. XLConnect has a function for it.
+XLConnect works with xls and xlsx files, and has easy-to-use
+functions.To get this all working so smoothly, XLConnect depends on
+Java. This is totally abstracted away for us end-users, but installing
+the package can have its difficulties.
+
+**4. Installation**
+
+If you’re starting from a reasonably clean computing environment, this
+traditional install-dot-packages command will work fine. From the
+messaging, you’ll see that it also installs the XLConnectJars package
+containing Java files and class definitions that XLConnect depends on.
+If it wasn’t installed already, the rJava package will also be
+installed, providing a low-level R to Java interface that XLConnect
+uses.If something goes wrong during installation, it’s possible that you
+first have to install the Java Development Kit, or JDK, from Oracle’s
+web site. If things still don’t work out, I suggest you google the
+errors you’re getting: there’s quite some people using this package so
+help is never far away.With our package installed and not to forget,
+loaded,
+
+**5. loadWorkbook()**
+
+let’s take the first step: loading a workbook into R. You do this with
+the loadWorkbook function, by simply passing the name of the excel file
+you want to interface to. Assuming that our cities-dot-xlsx file is
+still in the current working directory, this call works.If you have a
+look at the structure of book, we see that it is a so-called workbook
+object. This object is the actual “bridge” between R and Excel I talked
+about earlier.After building a workbook object in R, you can use it to
+get information on the Excel file it links to. To get the names of the
+different sheets,
+
+**6. getSheets()**
+
+for example, you can use getSheets.The result is exactly the same to the
+excel_sheets function from readxl: a character vector containing the two
+sheet names.Apart from sheet information,
+
+**7. readWorksheet()**
+
+you can also read the actual data from the sheets, like readxl’s
+read_excel function and gdata’s read dot xls function. Suppose we want
+to import the data from the year_2000 sheet as a data frame. As the
+first argument to readWorksheet, we pass the workbook object, book in
+our case. The second argument, sheet, is the name or index of the sheet
+you want to import from.Works just like before. The cool thing here is,
+that you can easily specify from which row and which column to start
+reading information.
+
+**8. readWorksheet()**
+
+Say you only want the population information for Berlin and Madrid. You
+can simply set startRow to 3, endRow to 4 and startCol to 2. Because you
+skipped the first row, the column names are also skipped, so you should
+set header to FALSE.
 
 ## Connect to a workbook
 
@@ -2177,6 +2836,87 @@ selection <- cbind(countries, urbanpop_sel)
 ## Adapting sheets
 
 Theory. Coming soon …
+
+**1. Adapting sheets**
+
+Up to now, XLConnect isn’t blowing your mind, is it? Just listing sheets
+and importing data from them into R is nothing new. But XLConnect has
+more to offer than just importing excel data into R. This package is an
+easy tool to modify the content of your workbook comfortably through R.
+
+**2. New data!**
+
+Say you managed to lay your hands om some fresh population data from
+2010, that is stored in a data frame, pop_2010.
+
+**3. createSheet()**
+
+To store this info a new sheet, we start with loading XLConnect, and
+making a connection to the workbook. After that, we can use createSheet,
+and pass the workbook and the name of the new sheet, like this.
+
+**4. createSheet()**
+
+Now we can actually populate our new sheet with the data, for which
+we’ll use
+
+**5. writeWorksheet()**
+
+writeWorksheet. The first argument, as always, is the workbook, followed
+by the data we want to add, so pop_2010 and finally the sheet we want to
+add it to. Let’s use the sheet name that was specified in createSheet,
+but the number of the sheet, 3, would work fine as well.If you open the
+excel file, though, you won’t see the new sheet. You’ll have to
+explicitly save the entire workbook to a file for the changes to take
+effect.
+
+**6. saveWorkbook()**
+
+You do this with saveWorkbook, like this.
+
+**7. saveWorkbook()**
+
+I suggest you specify a new filename, cities2.xlsx for example, so you
+don’t overwrite the file you started with.If you now check out the new
+Excel file, you see that the additional data is in there.
+Awesome!Suppose that after creating this additional worksheet, you don’t
+feel comfortable with the name you chose. In fact, you want to rename
+all sheets. Piece of cake:
+
+**8. renameSheet()**
+
+just use the renameSheet function. As uaual, the first argument is the
+workbook, and then you pass the old name and the new name. We’ll use
+this command three times, the change year with y for the three different
+sheets.
+
+**9. renameSheet()**
+
+Finally, we save the result again to a new file with saveWorksheet:
+cities3.xlsx.A quick peek at the new Excel file reveals that we
+successfully renamed the sheets. Perfect.
+
+**10. removeSheet()**
+
+Another Excel job would be to remove a sheet altogether. To remove the
+third sheet here, for example, simply use removeSheet with the workbook
+and the sheet name or sheet number as arguments.
+
+**11. removeSheet()**
+
+If you save the workbook to a file again and open up the file, our third
+sheet is gone.
+
+**12. Wrap-up**
+
+Of course these are pretty basic operations, that you can easily do in
+Excel as well, but the cool thing is that you can program all of these
+tasks in R in a reproducible way. If you update the commands that we’ve
+used here, and run them all again, one after the other, it should all
+still work fine.Apart from the functions I discussed here, there are
+also methods to style cells, getting, setting and recalculate formulas,
+merging and splitting up cells, the whole shebang. But let’s not dive
+into those here and start small.
 
 ## Add worksheet
 

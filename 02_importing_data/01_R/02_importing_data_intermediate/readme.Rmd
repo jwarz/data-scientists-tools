@@ -27,6 +27,62 @@ Many companies store their information in relational databases. The R community 
 
 Theory. Coming soon ...
 
+**1. Connect to a database**
+
+Welcome to part two of importing data in R!
+
+**2. Up to now**
+
+The previous course dealt with accessing data stored in flat files or Excel files. In a professional setting, you'll also encounter data stored in relational databases.
+
+**3. Relational Databases**
+
+In this video, I'll briefly talk about what a relational database is, and then I'll explain how you can connect to it. In the next video, I'll explain how you can import data from it!So, what's a relational database? There's no better way to show this than with an example.
+
+**4. company**
+
+Take this database, called company. It contains three tables,
+
+**5. company**
+
+employees,
+
+**6. company**
+
+products and
+
+**7. company**
+
+sales.Like a flat file, information is displayed in a table format. The employees table has 5 records and three fields, namely id, name and started_at. The id here serves as a unique key for each row or record. Next, the products table contains the details on four products. We're dealing with data from a telecom company that's selling both with and without a contract. Also here, each product has an identifier. Finally, there's the sales table. It lists what products were sold by who, when, and for what price. Notice here that the ids in
+
+**8. company**
+
+employee_id and
+
+**9. company**
+
+product_id correspond to the ids that you can find in the employees and products table respectively.
+
+**10. company**
+
+The third sale for example, was done by the employee with id 6, so Julie. She sold the product with id 9, so the Biz Unlimited contract.
+
+**11. company**
+
+These relations make this database very powerful. You only store all necessary information once in nicely separated tables, but can connect the dots between different records to model what's happening.
+
+**12. Database Management System**
+
+How the data in a relational database is stored and shuffled around when you make adaptations, depends on the so-called database management system, or DBMS you're using. Open-source implementations such as MySQL, postgreSQL and SQLite are very popular, but there are also proprietary implementations such as Oracle Database and Microsoft SQL server. Practically all of these implementations use SQL, or sequel, as the language for querying and maintaining the database. SQL stands for Structured Query Language.
+
+**13. Databases in R**
+
+Depending on the type of database you want to connect to, you'll have to use different packages. Suppose the company database I introduced before is a MySQL database. This means you'll need the RMySQL package. For postgreSQL you'll need RpostgreSQL, for Oracle, you'll use ROracle and so on. How you interact with the database, so which R functions you use to access and manipulate the database, is specified in another R package called DBI. In more technical terms, DBI is an interface, and RMySQL is the implementation. Let's install the RMySQL package, which automatically installs the DBI package as well. Loading only the DBI package will be enough to get started.
+
+**14. Connect to database**
+
+The first step is creating a connection to the remote MySQL database. You do this with dbConnect, as follows.The first argument specifies the driver that you will use to connect to the MySQL database. It sure looks a bit strange, but the MySQL function from the RMySQL package simply constructs a driver for us that dbConnect can use. Next, you have to specify the database name, where the database is hosted, through which port you want to connect, and finally the credentials to authenticate yourself. This is an actual database that we're hosting, so you can try these commands yourself!The result of the dbConnect call, con, is a DBI connection object. You'll need to pass this object to whatever function you're using to interact with the database.
+
 ## Establish a connection
 
 The first step to import data from a SQL database is creating a connection to it. As Filip explained, you need different packages depending on the database you want to connect to. All of these packages do this in a uniform way, as specified in the `DBI` package.
@@ -69,6 +125,18 @@ Now that you've successfully created the database connection, let's have a close
 ## Import table data
 
 Theory. Coming soon ...
+
+**1. Import table data**
+
+After successfully connecting to a database,
+
+**2. con**
+
+like this, you'll probably want to see what's in there.
+
+**3. List and import tables**
+
+The first step is listing all the table in the database. You can do this with the dbListTables function. Simply pass the con variable.As expected, we get a character vector of length three, corresponding to the table names I've introduced earlier. Next, you can choose to actually read the data from one of these tables, for example from the employees table. You use the dbReadTable function for this. Again, you specify the connection to use, con, but this time you also specify which table data you want to import:The result is a data frame, with exactly the same contents as in the original database table.DBI also specifies functions to create new tables, store new data in tables and to remove tables, but this is not really related to importing data so I won't talk about that here. The functions we've covered up to now already provide a pretty good starting point. Oh no, wait, there's one last thing!It's always polite to explicitly disconnect your database after you're done. You do this with dbDisconnect, as follows.If you now try to print con, you'll see that it is no longer available. Good riddance,
 
 ## List the database tables
 
@@ -150,6 +218,95 @@ If you have a closer look at these tables, you'll see that the `tweats` table, f
 # 2. Importing data from databases (Part 2)
 
 Importing an entire table from a database while you might only need a tiny bit of information seems like a lot of unncessary work. In this chapter, you'll learn about SQL queries, which will help you make things more efficient by performing some computations on the database side.
+
+## SQL Queries from inside R
+
+Theory. Coming soon ...
+
+
+**1. SQL Queries from inside R**
+
+So, connecting to and importing from a database is something you're familiar with by now.
+
+**2. dbReadTable()**
+
+However, with dbReadTable,
+
+**3. dbReadTable()**
+
+you're importing an entire table. For the company example that had little data, that's not a problem, but what if you're dealing with a database that contains tables with millions of records? You'd have to import the entire table into R before you can do an analysis that might only need a fraction of this data.
+
+**4. dbReadTable()**
+
+If there was a way to perform a lot of the data selection work
+
+**5. dbReadTable()**
+
+on the database side,
+
+**6. dbReadTable()**
+
+you only have to import those elements that you actually need inside R. This makes much more sense, doesn't it?
+
+**7. Selective importing**
+
+I am glad to tell you that this is possible, all from inside R! Remember that relational databases typically use SQL as the language for querying? Well, you'll be writing so called SQL Queries to retrieve data based on specific criteria. You can send these queries through R functions specified by the DBI package and implemented by an R package that depends on the database you're using. As we're working with MySQL databases, that's RMySQL here. Writing SQL queries is a entire topic of its own, so I will only treat some basic examples so that you got the idea.
+
+**8. company**
+
+Let's have a look at the company database again, that contained informations on sales of telecom products made by different employees.
+
+**9. company**
+
+Suppose that we want to have the names of the employees that started after the first of september in 2012. How to go about this?
+
+**10. Load package and connect**
+
+In any case, we have to start with loading the DBI package, and creating a connection to the company database. This is an actual database, so you can try the code in this video yourself!
+
+**11. Example 1**
+
+To solve the task at hand, you can read the entire employees table, and then subset it using the subset function.But there is another way. Have a look at this call of the dbGetQuery function.The result is exactly the same. The strange syntax inside the string here, is actually a very common SQL query, that uses three SQL keywords: SELECT, FROM, and WHERE. The SELECT keyword specifies which column to select, and corresponds to the select argument in the subset function. The FROM keyword specifies which table you want to get data from, and corresponds to the first argument in the subset function. Finally, the WHERE keyword specifies a condition that a record in the table has to meet. If you read this sentence out loud with some additions here and there, it sounds pretty natural: "Select the name column from the employees table, where the started_at field is greater than the first of september in 2012."The first approach and the second approach might seem similar, but the conceptual difference is huge.
+
+**12. Example 1**
+
+In the first case,
+
+**13. Example 1**
+
+you're importing the entire employees table,
+
+**14. Example 1**
+
+and then do some subsetting in R. In the second case,
+
+**15. Example 1**
+
+you're sending a SQL query to the database,
+
+**16. Example 1**
+
+this query is run on the database side, and
+
+**17. Example 1**
+
+only the results are imported into R. If you're dealing with huge tables, the second approach is way more efficient.Let's try another example.
+
+**18. company**
+
+Suppose you want to select the products that imply a contract,
+
+**19. company**
+
+so where contract is one. For these products, we're interested in all variables. The old approach of reading the entire table and then subsetting
+
+**20. Example 2**
+
+would look like this.The new approach of sending an SQL query to the database and fetching the result, looks like this.The results are again exactly the same. Notice how the star after the SELECT keyword specifies to keep all columns from the products table. Also notice that in the SQL query, you have to use a single equals sign to specify a condition for the WHERE keyword, instead of a double equals sign, like you're used to in R.
+
+**21. Let's practice!**
+
+After this crash course on SQL syntax, let's see how you perform in some exercises. Good luck!
 
 ## Query tweater (1)
 
@@ -276,6 +433,26 @@ SELECT post, message
 
 Theory. Coming soon ...
 
+**1. DBI internals**
+
+Let's turn back to a dbGetQuery function call from before.
+
+**2. dbGetQuery()**
+
+It was incredibly easy to use. Simply pass the connection object and an SQL query, and you get a result.What it actually does behind the scenes is sending a query, with dbSendQuery, like this. This function returns a result, but this does not actually contain any records you wanted to import. For that, you need to use the function dbFetch. Finally, you have to manually clear the result.The combination of dbSendQuery, dbFetch and, dbClearResult gives the exact same result as dbGetQuery did before, so why do this? Well, the dbFetch query calls allow you to specify a maximum number of records to retrieve per fetch. This can be useful when you need to load in tons of records, but want to do this chunk by chunk.Suppose, for example,
+
+**3. dbFetch() one by one**
+
+you want to get the result of the previous query, record by record. You can use this construction for that, with the same SQL query as before.This code first sends a query to the database, and then goes into a while loop that checks whether the query result still has data that has not yet been fetched. If there is still data available, the chunks are fetched record by record, and this chunk is printed at each iteration. The output indeed shows the two records, printed separately, one after the other.In this toy example, this approach is not really useful, but if you're working on a super complicated algorithm that involves millions of database records, you might want to consider a treatment of data in chunks, right?After all your hard work on the database,
+
+**4. Disconnect**
+
+don't forget to disconnect from it.Give these more low-level DBI functions a try in the exercises.
+
+**5. Let's practice!**
+
+In the next chapter, I'll be back to tell you more about importing data from the web. See you there!
+
 ## Send - Fetch - Clear
 
 You've used <a href="http://www.rdocumentation.org/packages/DBI/functions/dbGetQuery" target="_blank" rel="noopener noreferrer">`dbGetQuery()`</a> multiple times now. This is a virtual function from the `DBI` package, but is actually implemented by the `RMySQL` package. Behind the scenes, the following steps are performed:
@@ -346,6 +523,46 @@ More and more of the information that data scientists are using resides on the w
 
 Theory. Coming soon ...
 
+**1. HTTP**
+
+More and more of the information you'll be working with as a data scientist resides on the web.
+
+**2. Data on the web**
+
+In fact, you've already worked with such data. Remember how you connected to a remote relational database to get the exact information you needed? The DBI package abstracted the fact that the data was in some remote location and fixed everything for you. In this chapter, you'll look at file formats that are specifically useful when used for web technology, like the JSON file. I'm first going to discuss what actually happens behind the scenes when you're importing data that's on the web.To understand what happens in the examples that follow, I'm going to give you a crash course on the basics of HTTP,
+
+**3. HTTP**
+
+short for HyperText Transfer Protocol. It's basically a system of rules for how data should be exchanged between computers. In short, HTTP is the language of the web. If you browse to a webpage for example, your computer, the client, is actually sending an
+
+**4. HTTP**
+
+HTTP request to the
+
+**5. HTTP**
+
+server. The server then sends back
+
+**6. HTTP**
+
+data representing the webpage, so it sends a response, and the webpage pops up on your screen. There are several HTTP Methods, as they are called. To simply get a webpage from a server,
+
+**7. HTTP**
+
+you use the GET Method, for example. Apart from GET, there are also other HTTP methods, but let's not dive into those here.Instead, let's have a look at some examples you might remember from the previous chapters, but this time all of the data will be residing on the web.
+
+**8. Example: CSV**
+
+Let's start with the states-dot-csv file for example, that's located at this link. The typical workflow would be to manually download the file through your favorite web browser, and then point to the path inside read dot csv.However,
+
+**9. Example: CSV**
+
+it can be done much easier! Have a look at this line, where we simply pass the URL as a character string.The result is exactly the same: a data frame with 5 observations and 4 variables. How could this be so easy? Well, behind the scenes, R figures out that you referred to a URL, and requests it using an HTTP GET request. The server responds with the csv file, that R can then read in just like it did before. Pretty nice, huh?Nowadays, there are many websites that only accept secure connections. You can only visit these websites, or download their files with the http_S_ prefix. Does R also know how to handle that? Well, let's find out with the same CSV file, but this time
+
+**10. Example: CSV**
+
+with the HTTPS prefix.This works just the same, awesome. HTTPS support is baked in to R since R version 3 point 2 point 2.Experiment with importing data from the web
+
 ## Import flat files from the web
 
 In the video, you saw that the `utils` functions to import flat file data, such as <a href="http://www.rdocumentation.org/packages/utils/functions/read.table" target="_blank" rel="noopener noreferrer">`read.csv()`</a> and <a href="http://www.rdocumentation.org/packages/utils/functions/read.table" target="_blank" rel="noopener noreferrer">`read.delim()`</a>, are capable of automatically importing from URLs that point to flat files on the web.
@@ -413,6 +630,22 @@ Great! It seems to work without any additional problems!
 ## Downloading files
 
 Theory. Coming soon ...
+
+**1. Downloading files**
+
+Similar to what we did in the previous video,
+
+**2. Example: Excel**
+
+let's now use the readxl package to import Excel data stored at this URL. Will the read_excel work out of the box here?Apparently, readxl does not know how to handle Excel files that are stored on the web, although I expect that Hadley Wickham will add this functionality in future releases. Does this mean we'll have to manually download the file, and then point to the local file like you would do before? Not at all!
+
+**3. download.file()**
+
+You can use download dot file here, a function from the utils package. Let's first define the URL and the destination path, so where we want to place the downloaded file on our system. I'm going to call the file local_cities dot xlsx and place it my home directory.If you now use download dot file with the url as the first argument and the destination path as the second argument you're good to go.Perfect. What download dot file did is simple. It performed a GET request to the URL you specified and stored the contents of the response to the location you specified. The last step is to use the read_excel function from before to import the Excel data from the local file this time. We can again use the dest_path variable here.
+
+**4. Why download.file()?**
+
+You might wonder why using download dot file is useful. The answer is again: reproducibility. You can specify URLs in your R scripts and download them through R functions instead of manually browsing the web which requires several mouseclicks.There's much more to learn about performing GET requests and other HTTP requests from inside R. In some cases, you'll have to authenticate yourself before you can download files, and pass additional parameters to your GET request. If you want to learn more about this, I suggest you check out the httr package by Hadley Wickham.
 
 ## Import Excel files from the web
 
@@ -568,6 +801,38 @@ Importing data from the web is one thing; actually being able to extract useful 
 
 Theory. Coming soon ...
 
+**1. APIs &amp; JSON**
+
+In the previous video and exercises,
+
+**2. Other data formats**
+
+you've seen how you can get files from the web. In the last exercise, you also saw that there is also another format to represent data, namely JSON. The JSON format is very simple, concise and well-structured. On top of that, it is human-readable, but also easy to interpret and generate for machines. This makes it perfect to communicate with Web APIs.
+
+**3. API**
+
+What is an API, I hear you asking? Well, it's short for Application Programming Interface. Very generally put, it is a set of routines and protocols for building software components. It is a way in which different software components interact. This can happen in thousands of ways, but we will only focus on the web API. Typically, this is an interface to get data and processed information from a server or to add data to a server, through the HTTP methods you learned about earlier.
+
+**4. Twitter**
+
+As an example, take Twitter. They also have an API, which you can check out here. After authentication, you can simply request particular URLs from twitter with the GET request, allowing you to get the tweets for a particular person for example. Twitter does all the work for you on their servers, and spits out the information you need. You can also use the API to programatically place comments on somebody's tweets for example. The possible applications are endless. Say you're an avid tweeter and want to find out which tweets had the most impact. Maybe some of your more controversial tweets caused a lot of retweets and reactions? With the raw data from Twitter's API you can research this.But why are APIs and JSON useful in the first place? All the information is available on webpage already, right?
+
+**5. Info on Rain Man (1988)**
+
+Well, suppose you want to get some data on the movie Rain Man, from 1988. You could download the corresponding URL of IMDb, read it in, and then start programmatically searching your way through the HTML code, which is more than 4000 lines, to get the information you need. This is pretty error-prone and really slow.Luckily, there are alternatives. As it happens,
+
+**6. Rain Man JSON (OMDb API)**
+
+there's an API called the OMDb API, able to give you information on pratically any movie you can think of. It simply takes a URL, with some additional parameters such as the id of the movie you want to get info about and what type the response should be, that the API understands.If you simply visit this web page, you will see something like this. This is a JSON, containing everything we need to know in a nicely structured format.To convert this JSON into an R data structure,
+
+**7. jsonlite**
+
+you can use the jsonlite package by Jeroen Ooms. The package is an improvement of earlier R packages to handle JSONs, where converting from and to JSONs is more consistent and robust, such that it works nicely in all use cases.
+
+**8. Rain Man list in R**
+
+Let's install and load jsonlite, and then simply call fromJSON on the URL. This will download the JSON data for you and convert it to a named R list. We now have all the information in R, ready to do our analysis. This is way better than the messy HTML page where we would have to dig through to get the bits and pieces of interest, isn't it?
+
 ## From JSON to R
 
 In the simplest setting, <a href="http://www.rdocumentation.org/packages/jsonlite/functions/fromJSON" target="_blank" rel="noopener noreferrer">`fromJSON()`</a> can convert character strings that represent JSON data into a nicely structured R list. Give it a try!
@@ -649,6 +914,38 @@ Well done! The fourth episode of the Star Wars saga was released before the thir
 ## JSON & jsonlite
 
 Theory. Coming soon ...
+
+**1. JSON &amp; jsonlite**
+
+In this video, let's dive into the JSON format and the jsonlite package some more.So, what does a typical JSON look like? I'll try to be short on this.You have JSON objects, and you have JSON arrays.
+
+**2. JSON object**
+
+A typical JSON object looks like this. It's unordered collection of name/value pairs. where the name is a string and the value can be a string, a number, boolean, null, another JSON object, or a JSON array.
+
+**3. JSON object**
+
+Let's convert this JSON to an R string by wrapping it in quotes. I use single quotes here so that I don't have to escape every double quote. Now let's pass this string to jsonlite's fromJSON function, that converts a JSON to R code, and ask for the structure of the result.The result is a named list in R, which contains the same information. You can also see that the elements have different classes: we have characters, integers and logicals.
+
+**4. JSON array**
+
+Next, there are also JSON arrays. This is an ordered sequence of zero or more values, like this one.Calling fromJSON on this JSON structure results in an integer vector.However, this actually is a simplification, because JSON arrays, just like JSON objects, are heterogeneous; they can contain elements of different types. This JSON array for example, is perfectly valid as well.Trying to convert this JSON into R, give the following result.The numbers were coerced to characters, as was the logical value. The null keyword was converted to an NA in R. This had to be done because R vectors can only contain a single basic type, remember?Both the JSON object as the JSON array can contain other JSON objects and arrays, how would that work?
+
+**5. JSON Nesting**
+
+Suppose we add some information to the JSON object from before. This time, I formatted the JSON such that it becomes more readable.We can extend it as follows.
+
+**6. JSON Nesting**
+
+Let's fromJSON this, and see what we get.We get a nested named list, makes perfect sense if you ask me.
+
+**7. JSON Array of JSON Objects**
+
+Finally, let's build an array of JSON objects, of three persons for example, like this.Wow, this was unexpected. We simply got a data frame. But if you think of it, this is a great mapping. We have three JSON objects, on Frank, Julie and Zach, and they all have the same fields, id and name. This perfectly fits the description of an R data frame. The wonderful thing is that jsonlite deals with all of this for us. There are many more use cases of JSON objects and arrays, but I won't go through each and every one of them.next to fromJSON,
+
+**8. Other jsonlite functions**
+
+there are other useful functions in the jsonlite package, such as tojson, to convert r data structures back to json, and prettify and minify, to change how jsons are displayed. you'll learn all about these in the exercises that follow!If you use the jsonlite package you normally won't be dealing with JSONs directly, but it's good to have a basic level of understanding of them.
 
 ## JSON practice (1)
 
@@ -773,6 +1070,91 @@ Great! Hopefully you agree that the pretty format is way easier to read and unde
 # 5. Importing data from statistical software packages
 
 Next to R, there are also other commonly used statistical software packages: SAS, STATA and SPSS. Each of them has their own file format. Learn how to use the haven and foreign packages to get them into R with remarkable ease!
+
+## haven
+
+Theory. Coming soon ...
+
+
+**1. haven**
+
+One thing we haven't discussed yet, is data from other
+
+**2. Statistical Software Packages**
+
+statistical software packages. The most common
+
+**3. Statistical Software Packages**
+
+ones are SAS, short for Statistical Analysis Software, STATA, which stands for statistics and data, and SPSS, or the statistical package for social sciences.Which software people use depends on the field of study or personal preference.
+
+**4. Statistical Software Packages**
+
+SAS, for example, is one of the most wide spread Business Analytic software tools and is also commonly used in Biostatistics or Medical Sciences. On the other hand, STATA is a typical tool for Economists. SPSS is often used in Social Sciences, hence the name.
+
+**5. Statistical Software Packages**
+
+In the end, each software uses and produces their own file types. The most common extensions are listed here.
+
+**6. R packages to import data**
+
+No matter the package your data comes from, R is prepared for every file that'll come along! In the rest of this chapter, you will learn how to use two R packages that can import data from these software environments: haven and foreign. The first one is written by Hadley Wickham, the other one by the R core team. The foreign package has been around for a longer time, while haven is still in development today, which is late 2015. Wickham aims to provide a more consistent, easier to use and faster alternative to foreign. On the other hand, foreign supports more data formats. But let's not jump to conclusions here. In this video, I'll talk about haven some more, and in the next video I'll talk about foreign. After that, you can choose for yourself which package you prefer.
+
+**7. haven**
+
+So, the haven package. This package can deal with SAS, STATA and SPSS data files. It does this by wrapping around the ReadStat C library by Evan Miller. Just like readr and readxl, the package is extremely simple to use. You pass the path to the data file and an R data frame results.After you've installed haven with install-dot-packages, you can load it with the library function.
+
+**8. SAS data**
+
+Let's start with loading a SAS data file first. Suppose you have a file, 'ontime dot sas7bdat' in your current working directory. It contains data on the percentage of flights that arrived on time for several airlines in the US. To import this data as a data frame on time, you simply use the function read_sas and pass the path to the data file:
+
+**9. SAS data**
+
+If you print its structure, you'll see that each variable in the data frame also has a label attribute. If you're familiar with SAS, you know that you can label variables in SAS datasets. Well, it's these same labels that are also available inside R now.
+
+**10. SAS data**
+
+When simply printing ontime, you don't see any difference with a normal data frame without labels.
+
+**11. SAS data**
+
+If you use RStudio's View function to explore a dataset, though,
+
+**12. SAS data**
+
+you'll see the labels:Can you read the data here? In March of 1999, for example,
+
+**13. SAS data**
+
+it appears that around 79 percent of all Delta Airline flights were on time.
+
+**14. STATA data**
+
+Next up is STATA. Haven is able to import both Stata 13 and 14 files with the read_stata function. You can also use read_dta, which does exactly the same.
+
+**15. STATA data**
+
+Just like before, simply passing the path to the dot dta file will do the trick. Suppose that the same statistics on the us airlines are now available as a dot dta file, ontime dot dta, which is in your current working directory, you can try either one of these calls.The printout looks pretty familiar again, but there's something different here. The names of the Airlines are converted to numbers, they aren't character strings anymore. How did that come about?
+
+**16. STATA data**
+
+If you have a look at the class of the Airline column of ontime, it appears to be of class labelled.This is the R version of the labelled vector, a common data structure in other statistical packages. If you simply print this Airline column, you can see the airline names from before.R assigned numbers for each variable according to their alphabetical order. As you want to continue your analysis in R, it's a good idea to convert this vector to a standard R class, such as a factor.
+
+**17. as_factor()**
+
+Instead of the standard as dot factor function, of base R, you'll need 'haven's as underscore factor for this.This is the type of categorical variables we're used to. In this case, it might be even better to have simple characters for the airline names, as these are not really categories. The base R as dot character function can do this for you. Let's just place it around the previous call.
+
+**18. as_factor()**
+
+If you assign this result to the Airline column of ontime again, you've made the ontime data frame ready for some more analysis, with the names as simple character strings.
+
+**19. SPSS data**
+
+Last but not least, there is SPSS data. Here, you'll want to use read_spss. Based on the extension, haven will decide for you which function to call: read_por for dot por files, or read_sav for dot sav files.Let's once more load in the airline data, that's stored as a dot sav file in the datasets folder of our personal directory.Again, a data frame results. The Airline column is a so-called labelled vector again. The column names here are slightly different from before.
+
+**20. Statistical Software Packages**
+
+It should be clear by now: haven is incredibly easy to use and simply does what's it supposed to. Have a quick look at the summary here, now with the corresponding functions.
 
 ## Import SAS data with haven
 
@@ -911,6 +1293,42 @@ Well done! The [`as_factor()`](http://cran.r-project.org/web/packages/haven/have
 ## foreign
 
 Theory. Coming soon ...
+
+**1. foreign**
+
+You already know how to import your data using Wickham's haven package, great!
+
+**2. foreign**
+
+However, I also told you that there is another alternative, the foreign package, written by the R core team. Although it's somewhat less consistent in naming and use, it's a very comprehensive tool that can work with all kinds of foreign data formats. Apart from importing SAS, STATA and SPSS files, it can also handle even more exotic formats, from Systat and Weka for example. It's also able to export data again to various formats. I'll only discuss importing SAS, STATA and SPSS data though. Before I get to it, let me install and load the foreign package.
+
+**3. SAS**
+
+Let's start with SAS first. Well, here the first drawback of foreign in comparison to haven emerges. Foreign cannot import single SAS data files, such as dot sas7bdat files. With foreign only so-called SAS libraries can be read. These libraries usually are of the format dot-xport. If you are really looking for an alternative to haven here, you can check out a package called sas7bdat.
+
+**4. STATA**
+
+When it comes to STATA, foreign can be used to read dot dta files of Stata versions 5 to 12 today. You can do this with the read dot dta function. As you saw before, the R core team packages such as utils and this foreign package, use dots in their function names, while Wickham's packages use underscores. Have a look at this simplified usage of the read dot dta function.As you probably expected you first have to define a file path. This could be a local file or a URL.
+
+**5. read.dta()**
+
+Basically, this is already sufficient to import a data set, as this call to import the US airlines punctuality data set shows.
+
+**6. read.dta()**
+
+Have a look at the structure of this data frame. The Airline variable is already a factor. This is because the convert dot factors argument of the read dot dta function is TRUE by default. This then automatically creates factors from labelled STATA values. This is something you had to do in the haven package manually with as_factor, remember?
+
+**7. read.dta() - convert.factors**
+
+Let's see what happens if we set convert dot factors to FALSE.The Airline column is now integer. Is this information on Airlines lost then? Not at all. Notice all the information that is stored in the data frame's attributes. From the version attribute, for example, you can tell that we're dealing with a STATA 7 file. The label dot table attribute, contains a mapping between the integer airline codes and their actual names. To work with the dataset easily, you'll want to stick to the default argument of convert dot factors though, which is TRUE.
+
+**8. read.dta() - more arguments**
+
+Similar to convert dot factors, there's also convert dot dates to specify whether you want STATA time and date information to be converted to R Date and POSIXct objects. As this is something you'll typically want to do, the defaults here TRUE.Finally, I also wanted to mention the missing dot type argument. If you're familiar with STATA 8 and later, you'll know that there is support for different types of missing values, 27 of them to be precise. In R, there's only one type of missing values, NA. If you set the missing type argument to FALSE, all these different missing values are converted to NA. If it's set to TRUE, a list with information on how different values for different variables are missing are included in the attributes of the returned data frame.
+
+**9. SPSS**
+
+Importing SPSS files with foreign works quite the same. This time though, you'll need the read dot spss function. Not very surprising is it?Have another look at a trimmed down version of its usage.As usual, the file path comes first. For the rest, all argument names are different when you compare to the read dta function from before. This is what I meant with not really consistent before'use dot value dot labels', which is TRUE by default, specifies whether variables that are labelled vectors in SPSS should be converted to R factors. This argument thus is similar to the the convert dot factor argument from read data.The 'to dot data dot frame' argument tells R whether or not to return the SPSS data as a data frame. Strangely, it's FALSE by default, which has foreign build a list containing all different columns. But you already know that a data frame is simply a special kind of list, so the difference is not that big.Next to these two arguments, there are many more, such as trim factor names, trim values and use missings. Their purpose is often similar to what you've seen for the read dot dta function, but not always. Foreign aims at a specific treatment of different types of data files. This does not benefit the consistency, but provides full control over how actually data files are imported.To learn more about importing data with foreign, you can always consult the documentation. But save that for later,
 
 ## Import STATA data with foreign (1)
 

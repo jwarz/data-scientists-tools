@@ -27,6 +27,39 @@ In this chapter we introduce the concept of regression from a machine learning p
 
 Theory. Coming soon ...
 
+
+**1. Welcome and Introduction**
+
+Hi. This is Nina Zumel and John Mount from Win-Vector LLC. Welcome to our course on regression in machine learning. Regression is the task of
+
+**2. What is Regression?**
+
+predicting a numerical outcome based on the values of a set of inputs, or independent variables.In the statistical sense, regression is predicting the expected value of an outcome, but in the casual sense, and for the purposes of this course, we'll define regression as predicting numerical values.This distinguishes regression from classification, which is the task of making discrete predictions.
+
+**3. What is Regression?**
+
+Predicting how many units of a product will sell, or how much it will sell for, are regression problems.Predicting if a customer will buy a product (yes or no) is a classification problem.Let's walk through an example regression task.
+
+**4. Example: Predict Temperature from Chirp Rate**
+
+Here we see a scatterplot of how fast a cricket chirps (chirps per second) on the x axis, and the temperature on the y axis. Let's say our goal is to predict the temperature by measuring cricket chirp rate. Suppose we fit a linear
+
+**5. Predict Temperature from Chirp Rate**
+
+regression model to this data (we'll show you how later in this course). The predictions from this model are shown by the blue line. If we assume that temperature is linearly related to cricket chirp rate, then the blue line is the best fit line through the data, and it predicts what the expected temperature should be, based on the observed chirp rate.
+
+**6. Predict Temperature from Chirp Rate**
+
+For example, suppose we hear a cricket chirping at 16.5 chirps/second. We see here that this model predicts a temperature of about 80 degrees.
+
+**7. Regression from a Machine Learning Perspective**
+
+Let's step back and look at the reasons for modeling. Modeling from a scientific mindset focuses on understanding the process that produced the data: how each variable affects the outcome.Modeling from an engineering or machine learning mindset focuses on predicting future events accurately, and less on the relationship between variables and outcomes.In this course, we will emphasize predicting accurately. You will learn several algorithms for fitting regression models.  By the end of this course, you should have a better idea about the advantages and disadvantages of each algorithm.Now let's do an
+
+**8. Let's practice!**
+
+exercise to quickly review what you've learned.
+
 ## Identify the regression tasks
 
 From a machine learning perspective, the term *regression* generally encompasses the prediction of continuous values. Statistically, these predictions are the *expected value*, or the average value one would observe for the given input values.
@@ -46,6 +79,39 @@ Yes! On average, a student with these scores should get the predicted final exam
 ## Linear regression - the fundamental method
 
 Theory. Coming soon ...
+
+
+**1. Linear regression - the fundamental method**
+
+Let's start with the most basic regression algorithm: linear regression.
+
+**2. Linear Regression**
+
+Linear regression assumes that the expected outcome is the weighted sum of all the inputs. It also assumes that the change in y is linearly proportional to the change in any x.This is the simplest of the regression methods.
+
+**3. Linear Regression in R: lm()**
+
+In our cricket example, linear regression assumes that temperature is directly proportional to cricket chirp rate. In R, you fit a linear regression model using the lm function. This function takes as arguments a formula that describes the model you want to fit, and the data. Here, the data is in the dataframe cricket, withan outcome column temperature and an input column chirps_per_sec.
+
+**4. Formulas**
+
+A formula in R is designated by a twiddle, or tilde. The left hand side of the formula is the outcome you want to predict, such as temperature or blood_pressure. The right hand side of the formula holds the input variables. You can concatenate multiple input variables with a plus sign.To convert a string into a formula, use the as-dot-formula function.
+
+**5. Looking at the Model**
+
+Print the model to look at its structure. You will see a report on the coefficients (or betas) of the model. The intercept is beta-zero: the value of the model when all the inputs are zero. The other coefficients are the weights for the weighted sum of the variables. In this example, the coefficient for chirps_per_sec is just over 3. That means two things:First the sign of the coefficient is positive, so temperature should increase as chirp rate increases.Second for every unit increase in chirp rate, the temperature should increase by a little over 3 degrees, if everything else is held constant.
+
+**6. More Information about the Model**
+
+You can get the model diagnostics by calling summary on the model. Summary includes not only the values of the coefficients, but the standard error in their estimated value, along with other diagnostics.We will cover some of these diagnostics in a later chapter, but for now, just know that they are available.
+
+**7. More Information about the Model**
+
+To get these diagnostics conveniently packaged in a data frame, use the glance function from the package broom. For the R-squared diagnostic you can also use the function wrapFTest from the package sigr.
+
+**8. Let's practice!**
+
+Now let's do some exercises to review what you've learned.
 
 ## Code a simple one-variable regression
 
@@ -173,6 +239,27 @@ Great! There are several different ways to get diagnostics for your model. Use t
 
 Theory. Coming soon ...
 
+
+**1. Predicting once you fit a model**
+
+Now that you have learned to fit a linear regression model, let’s learn how to make predictions from the model. As with most model fitting algorithms in R, simply calling predict on the model returns the predictions for the data used to fit the model, or the training data. Here,
+
+**2. Predicting From the Training Data**
+
+we call predict on our cricket model and add a column of predictions to the training data frame. We can
+
+**3. Looking at the Predictions**
+
+compare the model’s predictions on the x axis to the actual temperatures in the data on the y axis. If the model predicted perfectly, all the points would lie on the blue line, x = y. This graph gives you a visual idea of how close the model’s predictions are to ground truth.In this course, we will use ggplot to create most of the plots.
+
+**4. Predicting on New Data**
+
+To apply the model to new data, use the argument newdata. Here, we have a new data frame of cricket observations called newchirps. We apply the model to newchirps and add the predictions as a new column to the data frame.The model predicts that a chirp rate of 16-point-5 chirps per second should correspond to a temperature of almost 80 degrees.Now let's practice
+
+**5. Let's practice!**
+
+fitting linear models and making predictions.
+
 ## Predicting from the unemployment model
 
 In this exercise, you will use your unemployment model `unemployment_model` to make predictions from the `unemployment` data, and compare predicted female unemployment rates to the actual observed female unemployment rates on the training data, `unemployment`. You will also use your model to predict on the new data in `newrates`, which consists of only one observation, where male unemployment is 5%.
@@ -299,6 +386,43 @@ Good! The results stay fairly close to the line of perfect prediction, indicatin
 
 Theory. Coming soon ...
 
+
+**1. Wrapping up linear regression**
+
+Now you have the basics of linear regression from a machine learning perspective. Before we move to other algorithms, let’s discuss advantages and limitations of linear regression.
+
+**2. Pros and Cons of Linear Regression**
+
+Linear regression models are easy to fit and to apply. They are concise, so they don’t need much storage. They are smooth and less prone to overfit than other types of models. This means that their prediction performance on new data is usually quite similar to their performance on the training data.
+
+**3. Pros and Cons of Linear Regression**
+
+They are also somewhat interpretable. As an example, here we show a model of systolic blood pressure as a function of age and weight. The coefficients of the model are both positive, telling us that blood pressure tends to increase as both age and weight increase.
+
+**4. Pros and Cons of Linear Regression**
+
+The primary disadvantage of linear regression is that it can’t express complex, non linear or non-additive relationships in the data. In data where the relationships are highly complex, linear regression will not predict as well as other models.
+
+**5. Collinearity**
+
+One last issue with linear regression is collinear variables.Collinearity is when the input (or independent) variables are partially correlated. In the blood pressure example, weight tends to increase as people age, so weight and age could be partially correlated.
+
+**6. Collinearity**
+
+When variables are highly correlated, the signs of coefficients may not be what you expect: for example you might get a model where blood pressure appears to decrease with weight. This means you can’t interpret coefficients, but it does not necessarily affect the model’s prediction accuracy. So from a machine learning perspective, collinearity may not be too much of an issue.
+
+**7. Collinearity**
+
+However, unusually large coefficients or standard errors could indicate high collinearity, leading to an unstable model that gives unreliable predictions.Upcoming chapters will present modeling approaches that are less sensitive to collinearity between variables.
+
+**8. Coming Next**
+
+In the next chapter, you will learn how to evaluate regression models visually and numerically. You will also learn the proper, safe procedure for training a regression model.
+
+**9. Let's practice!**
+
+
+
 # 2. Training and Evaluating Regression Models
 
 Now that we have learned how to fit basic linear regression models, we will learn how to evaluate how well our models perform. We will review evaluating a model graphically, and look at two basic metrics for regression models. We will also learn how to train a model that will perform well in the wild, not just on training data. Although we will demonstrate these techniques using linear regression, all these concepts apply to models fit with any regression algorithm.
@@ -306,6 +430,31 @@ Now that we have learned how to fit basic linear regression models, we will lear
 ## Evaluating a model graphically
 
 Theory. Coming soon ...
+
+
+**1. Evaluating a model graphically**
+
+In the first part of this chapter, you will learn some ways to evaluate a model's prediction performance. We will show these techniques on linear models, but they also apply to other regression approaches. In this lesson, you will review how to evaluate a model graphically.
+
+**2. Plotting Ground Truth vs. Predictions**
+
+You've already seen the plot of ground truth vs prediction. Predictions are on the x-axis, and outcomes are on the y-axis. The line x equals y represents the line of perfect prediction: if the model predicted perfectly, all the points would be along this line.You should look for the points to be evenly above and below the x equals y line, and ideally, close to it, as on the left. This means that the errors are not systematic: they are not correlated with the actual outcome.When a model doesn't fit well, there can be regions where the points are entirely above or below the line. This demonstrates systematic error: errors that are correlated with the value of the outcome. This can indicate that you don't yet have all the important variables in your model, or that you need an algorithm that can find more complex relationships in the data.
+
+**3. The Residual Plot**
+
+The residual plot plots the residuals, or the difference between the outcome and the prediction, against the predictions. In a model with no systematic errors, the errors will be evenly distributed between positive and negative, and have about the same magnitude above and below. When there are systematic errors, there will be clusters of all positive or all negative residuals.
+
+**4. The Gain Curve**
+
+The gain curve plot is useful when sorting the instances is more important than predicting the exact outcome value. In this example, suppose we have a model that predicts home prices, but we are more interested in identifying higher value homes than in predicting their exact selling price.The x-axis shows the fraction of total houses as sorted by the model. The y-axis shows the fraction of total accumulated dollars.The diagonal line represents the gain curve if the houses are sorted randomly. The green curve we call the "wizard curve." This is the curve a perfect model would trace out. The blue curve is what our model traces out.
+
+**5. Reading the Gain Curve**
+
+In this example, the model curve and the wizard curve line up almost perfectly for the first 30% of the data. This means the model correctly identified the top 30% highest value houses, and sorted them by price correctly. After that, the model does not sort quite as well, as shown by the gap between the curves.GainCurve plots are also useful for models that predict probability, as we will see later.We will use the GainCurvePlot function from the WVPlots package, which takes as input a data frame, the names of the prediction and outcome columns, and a title.
+
+**6. Let's practice!**
+
+Now that you have seen different ways to visualize model performance, let's practice.
 
 ## Graphically evaluate the unemployment model
 
@@ -400,6 +549,35 @@ Congratulations! A relative gini coefficient close to one shows that the model c
 
 Theory. Coming soon ...
 
+
+**1. Root Mean Squared Error (RMSE)**
+
+In this lesson, you will learn about a key metric for evaluating the prediction performance of a regression model: root mean squared error.
+
+**2. What is Root Mean Squared Error (RMSE)?**
+
+RMSE is defined as the square root of the mean squared error of the model on a data set. You can think of the RMSE as the "typical" prediction error of your model on that data. Many regression algorithms, like linear regression, are designed to minimize squared error, so it’s a natural metric, in that sense.
+
+**3. RMSE of the Home Sales Price Model**
+
+Let’s walk through calculating the RMSE of the home sales price model we saw earlier, on the data set houseprices. Assume price is the column of actual sale prices and prediction is the column of predicted prices. First, calculate the error vector.
+
+**4. RMSE of the Home Sales Price Model**
+
+Then square it.
+
+**5. RMSE of the Home Sales Price Model**
+
+Take the mean of the squared error and square root. This results in an RMSE of about 58-point-3. You can think of this as a typical prediction error of 58-point-3 thousand dollars.
+
+**6. Is the RMSE Large or Small?**
+
+Is the RMSE large or small? The answer depends on how accurate you need the prediction to be for your specific problem, but one way to evaluate the RMSE is to compare it to the standard deviation of the outcome. In our example, the standard deviation is about 135 thousand dollars. Think of this as the typical difference between a specific house price in the data and the average house price. The RMSE being smaller than the standard deviation means that the model tends to estimate prices better than simply taking the average.
+
+**7. Let's practice!**
+
+Now let’s practice fitting models and calculating the RMSE.
+
 ## Calculate RMSE
 
 In this exercise you will calculate the RMSE of your unemployment model. In the previous coding exercises,
@@ -440,6 +618,47 @@ Good job! An RMSE much smaller than the outcome's standard deviation suggests a 
 ## R-Squared
 
 Theory. Coming soon ...
+
+
+**1. R-Squared ($R^2$)**
+
+In this lesson you will learn about another key metric for evaluating regression models: R-squared.
+
+**2. What is $R^2$?**
+
+The R-squared is a measure of how well a model fits the data. It is a value between 0 and 1. Values near 1 indicate a model that fits the data well; values near 0 indicate a model that is no better than always predicting the average value of the data.
+
+**3. Calculating $R^2$**
+
+R-squared is defined as 1 minus the ratio of the residual sum of squares to the total sum of squares. Since the total sum of squares is the variance of the data, R-squared is sometimes called the variance explained by the model. The residual sum of squares is the sum of the squared error of the model's predictions. If the RSS is small compared to the total sum of squares, then R-squared is large, and the model fits the data well.
+
+**4. Calculate $R^2$ of the House Price Model: RSS**
+
+Let’s calculate the R-squared of the house price model on its training data. Again, price is the column of actual sale prices and prediction is the column of predicted sale prices.First, calculate the error between the prices and the predictions. Then, take the square of the errors and sum them up. This is the residual sum of squares.
+
+**5. Calculate $R^2$ of the House Price Model: $SS_{Tot}$**
+
+To calculate the total sum of squares, subtract the mean home price from all the prices, square it and take the sum.
+
+**6. Calculate $R^2$ of the House Price Model**
+
+Finally, take the ratio of the residual sum of squares to the total sum of squares and subtract it from 1. This is the r-squared.
+
+**7. Reading $R^2$ from the lm() model**
+
+For lm models, you can read the r-squared from the summary of the model, as we show here. Calling glance on an lm model will also return the r-squared, and other diagnostics, in a data frame.However, not all regression algorithms in R return R-squared, so it’s good to know how to calculate it yourself.
+
+**8. Correlation and $R^2$**
+
+For models that minimize squared error (like linear regression), the R-squared is the square of the correlation between the outcome and the prediction.
+
+**9. Correlation and $R^2$**
+
+I like this definition, because it says intuitively what you want to be true of a model: that the predictions and the true outcome are correlated.Note that this correspondence will only be true for the data the model was trained on, not on new data.
+
+**10. Let's practice!**
+
+Now let’s practice fitting models and calculating R-squared.
 
 ## Calculate R-squared
 
@@ -523,6 +742,63 @@ Success! Remember this equivalence is only true for the training data, and only 
 ## Properly Training a Model
 
 Theory. Coming soon ...
+
+
+**1. Properly Training a Model**
+
+In this lesson, you will learn best practices for training and evaluating a regression model.
+
+**2. Models can perform much better on training than they do on future data.**
+
+In general, a model performs better on its own training data than on data it hasn't yet seen. For simple models like linear regression, this upward bias is often not severe; but for more complex models, or even for a linear model with too many variables, using only the training data to evaluate the model can produce misleading results.Here, we see a model that got an R-squared of 0.9 on its training data, but an R-squared of only 0.15 on new data. This model was overfit.
+
+**3. Test/Train Split**
+
+When you have a lot of data, the best thing to do is to split your data into two: one set to train the model, and another set to test it.
+
+**4. Example: Model Female Unemployment**
+
+For this example, we’ll use data from the World Bank about male and female unemployment rates in North America from 1991-2014. We’ll predict female unemployment rates from male unemployment.We have 96 rows of data, which we randomly split into a training set of 66 rows, and a test set of 30 rows.
+
+**5. Model Performance: Train vs. Test**
+
+We can fit a linear model to the training data, and then calculate RMSE and R-squared of the model for both the training and test sets. Here the model performs similarly on both sets, slightly better on training. Since the performance is not too different on test, we know the model is not overfit.
+
+**6. Cross-Validation**
+
+If you don’t have enough data to split into training and test sets, use cross-validation to estimate a model’s out of sample performance. In n-fold cross-validation, you partition the data into n-subsets (in the figure we use n = 3). Let’s call them A, B, and C.
+
+**7. Cross-Validation**
+
+First, train a model using the data from sets A and B, and use that model to make predictions on C.
+
+**8. Cross-Validation**
+
+Then train a model on B and C to predict on A
+
+**9. Cross-Validation**
+
+And a model on A and C to predict on B. Now, none of these models has made predictions on its own training data. All the predictions are essentially "test set" predictions.Therefore, RMSE and R-squared calculated from these predictions should give you an unbiased estimate of how a model fit to all the training data will perform on future data.
+
+**10. Create a cross-validation plan**
+
+We can implement a cross-validation plan using the function kWayCrossValidation from the package vtreat. The function needs the number of rows in the training data, and the number of folds to create. In our example, we use 3 folds.
+
+**11. Create a cross-validation plan**
+
+The function returns the indices for training and testing for each fold. Use the data with the training indices to fit a model, and then make prediction on the data with the app, or test, indices.
+
+**12. Final Model**
+
+If the estimated model performance looks good enough, then use all the data to fit a final model. You can’t evaluate this final model’s future performance, because you don’t have data to evaluate it with. Cross-validation only tests the modeling process, while test/train split tests the final model.
+
+**13. Example: Unemployment Model**
+
+We can use cross-validation to estimate the out of sample performance of a model to fit female unemployment. The estimates are similar to the estimates made by using a test set.Now let's practice
+
+**14. Let's practice!**
+
+test/train splits and cross-validation.
 
 ## Generating a random test/train split
 
@@ -774,6 +1050,35 @@ Before moving on to more sophisticated regression techniques, we will look at so
 
 Theory. Coming soon ...
 
+
+**1. Categorical inputs**
+
+In this lesson you will see how categorical variables are represented in R models.
+
+**2. Example: Effect of Diet on Weight Loss**
+
+As an example, suppose we want to model weight loss over 24 months as a function of diet, as well as age and body mass index at the start of the study. Diet is a categorical variable with three possible values: Mediterranean, Low-Carb, and Low-Fat.
+
+**3. model.matrix()**
+
+In many R modeling functions, categorical variables with N possible levels are represented under the covers as N-1 0/1, or indicator, variables.You can see the representation R uses via the model-dot-matrix call, which takes a formula and a data frame as inputs.
+
+**4. Indicator Variables to Represent Categories**
+
+In our example, the Diet variable becomes two indicators, one for Low-Fat and another for Mediterranean. The left-out level, Low-Carb, is the default, or reference level.Converting a categorical variable into a set of indicator variables is sometimes called "one-hot-encoding".
+
+**5. Interpreting the Indicator Variables**
+
+Under the covers, the lm function solves a numerical problem, with a coefficient for every indicator variable, as shown in the formula here.Recall that for a linear model the Intercept is the predicted value when all the variables equal 0. In our example, this means that the Intercept is the value when Age and BMI are zero, and Diet is Low-Carb. The coefficients for the Mediterranean and Low-Fat diets represent the change in weight loss from being on the low-carbohydrate diet for a person of the same age and bmi. For example, a person on the Mediterranean diet on average lost a kilogram less than a person of the same age and BMI on the Low-Carb diet. Because a categorical
+
+**6. Issues with one-hot-encoding**
+
+variable with K possible values encodes to K-1 variables, using variables like ZIP code with many many possible values can be dangerous, both for computational reasons and because too many variables relative to the number of datums can lead to overfit.To deal with this problem some algorithms encode the levels as numbers. In our example, we might code the diets as the values 1, 2, and 3. This is not recommended with algorithms like linear regression that treat datums as points in a geometric space, because it can lead to misleading results. Luckily, in R you don't usually have to worry about encoding categoricals, as most R functions do that for you. However, it's still important to be aware of the conversion and how to interpret it. Now
+
+**7. Let's practice!**
+
+let's practice working with categorical variables.
+
 ## Examining the structure of categorical inputs
 
 For this exercise you will call <a href="https://www.rdocumentation.org/packages/stats/topics/model.matrix">`model.matrix()`</a> to examine how R represents data with both categorical and numerical inputs for modeling. The dataset `flowers` (derived from the `Sleuth3` package) is loaded into your workspace. It has the following columns:
@@ -866,6 +1171,43 @@ Congratulations! You've successfully fit a model with a categorical variable, an
 ## Interactions
 
 Theory. Coming soon ...
+
+
+**1. Interactions**
+
+In earlier chapters, we said linear regression assumes that inputs affect the outcome linearly and additively. Now we will start to look at cases that violate these assumptions. In this lesson, you will learn about variable interactions. Before
+
+**2. Additive relationships**
+
+we jump into variable interactions, lets review an example of an additive relationship. Imagine plant height as a function of sunlight and the bacteria in the soil. If the effects of bacteria and sunlight are additive, then the change in plant height is the sum of the effects of bacteria and sunlight respectively.This means a change in sunlight will cause the same change in plant height, no matter what the level of bacteria in the soil, and vice versa.
+
+**3. What is an Interaction?**
+
+However, if the effect of bacteria is different, depending on the level of sunlight, then there is an interaction between bacteria and sunlight, designated here by the colon.A variable interaction occurs when the simultaneous effect of two variables on the outcome is not additive.
+
+**4. What is an Interaction?**
+
+Suppose sun is a categorical variable with two values, sun and shade. An interaction between sun and bacteria means that the change in height due to a change in bacteria will be different in sun than it will in shade. It's like having two bacteria models: one for sun and one for shade.
+
+**5. Example of no Interaction: Soybean Yield**
+
+Here we see a plot of soybean plant yield as a function of water stress and the levels of ozone and sulfur trioxide present. Stress has two levels: "stressed" and "well-watered". The slope between ozone and yield is the same for both stressed and well-watered plants, and the same for sulfur trioxide. This shows that there is no significant interaction between stress and either ozone or sulfur trioxide on soybean yield.
+
+**6. Example of an Interaction: Alcohol Metabolism**
+
+In this plot, we see alcohol metabolism as a function of gastric dehydrogenase activity for men and women. The slopes of the relationships are quite different by gender, indicating that there is an interaction between gastric activity and gender on alcohol metabolism.
+
+**7. Expressing Interactions in Formulae**
+
+To fit a linear or additive model with interactions in R, you must specify the interaction explicitly. A colon expresses the interaction between two variables. The asterisk is short hand for the main effects of a and b and the interaction between them. Since the asterisk is also the multiplication symbol in R, you must use the I function in a formula to use the expression "a times b" in a formula.
+
+**8. Finding the Correct Interaction Pattern**
+
+Unfortunately, using the wrong pattern of main effects and interactions in a linear regression can lead to a suboptimal model, as well as incorrect interpretations of how the inputs affect the outcome.In this course, we are interested in prediction, rather than interpreting the model, so we will use cross-validation to estimate the future prediction performance of three possible alcohol metabolism models: a model with no interactions, a model with both main effects and interactions, and a model with only a main effect for gastric activity and an interaction between sex and gastric activity. In this case, the third model performs the best.In future chapters you will learn about regression methods that can learn certain types of interactions from the data, so you don't have to encode them yourself.
+
+**9. Let's practice!**
+
+Now let's practice modeling interactions.
 
 ## Modeling an interaction
 
@@ -1007,6 +1349,67 @@ Cross-validation confirms that a model with interaction will likely give better 
 ## Transforming the response before modeling
 
 Theory. Coming soon ...
+
+
+**1. Transforming the response before modeling**
+
+Sometimes you get better models by transforming the output, rather than predicting the output directly. In this lesson you will see an example of modeling a transformed output, and transforming the predictions back into the original space.
+
+**2. The Log Transform for Monetary Data**
+
+For prediction, a useful transformation is log transforming monetary data, like income or profits. Monetary values are often lognormally distributed, which means that they tend to be skewed, with a long tail. Lognormal distributions also typically have a wide dynamic range: in this data, incomes range from 60 dollars to over 700,000. Wide dynamic ranges can also make prediction more difficult.
+
+**3. Lognormal Distributions**
+
+With lognormal data, the mean value (shown here in green) is generally greater than the median value (shown here in orange). You can think of the median value of an income distribution as representing a typical income: half the subjects have higher income, and half have lower.Regression algorithms usually predict the expected, or mean, value of the output. This means that predicting income directly will tend to overpredict the typical income for subjects with a given set of characteristics.
+
+**4. Back to the Normal Distribution**
+
+If you take the log of lognormally distributed data, the resulting data is normally distributed. This means the mean tracks the median, and the dynamic range of the data is more modest.Here, we look at the previous income data on a log scale. The distribution looks closer to a normal, and the mean and median
+
+**5. The Procedure**
+
+are close together. The modeling procedure is to first fit a model to log outcome. Next apply the model
+
+**6. The Procedure**
+
+to the data you want predictions for. Finally,
+
+**7. The Procedure**
+
+exponentiate to transform the predictions back to outcome space. One consequence of log-transforming
+
+**8. Predicting Log-transformed Outcomes: Multiplicative Error**
+
+outcomes is that prediction errors are multiplicative in outcome space. This means the size of the error is relative to the size of the outcome.We can define relative error as the prediction error divided by the true outcome.Log transformations are useful when you want to reduce relative error, rather than additive error. Predicting monetary amounts is one such example. Being off in your prediction by $100 is quite different when the true amount is $250 rather than $10,000. Let's define a measure
+
+**9. Root Mean Squared Relative Error**
+
+called root mean squared relative error, by analogy to RMSE. A model that predicts log-outcome will often have lower RMS-relative error and larger RMSE than a model that predicts outcome directly. Let's see this by example.
+
+**10. Example: Model Income Directly**
+
+Here we want to predict a person's income, based on their education and the score from a proficiency test taken about 25 years before the survey.We want to compare a model to predict income to a model that predicts log income. First, we'll model income directly.
+
+**11. Model Performance**
+
+We can evaluate the model’s error and relative error on new data. Now
+
+**12. Model log(Income)**
+
+let's fit a model that predicts log income. Now transform the
+
+**13. Model Performance**
+
+predictions back into outcome units, and evaluate this model's error and relative error on new data.
+
+**14. Compare Errors**
+
+We can see that modeling the income directly gave a smaller RMSE, but modeling log income gave smaller relative error.Now let's
+
+**15. Let's practice!**
+
+practice predicting log outcome and calculating error and relative error.
 
 ## Relative error
 
@@ -1189,6 +1592,47 @@ You've seen how modeling log(income) can reduce the relative error of the fit, a
 
 Theory. Coming soon ...
 
+
+**1. Transforming inputs before modeling**
+
+Last lesson, you explored transforming the output before modeling. In this lesson, you will explore transforming input variables before modeling.
+
+**2. Why To Transform Input Variables**
+
+There are many reasons why you might want to transform input variables before modeling. The most important reason is that you have domain knowledge that tells you that a transformed variable may be more informative than the variables that you have. For instance, animal intelligence is related to the ratio of brain mass to body mass to the two-thirds, rather than to brain or body mass directly.
+
+**3. Why To Transform Input Variables**
+
+You may also want to transform variables for pragmatic reasons, to make the variable easier to model with. The log transform we saw in the previous lesson is again useful, especially for monetary input variables.
+
+**4. Why To Transform Input Variables**
+
+Or you may want to transform variables to meet modeling assumptions, like linearity.
+
+**5. Example: Predicting Anxiety**
+
+As an example, here we see a plot that relates a person's level of anxiety to the number of hassles they experience in a day. The relationship is clearly non-linear: when a person has experienced only a few hassles, another hassle may not affect their anxiety much; but when they are having a day filled with problems, the next hassle may have a much greater impact on their emotions.So if you wanted to fit a linear regression model for anxiety that included hassles as a variable, you would have a problem.
+
+**6. Transforming the hassles variable**
+
+We can try fitting a model not only to hassles, but to hassles squared or hassles cubed. As the graph shows, both hassles squared or cubed show a better fit to the data than a linear fit.But which model is best?
+
+**7. Different possible fits**
+
+There are many different transformations of the hassles variable that might give us the shape we observed in the data. If we have a domain knowledge for preferring one, then that's how we should pick. But if we don't know, and are mostly concerned with accurate prediction, then we should pick the one that seems to give us the lowest prediction error.Note that when you raise a variable to a power in a formula, you should use the I function to treat the expression mathematically, not as an interaction.
+
+**8. Compare different models**
+
+We can fit models to hassles, hassles squared, and hassles cubed, and compare. In this case, the cubic model has the best r-squared.
+
+**9. Compare different models**
+
+We should also validate the models' out-of-sample performance, in this case by cross-validation. The cubic model still looks the best.Note that we don't know that hassles literally affect anxiety in a cubic way; we only know that of the three models we tried, the cubic model seems to predict the best.In a later lesson, we will see regression algorithms that can learn some of these input variable transforms automatically, so that the data scientist doesn't always have to specify them.
+
+**10. Let's practice!**
+
+Now let’s practice transforming input variables and modeling with them.
+
 ## Input transforms: the "hockey stick"
 
 In this exercise, we will build a model to predict price from a measure of the house's size (surface area). The data set `houseprice` has the columns:
@@ -1315,6 +1759,63 @@ Now that we have mastered linear models, we will begin to look at techniques for
 
 Theory. Coming soon ...
 
+
+**1. Logistic regression to predict probabilities**
+
+In this chapter, you will learn about regression in non-linear situations. This first lesson, covers regression to predict probabilities.
+
+**2. Predicting Probabilities**
+
+While predicting if an event will occur is a classification problem, we'll call predicting the numerical probability that it occurs regression.However, unlike standard regression, probabilities can only be in the range 0-1.Let's see an example.
+
+**3. Example: Predicting Duchenne Muscular Dystrophy (DMD)**
+
+In this example, we want to develop a test to detect the gene for DMD in women. The test uses the measurement of two enzymes in the blood, here labeled CK and H. What is the probability that a woman is a DMD carrier, based on her CK and H levels?
+
+**4. A Linear Regression Model**
+
+We can try a linear regression, where the outcome is 1 or TRUE for women who have the DMD gene, and 0 or FALSE otherwise. Unfortunately, the model predicts probabilities outside the range 0-1. We'd like a model that only predicts valid probabilities.
+
+**5. Logistic Regression**
+
+The counterpart to linear regression for predicting probabilities is logistic regression. Logistic regression assumes that the inputs are additive and linear in the log-odds of the outcome, where the odds is the ratio of the probability that an event occurs to the probability that it does not.You fit logistic regression models in R with the glm function. glm looks a lot like lm; it takes as input a formula, a data frame, and a third argument called family.The family argument describes the error distribution of the model; just remember that for logistic regression, use family = binomial.
+
+**6. DMD model**
+
+glm also assumes that there are two possible outcomes, a and b. The model returns the probability of event b. To make the model easier to understand, we recommend that you encode the two outcomes as 0/1 or FALSE and TRUE.
+
+**7. Interpreting Logistic Regression Models**
+
+Read the coefficients of a logistic regression as you do those for a linear model. If the coefficient is positive, then the event becomes more probable as that value increases, if everything else is held constant.In our example, increased levels of both CK and H make the probability of the dmd gene higher.
+
+**8. Predicting with a glm() model**
+
+predict takes as inputs the model and a data frame. To get the probabilities, include the argument type = "response".
+
+**9. DMD Model**
+
+We can fit a logistic model to the dmd training data, and look at the predictions. Now all the predictions lie between zero and one. But how good are they?
+
+**10. Evaluating a logistic regression model: pseudo-$R^2$**
+
+Squared error and RMSE are not good measures for logistic regression models. Instead, use deviance and Pseudo R-squared. You can think of deviance as being similar to variance.Pseudo-R-squared is analogous to R-squared. It compares the deviance of a model to the null-deviance of the data. A good fit gives pseudo-R-squared near 1.
+
+**11. Pseudo-$R^2$ on Training data**
+
+For training performance, you can calculate pseudo-R-squared using the deviance and null deviance from glance, or call wrapChiSqTest on the model.
+
+**12. Pseudo-$R^2$ on Test data**
+
+For test performance, call wrapChiSqTest on a data frame that has both the predictions and the true outcomes. You also have to designate the target event, which in our example is "TRUE".
+
+**13. The Gain Curve Plot**
+
+The gain curve plot is great for evaluating logistic regression models.The wizard curve (in green) shows how a perfect model would sort the events: in our case, all the women with the dmd gene first. The blue curve shows how the model's probability scores would sort the events. We want women who carry the dmd gene to have higher probability scores than women who do not. The closer the blue curve is to the green one, the better the model's probability estimates are for identifying positive instances.
+
+**14. Let's practice!**
+
+Now let's practice fitting logistic regression models.
+
 ## Fit a model of sparrow survival probability
 
 In this exercise, you will estimate the probability that a sparrow survives a severe winter storm, based on physical characteristics of the sparrow. The dataset `sparrow` is loaded into your workspace. The outcome to be predicted is `status` ("Survived", "Perished"). The variables we will consider are:
@@ -1417,6 +1918,55 @@ Very good. You see from the gain curve that the model follows the wizard curve f
 ## Poisson and quasipoisson regression to predict counts
 
 Theory. Coming soon ...
+
+
+**1. Poisson and quasipoisson regression to predict counts**
+
+In this lesson, you will learn about regression to predict count data.
+
+**2. Predicting Counts**
+
+Predicting counts is a non-linear problem, because counts are restricted to being non-negative and integral.The counterpart to linear regression for count data is poisson or quasipoisson regression.
+
+**3. Poisson/Quasipoisson Regression**
+
+Poisson regression is also a generalized linear model. It assumes that the inputs are additive and linear with respect to the log of the outcome. In R, you will again use the glm function, with family either poisson or quasipoisson.
+
+**4. Poisson/Quasipoisson Regression**
+
+For Poisson regression, the outcome is an integer that represents a count or a rate, like the number of traffic tickets a driver gets in a year, or the number of visits to a website per day. The model returns an expected rate that is not necessarily an integer, for instance the expected number of visits to a website per day.
+
+**5. Poisson vs. Quasipoisson**
+
+Poisson regression assumes that the process producing the count has a poisson distribution, where the mean equals the variance. For many real-life processes, the variance will be quite different from the mean. In this case, you should use quasipoisson regression. Poisson and quasipoisson regression work better on larger data sets.If the counts that you want to predict are much larger than zero, doing regular regression will often be fine, as well.Let's see an example.
+
+**6. Example: Predicting Bike Rentals**
+
+Here we have hourly data from a bike sharing system in Washington, D.C., detailing the number of bikes rented during the first 2 weeks of January. We want a model to predict the hourly bike rental counts as a function of the time of day, the type of day (workday, weekend, or holiday), and details about the weather.
+
+**7. Fit the model**
+
+We’ll use January data for training. Because the variance of the bike rentals is much larger than the mean, we will use quasipoisson regression.
+
+**8. Check model fit**
+
+As with logistic regression, we can use pseudo-R-squared to check the goodness of fit. We can get the deviance and null deviance of the model using glance. This model explains about 76% of the deviance, not too bad.
+
+**9. Predicting from the model**
+
+The predict function takes the model and the data to prediction. As with logistic regression, be sure to use type = "response" to get the predicted rates. Here, we apply the model to data from February, and also plot the predicted hourly rates versus the actual counts.
+
+**10. Evaluate the model**
+
+We can calculate the root mean squared error of the model for February. On average, the prediction is off by about 69 rentals each hour, about half the standard deviation of the rental rates from the mean.
+
+**11. Compare Predictions and Actual Outcomes**
+
+We can also compare the predictions to actual outcomes as a function of time.
+
+**12. Let's practice!**
+
+Let’s now practice fitting and predicting from count models.
 
 ## Poisson or quasipoisson
 
@@ -1591,6 +2141,55 @@ Good work! This model mostly identifies the slow and busy hours of the day, alth
 
 Theory. Coming soon ...
 
+
+**1. GAM to learn non-linear transformations**
+
+In this lesson, you will learn about generalized additive models, to automatically learn input variable transformations.
+
+**2. Generalized Additive Models (GAMs)**
+
+With a generalized additive model (GAM), the outcome depends additively on unknown smooth functions of the input variables. A GAM learns the functions s_i and the intercept b0 that best fit the data.
+
+**3. Learning Non-linear Relationships**
+
+Remember the hassles data from a previous lesson? If we want to model the non-linear relationship between hassles and anxiety levels, but we aren't sure if the relationship is quadratic, cubic, or something else, we can try a GAM to learn the relationship.
+
+**4. gam() in the mgcv package**
+
+We will use the gam function from the mgcv package to fit GAM models. gam takes a formula, a dataset, and a family as arguments. For regular regression, use the gaussian family. For predicting probabilities, use binomial, and for counts, poisson or quasipoisson.Because GAMs are more complex than linear models, they are more likely to overfit, and so are best used on larger data sets.
+
+**5. The s() function**
+
+To specify that an input has a non-linear relationship with the outcome, use the s function in the formula. Here, we specify that we want to model anxiety as a non-linear function of hassles.It's not recommended to use s with a categorical variable; the s function tries to fit a spline between the input and the outcome. To do this, the input should take on about 10 or more unique values.Let's work an example.
+
+**6. Revisit the hassles data**
+
+Let's revisit the hassles data from a previous lesson. Last time, we tried three variations
+
+**7. Revisit the hassles data**
+
+a linear,quadratic, and cubic model, and saw that cubic seemed to be the best.
+
+**8. GAM of the hassles data**
+
+Now let's try a GAM. We specify in the formula that we want a non-linear fit to the hassles variable, and use family equals gaussian. A summary of the model reports deviance explained, or pseudo-R2 of 0-point-64, almost as good as the cubic model.
+
+**9. Examining the Transformations**
+
+Calling plot on the model gives you plots of the variable transformations that the algorithm learned. To get the y-values of these plots, call predict on the model with the argument type = "terms".
+
+**10. Predicting with the Model**
+
+To make predictions with the model, call predict with the argument type = "response".If we compare the GAM to our previous models on the training data, we see that the GAM learned a relationship that's close to the cubic model, except at the high ends.
+
+**11. Comparing out-of-sample performance**
+
+When we look at the GAM's out-of-sample RMSE, we see that the performance is better than the linear model, though not quite as good as the quadratic or cubic models. This may be because the data set is small, and so the model is noisier.The takeaway is that while knowing the appropriate transformations is best, using GAM to learn the transformations is useful when you don't have the domain knowledge to tell you the correct transform.
+
+**12. Let's practice!**
+
+Now let's practice fitting and predicting with generalized additive models.
+
 ## Writing formulas for GAM models
 
 When using <a href="https://www.rdocumentation.org/packages/mgcv/topics/gam">`gam()`</a> to model outcome as an additive function of the inputs, you can use the <a href="https://www.rdocumentation.org/packages/mgcv/topics/s">`s()`</a> function inside formulas to designate that you want to use a spline to model the non-linear relationship of a continuous variable to the outcome.
@@ -1763,6 +2362,55 @@ In this chapter we will look at modeling algorithms that do not assume linearity
 
 Theory. Coming soon ...
 
+
+**1. The intuition behind tree-based methods**
+
+In this chapter, you will learn about ensembles of decision trees, a powerful machine learning method for both regression and classification. In the first lesson, you will review the intuition behind a decision tree.
+
+**2. Example: Predict animal intelligence from Gestation Time and Litter Size**
+
+As an example, here we have data about the litter size and gestation time in days of various mammals. We also have a measure of each species' intelligence, scaled so that human intelligence is 1.We want to predict intelligence from a species' average litter size and gestation time. We'll use a decision tree.
+
+**3. Decision Trees**
+
+Decision trees learn rules of the form "if a and b and c, then y". Trees can express non-linear concepts like intervals and non-monotonic relationships, and because AND is similar to multiplication, trees can express certain kinds of non-additive interactions.
+
+**4. Decision Trees**
+
+A tree model for intelligence expresses that species with average litter size less than 1-point-15 and gestation greater than 268 days have average intelligence of 0-point-315, and species with litter sizes between 1-point-15 and 4-point-3 have average intelligence of 0-point-131.
+
+**5. Decision Trees**
+
+Trees have an expressive and easy to understand concept space. In this case, a tree fits the intelligence data better than a linear model, in the sense that the predictions have a lower root mean squared error.
+
+**6. Decision Trees**
+
+But trees also give only coarse-grained predictions. Our tree model can only predict 6 possible values, while linear models give continuous-valued predictions.
+
+**7. It's Hard for Trees to Express Linear Relationships**
+
+Since trees express axis-aligned regions, it's also hard for them to express truly linear relationships
+
+**8. It's Hard for Trees to Express Linear Relationships**
+
+or any relationship that varies quickly and continuously.
+
+**9. Other Issues with Trees**
+
+You can try to make finer-grain predictions by doing more splits on the data to build deeper trees, but a deep tree can be overly complex, potentially overfitting the training data. Shallower trees are less likely to overfit, but the predictions are often too coarse-grained.
+
+**10. Ensembles of Trees**
+
+An ensemble, or a model made up of several trees, will give finer-grained predictions
+
+**11. Ensembles of Trees**
+
+and usually better quality models than a single tree. In this chapter, we will cover two ensemble methods: random forests and gradient boosted trees.
+
+**12. Let's practice!**
+
+Now let's do a quick tree exercise.
+
 ## Predicting with a decision tree
 
 <img src="https://assets.datacamp.com/production/course_3851/datasets/decisiontree_intelligence.png" alt="decision tree">
@@ -1789,6 +2437,51 @@ Yes! But as you see this tree can predict only 6 values. For the rest of this ch
 ## Random forests
 
 Theory. Coming soon ...
+
+
+**1. Random forests**
+
+In this lesson, you will learn about random forests, and how to fit a random forest model with the ranger package.
+
+**2. Random Forests**
+
+Random forests try to resolve the issues with decision tree model by building multiple trees from the training data. Using slightly different data to build each tree adds diversity to the models. Averaging the results of multiple trees together reduces the risk of overfit. Multiple trees also gives finer-grain predictions than a single tree.
+
+**3. Building a Random Forest Model**
+
+Each individual tree is grown from a random sample of the training data. For a single tree, each node is formed by picking a variable to split the data on, and a value to make the split. In a random forest, the set of candidate variables to consider is randomly selected. All this randomization gives diversity to the set of trees. After all the trees are grown, the model makes a prediction on a datum by running it through all the trees and averaging the result.
+
+**4. Example: Bike Rental Data**
+
+For our example, we'll return to the bike rental data from a previous lesson, and predict hourly bike rental rates from the time of day, the type of day, and the weather conditions. We'll train a model on data from January, and evaluate the model on data from February.
+
+**5. Random Forests with ranger()**
+
+We'll use the ranger package to fit random forest. The ranger function takes a formula, the training data, and the number of trees. If the outcome variable is a numeric value, ranger will automatically do regression rather than classification. By default, ranger builds 500 trees. We recommend that you use at least 200.The argument respect-dot-unordered-dot-factors tells ranger how to treat categorical variables.We recommend setting this value to "order". This causes ranger to safely and meaningfully encode the categorical variables as numbers. This encoding runs faster than converting a categorical variable to indicator variables when the categorical variable has a very large number of possible values.
+
+**6. Random Forests with ranger()**
+
+Printing a ranger model will display what's called an out of bag estimate of the model's R-squared and mean squared error. These are the algorithm's estimates of how the model will perform on future data. When possible, you should still evaluate the model directly on test data.
+
+**7. Predicting with a ranger() model**
+
+The predict function for a ranger model takes the model and a new data set. It returns an object with a field called predictions, containing the predicted outcomes. Here we get the model's predictions for the February data.
+
+**8. Evaluating the model**
+
+On the February data, our random forest model has a root mean squared error of 67-point-15, a slight improvement on the RMSE of 69-point-3 for the quasipoisson model from Chapter 3.
+
+**9. Evaluating the model**
+
+We can also compare the predictions to the actual hourly bike rentals via a scatterplot
+
+**10. Evaluating the model**
+
+or by plotting the data as a function of time.
+
+**11. Let's practice!**
+
+Now let's practice building and fitting random forest models.
 
 ## Build a random forest model for bike rentals
 
@@ -1921,6 +2614,49 @@ Nice job! The random forest model captured the day-to-day variations in peak dem
 ## One-Hot-Encoding Categorical Variables
 
 Theory. Coming soon ...
+
+
+**1. One-Hot-Encoding Categorical Variables**
+
+To prepare for the next lesson on the xgboost implementation of gradient boosting, in this lesson you will learn how to safely convert categorical variables to indicator variables.
+
+**2. Why Convert Categoricals Manually?**
+
+As we mentioned in a previous lesson, most R modeling functions do a great job of managing categorical variables for you, so usually you don't have to worry about it. However, not all programming languages do this. In the next lesson, you will learn about xgboost, a package that originally comes from Python. xgboost does not directly accept categoricals; they must be converted to indicators or another numerical representation. In Python, this conversion is called one-hot encoding.
+
+**3. One-hot-encoding and data cleaning with `vtreat`**
+
+We will use the vtreat package to one-hot encode categorical variables. As a side effect, vtreat also cleans up missing values in both categorical and numeric data. The basic idea is to design a treatment plan from the training data using the function designTreatmentsZ. This treatment plan records the steps needed to safely one-hot-encode not just the training data, but future data as well.The function prepare converts the training and future data to a form that is compatible with xgboost: all numerical variables, with no missing values.
+
+**4. A Small vtreat Example**
+
+Let's work a small example. Here we have data where x is a categorical input variable with levels "one", "two" and "three", and u is a numeric input variable. y is the outcome.
+
+**5. Create the Treatment Plan**
+
+First create the treatment plan. designTreatmentsZ takes as input the training data and a list of the input variable names.
+
+**6. Get the New Variables**
+
+The treatment plan contains a member called the score frame, which holds a mapping from the original variable names to new variable names, and the type of the new variables. We are only interested in "lev" variables, which are the indicator variables, and “clean” variables, which are the numeric variables, cleaned to not hold bad values like NA or NaN. We can get a list of the new variable names from the scoreFrame.
+
+**7. Prepare the Training Data for Modeling**
+
+Once we have the variable names, we can use the prepare function and the treatment plan to create new treated training data suitable for training an xgboost model.
+
+**8. Before and After Data Treatment**
+
+The categorical variable is now three indicator variables, and the treated data is all numerical, with no missing values. Note that the outcome variable is not present in the treated data.
+
+**9. Prepare the Test Data Before Model Application**
+
+We must also use prepare on future data before model application.
+
+**10. vtreat Treatment is Robust**
+
+Sometimes, there are levels of a categorical variable that don’t appear in the training data. Usually, this will crash a model. vtreat encodings handle this situation gracefully.vtreat can also do a meaningful encoding of categorical variables similar to the method ranger uses, but that is outside the scope of this lesson. For more information, see the vtreat documentation on github.Now let’s practice using vtreat on data.
+
+**11. Let's practice!**
 
 ## vtreat on a small example
 
@@ -2117,6 +2853,70 @@ Perfect. The bike data is now in completely numeric form, ready to use with xgbo
 ## Gradient boosting machines
 
 Theory. Coming soon ...
+
+
+**1. Gradient boosting machines**
+
+In this lesson, you will learn about gradient boosting machines, and how to fit gradient boosting models in R with the xgboost package.
+
+**2. How Gradient Boosting Works**
+
+Gradient boosting is an ensemble method that builds up a model by incrementally improving the existing one. Start the model by fitting a single, usually shallow, tree to the data. This is M_1.
+
+**3. How Gradient Boosting Works**
+
+Next, fit a tree to the residuals of the model and find the weighted sum of that tree with the first one that gives the best fit. This is M_2.
+
+**4. How Gradient Boosting Works**
+
+For regularized boosting, decrease the learning by a factor eta, between 0 and 1. Eta close to 1 will give faster learning, but increases the risk of overfit. Smaller eta slows the learning, but lessens the risk of overfit.
+
+**5. How Gradient Boosting Works**
+
+Repeat until either the residuals are small enough, or the maximum number of iterations is reached.
+
+**6. Cross-validation to Guard Against Overfit**
+
+Because gradient boosting optimizes error on the training data, it's very easy to overfit the model. So best practice is to estimate out-of-sample error via cross-validation for each incremental model, then retroactively decide how many trees to use.
+
+**7. Best Practice (with xgboost())**
+
+In xgboost, the xgb-dot-cv function fits a model and calculates the cross-validated errors. Run this function with a large number of rounds.
+
+**8. Best Practice (with xgboost())**
+
+xgb-dot-cv records the estimated errors in the evaluation_log element of its output. You can use the evaluation_log to find the number of trees with the lowest estimated RMSE.
+
+**9. Best Practice (with xgboost())**
+
+Now run the xgboost function with the right number of trees to get the final model.
+
+**10. Example: Bike Rental Model**
+
+Let's work an example with the January and February bike rental data. Since xgboost can't work directly with categorical variables, we use vtreat to prepare the data.
+
+**11. Training a model with xgboost() / xgb.cv()**
+
+First run xgb-dot-cv, which takes a large number of arguments. Set the objective to "reg:linear" for regression. Here we set the number of rounds to 100, with a tree depth of 6 and a learning rate eta of 0-point-3. We specify 5-fold cross validation for estimating out-of-sample error.
+
+**12. Find the Right Number of Trees**
+
+The out-of-sample error estimates are in the column test_rmse_mean of the evaluation log. The index of the minimum value corresponds to the best number of trees. For this example, the best model had 78 trees.
+
+**13. Run xgboost() for final model**
+
+Now run xgboost with the right number of trees to get the final model.
+
+**14. Predict with an xgboost() model**
+
+The predict function for xgboost models takes a model and the input data. Again, we have to prepare the test data using vtreat. Our gradient boosting model has an RMSE of 54, a notable improvement over the quasipoisson and random forest models we fit earlier.
+
+**15. Visualize the Results**
+
+We can compare the February predictions to the actual February hourly bike rentals as a scatterplot, and plotted against time.Now let's practice using xgboost to build and run gradient boosting models.
+
+**16. Let's practice!**
+
 
 ## Find the right number of trees for a gradient boosting machine
 

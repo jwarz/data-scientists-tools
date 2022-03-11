@@ -27,6 +27,76 @@ The best way to learn data wrangling skills is to apply them to a specific case 
 
 Theory. Coming soon ...
 
+
+**1. The United Nations Voting Dataset**
+
+Hi, I'm Dave Robinson and I'll be your instructor for this course. I'm a data scientist and I really enjoy using R to dive into a dataset and discover interesting things. In this course, we're going to be using some of my favorite R packages, such as dplyr and ggplot2, to explore and draw conclusions from a real-world dataset. If you've used these packages before, this will be a great opportunity to practice using them in an analysis.
+
+**2. UN Voting Dataset**
+
+Let's introduce the dataset, which contains the historical voting data from the General Assembly of the United Nations. In the General Assembly every member nation gets a vote, which makes this a great opportunity to explore the history of international relations.In our data analysis vocabulary, rows of a dataset are called "observations" and columns are called "variables". In this dataset, each observation represents one combination of a roll call vote and a country
+
+**3. UN Voting Dataset**
+
+The first variable, rcid, is the "roll call ID".
+
+**4. UN Voting Dataset**
+
+describing one round of voting, such as to approve a UN resolution. The session variable represents which year-long session in the UN's history the vote was cast. Note that to keep the dataset at a reasonable size, only sessions from alternating years are included.
+
+**5. UN Voting Dataset**
+
+The vote column represents that country's choice.
+
+**6. UN Voting Dataset**
+
+For example, 1 means a yes vote, and 9 means a country was not a member of the United Nations. The ccode column is a country code
+
+**7. UN Voting Dataset**
+
+that uniquely specifies the country.
+
+**8. Votes in dplyr**
+
+To work with this in R, we’d start by loading the dplyr package, which offers tools for manipulating data. Then we can view the votes dataset by simply typing “votes” into the R prompt. Here you can see each of the columns of the table , as well as the table’s size - 508 thousand rows.As with almost any dataset you’ll run into, you’ll need to clean this data before we can start analyzing it. Let’s review one of the most important tools for performing multiple sequential steps on data: the pipe operator.
+
+**9. The pipe operator**
+
+The pipe, typed as “percent greater than percent”, tells R to pass one object in as the first argument of the next function,
+
+**10. The pipe operator**
+
+which lets us perform multiple operations in a series. While it may seem complicated if you haven’t used it much before, you’ll quickly get comfortable with it.
+
+**11. dplyr verbs**
+
+The operations we’ll usually be composing are dplyr’s “verbs”- functions that perform a single, simple action on a dataset. Recall that the “filter” verb subsets observations from a dataset, to remove rows that aren’t interesting to us.
+
+**12. dplyr verbs**
+
+The “mutate” verb adds a variable or changes an existing variable.Here’s an example of each.
+
+**13. Original data**
+
+In our original dataset, the vote column has five possible values : 1 for yes, 2 for abstain, 3 for no, 8 meaning the country wasn’t present, and 9 meaning the country was not a member.  We only care about the first three values- yes, no and abstain.
+
+**14. dplyr verbs: filter**
+
+To remove the others, we pipe the dataset into the filter function. Within that filter we describe a condition: vote &lt;= 3. The resulting data frame is smaller - it only kept the observations where our condition was met.
+
+**15. dplyr verbs: mutate**
+
+You’ll also be using the mutate function. The session variable is hard to interpret, but if you know the first session of the United Nations was held in 1946, you can use it to get the year each vote was cast, which is much more interpretable. To do this you could pipe the data into the “mutate” function, where you can define your new “year” column as 1945 + the session. Notice the new “year” column with the result. In your exercises, you’ll also clean up the country column to include full country names instead of IDs.
+
+**16. Chaining operations in data cleaning**
+
+The pipe operator lets you chain these simple actions together in a sequence. You’ll get into the habit of piping many small, simple operations together to perform a richer analysis.
+
+**17. Let's practice!**
+
+
+
+
 ## Filtering rows
 
 The `vote` column in the dataset has a number that represents that country's vote:
@@ -117,6 +187,39 @@ votes_processed <- votes %>%
 
 Theory. Coming soon ...
 
+
+**1. Grouping and summarizing**
+
+In your last exercises you cleaned up the raw data into create a processed set of votes,
+
+**2. Processed votes**
+
+which looked like this. Now we can start trying to pull real insights out of the data.There are far too many observations in this dataset to extract anything interpretable by looking through it manually, so we’ll need to choose a way to summarize it that's interesting to us. Here I’ll propose a simple metric we’ll be using a lot in this course:
+
+**3. Using “% of Yes votes” as a summary**
+
+“percentage of yes votes.” If a country votes yes on most resolutions, we might infer that it tends to agree with the international consensus, while if it votes no we could assume that it tends to go against it.
+
+**4. dplyr verb: summarize**
+
+To calculate this you’ll use another dplyr verb: summarize. Summarize takes many rows and turns them into one - while calculating overall metrics, such as an average or total.
+
+**5. dplyr verbs: summarize**
+
+For example, we can pipe the votes_processed data into a summarize operation, telling it to create a new variable called total. n is a special function within a summarize that means “the number of rows.” The result is a one-row data frame telling us the total number of rows - 353 thousand.
+
+**6. dplyr verbs: summarize**
+
+We can add another variable to this summary with our “percentage yes” variable. Since 1 is “yes” in our dataset, we want the percentage of the rows where the vote variable is equal to 1. The way to calculate this in R is “mean vote equals equals 1”. (If you’d like to know why, this is because it first compares each vote to 1 to get true or false, then treats true cases as “ones” and falses as “zeroes”.). By calculating this, we see that about 79-point-9 percent of United Nations votes in history were “yes” votes.This overall summary isn’t much information. We may want to know whether this percentage has changed over time.
+
+**7. dplyr verb: group_by**
+
+So we introduce another verb- group_by. When done before a summarize operation, this tells the summarize to create one row for each sub-group, instead of one row overall.
+
+**8. dplyr verbs: group_by**
+
+For example, here we perform the same summary, but first group by year before summarizing. Now instead of getting one row overall, we get one row for each year: we see that 56-point-9% of votes in 1947 were yes, but only 43-point-8% in 1949. In later lessons you’ll use this to visualize the trend in the percentage over time.Summarizing by subgroups is a powerful way to turn large datasets into smaller ones that you can interpret. In your exercises, you’ll try grouping by country instead of year, which shows you which countries are more prone to voting “yes” or “no”.
+
 ## Summarizing the full dataset
 
 In this analysis, you're going to focus on "% of votes that are yes" as a metric for the "agreeableness" of countries.
@@ -182,6 +285,29 @@ by_country <- votes_processed %>%
 
 Theory. Coming soon ...
 
+
+**1. Sorting and filtering summarized data**
+
+In your last exercise,
+
+**2. by_country dataset**
+
+you created a dataset called by_country, containing one row for each country with the total number of votes and the percentage of votes that were yes. Now you might be interested in knowing which country voted yes the most or least often.
+
+**3. dplyr verb: arrange()**
+
+To discover this we’ll introduce one more dplyr verb: arrange. Arrange sorts a dataset based on one of its variables, in either ascending or descending order. This is useful for pulling a few interesting conclusions out of your data.
+
+**4. arrange()**
+
+Here, we could pipe by_country to the arrange operation, telling it to sort by the percent_yes column. We’d see that Zanzibar is the country that voted yes the least often in our dataset, followed by the United States. But we might also notice that Zanzibar only had two votes in our entire dataset, which means that 0% is basically meaningless! This is a very common way that summarized data can trip you up, and why you have to be careful about interpreting your results too quickly.To fix this, in your exercises you’ll have to filter the dataset to remove countries with a low total, just like you earlier used filter to remove vote rows we didn’t care about.
+
+**5. Transforming tidy data**
+
+Notice therefore that filter isn’t just useful for cleaning your raw data, but also for manipulating your summarized data. It’s therefore important to get comfortable using each of these dplyr verbs at all the stages of an analysis.
+
+**6. Let's practice!**
+
 ## Sorting by percentage of "yes" votes
 
 Now that you've summarized the dataset by country, you can start examining it and answering interesting questions.
@@ -237,6 +363,23 @@ Once you've cleaned and summarized data, you'll want to visualize them to unders
 ## Visualization with ggplot2
 
 Theory. Coming soon ...
+
+
+**1. Visualization with ggplot2**
+
+In the last chapter,
+
+**2. By-year data**
+
+you created a dataset showing the percentage of yes votes in each year. While this isn’t a “large” dataset by typical standards, it’s still difficult to read through it and get a sense of a trend over time, or to communicate that trend to others. Instead, you want to visualize the data, into a line plot like this
+
+**3. Visualizing by-year data**
+
+- which makes it easy to see the change over time. Data visualization thus makes up the next part of our exploratory data analysis.
+
+**4. Visualizing by-year data**
+
+We’ll use the ggplot2 package, which uses the ggplot function to construct a graph. A call to ggplot has three parts. First is the data frame, which we’ve already constructed as by_country.Second is the mapping of variables in that data frame, such as year and percent yes, to the visual dimensions of the plot like the x and y axes, which we call “aesthetics”. This is done in an “aes” call, where we chose to put year on the x axis and percent_yes on the y-axis.The third part of a ggplot call is to add layers onto the plot. Here we add geom_line - where geom_ means we’re choosing which geometric objects to add to the plot. In your exercises you’ll try changing the layer you add, such as creating a scatter plot with points rather than a line plot.
 
 ## Choosing an aesthetic
 
@@ -301,6 +444,35 @@ ggplot(by_year, aes(year, percent_yes)) +
 ## Visualizing by country
 
 Theory. Coming soon ...
+
+
+**1. Visualizing by country**
+
+You’ve been able to plot the trend of percentage_yes over time, but only for the United Nations as a whole. Mixing all countries into one trend doesn’t tell us much about international relations
+
+**2. Examining by country and year**
+
+What if we wanted to plot the trend only for one country, such as the United States, to find out how its relationship with the United Nations has changed over time?First you'll have to change our summary operation to structure our data appropriately.
+
+**3. Summarizing by country and year**
+
+You’ve summarized by year before, and by country. Now, you’re going to summarize by both, by adding year and country to the group_by operation. This gets a data frame with one row for each unique combination of year and country- for example, just for Afghanistan in 1947.
+
+**4. Filtering for one country**
+
+Once we have this data, you can extract the votes for just one country- such as the United States- with a filter operation. This data is then easy to visualize the same way you visualized overall trends in the last exercises.This by_year_country data gives us even more options, though: instead of plotting one country at a time, we can plot multiple.
+
+**5. The %in% operator**
+
+Let’s introduce the %in% operator, written as percent in percent. This lets us take one vector and determine which of its items are in another vector. For example, here it would determine that the second and fifth elements, B and E, are in the second vector.
+
+**6. Filtering for multiple countries**
+
+The %in% operator thus lets us filter for multiple countries- here you are filtering only for the United States and France, which end up as the only rows in our data frame. Don’t forget “c” in our designation of United States and France: that’s just the R way of defining a vector.
+
+**7. Visualizing vote trends by country**
+
+Once you’ve created the dataset you’ll want to visualize them with ggplot2. To show both countries on the same plot and distinguish them, you’ll need to add another aesthetic besides x and y to your aes call. In this case a good choice is color. By adding “color = country” to our aesthetics, you can plot both lines on one graph, with a legend distinguishing the two. This makes it easy to compare and contrast the two trends. You could use this flexible approach of filtering and graphing to compare any number of countries.
 
 ## Summarizing by year and country
 
@@ -374,6 +546,33 @@ ggplot(filtered_4_countries, aes(year, percent_yes, color = country)) +
 ## Faceting by country
 
 Theory. Coming soon ...
+
+
+**1. Faceting by country**
+
+In the last exercise you learned to plot multiple countries, distinguishing them by color. This is great for two or three countries,
+
+**2. Graphing many countries**
+
+but consider this graph where the trends of six countries are compared to each other. I don’t know about you, but I find this hard to interpret- the overlapping lines are difficult to distinguish, and I find myself forgetting which color represents which country.Instead, let’s introduce an alternative approach: faceting,
+
+**3. Graphing many countries**
+
+or creating “sub-plots” for each country. To facet, add an additional option with + to the end of the plot: facet_wrap. Here you’ll use a tilde country: in R the tilde means “explained by”, which says that we want to divide the graph into one subplot by country. When the six countries are divided onto separate subplots, it becomes a lot easier to understand each country's trend.You might notice that all six graphs have the same y-axis, even though they cover different ranges. This leads to “wasted space” within each graph, where the trend in particular countries is compressed because of the patterns in other countries.
+
+**4. Graphing on separate scales**
+
+To avoid this, you can add a second argument, scales = “free_y”. This lets the y-axis vary between each subplot, and use all the space
+
+**5. Graphing on separate scales**
+
+it has available
+
+**6. Graphing on separate scales**
+
+There are advantages and disadvantages to this approach - while there’s less wasted space within each subplot, it can also be misleading while comparing between them- but it’s an option worth being aware of.Faceting is a powerful tool, and in the exercises you’ll see that it is capable of plotting and comparing even a large number of countries.
+
+**7. Let's practice!**
 
 ## Faceting the time series
 
@@ -459,6 +658,55 @@ While visualization helps you understand one country at a time, statistical mode
 
 Theory. Coming soon ...
 
+
+**1. Linear regression**
+
+In the last chapter,
+
+**2. Quantifying trends**
+
+you learned to visualize the trend of the “% yes” metric over time for individual countries, and see that Afghanistan’s agreement has generally going up while the United States has been going down. However, while it’s easy to recognize this trend visually, we haven’t yet quantified it. In this chapter, we’re going to learn to model this trend with a linear regression,
+
+**3. Linear regression**
+
+finding a “best fit” line for each country. For example, here we can see that
+
+**4. Linear regression**
+
+Afghanistan has a positive slope
+
+**5. Linear regression**
+
+and the US a negative slope.
+
+**6. Fitting model to Afghanistan**
+
+First, you can use filter to extract the per-year data for one country, in this case Afghanistan, into its own data frame.
+
+**7. Fitting model to Afghanistan**
+
+You can then use the lm function, short for “linear model”, to fit the line. We describe the model as “percent yes, tilde, year.”
+
+**8. Fitting model to Afghanistan**
+
+Percent yes is our dependent variable, on the y-axis. Next is the tilde- in R this means “explained by”. Then we have “year”,
+
+**9. Fitting model to Afghanistan**
+
+the independent variable, on the x-axis. This says we’re modeling “percent yes explained by year.”
+
+**10. Fitting model to Afghanistan**
+
+We can examine this model using the summary function, run on the model object we created with lm.  There’s a lot of output- and if you have experience in R you may recognize some of it- but we’re going to focus on the CLICK coefficient table in the middle. Each row here represents a term that’s been estimated- a y-intercept and a slope. The term we’re most interested in is the year term, also known as the slope, showing how much the year affects percent_yes. First we have an estimated slope term. In R the e-3 describes scientific notation, meaning 10 to the negative three- this makes the slope point-006. This describes a positive slope of point-6% increase in % yes each year. We may also care about the p-value, which tests for statistical significance. We won’t talk much about the details of p-values in this course, but low p-values, such as this one, generally mean we can rule out that the effect is due to chance.Quantifying the trend is important,
+
+**11. Visualization can surprise you, but it doesn’t scale well.**
+
+because in the words of Hadley Wickham, “Visualization can surprise you, but it doesn’t scale well. Modeling scales well, but it can’t surprise you.” Now that you’ve visualized a few examples and know what you’re looking for, you can apply a model. In the course of this chapter we’ll learn to “scale” this analysis
+
+**12. Let's practice!**
+
+to compare all countries in our dataset at once.
+
 ## Linear regression on the United States
 
 A linear regression is a model that lets us examine how one variable changes with respect to another by fitting a best fit line. It is done with the `lm()` function in R.
@@ -519,6 +767,28 @@ Not all positive or negative slopes are necessarily real. A p-value is a way of 
 
 Theory. Coming soon ...
 
+
+**1. Tidying models with broom**
+
+In our last section,
+
+**2. A model fit is a “messy” object**
+
+you learned to perform a linear regression and interpret the results, noticing in particular the estimate of the slope and the p-value in this coefficients table. However, while we were able to see these values in the printed output, we didn’t discuss how to extract them out within R.This is particularly important when combining multiple models.
+
+**3. Models are difficult to combine**
+
+If we had a linear regression for Afghanistan, for the United States, and for Canada, we wouldn’t have an easy way to combine these models, compare them, or visualize them.It’s possible to get these values out using built-in functions, but if you’re familiar with R you may recognize that there are some pitfalls that can make it unexpectedly difficult. There’s a tool that makes it particularly easy: my own broom package.
+
+**4. broom turns a model into a data frame**
+
+The broom package offers a function, tidy, that turns a linear model into a data frame of coefficients. In this case, the tidied coefficients have one row for the intercept and one for the slope, the ones we are interested in . Importantly, since this is a data frame, it is easy to extract values from it, and we’ll be able to use all our standard dplyr tools on it.In particular, this makes it possible to combine multiple models.
+
+**5. Tidy models can be combined**
+
+If you have two linear models, one for Afghanistan and one for the US, you could tidy each of them, and since the tidied models are the same shape they can be combined with dplyr’s bind_rows function. In the following sections you’ll build one model for each country and combine all of them.
+
+
 ## Tidying a linear regression model
 
 In the last section, you fit a linear model. Now, you'll use the `tidy()` function in the `broom` package to turn that model into a tidy data frame.
@@ -570,6 +840,27 @@ Awesome! We can easily compare the two models now.
 ## Nesting for multiple models
 
 Theory. Coming soon ...
+
+
+**1. Nesting for multiple models**
+
+In these next two sections, we're going to discuss fitting many models: in particular,
+
+**2. One model for each country**
+
+fitting one model for each country. This will allow us to find the countries whose level of agreement with the rest of the United Nations is increasing or decreasing most dramatically.Fitting multiple models requires several steps.
+
+**3. Start with one row per country**
+
+First, we start with the by_year_country dataset, containing one row for each combination of year and country. We need to separate this data out by country so we can model them individually. But instead of just pulling out one, as we've done before, we're going to split it into many small datasets, one for each country.
+
+**4. nest() turns it into one row per country**
+
+To do this, we use nest from the tidyr package. Using nest-negative country means to nest all the columns besides country. which means we end up with a data frame with one row for each country. All the other columns- year, total, and percent_yes- have been nested into a column called data. This is a list column, which we haven't seen before. It allows each item in the column to itself be a data frame (specifically a tibble, dplyr's version of a data frame)- containing the other columns. This means we now have a filtered version for Afghanistan, a filtered version for Argentina, and so on. In the next lesson this will allow us to fit a model to each.
+
+**5. unnest() does the opposite**
+
+Later we'll want to take a nested list column and bring the rows from each individual back into the "top level" of the data frame. This is done with the function unnest. Pipe the table in, saying you want to unnest the data column, and it takes each of those sub-tables and puts their rows back into the main table, where we get to the data we started from.You might be wondering why we nested the data frame only to reverse it right after. In the next lesson we'll add a step between the nesting and unnesting, where we fit a model to each sub-table and tidy it, that will make this process useful
 
 ## Nesting a data frame
 
@@ -641,6 +932,31 @@ nested %>% unnest(data)
 ## Fitting multiple models
 
 Theory. Coming soon ...
+
+
+**1. Fitting multiple models**
+
+In the last exercises you nested a data frame
+
+**2. nest() turns data into one row per country**
+
+to create many smaller data frames, one for each country. Recall, for example, that the first item in the data column was a table of Afghanistan's per-year data.Now you want fit a model on each of these one-country datasets- fitting one linear model for Afghanistan's data, one for Argentina, and so on.To fit a model for each item in a list column, you'll use the purrr package, which offers tools for working with functions and lists. In particular, you'll use the map function.
+
+**3. map() applies an operation to each item in a list**
+
+map lets you apply an operation to each item in a list. For example, if you had a list v with values 1, 2, and 3, you could use map and the expression "tilde dot times 10". The tilde and dot combination is a way of defining an operation, where the dot represents each item in the list- first 1, then 2, then 3. Thus the expression means "multiply each item by 10"- turning 1, 2, 3 into 10, 20, 30.Map is therefore useful any time you want to do something to each item of a list.
+
+**4. map() fits a model to each dataset**
+
+Here we want to fit a linear model into a new column based on each sub-data frame. We use mutate to define the new column "model", and use map to apply a linear regression to each item of “data". We describe the linear regression with tilde then our linear regression, the same kind we'd run on one data field, with dot as the data. This creates a new column of linear models - one for each sub-data frame. So the first item would contain the slope just for Afghanistan. It's nice that we've fit these models, but we can't combine them, manipulate them, or visualize them. That's why we return to the broom package,
+
+**5. tidy turns each model into a data frame**
+
+which takes each model and turns it into a tidy data frame of coefficients. We use map one more time to create another list column, calling this one "tidied". So now for each country, we have three columns: one with the original data, one with a linear model, and one with the tidied model.Tidied versions of statistical models are easy to combine, so
+
+**6. unnest() combines the tidied models**
+
+just like in the last lesson we can use unnest to bring them all into the top level. Now we have a table of coefficients, where the first two rows represent the slope and intercept for Afghanistan, the next two rows for Argentina, the next two for Australia, and so on: all of the details of each model in one place.This was four steps: nest by country, map to fit a model to each dataset, map to tidy each model, unnest to a table of coefficients. It's a complicated process, but it let us get information about each country- how it was changing over time - in a way much more complicated than our earlier group by and summarize allowed.
 
 ## Performing linear regression on each nested dataset
 
@@ -718,6 +1034,27 @@ country_coefficients <- by_year_country %>%
 # Print the resulting country_coefficients variable
 country_coefficients
 ```
+
+## Working with many tidy models
+
+Theory. Coming soon ...
+
+
+**1. Working with many tidy models**
+
+In the last exercises
+
+**2. We have a model for each country**
+
+you created a combined dataset, called country_coefficients, of the details of each per-country model, with rows for the slope and intercept for each country. Since the data is tidy, you can manipulate these coefficients with dplyr operations just like you did the original voting data.For example, in this analysis we're interested in how countries change over time (the slope) not where they started- the intercept. So
+
+**3. Filter for the year term (slope)**
+
+we can use dplyr's filter to get only the cases where term equals year- the ones describing how year affected percent_yes. Thus- filter for term == "year".  Not all of these slopes can be trusted- some may be due to random noise. We may want to get only the models that were statistically significant. Recall that the p-value of a model is a common metric for whether it is due to noise- we often require that the p-value be less than point-05 to call a trend significant.Here we run into a common issue you may be familiar with- when we run many statistical tests and evaluate their p-values, we need to do a multiple hypothesis correction. This is a complicated problem that is outside the scope of this course, but the basic issue is that if you try many tests, some p-values will be less than point-05 by chance, meaning we need to be more restrictive.R provides a useful built-in function for p-value correction, called p-dot-adjust.
+
+**4. Filtered by adjusted p-value**
+
+By filtering for cases where the adjusted p-value is less than point-05, we can feel more safe in our assumptions, and get a set of country trends that we believe are real.Using dplyr operations to work with many model outputs is a powerful way to draw conclusions out of a large dataset. In your exercises you'll also use arrange to find the countries with the strongest upward and downward trends over time.
 
 ## Filtering model terms
 
@@ -798,6 +1135,26 @@ In this chapter, you'll learn to combine multiple related datasets, such as inco
 ## Joining datasets
 
 Theory. Coming soon ...
+
+**1. Joining datasets**
+
+So far in our course on United Nations exploratory data analysis,
+
+**2. Processed votes**
+
+you've been working with this votes_processed dataset, where each row, or observation, represents a pairing of a roll call vote and country. You've been treating these roll call votes as interchangeable, paying attention to only the year, country and vote, and summarizing them to draw conclusions. But these resolutions cover a vast range of political and historical issues. In this chapter, you're going to bring in some context about each resolution, specifically topic information. You'll do this with the descriptions dataset
+
+**3. Descriptions dataset**
+
+- a second, separate data frame with new information about each roll call vote. Let's look at the variables in this table. You see you have the rcid - or roll call ID- and session variables, which are the same columns used to describe each roll call in the votes_processed dataset. The difference is that here, instead of each observation being a country-roll call pair, here there's just one observation for each roll call- the first observation is the vote on September 4th, as you can see in the date variable, the second is a vote on October 5th, and so on. The descriptions dataset also contains the United Nations resolution it was related to, in unres, and most importantly topic information, about whether each vote related to one of six topics. For example, the second roll call vote has a 1 in the hr column, which means it relates to human rights. This dataset doesn't tell us anything about countries or their votes, so you want to combine it with the votes_processed dataset
+
+**4. inner_join()**
+
+to examine how different countries voted on different topics. This is done with dplyr's inner_join function. You use the "by" argument to note the two columns they have in common: rcid and session- which are used to match rows together between the tables. You then have all the variables from the original votes_processed dataset included in the new table, including vote, year, and country. You also have all the variables from the descriptions dataset - date, unres, and the topic columns. inner_join combined the information in these two tables so we can examine them together.
+
+**5. Let's practice!**
+
+In your exercises, you'll manipulate this combined dataset using other dplyr operations, such as filtering for all votes related to human rights issues. 
 
 ## Joining datasets with inner_join
 
@@ -880,6 +1237,79 @@ ggplot(US_co_by_year, aes(year, percent_yes)) +
 ## Tidy data
 
 Theory. Coming soon ...
+
+
+**1. Tidy data**
+
+Consider this
+
+**2. United Kingdom**
+
+graph of UN voting trends over time. Like other graphs you've made, it maps
+
+**3. United Kingdom**
+
+"year" to the x-axis,
+
+**4. United Kingdom**
+
+"percentage yes" to the y-axis,
+
+**5. United Kingdom**
+
+and "country" to color. This graph, however, is faceted across the six topics, using one sub-graph for each topic. For instance,
+
+**6. United Kingdom**
+
+one single point on this graph represents
+
+**7. United Kingdom**
+
+the votes of the United Kingdom on the topic of colonialism in 2001. This useful kind of analysis is possible only with a particular structure of data:
+
+**8. Tidy data: topic is a variable**
+
+one where each observation, or row, represents a single combination of
+
+**9. Tidy data: topic is a variable**
+
+country, year, and topic. This allows every observation
+
+**10. Tidy data: topic is a variable**
+
+in the data to map to one point in your plot. Notice that this data includes a variable called "topic",
+
+**11. Tidy data: topic is a variable**
+
+which specifies for each observation whether it relates to colonialism, nuclear weapons, and so on. We call this arrangement "tidy".
+
+**12. Topic is spread across six columns**
+
+In the votes_joined dataset you used in the previous exercises, you don't have a single topic variable, but rather one column for each of the six topics containing a zero or a one. This means there's no easy way to use dplyr to summarize by topic, or to visualize the results for six topics on the same graph.In order to do that, we need to bring topic into a single variable.
+
+**13. Use gather() to bring columns into two**
+
+This can be done with the gather function in the tidyr package. gather is a reshaping operation that takes any number of columns and collects them into two: key,
+
+**14. Use gather() to bring columns into two**
+
+with the original column names, and value,
+
+**15. Use gather() to bring columns into two**
+
+with the contents of those columns. Notice that this typically increases the number of rows in the data.
+
+**16. Use gather() to bring columns into two variables**
+
+You can apply the gather function on the votes_joined data to collect topic into one variable. First, you specify that you want to join the m-e through e-c columns : those are the six topic columns in the joined dataset. You then specify the names of the key and value columns: use "topic" to store the key, which then contains the column names, and "has_topic" for the value, which is either 0 or 1. This achieves your goal of constructing a "topic" variable with six possible values. Notice that there are now 6 rows for each vote, one for each topic.In this case, you don't actually care about rows where "has_topic" is zero. For example, these rows are effectively saying that a roll call vote was not related to m-e, the Palestinian conflict.
+
+**17. Use gather() to bring columns into one variable**
+
+Thus, you should add one more step where you filter for all the cases where has_topic is 1. Thus, the topic column now describes each of the votes it is associated with. Note that votes with multiple topics may appear multiple times in the dataset.By constructing a country-vote-topic dataset, you've now made it possible to group and summarize the data by topic, or to compare all six in the same visualization.
+
+**18. Let's practice!**
+
+Many analyses will require this kind of manipulation and restructuring of your data using tidyr and other tools.
 
 ## Tidy data observations
 
@@ -1010,6 +1440,31 @@ US_by_country_year_topic %>%
 
 Theory. Coming soon ...
 
+
+**1. Tidy modeling by topic and country**
+
+In Chapter 3, you used the broom package to fit a separate linear model for each country that measured the trend of percentage of yes votes over time. This let you find the countries whose rate of agreement was increasing or decreasing most quickly.
+
+**2. Detecting a trend by topic**
+
+With the new datasets you've built in this chapter, you fit these trends within each country *and* within each topic. For example, you could fit trends for the United Kingdom's voting behavior within each of these six topics, as seen here.
+
+**3. Tidy modeling by country**
+
+Recall that there were several steps to fitting a model for each country. You FIRST nested all columns besides country into their own sub-datasets in a list column. You then used map CLICK to fit a linear model to each of these sub-datasets, and then tidied each of them into a table of coefficients. Finally, you used unnest to bring those coefficients back into the main data frame, resulting in a combined table of slopes and intercepts.Now that you have a topic column in your by_year_country_topic summary, there's only one change you need to make to this workflow to fit a model within each country/topic combination.
+
+**4. Tidy modeling by country and topic**
+
+In the nest statement, simply nest all columns besides country and topic. The other steps are identical. What results is a table with the estimated coefficients for each specific topic for each country. For example, these rows
+
+**5. Tidy modeling by country and topic**
+
+where the term equals "year" show the estimated slopes on the topics of Colonialism, Economic development, human rights, and so on within Afghanistan. This dataset will let you explore which countries had the sharpest strongest within particular topics- for example, which country had most changed its voting pattern on the topic of colonialism.This analysis demonstrates the flexibility of the nest, model, and unnest pattern in exploratory analysis. You could have chosen to slice your data in many other ways using alternative data sources, and the tidyr, dplyr, and broom packages will always give you the tools to answer the questions you're interested in.
+
+**6. Let's practice!**
+
+
+
 ## Nesting by topic and country
 
 In the last chapter, you constructed a linear model for each country by nesting the data in each country, fitting a model to each dataset, then tidying each model with `broom` and unnesting the coefficients. The code looked something like this:
@@ -1109,3 +1564,18 @@ ggplot(vanuatu_by_country_year_topic, aes(x = year, y = percent_yes)) +
   geom_line() +
   facet_wrap(~topic)
 ```
+
+
+## Conclusion
+
+**1. Conclusion**
+
+I hope you've enjoyed this exploration of the United Nations dataset,
+
+**2. Insert title here...**
+
+where we cleaned, visualized, and modeled historical data to uncover interesting trends. Note that we barely scratched the surface of what can be discovered from this data.
+
+**3. Insert title here...**
+
+Beyond looking at the percentage of yes votes, you could analyze what countries tended to agree or disagree with each other. You could use machine learning to predict a country's vote on a particular resolution. I encourage you to take this voting data and try your own analyses. The best way to improve your skills with these tools and to build good analysis habits is to answer questions that are interesting to you. 

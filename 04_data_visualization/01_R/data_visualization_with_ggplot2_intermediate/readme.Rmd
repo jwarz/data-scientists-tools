@@ -27,6 +27,74 @@ A picture paints a thousand words, which is why R ggplot2 is such a powerful too
 
 Theory. Coming soon ...
 
+**1. Stats with geoms**
+
+Welcome to the second ggplot2 course on data visualization! Here, we're going to build on the skills you learned in the first course to develop a wide variety of plots that are not only appealing, but also meaningful.
+
+**2. ggplot2, course 2**
+
+We'll examine the following three layers in detail: statistics, coordinates, and facets, plus, we'll review some data viz tips so that you can make the most of your new skill-set.Let's get started with the stats layer.
+
+**3. Statistics layer**
+
+There are two broad categories of functions in this family: those that are called from within a geom and those that are called independently.As you may have guessed, all the statistical functions begin with "stats", followed by an underscore. Even those called from within the geom layer can be accessed independently in this way.
+
+**4. geom_ &lt;-&gt; stat_**
+
+We already saw a stats function when we used geom_histogram. Recall that under the hood, this called stat_bin to summarize the total count in each group.
+
+**5. geom_ &lt;-&gt; stat_**
+
+You may also remember that when we discussed geom_bar, I mentioned that it's default stat is set to "bin" -- so we could have produced the same result if we use geom_bar!
+
+**6. geom_ &lt;-&gt; stat_**
+
+The same thing happens with geom_bar, which just calls stat_count under the hood. If we called stat_count directly, we'd get the same plot since it would call geom_bar.
+
+**7. The geom_/stat_ connection**
+
+So we can see that specific geoms and stat functions are related.
+
+**8. stat_smooth()**
+
+stat_smooth can accessed with geom_smooth, shown here. The standard error, which is shown as a gray ribbon behind our smooth, is by default, a 95% confidence interval.
+
+**9. stat_smooth(se = FALSE)**
+
+We can remove this by setting the se argument to FALSE.We know we are calling stat_smooth because of another warning message: "geom_smooth is using method equal to loess, and formula y dependent on x".LOESS is a non-parametric smoothing algorithm that is used when we have less than 1000 observations. It works by calculating a weighted mean by passing a sliding window along the x-axis and is a valuable tool in exploratory data analysis.
+
+**10. geom_smooth(span = 0.4)**
+
+The span argument controls the degree of smoothing, which is the size of the sliding window. Smaller spans are more noisy, as we can see here.
+
+**11. geom_smooth(method = "lm")**
+
+The method argument can also define parametric models, such as "lm", as shown here, or "glm", "rlm" and "gam". For groups larger than one thousand, the method defaults to gam. Notice that in both the LOESS and LM examples, the model is calculated on groups defined by color. We'll look at how to override this in the exercises.
+
+**12. geom_smooth(fullrange = TRUE)**
+
+By default, each model is bound to the limits of its own group, but for parametric methods, we can use the fullrange argument to make predictions over the entire range. Just as we'd expect, the error increases the further away from our data set we attempt to define an estimate.
+
+**13. The geom_/stat_ connection**
+
+We can access smoothing using the geom smooth function or the stat smooth function.
+
+**14. Other stat_ functions**
+
+There are many other stats functions which we will encounter throughout the rest of the data visualization courses, some of which are particularly useful for summarizing data, like boxplots,
+
+**15. Other stat_ functions**
+
+or dealing with very large data sets, such as bindot, binhex, bin2d and contour - we'll encounter those in the next course when we consider graphics of large datasets.
+
+**16. Other stat_ functions**
+
+We'll encounter other functions throughout the exercises.In general, you won't have to call these functions directly, but it is worth knowing about the relationship between geoms and their respective statistics. You'll understand warning and error messages better and the help pages for the stats functions are often more informative if you need to adjust any parameters.
+
+**17. Let's practice!**
+
+OK, let's see how stat functions work in practice in the exercises.
+
 ## Smoothing
 
 To practice on the remaining layers (statistics, coordinates and facets), we'll continue working on several datasets.
@@ -224,6 +292,67 @@ ggplot(Vocab, aes(x = education, y = vocabulary, color = year_group)) +
 
 You have a vast plotting vocabulary! Notice that since 1995, education has relatively smaller effect on increasing vocabulary.
 
+## Stats: sum and quantile
+
+Theory. Coming soon ...
+
+
+**1. Stats: sum and quantile**
+
+Let's wrap up our discussion of stats called from within geoms by looking at two more useful functions: geom_count and geom_quantile
+
+**2. Recall from course 1**
+
+In the first course we saw that over-plotting is always a concern whenever we use geom point. Every data point must be visible. We discussed four ways in which our visualizations may mislead us.
+
+**3. Plot counts to overcome over-plotting**
+
+We can now add a new geom function to our solutions for low precision and integer data: geom_count plot the count at each location. In course 3, we'll see even more elegant solutions that can be applied to all four situations.Let's look at an example with geom_count.
+
+**4. Low precision (&amp; integer) data**
+
+In the iris data set, where we have low-precision data, jittering gives the impression that we have more precision that we actually do.
+
+**5. Jittering may give a wrong impressions**
+
+We should always mention that we've jittered our data because of this.
+
+**6. geom_count()**
+
+To avoid this problem, we can use another variant of geom_point. geom_count counts the number of observations at each location and then maps the count onto size as the point area.Our data is mapped onto the area of the circle, as opposed to its radius, since we more intuitively perceive area than radius.
+
+**7. The geom/stat connection**
+
+Remember that these geoms are associated with stats functions that can be called directly, as shown here.
+
+**8. stat_sum()**
+
+Calling the stat function gives the exact same plot.We'll see this trick used with integer data in the exercises, which is a very common use.
+
+**9. Over-plotting can still be a problem!**
+
+But be careful here, you'll still encounter over-plotting if the points are colored according to another variable. This makes it particularly difficult to read the plot!
+
+**10. geom_quantile()**
+
+The last function I want to look at in this section is geom_quantile. It's another great tool for describing our data. This method allows us to model quantiles, which are robust, as opposed to linear models, which model the non-robust mean.We can choose any quantile we're interested in, such as the median, which is just the second quartile. A typical case of using quantile regression would be when you have heteroscedasticity, that is the variance across the predictor variable is not consistent, in which case linear models may not be valid.
+
+**11. Dealing with heteroscedasticity**
+
+Here's an example of heteroscedasticity from a dataset of economics journals from the AER package. We won't get into the details of the data, but you can see that variance on the y axis is not consistent as we move along x axis.
+
+**12. Using geom_quantiles**
+
+Here, we can use geom_quantile to model the 5th and the 95th percentile as well as the median, the 50th percentile.
+
+**13. The geom/stat connection**
+
+Just like the previous geoms, this is also associated with a stats function that we can actually call directly.
+
+**14. Ready for exercises!**
+
+Let's take these functions for a spin with some exercises!
+
 ## Quantiles
 
 Here, we'll continue with the `Vocab` dataset and use <a href="http://www.rdocumentation.org/packages/ggplot2/functions/geom_quantile" target="_blank" rel="noopener noreferrer">`stat_quantile()`</a> to apply a quantile regression.
@@ -306,6 +435,59 @@ Superb stat summing! If a few data points overlap, jittering is great. When you 
 ## Stats outside geoms
 
 Theory. Coming soon ...
+
+
+**1. Stats outside geoms**
+
+Let's take a look at some statistics that we call directly.
+
+**2. Basic plot**
+
+In this plot of the iris dataset, sepal length is described by species.What can we do with this data?
+
+**3. Calculating statistics**
+
+A typical way to summarize this data would be to take the mean and standard deviation or the 95% confidence interval.We can calculate these values manually, or we can do it directly in ggplot2.Let's see how it works.
+
+**4. Calculating statistics**
+
+The function smean-dot-sdl from the Hmisc package returns the mean plus or minus one standard deviation as a named vector. By setting the mult argument to 1, we specify 1 standard deviation.In ggplot2, the function mean_sdl converts this vector to a data frame, renaming the variables to match ggplot2 aesthetics.
+
+**5. stat_summary()**
+
+We call mean_sdl using the fun.data argument of the stat_summary function. By default we get geom_pointrange, which requires y, ymin and ymax, exactly what is returned by mean_sdl.
+
+**6. stat_summary()**
+
+For errorbars, we can just calculate the mean and use "point" as the geom, then we can call mean_sdl using the "errorbar" geom, where we can also set the width of the error bars.
+
+**7. stat_summary()**
+
+But notice that we could have also made a typical bar plot with error bars, by simply calling the bar geom - but this is NOT RECOMMENDED! We'll learn why when we get to data viz best practices later on!
+
+**8. 95% confidence interval**
+
+The 95% CI is also straight forward. mean_cl_normal returns the mean and the upper and lower bounds of the 95% confidence interval, calculated using the t-distribution.
+
+**9. Other stat_ functions**
+
+Two other useful stat_layer functions are stat_function and stat_qq. These are particularly useful if we want to look at distributions.Statisticians typically use visual cues to get an idea of the distribution of their data instead of relying only on numbers.
+
+**10. MASS::mammals**
+
+To see this in action let's return to the first example we used in the first course - the mammalian body and brain weights stored in the mammals data frame. We mentioned that our linear model fitted the log10 transformed data reasonably well. What we mean is that the log transformed data appears to be normally distributed, so let's take a look at that in detail.
+
+**11. Normal distribution**
+
+For stat_function, we can specify any function and produce the theoretical probability distribution as a line. Here, we call a normal distribution, that's dnorm, and add arguments as a list to centered it on our distribution, that's the mean and the sd). This allows us to compare how well our data is normally distributed. The log10 mammalian body weight is described by a log normal curve very well. Notice that we have another geom here, geom_rug, which adds those little tick marks on the bottom of the plot. This is a handy way of seeing the actual values in combination with a summary distribution.An empirical density plot, would be an nice alternative to the histogram, but we'll get to that in the next course.
+
+**12. QQ plot**
+
+QQ plots also allows us to compare our data to a distribution. In this case, we plot our sample against the theoretical distribution, like the normal, and draw a line intersecting the scatter plot at the first and third quartiles. The closer that our data aligns to this line, the more closely it matches the theoretical distribution in question.
+
+**13. Your turn!**
+
+There are more stat_ functions which are available for you to explore during the exercises, so let's take a look.
 
 ## Preparations
 
@@ -462,6 +644,55 @@ The Coordinates layers offer specific and very useful tools for efficiently and 
 
 Theory. Coming soon ...
 
+
+**1. The Coordinates Layer**
+
+The coord layer controls the dimensions of your plot.
+
+**2. Coordinates layer**
+
+The coord layer is composed of functions named coord_. Let's explore their propertiesThe most commonly used function is coord_cartesian, which controls the x-y Cartesian plane of your plot.
+
+**3. Zooming in**
+
+We can use coord_cartesian to zoom in on a specific part of a plot. Alternatively, we could set the limits argument in scale_x_continuous or scale_y_continuous, or use an xlim or ylim function directly.
+
+**4. Original plot**
+
+Consider the following plot of the iris data. We've seen this plot in previous lessons. It plots sepal width against sepal length and draws a loess curve for each of our three iris species.
+
+**5. scale_x_continuous()**
+
+When we "zoomed in" to a small part of the x-axis using scale_x_continuous, we're presented with some important warning messages. 95 rows have been removed. This happened because the limits we set in scale_x_continuous were a smaller range than the data and thus values were filtered out.
+
+**6. scale_x_continuous()**
+
+We can see this on the new zoomed-in plot, since the LOESS model is only defined for the points shown, although there is data beyond this region. That's also why the models look different.
+
+**7. xlim()**
+
+A quick and dirty alternative is to call xlim as a function itself. It has the same effect.
+
+**8. coord_cartesian()**
+
+Contrast this to really zooming in using the coord_cartesian function. You can see the zoom because the LOESS curve continues past the data presented, and the models look the same as in the original plot.We haven't filtered the data set, so if we did inadvertently cut off data values, it would not be clear simply from looking at the plot -- unless we had some indicator such as a smoothing function.Changing the x and y limits can lead to unexpected consequences and should always be used with caution. Don't recycle or hard code axis limits until you've seen the raw data.
+
+**9. Aspect ratio**
+
+Aside from zooming in, another common role that you'll achieve with the coordinates layer is changing the aspect ratio. When we say 'aspect ratio', we are referring to the height-to-width aspect ratio.Changing the aspect ratio of a plot is one of the most common ways in which people either inadvertently or purposely deceive -- or are deceived -- with  visualizations. There is no systematic method for choosing an appropriate aspect ratio.The only rule to follow in this area is that, typically, we should use a 1:1 aspect ratio when the units of measure are the same, although there are some exceptions to this rule - for example, when the scales are the same, but their ranges differ widely.The aspect ratio is particularly important when it changes our perception or interpretation of the data.
+
+**10. Sunspots**
+
+In this plot of over 250 years of sun spots data, there are three key trends. First, sun spots follow an 11-year oscillating cycle. Second, sun spot numbers also change over longer periods.However there is a third and subtle patten present in this time series, but it's very difficult to see in this format.The aspect ratio here is 1:1, there are 250 units on the y and 265 units on the x. The physical distance for each unit in the same.
+
+**11. Sunspots**
+
+However, if we reduce the aspect ratio to something very low, like 0.055, we flatten the entire plot and notice something else.Sunspots arise more quickly than they disappear, a pattern that is more prevalent the higher the peak intensity in a given cycle is. Different trends are emphasized and the aspect ratio depends on what we are investigating or communicating.
+
+**12. Practice time!**
+
+OK, let's head over to the exercises and look at coordinates in more detail.
+
 ## Zooming In
 
 In the video, you saw different ways of using the coordinates layer to zoom in. In this exercise, we'll compare zooming by changing scales and by changing coordinates.
@@ -598,6 +829,47 @@ Cool clipping! These arguments make clean and accurate plots by not cutting off 
 
 Theory. Coming soon ...
 
+
+**1. Coordinates vs. scales**
+
+In the next set of exercises, I want to look at how to use the coordinate layer to perform transformations, and how that differs from using the scale functions.
+
+**2. Plot the raw data**
+
+For these examples, I'm going to use the body weight variable from the msleep data set. I made more adjustments than what's shown here, but this is the basic code to get this univariate plot. We can see that this variable has a strong positive skew.In the first course, we saw how we can use the scale functions to modify things like the x-axis limits and breaks.Let's consider three ways in which we can transform our data. A common transformation for positively skewed data is a natural, base e, logarithm, or the more intuitive common, base 10, logarithm.
+
+**3. Transform the raw data**
+
+We can transform the data before we begin plotting, and update the actual data frame, or we can transform the variable on-the-fly when we specify it in the aes function, as shown here. The result is the same.So far, so good! Notice that the axis labels are the log-transformed values, where zero is the log 10 of 1 kilograms, and 4 is the log 10 of 10000 kilograms.This is a very common solution, but it is a bit misleading in that the transformed scale is linear and we have to do some mental arithmetic to get back to the original values. So we've lost a bit of precision here.
+
+**4. Add logtick annotation**
+
+We could add log annotation tick marks using the annotation_logticks function. This highlights that the data is a log transformation.However, another solution is to have the data on a log scale, and label it with the actual original body weight value.We can do this in two ways.
+
+**5. Use scale_*_log10()**
+
+The first method uses the scale_x_log10 function. This transformed the data and then calculates any statistics needed.
+
+**6. Compare direct transform and scale_*_log10() output**
+
+The plots are almost identical, but pay attention to the axis labeling in the second plot using the scale_x_log10 function. The labels correspond to the actual value in the data set. This is the default output, we saw how to clean up axis labels in the first course.
+
+**7. Use coord_trans()**
+
+As you could imagine, we also have a function in the coordinate layer: coord_trans, which is actually more flexible in that we can apply any transformation we'd like.
+
+**8. Compare scale_*_log10() and coord_trans() output**
+
+Using coord_trans and setting the x argument to "log10" results in the same plot as with the scale function. The default labels happen to be different, but the plot is the same.
+
+**9. Adjusting labels**
+
+As a final step, we can add the actual values of the data on the axis. This is a really nice way to show the transformed values in relation to the original value on the axis labels.This may give you the impression that scale and coord functions work in the same way, but just like zooming, there are some fundamental differences under the hood when applying transformations. We'll take a look at those in the exercises.
+
+**10. Time for exercises**
+
+Alright, now that you know how to use the scale and coord functions to apply transformations, let's look at bivariate plots and see how these functions affect our statistics.
+
 ## Log-transforming scales
 
 Using `scale_y_log10()` and `scale_x_log10()` is equivalent to transforming our actual dataset *before* getting to `ggplot2`.
@@ -681,6 +953,43 @@ Loopy lines! The smooth trend line is calculated after scale transformations but
 ## Double and flipped axes
 
 Theory. Coming soon ...
+
+
+**1. Double and flipped axes**
+
+So far we've seen two ways in which we can modify our axes.
+
+**2. Typical axis modifications**
+
+First we saw that we can change the aspect ratio to obtain the best perspective.In the last video we saw how we can also apply appropriate transformation functions.Here, I want to take a look at two more common modifications.
+
+**3. Typical axis modifications**
+
+Let's begin with having double x or y axes.Actually, having a double x or y axis is strongly discouraged. I'll discuss when it can go wrong in chapter 4.Here, I want to give show you when double axes can actually work really well.
+
+**4. Double axes**
+
+We ended the last video with this plot. It displays log10 transformed values. One problem with presenting transformed values is that we are an additional step further removed from the raw data.
+
+**5. Adding raw and transformed axes**
+
+To make the plot easier to read, we can include the raw and the log10-transformed values on one plot. This is a beautiful use case since the double axis adds more information to an existing variable.
+
+**6. Typical axis modifications**
+
+Let's take a look at one more typical modification. Flipping axes. This can be useful for changing the direction of dependencies, but also when we need to adjust the geometry's orientation. We'll look at the first case in the video and you'll explore the second in the exercises.
+
+**7. Flipping axes**
+
+We saw this plot of the iris dataset in the first video of this course. It uses geom smooth to add three linear models to a scatter plot. In this case, both sepal width and length are dependent variables. That is, they are dependent on the species, which is the independent variable. Statistically, it doesn't really matter which is mapped to the x or y.But in some cases it does. Our models are read as "y as a function of x" since we typically map the dependent variable onto the y axis and the independent variable onto the x axis.If we ever decide that our orientation is incorrect, we can either change our code to remap our variables, or
+
+**8. coord_flip()**
+
+we can use quick and easy coord flip function. In this way, we don't need to manually adjust all our code.You can only use one coord layer function in each plot, so we don't have the possibility to set the aspect ratio anymore.
+
+**9. Let's practice!**
+
+Alright, we've seen four different ways in which we can modify our axes. Let's practice with some exercises.
 
 ## Useful double axes
 
@@ -820,6 +1129,39 @@ Even funkier flips! Notice how much more interpretable the plot is after flippin
 
 Theory. Coming soon ...
 
+
+**1. Polar coordinates**
+
+Every plot we've made so far has used a Cartesian coordinate space.
+
+**2. Projections control perception**
+
+For two dimensions, this just means two orthogonal axes composed of straight lines.We can control how our data is perceived, by changing the limits of each axis and the aspect ratio, which we've covered already.
+
+**3. Projections control perception**
+
+However, another aspect that controls how we perceive data is the plotting projection.An example of this is with maps. We'll cover this in detail in the next course, but it's worth mentioning here in the context of projections.
+
+**4. A preview of map projections**
+
+There are many projections that we can use to present a 3D object, such as the Earth, on a 2D space, like a map. Some projections are better than others. For example the Mercator projection, on the left, is known to engross regions at the poles and diminish regions around the equator. The Conic projection is an alternative, but still suffers from the problem of projecting a 3D object in 2D.
+
+**5. Polar coordinates**
+
+The same applies to the Cartesian coordinate system. One of the most common projections is a polar transformation.
+
+**6. coord_polar()**
+
+Which can be seen here. In this case, theta, the axis which will be presented around the circumference, defaults to the x axis. Imagine that we just take the x axis on the left and bend it until it loops back on itself, while expanding the top side as we go along. We'd end up with the plot on the right.
+
+**7. coord_polar(theta = "y")**
+
+a more common transformation is to place the y-axis on the circumference by setting theta to y.Actually, this is exactly what we'd do with a bar chart to convert it to a pie chart. As we'll see in the exercises, a pie chart is simply a bar chart transformed onto a polar coordinate system.In the first course I mentioned how good data Visualization uses encoding elements for the data that allows the more efficient and accurate decoding by the viewer. According to that definition, polar coordinates should be used with extreme caution since they considerably distort that data. However, there are some specific use cases of polar coordinates, and we'll explore these in the exercises.
+
+**8. Let's practice!**
+
+Alright, let's head over to the exercise and take a look at polar coordinates!
+
 ## Pie charts
 
 The <a href="http://www.rdocumentation.org/packages/ggplot2/functions/coord_polar" target="_blank" rel="noopener noreferrer">`coord_polar()`</a> function converts a planar x-y Cartesian plot to polar coordinates. This can be useful if you are producing pie charts.
@@ -919,6 +1261,61 @@ Perfect polar coordinates! They are not common, but polar coordinate plots are r
 # 3. Facets
 
 Facets let you split plots into multiple panes, each displaying subsets of the dataset. Here you'll learn how to wrap facets and arrange them in a grid, as well as providing custom labeling.
+
+## The facets layer
+
+Theory. Coming soon ...
+
+
+**1. The facets layer**
+
+The next layer we'll take a look at is the the facets layer.
+
+**2. Facets**
+
+Facets are a pretty straight-forward and very useful tool in data visualization. They are based on the concept of small multiples, popularized by Edward Tufte in his 1983 book the Visualization of Quantitative Information.
+
+**3. The idea behind facets**
+
+The idea is that we can split up a large, complex plot, to produce multiple smaller plots
+
+**4. The idea behind facets**
+
+that have the exact same coordinate system. On each plot we present different data sets so as to compare them more easily.
+
+**5. iris.wide**
+
+Here we use the iris.wide data frame to produce a scatter plot. We have information on each of the species, so we can add a facet_grid layer to add another variable to our plot.
+
+**6. iris.wide &amp; facet_grid()**
+
+facet_grid has arguments for splitting plots into rows or columns according to a variable provided in the var function. Here, we're splitting according to columns using the cols argument.
+
+**7. Formula notation**
+
+The same result can be achieved by using the formula notation which you may be familiar with from defining linear models with the lm function. Everything on the left of the tilde (~) will split according to rows, and everything on the right will split according to columns.So the primary use of facets is to add another categorical variable to your plot, but they also aid in visual perception.
+
+**8. iris.wide2**
+
+For example, we already saw where this is very useful in the first course, when we talked about data structure. We used the iris.wide2 data frame to produce three different plots. The issue was that each plot was drawn on a separate y-axis, and we had to use three different plotting functions to get these plots.
+
+**9. iris.tidy**
+
+When we use the iris.tidy data set, we can take advantage of the facet_grid layer to solve both of theses problems. The trick in both of these examples is to understand that facets are simply splitting up our overall data set according to the levels in a categorical factor variable. If our data is in the right format we can achieve this easily using either columns or rows.
+
+**10. iris.tidy done wrong**
+
+In this case it doesn't make sense to split according to rows because the whole point is to aid in visual perception and to make comparisons. When we split along columns, it allowed us to read our plots from left to right along a single axis.
+
+**11. Other options**
+
+So the choice depends on what type of data you are using. Of course you can also split according to both columns and rows, using two different variables, and if you have many levels in your categorical variable, you can wrap the subplots into a defined number of columns.
+
+**12. Let's practice!**
+
+Alright, let's explore these details and some further subtleties in the exercises.
+
+
 
 ## Facet layer basics
 
@@ -1063,6 +1460,83 @@ Fortunate formula formulation! While many ggplots still use the traditional form
 
 Theory. Coming soon ...
 
+
+**1. Facet labels and order**
+
+Now that you understand how to use facets for one or more categorical variables, let's take a look at labeling and arranging facets properly.
+
+**2. A new dataframe**
+
+We'll begin with a modified version of the msleep dataframe from ggplot2 that I've called msleep2. msleep2 contains the log10 transformed body and brain weights of 51 animals, which I've plotted as a scatterplot here.
+
+**3. A new dataframe, with facets**
+
+Another variable, called vore contains information on eating behavior, which we can use to facet the plot. There are four eating habits: Herbivore, Carnivore, Insectivore and Omnivore.
+
+**4. A new dataframe, with facets**
+
+To make sure you can read the labels we'll periodically zoom in, which means that the entire plot may not be shown.
+
+**5. Poor labels and order**
+
+Two typical problems with facets are that they are often poorly labeled or that they have a wrong or inappropriate order.
+
+**6. Poor labels and order**
+
+We can fix up some of the labels inside ggplot2, but some things are better done on the actual data before plotting. Let's take a look at both.
+
+**7. The labeller argument**
+
+The facet layer functions have a labeller argument, which defaults to label_value.
+
+**8. Using label_both adds the variable name**
+
+A more useful argument is to use label_both, which puts both the name of the variable and the level value.
+
+**9. Two variables on one side**
+
+In the exercises, we saw that we can use multiple variables on rows or columns, like I've done here with the conservation status.
+
+**10. Using label_context avoids ambiguity**
+
+In this case we can use the label_context argument which will add the variable name only if the labels may be ambiguous. If each variable has a small number of labels, this works well, as we'll see in the exercises. Unfortunately, this plot is already pretty overloaded and you can see that the labels are too long for the space given!
+
+**11. Use rows and columns when appropriate**
+
+Let's switch to faceting on both rows and columns, in which case label_context defaults to label_value,
+
+**12. Use rows and columns when appropriate**
+
+which means we can just leave it out.
+
+**13. Use rows and columns when appropriate**
+
+Here, all the labels fit nicely inside the alloted space.Let's take a look at the actual facet labels and positions. To change these we need to go to the data set directly.
+
+**14. Relabeling and reordering factors**
+
+The forcats package in the tidyverse collection contains some really useful functions here. I like fct_recode, as shown here, for relabeling level names in a factor variable.
+
+**15. Reinitialize plot with new labels**
+
+If we reinitialize our plot, we'll see the new, informative, labels.
+
+**16. Reinitialize plot with new labels**
+
+Nonetheless, we may still want them in a different order than alphabetical.
+
+**17. Changing the order of levels**
+
+The fct_relevel function makes this really easy, as the second argument we just need to put the levels in our desired order.
+
+**18. Reinitialize plot with new order**
+
+Now when we reinitialize out plot, our facets are in an appropriate order.
+
+**19. Let's practice!**
+
+Let's try this out on a few exercises with the mtcars dataframe.
+
 ## Labeling facets
 
 If your factor levels are not clear, your facet labels may be confusing. You can assign proper labels in your original data *before* plotting (see next exercise), or you can use the `labeller` argument in the facet layer.
@@ -1161,6 +1635,59 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 Outstanding ordering! Arrange your facets in an intuitive order for your data.
 
+## Facet plotting spaces
+
+Theory. Coming soon ...
+
+
+**1. Facet plotting spaces**
+
+The major advantage of facets is that every plot is drawn on the same plotting space. This makes them all directly comparable.
+
+**2. Facets and variable plotting spaces**
+
+Nonetheless, you may encounter situations in which you actually don't want this. For example in continuous variables, if the faceted subsets have wildly different ranges you'll just be adding a lot of white space. In the case of categorical data, it's common that each subset may have different groups, so it may not be necessary, or even appropriate to list all groups in each of the faceted plots.
+
+**3. Adjusting the plotting space...**
+
+Let's look at this with the plot we ended the last video with. We used facet_grid to create rows according to eating habit and columns according to conservation status. To adjust the plotting space, we can use the scales argument.
+
+**4. ... but not with fixed scales**
+
+If we set this argument to "free_x" we'll allow each column of plot to have their own x axis. However, here we run into a typical problem. We can't use a fixed coordinate space and have free axes as the same time.
+
+**5. Adjusting the plotting space**
+
+Once we remove the fixed coordinate space, then we can adjust the x axis for each column.
+
+**6. Adjusting the plotting space**
+
+We can do the same for the y axis by setting the scales argument to "free_y" instead.
+
+**7. Adjusting the plotting space**
+
+We can adjust both the x and y axes by setting the scales argument to "free". Note that each column and row has at least a common x and y axis respectively.
+
+**8. Adjusting the plotting space**
+
+Let's take a look at how this works with categorical variables. Each animal has only one eating behavior, stored in the vore variable. If we plotted the bodyweight of each animal in the name variable and facet according to `vore`, we would repeat the full name list in each sub-plot.This occurs when a categorical variable has many levels, like the name, that are not all present in each sub-group of another variable, like vore.
+
+**9. Adjusting the plotting space**
+
+If we set the scales to free_y, we'll have only those names present in each facet, but the size of each plot is the still the same.
+
+**10. Adjusting the plotting space**
+
+This behavior can be changed with the spaces argument , which works in the same way as scales: "free_x" allows different sized facets on the x-axis, "free_y" allows different sized facets on the y-axis, and "free" allows different sizes in both directions. Here, we need to use "free_y".This plot already looks great! But there is one more thing we may want to change.
+
+**11. Final adjustments**
+
+We can rearrange the data frame according to the weight and then redefine the factor levels according to the order in which they appear. This will arrange them in the same way in the plot.Thinking about the order of the names in this case makes the plot more intuitive.
+
+**12. Let's practice!**
+
+Great, let's head over to the exercises and see this all in action.
+
 ## Variable plotting spaces I: continuous variables
 
 By default every facet of a plot has the same axes. If the data ranges vary wildly between facets, it can be clearer if each facet has its own scale. This is achieved with the `scales` argument to `facet_grid()`.
@@ -1238,6 +1765,47 @@ Super spaces! Freeing the y-scale to remove blank lines helps focus attention on
 ## Facet wrap & margins
 
 Theory. Coming soon ...
+
+
+**1. Facet wrap &amp; margins**
+
+In the last video we explored facet_grid() for splitting up a plot according to a categorical variable.
+
+**2. Adjusting the plotting space**
+
+We saw that this allowed us to set a free x axis for all plots the same column and a free y axis for all plots in the same row. That's alright, but wouldn't it be great if each plot can also have it's own x and y axes dependent on their data? Actually, it kind of defeats the purpose of having small multiples, but it can be useful if we have distinct ranges.To achieve this, we can take advantage of another useful function in this layer: facet_wrap
+
+**3. Using facet_wrap()**
+
+There are a couple use cases for this function.First, as I just mentioned, when we want each plot to have its own plotting space, but we still want to take advantage of tidy data structure and ggplot2 to generate all those plots as facets of a larger plot, and not as individual plots.
+
+**4. Using facet_wrap() - Scenario 1**
+
+For facet_wrap, we specify one or more faceting variables with a single call to the vars function. facet_wrap will automatically choose an appropriate number of columns and rows.So this gets the job done, but you can see that it is more difficult to keep track of each plot and variable compared to facet_grid, so use this with caution.
+
+**5. Using facet_wrap()**
+
+Second, and what is a more typical scenario, is when our categorical variable has many groups, so that faceting along only rows or only columns is overwhelming.
+
+**6. Using facet_wrap() - Scenario 2**
+
+For example, here, our 51 animals belong to 13 taxonomic orders which is nicely displayed with facet wrap. Using facet grid would produce a single row or column with 13 plots, which would be impractical.
+
+**7. Using margin plots**
+
+Before we wrap up with facets, let's look at one more adjustment we can make with this layer. We can present each facet _and_ a composite plot with all categories together. These are called margin plots.This was our original facetted plot, but
+
+**8. Using margin plots**
+
+if we add the margins argument to the facet layer, we can add margin plots for both the rows and columns that display all points together. Notice that in the lower right corner, we have the complete data set in one facet.
+
+**9. Using margin plots**
+
+We can also specify one one variable to produce the margin plots.
+
+**10. Let's practice!**
+
+So far so good. We've seen that there is a lot more to the facet layer than just splitting up your plots. Let's explore these last concepts in the exercises.
 
 ## Wrapping for many levels
 
@@ -1357,6 +1925,52 @@ Now that you have the technical skills to make great visualizations, it’s impo
 ## Best practices: bar plots
 
 Theory. Coming soon ...
+
+
+**1. Best practices: bar plots**
+
+Knowing how to efficiently use ggplot is a good first step,
+
+**2. In this chapter**
+
+but now we need to consider what is the best way to graphically represent our data, what are the common pitfalls and what is the best way to represent our data.
+
+**3. Bar plots**
+
+There are two common types of bar plots. The first is simply showing an absolute count value. The second is a distribution, which is as terrible as it is common. Why is that?
+
+**4. Mammalian sleep**
+
+Let's return to the mammalian sleep data set. We have eating habits of several mammals along with the time they spend sleeping and how much of that time is REM sleep.
+
+**5. Dynamite plot**
+
+We map vore and sleep onto the x and y aesthetics, respectively, and draw the error bars as discussed in chapter one.So far so good, but we have no idea how many observations we have in each category!This plot also suggests that our data is normally distributed. If our data is not normally distributed it's not appropriate to represent it in this way.A further perceptual problem is that our bars give the impression of having data where there is no data. There for sure are no mammals which sleep 0 hours a day! Yet the bars begin showing data at 0, plus, the region above the mean contains values but no ink! What could be a better way?
+
+**6. Individual data points**
+
+Well first off, we can simply show the individual data points. This is first off necessary for ourselves, to really see what our data looks like, but it may actually already be a pretty good end point! Note that here we used geom_point and set the position to jitter with the position_jitter function so that we can control the width of the jittering. alpha is also set to 0.6 in case there is any residual over plotting.ok, so now we can start to see some strange patterns in our data set! First off, it's pretty clear that we don't have that much data for Insectivores, and that it anyways looks pretty strange. We can't really say much about them, but if we had to say something it looks like they are bimodal. We'd need some more data to make better conclusions. Omnivores also look pretty interesting, it appears as though this data is positively skewed. So we can start drawing conclusions that were previously impossible to see.
+
+**7. geom_errorbar()**
+
+Of course we could still plot both the individual data points and the summary statistics with the geom errorbar
+
+**8. geom_pointrange()**
+
+or the geom pointrange.
+
+**9. Without data points**
+
+And it's obvious that we could have simply shown these summary statistics by themselves.
+
+**10. Bars are not necessary**
+
+Notice that the error bars with points are a much cleaner representation of the data. The bars are simply not necessary! Now, none of these summary plots are particularly useful in this specific case, mostly because we know now that the insectivore and omnivore data sets are not suitable. Nonetheless they may be perfectly good alternatives for your data, so they are worth mentioning.There are some more plotting geometries that we'll discuss in the next course when we get into statistical plots, such as box plots and violin plots are. Here I just want to mention that they are also alternatives, in general, but not necessarily in this situation.
+
+**11. Ready for exercises!**
+
+OK, let's explore these concepts in more detail in the exercises.
+
 
 ## Bar plots: dynamite plots
 
@@ -1526,6 +2140,39 @@ Awesome Aggregrates! This is a good start, but it's difficult to adjust the spac
 
 Theory. Coming soon ...
 
+
+**1. Heatmaps use case scenario**
+
+I briefly mentioned before that heat maps are a poor data visualization method. It's surprising, since they are really popular among scientists of all stripes. Let's take a closer look.
+
+**2. The barley dataset**
+
+Our dataset is a classic in data visualization. We have four variables: The yield of 10 different barley varieties measured at two years and at 10 different sites.
+
+**3. A basic heat map**
+
+Our heat map is basically a colored table.  Our three categorical variables are mapped onto x, y and fill. The continuous variable, yield, is mapped onto fill.So what's wrong with this plot?Well, although there are some exceptions, color on a continuous scale is problematic. Color perception depends on context. Here, each color appears in a different background, which means that heat maps are not well-suited for seeing individual results. If our categories were clustered in a way the brings out overall trends, then we may make the case for a heat map, because it would at least communicate something. Often times this is not the case.Many times, heat maps look complex and try to impress the viewer with a meaningless "wow" factor.What would be a better alternative?
+
+**4. A dot plot**
+
+Here, we can switch the mapping of yield onto the x and year onto the color scale.Now we can ask very pointed questions, such as which variety performed best in a given year. How does a particular variety perform at a given site? To answer these questions, we use a process of slow table-look up type perception. It's slow  and time-consuming, but very useful.We can also start to see some trends. First, red, 1931, is mostly greater than blue, 1932. Second, the farms are arranged from lowest overall average, Grand Rapids, to highest, Waseca. Third, we can also notice a difference in spread among the farms. These large overall trends are discernible from this visualization, but they take a bit of time to see. How about an alternative?
+
+**5. As a time series**
+
+Typically, when you have a time scale, the key question is change over time. How do yields differ between the two years?This line plot shows that change for each variety over time. It has all the same information as the previous plot but it's more difficult to answer the precise questions from before. However, it is an easier way to see the general trends in the data set. We've increased the speed of our perception.Notice that there are 10 colors for the 10 varieties. It's getting pretty difficult to distinguish all the colors and we're at the limits of visual perception. It still kind-of works, but it's starting to push it.
+
+**6. Using dodged error bars**
+
+We can aggregate all the varieties by using their mean, and focus on the farms. We saw how to do this in the stat_summary section. Here I've used errorbars with some dodging.
+
+**7. Using ribbons for error**
+
+Alternatively, we could have also used ribbons without dodging. Both dodged error bars and overlapping ribbons work for showing uncertainty, the choice depends on the density of your data and your audience.In summary, there are many good alternatives to heat maps, depending on the research question and our take-home message.
+
+**8. Coding Time!**
+
+Let's explore how to produce these plots in the exercises.
+
 ## Heat maps
 
 Since heat maps encode *color* on a continuous scale, they are difficult to accurately *decode*, a topic we discussed in the first course. Hence, heat maps are most useful if you have a small number of boxes and/or a clear pattern that allows you to overcome decoding difficulties.
@@ -1643,6 +2290,73 @@ ggplot(barley, aes(x = year,
 ```
 
 Good job! Whenever you see a heat map, ask yourself it it's really necessary. Many people use them because they look fancy and complicated - signs of poor communication skills.
+
+## When good data makes bad plots
+
+Theory. Coming soon ...
+
+
+**1. When good data makes bad plots**
+
+So far, we've focused on making good plots, but it's worthwhile to be able to identify and correct bad plots.
+
+**2. Bad plots: style**
+
+There are many ways in which we can have bad plots. Simple formatting errors like poor color and text choices make it difficult to read the data correctly or even make our plots look ugly. All text should also serve a purpose and be legible for our audience. Pause the video and take a minute to review the items listed here. You've probably seen them already in the wild.
+
+**3. Bad plots: structure and content**
+
+Deeper problems occur with structure and content. As the domain expert it's your job to know if you are overloading a plot with too much information to simply impress your viewers, or if you are producing a useless plot just to fill us space.The axes, statistics and geometries must also be used effectively. It doesn't hurt to reduce non-data ink and, finally, 3D plots should be avoided. Pause the video again and take a minute to review these topics before continuing.Let's take a look at some common data viz pitfalls.
+
+**4. Wrong orientation**
+
+We typically read the y axis of a plot as a function of x, denoted f(x). That means that the variable on the y axis is a dependent variable of the independent x axis variable. Flipping the axes is confusing.
+
+**5. Wrong orientation?**
+
+But, actually, sometimes it works great! We saw this at the end of the last course,
+
+**6. Wrong orientation?**
+
+and in the last video. In both cases the axes were flipped to make them easier to read.
+
+**7. Broken y-axes**
+
+Broken y-axes are also popular. This compensates for a large range in the data set with a large gap between the high and low values.Unfortunately, the upper and lower parts are on different scales!
+
+**8. Broken y-axes, replace with transformed data**
+
+We would rather transform the scales. For example using a log 10 transformation, as shown here, or,
+
+**9. Broken y-axes, use facets**
+
+or more typically, use facets with free scales.
+
+**10. 3D plots, without data on the 3rd axis**
+
+The 3D plot is another favorite but often, the 3rd axis actually serves no purpose but to confuse the audience as to which part of the geometry should be read on the scale.
+
+**11. 3D plots, with data on the 3rd axis**
+
+Sometimes 3D plots really do contain information in the 3rd axis, like 3D scatter plots. But can you figure out the position of each dot in this plot? It just adds to obscuring our data. Ideally we'd like to provide this as an interactive object or else as a series of two dimensional plots.
+
+**12. Double y-axes**
+
+Double y-axes are also problematic but popular.Perceptual challenges in reading the data make this difficult, and it also invites suspicious activity since the scales are independent and the visual message can be manipulated to emphasis or diminish the perceived correlation by changing the range of values on the scale.If the two values are to be correlated then we should have an x-y plot that shows the correlation.
+
+**13. Double y-axis for transformations**
+
+We did actually see a great example of double x and y-axes in the second chapter, when we had a raw and transformed scale.
+
+**14. Guidelines not rules**
+
+But, remember, there are very few rules in data visualization, which is what makes it so interesting and difficult.Just use your common sense -- if anything on your plot obscures communication it is at worst unethical and at best poor execution.I hope that by now you are also a critical consumer of data visualization and are not so easily fooled by other people's poor judgement or purposeful misdirection.
+
+**15. Let's practice!**
+
+We'll explore the bits that we can fix in ggplot2 in the exercises, so let's get started.
+
+
 
 ## Suppression of the origin
 

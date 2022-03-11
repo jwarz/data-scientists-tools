@@ -117,6 +117,104 @@ your models.
 
 Theory. Coming soon …
 
+**1. Foundations of Tidy Machine Learning**
+
+Hi, my name is Dima, and I am excited to welcome you to the Machine
+Learning in the Tidyverse course.If you’re here then you must already
+know how easy it is to explore, manipulate and analyze your data with
+tools from the tidyverse.The good news is that the tidyverse tools also
+work exceptionally well for building machine learning models.
+
+**2. The Core of Tidy Machine Learning**
+
+The reason for this is that the tidyverse tools center around the data
+frame structure known as a tibble. What makes a tibble special for
+machine learning is that it can natively store arbitrarily complex
+objects using a special column known as the list column. This is
+particularly helpful for storing models since the outputs of these
+models are always complex objects. With tibbles you can store models in
+these list columns and, as a result, explore and evaluate them with the
+rest of the suite of tidy tools.
+
+**3. The Core of Tidy Machine Learning**
+
+Along with the tibble, the functions in the tidyr and purrr packages
+form the foundational tools for working with list columns. You will use
+these tools as part of a framework called the List Column Workflow.
+
+**4. List Column Workflow**
+
+At its core, this workflow can be summed up in three basic steps.The
+first step is to make a list column. The second step involves using
+appropriate tools to work with the list column. And the third and final
+step is to simplify the list columns into a format that allows further
+exploration using the familiar tidyverse tools.These three steps rely on
+the map family of functions from purrr and the nest and unnest functions
+from tidyr.To learn how to use the list column workflow you willwork
+with the gapminder dataset.
+
+**5. The Gapminder Dataset**
+
+Unlike previous courses that have used the gapminder package, this
+course will use a more granular collection of gapminder data adapted
+from the dslabs package. This version contains observations for 77
+countries across a time period of 52 years. Each observation has six
+informational elements associated with it, we will refer to these
+elements as the features of these observations.
+
+**6. List Column Workflow**
+
+In this video and the exercises that follow it you will learn how to use
+the nest and unnest functions to manipulate the gapminder data.
+
+**7. Step 1: Make a List Column - Nest Your Data**
+
+Here is an excerpt of the gapminder data colored by country.
+
+**8. Step 1: Make a List Column - Nest Your Data**
+
+The process of nesting compacts the chunk of data for each country into
+a corresponding entry in the new nested data frame. This is accomplished
+by the nest function.
+
+**9. Nesting By Country**
+
+To nest the gapminder data by country you first need to use group_by()
+to group the data by country then use nest() to create a series of
+nested data frames for each country.This process creates a new list
+column named data. Each element in this column contains the
+corresponding subsetted data frames.
+
+**10. Viewing a Nested Tibble**
+
+Because the data column in the nested data frame is a list column you
+can access it directly. This can be very helpful for exploring the data
+and prototyping your approach.
+
+**11. Viewing a Nested Tibble**
+
+For example, you can view the fourth list entry, the data for Austria,
+by specifying the data column and extracting the list with the double
+brackets.
+
+**12. Step 3: Simplify List Columns - unnest()**
+
+For the third step of the list column workflow, you need to simplify
+list columns. If the list column contains data frames, like in this
+example, you can simplify it using the unnest() function.
+
+**13. Step 3: Simplify List Columns - unnest()**
+
+In this example, you can see how the nested data frames were simplified
+into a data frame with regular columns.Here the column to unnest is
+specified as an argument in the unnest() function. If no arguments are
+provided to unnest() it will, by default, attempt to unnest all list
+columns.
+
+**14. Let’s Get Started!**
+
+Now it’s your turn to practice using these tools.
+
 ## Nesting your data
 
 In this course, you will work with a collection of economic and social
@@ -278,6 +376,108 @@ nested data frames using the `map` family of functions.
 ## The map family of functions
 
 Theory. Coming soon …
+
+**1. The map family of functions**
+
+**2. List Column Workflow**
+
+In the last video and exercise series, you learned how to use the nest()
+and unnest() functions for steps one and three of the list column
+workflow.
+
+**3. List Column Workflow**
+
+In this lesson, I will introduce you to the map\_\*() family of
+functions. These functions fulfill the roles of steps two and three of
+this workflow.
+
+**4. The map Function**
+
+The map() function applies a desired function to every element in a
+vector or a list and always returns a list as its result. This function
+requires two parameters, dot x and dot f.
+
+**5. The map Function**
+
+Dot x is the vector or list that you want to iterate over while dot f is
+the function. The function can either be a predefined function or it can
+be an anonymous function using the formula syntax.
+
+**6. The map Function**
+
+For example, if you wanted to use the mean() function you can refer to
+it directly or you can build an anonymous function using the tilda to
+indicate that you are using a formula and the dot x to indicate the
+value placeholder.
+
+**7. Population Mean by Country**
+
+In the previous exercise, you calculated the mean population of the
+country of Algeria by extracting the first element of the nested data
+frame then calculating the mean of the population column. The structure
+of this is very similar when using map(). You will use map() to
+calculate the population mean for each country using the corresponding
+nested data frame of that country.
+
+**8. Population Mean by Country**
+
+Here the dot x parameter is the data column in the nested data frame.
+Remember that this column is a list of data frames corresponding to each
+country. Since these are data frames you need to use an anonymous
+function to explicitly calculate the mean for the population column of
+each data frame. Remember that the dot x here acts as the placeholder
+for each element of the list. Since you know that this list contains
+data frames and you want to calculate the mean of the population column
+from each data frame, you can refer to this placeholder the same way you
+would for working with a single element. The result of this function is
+a list of population means for the 77 countries.
+
+**9. 2: Work with List Columns - map() and mutate()**
+
+Remember that tibbles are special data frames that allow us to store
+arbitrarily complex list columns. Because of this you can append the
+resulting list of population means using the mutate() function. Of
+course, storing a list of doubles isn’t very practical for exploration
+
+**10. 3: Simplify List Columns - unnest()**
+
+so you need to simplify these columns using unnest(). Let’s revisit
+these steps in the context of the list column workflow.
+
+**11. List Column Workflow**
+
+First we made a list column of data frames for each country using
+nest(). Then we worked with the list columns by calculating the
+population mean of each data frame using map(). Finally, we simplified
+the resulting nested column with the unnest() function. In certain
+situations, you can combine the last two steps using another function
+from the map\_\*() family.
+
+\*\*12. Work With + Simplify List Columns With map\_\*()\*\*
+
+If you know that the output of the mapped function is a vector of a
+specific type, you can use a map function corresponding to that type to
+calculate the result and explicitly return a vector of the expected
+type.
+
+**13. Work With + Simplify List Columns With map_dbl()**
+
+For example, the mean() function returns a vector of type double, as
+such you can use map_double() to return a vector of doubles instead of a
+list of doubles. This can be done like so, and as a result, mutate()
+appends a vector of type double to the data frame instead of a list.
+
+**14. Build Models with map()**
+
+You can also use map() to build models for each country. Here the lm()
+function is used to build linear models to predict the population using
+the fertility feature. You can define the model using the formula
+parameter and provide the data for each model using the dot x approach
+to refer to each country’s data frame when mapping.
+
+**15. Let’s map something!**
+
+So let’s map some data.
 
 ## Mapping your data
 
@@ -441,6 +641,94 @@ fashion.
 
 Theory. Coming soon …
 
+**1. Tidy your models with broom**
+
+Now that you know how to work with list columns in a tidy manner you can
+begin to work with the tools you need to explore and evaluate machine
+learning models.
+
+**2. List Column Workflow**
+
+As you can probably imagine, the bulk of the work of machine learning
+resides in step two of this workflow. Since you can store complex model
+objects in your data frame you can also work with these objects using
+the tools available in various R packages.
+
+**3. List Column Workflow**
+
+In this video, we will focus on the broom package. A package designed to
+convert useful model outputs into tidy data frames.
+
+**4. Broom Toolkit**
+
+The core of broom is encapsulated by three functions which aim to
+extract conceptually different information from any model. - tidy() is
+used to extract the statistical findings of a model.- glance() provides
+a one row summary of a model, and - augmment() appends the predicted
+values of a model to the data being modeled.Let’s explore each of these
+in greater detail by reviewing the results of the linear model that you
+created for Algeria.
+
+**5. Summary of algeria_model**
+
+If you look at the summary() of the Algeria model you can see that there
+is a lot of useful information here. However, this information is not
+particularly easy to extract directly from the object as it is to simply
+print it. But using tidy() and glance() you can easily extract this
+information into data frames.
+
+**6. tidy()**
+
+The tidy() function collects the statistical findings of a model into a
+data frame.When used with a linear model, tidy() returns the
+coefficients and their corresponding statistics for that model.
+
+**7. tidy()**
+
+To extract these statistics you simply apply the tidy() function to the
+model object as shown here.
+
+**8. glance()**
+
+The next broom function, glance(), is used to return a one row summary
+of a model. For a linear model, this summary contains various statistics
+about the fit of the model such as the r squared.
+
+**9. glance()**
+
+Extracting this information into a data frame is as simple as calling
+the function on the model object.
+
+**10. augment()**
+
+Finally, the augment() function builds an observation-level data frame
+containing the original data used to build the model as well as the
+predicted value for each observation as the column dot fitted.
+Furthermore, augment() appends model-specific statistics of fit for each
+observation.By constructing a data frame containing both the original
+values and those predicted by our model you can explore the fit of the
+model.
+
+**11. Plotting Augmented Data**
+
+For instance, you can visualize how well your model fits the data by
+plotting the predicted and actual values of life expectancy with respect
+to year.In this plot the actual values are the black points and the fit
+of the model, or predicted values, is shown as the red line.By examining
+this plot you can learn that a simple linear model may not be the best
+approach for this example and would consider either including more
+features or using a non-linear approach to better capture this
+relationship.
+
+**12. Let’s use broom!**
+
+Using these three tools makes it easy to extract model coefficients, fit
+statistics and observation-level performance for many different machine
+learning models.In chapter two we will use broom as a part of the list
+column workflow to do this for all 77 of our country-level models with
+just a few lines of code. But first, let’s review what you have learned
+with a few exercises.
+
 ## The three ways to tidy your model
 
 > ## *Question*
@@ -543,6 +831,55 @@ to gain a multidimensional understanding of all of these models.
 
 Theory. Coming soon …
 
+**1. Exploring coefficients across models**
+
+In the last chapter you learned about the list column workflow to build
+multiple models, and you learned about the three functions from the
+broom package that allow you to explore these models. In this chapter,
+you will combine these techniques to learn more about your models and
+your data.
+
+**2. 77 models**
+
+Recall that the gap_models data frame contains information about each
+country from 1960 to 2011, and that the features are nested as a tibble
+for each country. Using these tibbles, you built simple linear models
+predicting life_expectancy by year for each country. In this video and
+exercises that follow, you will learn how to use the coefficients of
+these models to gain new insights into the gapminder data.
+
+**3. Regression coefficients**
+
+So let’s briefly review how to interpret the coefficients for a simple
+linear regression model.Remember that this involves calculating two
+coefficient terms that relate the dependent variable y to the
+independent variable x.
+
+**4. Regression coefficients**
+
+For our models, the y variable is life expectancy as it relates to the
+year, our x variable.The coefficient of the intercept tells us the
+expected life expectancy at year zero. This isn’t meaningful for our
+data so we won’t focus on this term.Instead, we are interested in the
+estimate of the year coefficient which, for a simple linear model,
+directly corresponds to the slope.Using the tidy() function on the first
+model we learn that with each passing year the average life expectancy
+of the population of this country increases by approximately 0.63 years.
+This approach can provide you with information about the growth or lack
+of growth in life expectancy over time for the countries that you are
+modeling.
+
+**5. Coefficients of multiple models**
+
+You can generate these coefficients by mapping the tidy() function for
+each of your models and then simplifying the new data frame by using the
+unnest() function. This results in a tibble containing the estimate for
+each coefficient of every country model.
+
+**6. Let’s practice!**
+
+Now let’s explore these values to see what you can learn from this data.
+
 ## Tidy up the coefficients of your models
 
 In this exercise you will leverage the list column workflow along with
@@ -607,6 +944,54 @@ period.
 ## Evaluating the fit of many models
 
 Theory. Coming soon …
+
+**1. Evaluating the fit of many models**
+
+In the last series of exercises you leveraged the tidy() function from
+broom to explore the coefficients of your models. By doing so you gained
+insight into how life expectancy changed with time for each of the 77
+countries in your dataset.Now you will learn how to use the glance()
+function to measure how well each of the 77 models fit their underlying
+data.
+
+**2. The fit of our models**
+
+One way you can measure the fit of a model is to calculate its rsquared
+metric.The R-squared metric measures the relationship between the
+variation explained by the regression model and the total variation in
+the data. It takes on values between 0 and 1.
+
+**3. The fit of our models**
+
+Here are two example datasets with a low and a high Rsquared value.On
+the left, is a dataset with an Rsquared value close to 0 indicating that
+a linear model is capturing a proportionally small amount of the
+variation in the data and hence is not a good fit. In contrast, the
+model on the right has an Rsquared value closer to one indicating that
+this linear model fits the data well.You can evaluate the fit of all 77
+of your models by measuring the Rsquared value for each model.
+
+**4. Glance across your models**
+
+To do this you use map() and glance() to create a data frame of summary
+statistics for each model stored as the coef column. You can then
+simplify these data frames by using the unnest() function.This results
+in a tibble containing the model statistics for every country
+model.Looking at the rsquared values of the first 6 models you can see
+that all 6 of these models have a high rsquared suggesting that they
+have fit the data for that country well.
+
+**5. Best & worst fitting models**
+
+You can now explore the fit of all 77 models. For instance, you can use
+the top_n() function to find the best fitting models like so. Likewise,
+you can find the models with the worst fit by negating the weight vector
+like so.
+
+**6. Let’s practice!**
+
+In the next series of exercises you will build this data frame and
+explore it to learn more about the fit of each of your 77 models.
 
 ## Glance at the fit of your models
 
@@ -695,6 +1080,54 @@ these fits visually.
 
 Theory. Coming soon …
 
+**1. Visually inspect the fit of your models**
+
+Using glance() you learned which of your 77 models fit the underlying
+data well and which do not. You can get more insight into the fit of a
+model by comparing the original values of life expectancy to the ones
+predicted by the model for each observation.
+
+**2. Building augmented datframes**
+
+To do this you first need to build a data frame that contains both the
+predicted and the original values. This requires first using map() and
+augment() to work on the list column containing the models to create
+nested data frames containing both the original and the predicted
+values. Then you can use unnest() on this new column to simplify these
+data frames allowing further exploration.Let’s visualize some of these
+models.
+
+**3. Model for Italy *R*<sup>2</sup> : 0.99**
+
+First, let’s look at the Italy model, where, based on the rsquared of
+0.99, we can expect that a linear model will fit the data well. You can
+compare the fit of the model with the original data by plotting both on
+the same plot. In this example I used ggplot2 to plot the original
+values of life expectancy as a scatterplot using the geom_point() layer
+and I added the linear model fit as a red line using the geom_line()
+layer.Using this plot it is clear that the model was able to fit the
+data well.
+
+**4. Model for Fiji *R*<sup>2</sup> : 0.82**
+
+Next let’s look at Fiji model which has an r-squared value lower than
+the model for Italy.By plotting this data you can see that a linear
+model does a decent job, but there is clearly room for improvement since
+it looks like after 1990 the growth of life expectancy levels off.
+
+**5. Model for Kenya *R*<sup>2</sup> : 0.42**
+
+Finally, let’s look at an example where the Rsquared is much lower. From
+this plot you can see that a linear model does not adequately capture
+the relationship of life expectancy with year. As you can see from these
+three examples, augment() and ggplot make it easy to visually explore
+the fit of a model.
+
+**6. Let’s practice!**
+
+Now it’s your turn to use these tools to visualize the fit of your best
+and worst fitting models.
+
 ## Augment the fitted values of each model
 
 In this exercise you will prepare your four best and worst fitting
@@ -774,6 +1207,61 @@ series of exercises by incorporating additional features.
 ## Improve the fit of your models
 
 Theory. Coming soon …
+
+**1. Improve the fit of your models**
+
+Using the information we gathered with augment() and glance(), we
+learned that some of the simple linear regression models do not
+adequately fit the underlying trends in our data. To overcome this we
+will now employ a multiple regression model.
+
+**2. Multiple Linear Regression model**
+
+This model is a natural extension of the simple linear regression model.
+The key difference is that more than one explanatory variable is used to
+explain the outcome, meaning that rather than fitting a best fit line we
+are instead fitting a multi-dimensional plane.In the gapminder dataset
+we can use additional characteristics or features of our observations to
+model life expectancy. So, let’s use them all.
+
+**3. Using all features**
+
+The choice of which features to use can be controlled in the formula
+field of the lm() function. Remember that for a simple model you used
+the formula of life expectancy as explained by year.Similarly, for a
+multiple linear regression model you can explicitly define the formula
+by including the name of each feature separated by a plus sign or if you
+know you want to include all features you can capture them by using a
+period, as shown here.
+
+**4. Using broom with Multiple Linear Regression models**
+
+The behavior of the broom functions remains the same. tidy() returns the
+coefficient estimates of the models, this now includes estimates for the
+four additional features. Same goes for augment(), in addition to the
+fitted values for each observation, the values of four new features are
+returned.And although the expected output of glance() remains the same
+we have to shift our focus from the r squared value to the adjusted r
+squared value when evaluating the fit of our models or comparing simple
+and multiple linear regression models.
+
+**5. Adjusted *R*<sup>2</sup>**
+
+Remember that R-squared measures the variation explained by the model.
+Adding any new feature to a model, regardless of its relationship with
+the dependent variable, will always increase the model’s r squared
+value. This becomes problematic when comparing the fit of models with
+different number of explanatory features used. To compensate for this
+you will instead use the Adjusted R-squared value, this is a modified
+rsquared metric whose calculation takes into account the number of
+features used in the model.The interpretation of the adjusted R-squared
+value is very similar to the R-squared and you will use this to evaluate
+the fit of your new models and compare them to the previously built
+simple linear models.
+
+**6. Let’s practice!**
+
+So, let’s get started.
 
 ## Build better models
 
@@ -862,6 +1350,96 @@ work with two types of models: linear models and random forest models.
 ## Training, test and validation splits
 
 Theory. Coming soon …
+
+**1. Training, test and validation splits**
+
+Two of the most important questions that a data scientist must answer
+when building machine learning models are:How well would my model
+perform on new data?andDid I select the best performing model?
+Throughout this chapter you will learn the techniques necessary to
+answer these questions.
+
+**2. Train-Test Split**
+
+To answer the first question,“how well would my model perform on new
+data?”Start with all of your data, this contains both the features and
+the outcome you want to predict
+
+**3. Train-Test Split**
+
+and split it into two portions.
+
+**4. Train-Test Split**
+
+The first portion is used to train a model and the second portion is
+used to test how well it performs on new data.This is known as the
+train-test split. In a disciplined machine learning workflow this is a
+critical first step. So long as the test data is a fair representation
+of the data you can expect to see in the future you can use it to
+estimate the expected performance for future observations.
+
+**5. initial_split()**
+
+To make the train-test split you will use the initial_split() function
+from the rsample package.The prop parameter is used to specify the
+proportion of data that will be selected for the train set, in this case
+it is 75%. This means that 25% of the data will be randomly withheld as
+the test set.To prepare the training and the testing data frames you use
+the functions training() and testing(), respectively. Of the 4004
+observations in the gapminder dataset, 3001 or approximately 75% is
+partitioned into the training data and the remainder 25% is reserved as
+testing data.
+
+**6. Train-Validate Split**
+
+Because you are interested in keeping the test data independent you must
+not use it to make any decisions about your models. So, to answer the
+second question:“Did I select the best performing model?”You must rely
+exclusively on the train data.
+
+**7. Train-Validate Split**
+
+The train data can be further split into two partitions of train and
+validate. Now you can use the new train data to build your models and
+use validate to calculate their performance.
+
+**8. Cross Validation**
+
+You can take this one step further by repeating this train-validate
+split several times. Each time reserving a different portion of the data
+for evaluation. This is known as cross validation and it provides two
+key advantages:First, by iteratively withholding different portions of
+the training data you can essentially use all of it to evaluate the
+overall performance of a model.Second, you are able to calculate
+multiple measurements of performance. This helps account for the natural
+variability that would exist when measuring the performance of your
+models.
+
+**9. vfold_cv()**
+
+You can use the function vfold_cv() from the rsample package to build
+these cross validated pairs of train and validate data. The parameter v
+is used to indicate how many times the data should be split.This new
+data frame now brings you back to the list column workflow. In order to
+build a model for each fold you will need to first extract the training
+and validation data frames into their own list columns.
+
+**10. Mapping train & validate**
+
+To do this you will use map() to apply the training() and testing()
+functions. This creates the desired train and validate data frames for
+each fold. Notice that this is similar to what you’ve done with the
+initial split except now you’re doing it for many splits.
+
+**11. Cross Validated Models**
+
+And you’re back to building many models!Just like in the last chapter
+you can use each of the 3 train data frames to build corresponding
+models.
+
+**12. Let’s practice!**
+
+Now, let’s progress to the exercises and apply what you’ve learned.
 
 ## The test-train split
 
@@ -986,6 +1564,100 @@ create.
 
 Theory. Coming soon …
 
+**1. Measuring cross-validation performance**
+
+Now that you’ve generated your cross-validated data frames and models,
+let’s learn how to use the validation data to measure the performance of
+each model.
+
+**2. Measuring Performance**
+
+In order to measure validate performance of your models you need to
+compare the actual values of life expectancy in the validate data frames
+to the ones generated using the prediction model. To do this you need to
+first prepare both sets of values.
+
+**3. Measuring Performance - Truth**
+
+First you need to isolate the actual values.
+
+**4. Measuring Performance - Truth**
+
+**5. Measuring Performance - Truth**
+
+I will refer to this vector of values as actual values.
+
+**6. Measuring Performance - Prediction**
+
+Next, you need to use the features of these observations
+
+**7. Measuring Performance - Prediction**
+
+along with the model
+
+**8. Measuring Performance - Prediction**
+
+to generate a series of predictions for the validation data.
+
+**9. Measuring Performance**
+
+Now that you have both the predicted and actual values of life
+expectancy you can compare them directly. By measuring the differences
+between them you can assess the overall performance using your preferred
+metric.
+
+**10. Mean Absolute Error**
+
+The metric I prefer is called the Mean Absolute Error or MAE. This
+metric captures the average magnitude by which the predictions differ
+from the actual values. The most appealing trait of this metric is that
+it has an intuitive interpretation. Using the MAE, you have an idea of
+how much, on average, your model’s prediction will differ from reality.
+
+**11. Ingredients for Performance Measurement**
+
+To summarize, you need three ingredients to measure performance:The
+actual life expectancy values, the predicted life expectancy values and
+a metric to compare the two.Now let’s learn how to do this in R.
+
+**12. 1) Extract the actual values**
+
+To extract the actual values of life expectancy from the validate data
+frames you can use the map() function. Here the dot x refers to each
+validate data frame so you can use the dollar operator to access the
+life expectancy column vector.
+
+**13. The predict() & map2() functions**
+
+In order to generate the predicted values you need to use the predict()
+function. This function requires two inputs, the model and the data to
+predict on. You now need to expand your collection of map tools to
+include the map2() function. This is very similar to the map() function
+you’ve learned in chapter 1 except that you can use two input columns.
+The syntax is very similar except you now use dot x and dot y as your
+first two parameters and you refer to these placeholders in the formula
+in the same way.
+
+**14. 2) Prepare the predicted values**
+
+As before you can use this map2() function inside mutate() to append a
+column of predictions for each cross validation fold.
+
+**15. 3) Calculate MAE**
+
+Now that you have the actual and predicted values for each cross
+validation fold you can compare them by using the mae() function from
+the Metrics package. Again, you can use a map2() variant. Since you know
+that the result will be a double vector you can directly use the
+map2_double() function to ensure that the value is returned as a vector
+instead of a list. And this is how you can measure the performance for
+each cross validation fold.
+
+**16. Let’s practice!**
+
+Now it’s your turn to calculate the performance of your cross-validated
+linear regression models.
+
 ## Build cross-validated models
 
 In this exercise, you will build a linear model predicting
@@ -1077,6 +1749,103 @@ improve this performance by using a more complex model? Let’s find out!
 ## Building and tuning a random forest model
 
 Theory. Coming soon …
+
+**1. Building and tuning a random forest model**
+
+Let’s briefly review what you’ve done so far to evaluate the cross
+validation performance of the regression model.
+
+**2. Cross Validation Performance**
+
+Using cross validation, you split the training data into multiple
+train-validate pairs.
+
+**3. Cross Validation Performance**
+
+The train section for each of these cross validation folds was used to
+build a corresponding model.
+
+**4. Cross Validation Performance**
+
+Which was then used alongside with the held out validate sets.
+
+**5. Cross Validation Performance**
+
+To calculate the mean absolute error for each cross validation fold.
+
+**6. Linear Regression Model**
+
+Once you’ve taken the average mae across the cross validation folds
+you’ve measured the performance of the model on held out data. For your
+linear regression model, the mean absolute error is 1.5 years, meaning
+that you can expect the model predictions will be off, on average, by
+1.5 years.Is this the best model that we can build?
+
+**7. Another Model**
+
+You can determine this by repeating these steps with a different model.
+Because the same data will be used across the models you can directly
+compare their validation performance between them, allowing you to
+select the best performing model.You can use this machine learning
+workflow to compare virtually any model. So let’s try this out with a
+random forest model to see if it achieves a higher performance.
+
+**8. Random Forest Benefits**
+
+The random forest is a very popular model in the machine learning
+community. The details of how this algorithm works are outside the scope
+of this course but can be found in other great datacamp courses on
+machine learning. In chapter 2, we’ve learned that there might be a
+non-linear relationship between the gapminder features and life
+expectancy. Also we know that the country feature had a direct
+relationship with other features.The random forest models natively
+handle both non-linear relationships and feature interactions so we can
+be optimistic about trying this model.
+
+**9. Basic Random Forest Tools**
+
+You will use the random forest implementation from the ranger package.
+To build the random forest model with default hyperparameters you use
+the following syntax. You need to provide the formula and data just like
+the regression model. Because a random forest has a random element I
+recommend using the seed argument to ensure that your results are
+reproducible.The syntax for preparing the prediction values for new data
+is also similar to that of a linear model. The only difference is that
+you need to use the dollar sign to explicitly extract the prediction
+vector from the ranger prediction object.
+
+**10. Build Basic Random Forest Models**
+
+You can apply this as before by mapping the train data to build the
+models for each fold.Then use map2() to generate the predictions for
+each fold.
+
+**11. ranger Hyper-Parameters**
+
+You can further improve a model by fine tuning its hyper parameters.
+Ranger has two parameters that can be tuned, mtry and num.trees.We will
+focus on tuning the mtry parameter which can range from one to the total
+number of features available.
+
+**12. Tune The Hyper-Parameters**
+
+To tune the parameters in a tidyverse fashion you can leverage the
+crossing() function to expand the cross validation data frame for each
+value of the hyper parameter you’re interesting in trying.
+
+**13. Tune The Hyper-Parameters**
+
+Then you can use map2() to iterate over all the folds and the mtry
+parameter to build the new ranger models for each fold-mtry
+combintation. You can then proceed as usual to calculate the mean
+absolute error for each combination to determine which parameterized
+model has the best validation performance.
+
+**14. Let’s practice!**
+
+Now let’s use what you’ve learned up until now to see if the random
+forest model will provide better validation performance than the linear
+regression model.
 
 ## Build a random forest model
 
@@ -1241,6 +2010,76 @@ testing data.
 
 Theory. Coming soon …
 
+**1. Measuring the Test Performance**
+
+Throughout this chapter you’ve worked with a classic machine learning
+workflow.
+
+**2. Machine Learning Workflow**
+
+The first step of this workflow was to split your data into two
+sections, train and test.
+
+**3. Machine Learning Workflow**
+
+The test portion was intentionally held out in order to evaluate the
+final model with an independent set of data.
+
+**4. Machine Learning Workflow**
+
+The train portion of the data was further split into iterative sections
+of train and validate using cross validation for the purpose of model
+selection.
+
+**5. Machine Learning Workflow**
+
+Each train portion was used to build a model and the held out validate
+portion was used to evaluate it.
+
+**6. Machine Learning Workflow**
+
+Resulting in measures of validation performance for each cross
+validation fold for each model and hyperparameter. Aggregating the
+validation performance for each model allowed us to compare multiple
+models as well as their respective hyper parameters
+
+**7. Machine Learning Workflow**
+
+in order to select the model-hyperparameter combination with the best
+overall performance. For the gapminder dataset, the best performing
+model was the random forest model with a hyperparameter mtry of 4.
+
+**8. Machine Learning Workflow**
+
+This brings us to the final section of this workflow, building and
+evaluating our final model.Now, you will use all of the train data
+prepared during the initial split to build the random forest model. This
+is the final model and is the one you would expect to use in a
+production environment.
+
+**9. Machine Learning Workflow**
+
+As such you would like to know how well you can expect this model will
+perform on new data. To do this you bring back the test data that was
+intentionally ignored thus far and treat it as the desired new data for
+evaluation. By comparing the actual values of life expectancy for the
+test set with the values predicted using the final model you can
+estimate the model’s performance on new data. This is known as the
+model’s test performance.
+
+**10. Measuring the Test Performance**
+
+To perform these steps in R you first build the best performing model,
+which in this case was the random forest model built using ranger with
+an mtry value of 2 and 100 trees.Next, you prepare the actual and
+predicted values for comparison.Finally, you need to compare the actual
+and predicted values using a desired metric, in this case the mean
+absolute error.
+
+**11. Let’s practice!**
+
+Let’s see how well the final model performed.
+
 ## Build & evaluate the best model
 
 Using cross-validation you were able to identify the best model for
@@ -1305,6 +2144,60 @@ classification models.
 ## Logistic regression models
 
 Theory. Coming soon …
+
+**1. Logistic Regression Models**
+
+Welcome to the final chapter of machine learning in the tidyverse.
+Throughout this course you have learned a variety of tidyverse tools
+aimed at building regression models.In this chapter you will shift gears
+to work with another group of models called binary classification
+models.
+
+**2. Binary Classification**
+
+Binary classification models are among the most common class of models
+used by data scientists. These models are trained to assign an
+observation to one of two possible classes using the available set of
+features.
+
+**3. The attrition Dataset**
+
+To learn the tools and skills associated with these models you will
+explore the attrition dataset.This dataset contains over 1400
+observations of employees at a fictional company. Each observation
+provides a variety of features about the employee such as education,
+income, work-life balance, and job satisfaction. The outcome variable
+that you are interested in this data is called Attrition, this indicates
+whether the employee has left the company or not. Throughout this
+chapter you will work on building a model that will use the available
+features to predict if an employee has quit.In a real world scenario a
+model like this can be used by a company to identify employees that are
+at risk and potentially intervene.
+
+**4. Logistic Regression**
+
+The first model that you will work with is the logistic regression
+model. This is very similar to a linear model except that for a given
+observation it returns the probability of that observation belonging to
+the positive class. Here, this would be the probability of attrition.In
+order to build a logistic regression model in R you will use the
+generalized linear model function, glm(). Similar to the lm() function
+you need to provide the formula and the data but now you have a new
+parameter called family which must be set to binomial for a logistic
+regression model.
+
+**5. glm()**
+
+Working with the cross-validated data frame, cv_data, you will build a
+logistic regression model for each fold.As before, you can leverage the
+mutate() and map() combination to map the glm() function for each train
+data frame.
+
+**6. Time to Practice**
+
+In the next set of exercises you will apply what you’ve learned in order
+to prepare the attrition dataset for the train-test-validate splits and
+build a logistic regression model for each fold.
 
 ## Prepare train-test-validate parts
 
@@ -1388,6 +2281,89 @@ Excellent work! Now let’s learn how to evaluate these models.
 ## Evaluating classification models
 
 Theory. Coming soon …
+
+**1. Evaluating Classification Models**
+
+Now that you’ve prepared the train-test-validate splits and built your
+logistic regression models you need to learn how to evaluate their
+performance.
+
+**2. Ingredients for Performance Measurement**
+
+The ingredients needed to measure performance are the same as before.
+First you need the actual classes of your observations. Second you will
+need the predicted classes of these observations. Finally you will need
+a metric relevant to your problem to compare the two and measure
+performance.
+
+**3. 1) Prepare Actual Classes**
+
+To prepare the vector of actual classes you need to convert the
+attrition vector from character to a binary. If you look at one validate
+data frame from the cross validation folds you can see that the values
+are all either Yes or No. To convert these to a binary vector you simply
+need to use the equal to operator to convert all Yes values to TRUE and
+No values to FALSE.
+
+**4. 2) Prepare Predicted Classes**
+
+To prepare the predicted classes you first need to prepare the
+probability vector. To do this for a logistic regression model you will
+use the predict() function with the argument type equal to response.
+This generates predicted probability of attrition for each observation.
+Next, you will need to convert these probability values into a binary
+vector. Here you can assume that any probability greater than 0.5 will
+correspond to TRUE and any less than or equal to 0.5 will correspond to
+FALSE.
+
+**5. 3) A metric to compare 1) & 2)**
+
+Now that you have the actual and predicted binary vectors you can think
+about what metric is appropriate for the problem you are trying to
+solve. Here I will introduce you to three popular metrics, accuracy,
+precision and recall, all three of which are available in the Metrics
+package you’ve previously used. To understand these metrics let’s start
+with the contigency table that compares the actual and predicted values.
+In R we can generate this using the table() function.
+
+**6. 3) Metric: Accuracy**
+
+The first metric we will consider is Accuracy. Accuracy measures how
+well your model predicted both the TRUE and FALSE classes. This metric
+can be useful if it is equally important for you to predict employees
+that quit and those that don’t. You can calculate accuracy by using the
+function of the same name from the Metrics package. Here you have an
+accuracy of 90% which, when looking at the contingency table, you can
+see is primarily driven by the model’s ability to correctly classify
+cases where attrition is FALSE.
+
+**7. 3) Metric: Precision**
+
+The next metric we will consider is precision. This metric calculates
+how often the model is correct at predicting the TRUE class. You
+calculate it using the precision() function. The resulting value tells
+us that of the employees the model classified as having quit, 78% of
+them did indeed leave the company. This metric can be appropriate when
+you want to minimize how often the model incorrectly predicts an
+observation to be in the positive class.
+
+**8. 3) Metric: Recall**
+
+Finally, there is recall. This metric compares the number of
+observations the model has correctly identified as TRUE to the total
+number of TRUE observations. In other words, it measures the rate at
+which the model can capture the TRUE class. If you are interested in
+building a model that would capture as many risky employees as possible
+you should consider this metric. You can calculate it using the recall()
+function. The resulting value tells us that of the employees that quit,
+the model was able to capture 51% of them correctly. For the attrition
+model let’s assume that you need to identify as many employees that are
+at risk of leaving, as such the best performing model will be selected
+using the recall metric.
+
+**9. Let’s practice!**
+
+Now you’re ready to evaluate your classification models.
 
 ## Predictions of a single model
 
@@ -1566,6 +2542,41 @@ exercises you will find out.
 
 Theory. Coming soon …
 
+**1. Classification With Random Forests**
+
+You’ve successfully calculated the average cross validation performance
+for logistic regression. Now let’s try the random forest model to see if
+it improves the prediction performance.
+
+**2. ranger() for Classification**
+
+Tuning and building the random forest models is the same as before. The
+only changes you need to think about is the values of mtry to tune.
+Since there are 30 features in the attrition dataset, this value can go
+as high as 30. For now we will try out a few mtry values.
+
+**3. 1) Prepare Actual Classes**
+
+To evaluate the random forest model, you use the same framework of
+comparing the actual and predicted classes. Preparing the actual values
+is the same as before. You simply convert the Yes and No to TRUE and
+FALSE, respectively.
+
+**4. 2) Prepare Predicted Classes**
+
+To generate the predicted values for a ranger model you need to first
+use the predict() function as shown here. By default, ranger outputs the
+character class, in this case Yes or No. To calculate the performance
+you simply need to convert this to a binary vector like so.
+
+**5. Build the Best Attrition Model**
+
+Now you have all of the tools that you need to calculate the validation
+recall of your random forest models. After building and evaluating these
+models you can compare their performance to the logistic regression
+model in order to select the best performing model.This will allow you
+to prepare your final model and calculate its test performance metrics.
+
 ## Tune random forest models
 
 Now that you have a working logistic regression model you will prepare a
@@ -1727,3 +2738,39 @@ employees that are at risk to leave the organization.
 ## Wrap-up
 
 Theory. Coming soon …
+
+**1. Recap: Machine Learning in the Tidyverse**
+
+Well done! You’ve reached the final video of this course. Let’s briefly
+review what you’ve learned.
+
+**2. Chapter 1 - The List Column Workflow**
+
+In chapter one you learned how to use the list column workflow. This
+workflow is the backbone of working with models in the tidyverse.
+
+**3. Chapter 2 - Explore Multiple Models With broom**
+
+In chapter 2 you leveraged this workflow to build models for each
+country in the gapminder dataset. You then learned about the various
+attributes of these models using the tidy(), glance() and augment()
+functions from the broom package.
+
+**4. Chapter 3 - Build, Tune & Evaluate Regression Models**
+
+In chapter 3 you learned about the train-validate-test approach and how
+it can be used to select and evaluate models. This introduced you to the
+functions from the rsample, Metrics and ranger packages.
+
+**5. Chapter 4 - Build, Tune & Evaluate Classification Models**
+
+Finally, in chapter 4 you learned how to apply the list column workflow
+to build, tune and evaluate classification models.
+
+**6. Congratulations!**
+
+Thank you for the time that you have dedicated to this course. I find
+these methods and tools to be indispensable for my work as a data
+scientist and I hope that you will gain the same value for your work.It
+has been a pleasure to work with you and I wish you the best of luck on
+your journey of learning.

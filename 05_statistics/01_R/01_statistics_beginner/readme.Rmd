@@ -27,6 +27,47 @@ Summary statistics gives you the tools you need to boil down massive datasets to
 
 Theory. Coming soon ...
 
+
+**1. What is statistics?**
+
+Hi and welcome to the course. My name is Maggie, and I'll be your host as we dive in to the world of statistics.
+
+**2. What is statistics?**
+
+So what is statistics anyway? We can talk about the field of statistics, which is the practice and study of collecting and analyzing data. We can also talk about a summary statistic, which is a fact about or summary of some data, like an average or a count.
+
+**3. What can statistics do?**
+
+A more important question, however, is what can statistics do? With the power of statistics, we can answer tons of different questions like:How likely is someone to purchase a product? Are people more likely to purchase it if they can use a different payment system?How many occupants will your hotel have? How can you optimize occupancy?How many sizes of jeans need to be manufactured so they can fit 95% of the population? Should the same number of each size be produced?A question like, Which ad is more effective in getting people to purchase a product? can be answered with A/B testing.
+
+**4. What can't statistics do?**
+
+While statistics can answer a lot of questions, it's important to note that statistics can't answer every question. If we want to know why the TV series Game of Thrones is so popular, we could ask everyone why they like it, but they may lie or leave out reasons. We can see if series with more violent scenes attract more viewers, but even if they do, we can't know if the violence in Game of Thrones is the reason for its popularity, or if other factors are driving its popularity and it just happens to be violent.
+
+**5. Types of statistics**
+
+There are 2 main branches of statistics: descriptive statistics and inferential statistics. Descriptive statistics focuses on describing and summarizing the data at hand. After asking four friends how they get to work, we can see that 50% of them drive to work, 25% ride the bus, and 25% bike. These are examples of descriptive statistics.Inferential statistics uses the data at hand, which is called sample data, to make inferences about a larger population. We could use inferential statistics to figure out what percent of people drive to work based on our sample data.
+
+**6. Types of data**
+
+There are two main types of data. Numeric, or quantitative data is made up of numeric values. Categorical, or qualitative data is made up of values that belong to distinct groups.It's important to note that these aren't the only two types of data that exist - there are others too, but we'll be focusing on these two.Numeric data can be further separated into continuous and discrete data. Continuous numeric data is often quantities that can be measured, like speed or time. Discrete numeric data is usually count data, like number of pets or number of packages shipped.Categorical data can be nominal or ordinal. Nominal categorical data is made up of categories with no inherent ordering, like marriage status or country of residence. Ordinal categorical data has an inherent order, like a survey question where you need to indicate the degree to which you agree with a statement.
+
+**7. Categorical data can be represented as numbers**
+
+Sometimes, categorical variables are represented using numbers. Married and unmarried can be represented using 1 and 0, or an agreement scale could be represented with numbers 1 through 5. However, it's important to note that this doesn't necessarily make them numeric variables.
+
+**8. Why does data type matter?**
+
+Being able to identify data types is important since the type of data you're working with will dictate what kinds of summary statistics and visualizations make sense for your data, so this is an important skill to master.For numerical data, we can use summary statistics like mean, and plots like scatterplots, but these don't make a ton of sense for categorical data.
+
+**9. Why does data type matter?**
+
+Similarly, things like counts and barplots don't make much sense for numeric data.
+
+**10. Let's practice!**
+
+Time to master these important skills!
+
 ## Descriptive and inferential statistics
 
 Statistics can be used to answer lots of different types of questions, but being able to identify which type of statistics is needed is essential to drawing accurate conclusions. In this exercise, you'll sharpen your skills by identifying which type is needed to answer each question.
@@ -53,6 +94,75 @@ Map each variable to its data type by dragging and dropping.
 ## Measures of center
 
 Theory. Coming soon ...
+
+
+**1. Measures of center**
+
+In this lesson, we'll begin to discuss summary statistics, some of which you may already be familiar with, like mean and median.
+
+**2. Mammal sleep data**
+
+In this video, we'll look at data about different mammals' sleep habits.
+
+**3. Histograms**
+
+Before we dive in, let's remind ourselves how histograms work. A histogram takes a bunch of data points and separates them into bins, or ranges of values. Here, there's a bin for 0 to 2 hours, 2 to 4 hours, and so on. The heights of the bars represent the number of data points that fall into that bin, so there's one mammal in the dataset that sleeps between 0 and 2 hours, and nine mammals that sleep two to four hours. Histograms are a great way to visually summarize the data, but we can use numerical summary statistics to summarize even further.
+
+**4. How long do mammals in this dataset typically sleep?**
+
+One way we could summarize the data is by answering the question, How long do mammals in this dataset typically sleep? To answer this, we need to figure out what the "typical" or "center" value of the data is. We'll discuss three different definitions, or measures, of center: mean, median, and mode.
+
+**5. Measures of center: mean**
+
+The mean, often called the average, is one of the most common ways of summarizing data. To calculate mean, we add up all the numbers of interest and divide by the total number of data points, which is 83 here. This gives us 10-point-43 hours of sleep. In R, we can use the mean function, passing it the variable of interest.
+
+**6. Measures of center: median**
+
+Another measure of center is the median. The median is the value where 50% of the data is lower than it, and 50% of the data is higher. We can calculate this by sorting all the data points and taking the middle one, which would be index 42 in this case. This gives us a median of 10.1 hours of sleep. In R, we can use the median function to do the calculations for us.
+
+**7. Measures of center: mode**
+
+The mode is the most frequent value in the data. If we count how many occurrences there are of each sleep_total and sort in descending order, there are 4 mammals that sleep for 12.5 hours, so this is the mode.The mode of the vore variable, which indicates the animal's diet, is herbivore. Mode is often used for categorical variables, since categorical variables can be unordered and often don't have an inherent numerical representation.
+
+**8. Adding an outlier**
+
+Now that we have lots of ways to measure center, how do we know which one to use? Let's look at an example. Here, we have all of the insectivores in the dataset.
+
+**9. Adding an outlier**
+
+We get a mean sleep time of 16.5 hours and a median sleep time of 18.9 hours.
+
+**10. Adding an outlier**
+
+Now let's say we've discovered a new mystery insectivore that never sleeps.
+
+**11. Adding an outlier**
+
+If we take the mean and median again, we get different results. The mean went down by more than 3 hours, while the median changed by less than an hour. This is because the mean is much more sensitive to extreme values than the median.
+
+**12. Which measure to use?**
+
+Since the mean is more sensitive to extreme values, it works better for symmetrical data like this. Notice that the mean, in red, and median, in blue, are quite close.
+
+**13. Skew**
+
+However, if the data is skewed, meaning it's not symmetrical, like this, median is usually better to use. In this histogram, the data is piled up on the right.
+
+**14. Skew**
+
+Data that looks like this is called left-skewed data.
+
+**15. Skew**
+
+When data is piled up on the left, it's right-skewed.
+
+**16. Which measure to use?**
+
+When data is skewed, the mean and median are different. The mean is pulled in the direction of the skew, so it's lower than the median on the left-skewed data, and higher than the median on the right-skewed data. Because the mean is pulled around by the extreme values, it's better to use the median since it's less affected by outliers.
+
+**17. Let's practice!**
+
+Let's practice using measures of center.
 
 ## Mean and median
 
@@ -175,6 +285,67 @@ Great work! The mean is substantially higher than the median since it's being pu
 
 Theory. Coming soon ...
 
+
+**1. Measures of spread**
+
+In this lesson, we'll talk about another set of summary statistics: measures of spread.
+
+**2. What is spread?**
+
+Spread is just what it sounds like - it describes how spread apart or close together the data points are. Just like measures of center, there are a few different measures of spread.
+
+**3. Variance**
+
+The first measure, variance, measures the average distance from each data point to the data's mean.
+
+**4. Variance**
+
+To calculate the variance, we start by calculating the distance between each point and the mean, so we get one number for every data point.
+
+**5. Variance**
+
+We then square each distance and then add them all together.
+
+**6. Variance**
+
+Finally, we divide the sum of squared distances by the number of data points minus 1, giving us the variance. The higher the variance, the more spread out the data is. It's important to note that the units of variance are squared, so in this case, it's 19.8 hours squared.We can calculate the variance in one step using the var function.
+
+**7. Standard deviation**
+
+The standard deviation is another measure of spread, calculated by taking the square root of the variance. It can also be calculated using the sd function. The nice thing about standard deviation is that the units are usually easier to understand since they're not squared. It's easier to wrap your head around 4 and a half hours than 19.8 hours squared.
+
+**8. Mean absolute deviation**
+
+Mean absolute deviation takes the absolute value of the distances to the mean, and then takes the mean of those differences. While this is similar to standard deviation, it's not exactly the same. Standard deviation squares distances, so longer distances are penalized more than shorter ones, while mean absolute deviation penalizes each distance equally. One isn't better than the other, but SD is more common than MAD.
+
+**9. Quartiles**
+
+Before we discuss the next measure of spread, let's quickly talk about quartiles. Quartiles split up the data into four equal parts. Here, we call the quantile function to get the quartiles of the data. This means that 25% of the data is between 1-point-9 and 7-point-85, another 25% is between 7-point-85 and 10-point-10, and so on. This means that the second quartile splits the data in two, with 50% of the data below it and 50% of the data above it, so it's exactly the same as the median.
+
+**10. Boxplots use quartiles**
+
+The boxes in box plots represent quartiles. The bottom of the box is the first quartile, and the top of the box is the third quartile. The middle line is the second quartile, or the median.
+
+**11. Quantiles**
+
+Quantiles, also called percentiles, are a generalized version of quartile, so they can split data into 5 pieces or ten pieces, for example. By default, the quantile function returns the quartiles of the data, but we can adjust this using the probs argument, which takes in a vector of proportions.Here, we split the data in five equal pieces. We can also use the seq function as a shortcut, which takes in the lowest number, the highest number, and the number we want to jump by. We can compute the same quantiles using seq from zero to one, jumping by 0-point-2.
+
+**12. Interquartile range (IQR)**
+
+The interquartile range, or IQR, is another measure of spread. It's the distance between the 25th and 75th percentile, which is also the height of the box in a boxplot. We can calculate it using the quantile function to get 5-point-9 hours.
+
+**13. Outliers**
+
+Outliers are data points that are substantially different from the others. But how do we know what a substantial difference is?A rule that's often used is that any data point less than the first quartile minus 1.5 times the IQR is an outlier, as well as any point greater than the third quartile plus 1.5 times the IQR.
+
+**14. Finding outliers**
+
+To find outliers, we'll start by calculating the IQR of the mammals' body weights. We can then calculate the lower and upper thresholds following the formulas from the previous slide.We can now filter the data frame to find mammals whose body weight is above or below the thresholds. We can see that there are eleven body weight outliers in this dataset, including the cow and the Asian elephant.
+
+**15. Let's practice!**
+
+Time to practice measuring spread and finding outliers.
+
 ## Quartiles, quantiles, and quintiles
 
 Quantiles are a great way of summarizing numerical data since they can be used to measure center and spread, as well as to get a sense of where a data point stands in relation to the rest of the dataset. For example, you might want to give a discount to the 10% most active users on a website.
@@ -291,6 +462,79 @@ In this chapter, you'll learn how to generate random samples and measure chance 
 
 Theory. Coming soon ...
 
+
+**1. What are the chances?**
+
+People talk about chance pretty frequently, like what are the chances of closing a sale, of rain tomorrow, or of winning a game? But how exactly do we measure chance?
+
+**2. Measuring chance**
+
+We can measure the chances of an event using probability. We can calculate the probability of some event by taking the number of ways the event can happen and dividing it by the total number of possible outcomes.For example, if we flip a coin, it can land on either heads or tails. To get the probability of the coin landing on heads, we divide the 1 way to get heads by the two possible outcomes, heads and tails. This gives us one half, or a fifty percent chance of getting heads.Probability is always between zero and 100 percent. If the probability of something is zero, it's impossible, and if the probability of something is 100%, it will certainly happen.
+
+**3. Assigning salespeople**
+
+Let's look at a more complex scenario. There's a meeting coming up with a potential client, and we want to send someone from the sales team to the meeting. We'll put each person's name on a ticket in a box and pull one out randomly to decide who goes to the meeting.
+
+**4. Assigning salespeople**
+
+Brian's name gets pulled out. The probability of Brian being selected is one out of four, or 25%.
+
+**5. Sampling from a data frame**
+
+We can recreate this scenario in R using dplyr's sample_n function, which takes in a data frame and the number of rows we want to pull out, which is only 1 in this case.However, if we run the same thing again, we may get a different row since sample_n chooses randomly. If we want to show the team how we picked Brian, this won't work well.
+
+**6. Setting a random seed**
+
+To ensure we get the same results when we run the script in front of the team, we'll set the random seed using set-dot-seed. The seed is a number that R's random number generator uses as a starting point, so if we orient it with a seed number, it will generate the same random value each time. The number itself doesn't matter. We could use 5, 139, or 3 million. The only thing that matters is that we use the same seed the next time we run the script. Now, we, or one of the sales-team members, can run this code over and over and get Brian every time.
+
+**7. A second meeting**
+
+Now there's another potential client who wants to meet at the same time, so we need to pick another salesperson. Brian already has been picked and he can't be in two meetings at once, so we'll pick between the remaining three. This is called sampling without replacement, since we aren't replacing the name we already pulled out.
+
+**8. A second meeting**
+
+This time, Claire is picked, and the probability of this is one out of three, or about 33%.
+
+**9. Sampling twice in R**
+
+To recreate this in R, we can pass 2 into sample_n, which will give us 2 rows.
+
+**10. Sampling with replacement**
+
+Now let's say the two meetings are happening on different days, so the same person could attend both. In this scenario, we need to return Brian's name to the box after picking it. This is called sampling with replacement.
+
+**11. Sampling with replacement**
+
+Claire gets picked for the second meeting, but this time, the probability of picking her is 25%.
+
+**12. Sampling with replacement in R**
+
+To sample with replacement, set the replace argument of sample_n to TRUE.If there were 5 meetings, all at different times, it's possible to pick some rows multiple times since we're replacing them each time.
+
+**13. Independent events**
+
+Let's quickly talk about independence. Two events are independent if the probability of the second event isn't affected by the outcome of the first event. For example, if we're sampling with replacement, the probability
+
+**14. Independent events**
+
+that Claire is picked second is 25%, no matter who gets picked first.In general, when sampling with replacement, each pick is independent.
+
+**15. Dependent events**
+
+Similarly, events are considered dependent when the outcome of the first changes the probability of the second.If we sample without replacement, the probability that Claire is picked second depends on who gets picked first.
+
+**16. Dependent events**
+
+If Claire is picked first, there's 0% probability that Claire will be picked second.
+
+**17. Dependent events**
+
+If someone else is picked first, there's a 33% probability Claire will be picked second.In general, when sampling without replacement, each pick is dependent.
+
+**18. Let's practice!**
+
+Head over to the exercises!
+
 ## With or without replacement?
 
 In the video, you learned about two different ways of taking samples: with replacement and without replacement. Although it isn't always easy to tell which best fits various situations, it's important to correctly identify this so that any probabilities you report are accurate. In this exercise, you'll put your new knowledge to the test and practice figuring this out.
@@ -387,6 +631,87 @@ Spectactular sampling! It's important to consider how you'll take a sample since
 ## Discrete distributions
 
 Theory. Coming soon ...
+
+
+**1. Discrete distributions**
+
+In this lesson, we'll take a deeper dive into probability and begin looking at probability distributions.
+
+**2. Rolling the dice**
+
+Let's consider rolling a standard, six-sided die.
+
+**3. Rolling the dice**
+
+There are six numbers, or six possible outcomes, and every number has one sixth, or about a 17 percent chance of being rolled. This is an example of a probability distribution.
+
+**4. Choosing salespeople**
+
+This is similar to the scenario from earlier, except we had names instead of numbers. Just like rolling a die, each outcome, or name, had an equal chance of being chosen.
+
+**5. Probability distribution**
+
+A probability distribution describes the probability of each possible outcome in a scenario.We can also talk about the expected value of a distribution, which is the mean of a distribution. We can calculate this by multiplying each value by its probability (one sixth in this case) and summing, so the expected value of rolling a fair die is 3.5.
+
+**6. Visualizing a probability distribution**
+
+We can visualize this using a barplot, where each bar represents an outcome, and each bar's height represents the probability of that outcome.
+
+**7. Probability = area**
+
+We can calculate probabilities of different outcomes by taking areas of the probability distribution.For example, what's the probability that our die roll is less than or equal to 2? To figure this out, we'll take the area of each bar representing an outcome of 2 or less.
+
+**8. Probability = area**
+
+Each bar has a width of 1 and a height of one sixth, so the area of each bar is one sixth. We'll sum the areas for 1 and 2, to get a total probability of one third.
+
+**9. Uneven die**
+
+Now let's say we have a die where the two got turned into a three. This means that we now have a 0% chance of getting a 2, and a 33% chance of getting a 3. To calculate the expected value of this die, we now multiply 2 by 0, since it's impossible to get a 2, and 3 by its new probability, one third. This gives us an expected value that's slightly higher than the fair die.
+
+**10. Visualizing uneven probabilities**
+
+When we visualize these new probabilities, the bars are no longer even.
+
+**11. Adding areas**
+
+With this die, what's the probability of getting something less than or equal to 2? There's a one sixth probability of getting 1, and zero probability of getting 2,
+
+**12. Adding areas**
+
+which sums to one sixth.
+
+**13. Discrete probability distributions**
+
+The probability distributions you've seen so far are both discrete probability distributions, since they represent situations with discrete outcomes. Recall from chapter 1 that discrete variables can be thought of as counted variables. In the case of a die, we're counting dots, so we can't roll a 1-point-5 or 4-point-3.When all outcomes have the same probability, like a fair die, this is a special distribution called a discrete uniform distribution.
+
+**14. Sampling from discrete distributions**
+
+Just like we sampled names from a box, we can do the same thing with probability distributions like the ones we've seen. Here's a data frame called die that represents a fair die, and its expected value is 3-point-5.We'll sample from it 10 times to simulate 10 rolls. Notice that we sample with replacement so that we're sampling from the same distribution every time.
+
+**15. Visualizing a sample**
+
+We can visualize the outcomes of the ten rolls using a histogram, setting the number of bins to 6 since there are 6 possible outcomes.
+
+**16. Sample distribution vs. theoretical distribution**
+
+Notice that we have different numbers of 1's, 2's, 3's, and so on since the sample was random, even though on each roll we had the same probability of rolling each number. The mean of our sample is 3-point-0, which isn't super close to the 3-point-5 we were expecting.
+
+**17. A bigger sample**
+
+If we roll the die 100 times, the distribution of the rolls looks a bit more even, and the mean is closer to 3-point-5.
+
+**18. An even bigger sample**
+
+If we roll 1000 times, it looks even more like the theoretical probability distribution and the mean closely matches 3-point-5.
+
+**19. Law of large numbers**
+
+This is called the law of large numbers, which is the idea that as the size of your sample increases, the sample mean will approach the theoretical mean.
+
+**20. Let's practice!**
+
+Time to solidify your knowledge of probability distributions.
 
 ## Creating a probability distribution
 
@@ -501,6 +826,85 @@ The code above will take a sample from a discrete uniform distribution, which in
 
 Nice work! Since the sample mean will likely be closer to 5 (the expected value) with larger sample sizes, you have a better chance of getting a sample mean further away from 5 with a smaller sample. 
 
+## Continuous distributions
+
+Theory. Coming soon ...
+
+
+**1. Continuous distributions**
+
+We can use discrete distributions to model situations that involve discrete or countable variables, but how can we model continuous variables?
+
+**2. Waiting for the bus**
+
+Let's start with an example. The city bus arrives every twelve minutes, so if you show up at a random time, you could wait anywhere from 0 minutes if you arrive just as the bus pulls in, up to 12 minutes if you arrive as the bus leaves.
+
+**3. Continuous uniform distribution**
+
+Let's model this scenario with a probability distribution. There are an infinite number of minutes we could wait since we could wait 1 minute, 1-point-5 minutes, 1-point-53 minutes, and so on, so we can't create individual blocks like we could with a discrete variable.
+
+**4. Continuous uniform distribution**
+
+Instead, we'll use a continuous line to represent probability. The line is flat since there's the same probability of waiting any time from 0 to 12 minutes. This is called the continuous uniform distribution
+
+**5. Probability still = area**
+
+Now that we have our distribution, let's figure out what the probability is that we'll wait between 4 and 7 minutes. Just like with discrete distributions, we can take the area from 4 to 7 to calculate probability.
+
+**6. Probability still = area**
+
+The width of this rectangle is 7 minus 4 which is 3. The height is one twelfth.
+
+**7. Probability still = area**
+
+Multiplying those together to get area, we get 3/12 or 25%.
+
+**8. Uniform distribution in R**
+
+Let's use the uniform distribution in R to calculate the probability of waiting 7 minutes or less. We'll pass 7 into punif. It also takes in a min and a max, which in our case is 0 and 12. The probability of waiting less than 7 minutes is about 58%.
+
+**9. lower.tail**
+
+If we want the probability of waiting more than 7 minutes, set the lower-dot-tail argument to FALSE.
+
+**10. Combining multiple punif() calls**
+
+But how do we calculate the probability of waiting 4 to 7 minutes using R?
+
+**11. Combining multiple punif() calls**
+
+We can start with the probability of waiting less than 7 minutes,
+
+**12. Combining multiple punif() calls**
+
+then subtract the probability of waiting less than 4 minutes. This gives us 25%.
+
+**13. Total area = 1**
+
+To calculate the probability of waiting between 0 and 12 minutes, we multiply 12 by 1/12, which is 1.
+
+**14. Total area = 1**
+
+or 100%. This makes sense since we're certain we'll wait anywhere from 0 to 12 minutes.
+
+**15. Other continuous distributions**
+
+Continuous distributions can take forms other than uniform where some values have a higher probability than others.
+
+**16. Other continuous distributions**
+
+No matter the shape of the distribution, the area beneath it must always equal 1.
+
+**17. Other special types of distributions**
+
+This will also be true of other distributions you'll learn about later on in the course, like the normal distribution or Poisson distribution, which can be used to model many real-life situations.
+
+**18. Let's practice!**
+
+Time to practice working with continuous distributions.
+
+
+
 ## Which distribution?
 
 At this point, you've learned about the two different variants of the uniform distribution: the discrete uniform distribution, and the continuous uniform distribution. In this exercise, you'll decide which situations follow which distribution.
@@ -592,6 +996,71 @@ Superb simulating! Unless Amir figures out exactly what time each backup happens
 ## The binomial distribution
 
 Theory. Coming soon ...
+
+
+**1. The binomial distribution**
+
+It's time to further expand your toolbox of distributions. In this video, you'll learn about the binomial distribution.
+
+**2. Coin flipping**
+
+We'll start by flipping a coin, which has two possible outcomes, heads or tails, each with a probability of 50%.
+
+**3. Binary outcomes**
+
+This is just one example of a binary outcome, or an outcome with two possible values. We could also represent these outcomes as a 1 and a 0, a success or a failure, and a win or a loss.
+
+**4. A single flip**
+
+In R, we can simulate this using the rbinom function, which takes in the number of trials, or times we want to flip, the number of coins we want to flip, and the probability of heads or success. This will return a 1, which we'll count as a head, or a 0, which we'll count as tails.We can use rbinom 1, 1, 0-point-5 to flip 1 coin 1 time with a 50% probability of heads.
+
+**5. One flip many times**
+
+To perform eight coin flips, we can change the first argument to an 8, which will give us eight flips of 1 coin with a 50% chance of heads.This gives us a set of 8 ones and zeros.
+
+**6. Many flips one time**
+
+If we swap the first two arguments, we simulate one flip of eight coins. This gives us one number, which is the total number of heads or successes.
+
+**7. Many flips many times**
+
+Similarly, we can pass 10 and 3 into rbinom to simulate 10 flips of 3 coins. This returns 10 numbers, each representing the total number of heads from each set of flips.
+
+**8. Other probabilities**
+
+We could also have a coin that's heavier on one side than the other, so the probability of getting heads is only 25%. To simulate flips with this coin, we'll adjust the third argument of rbinom to 0-point-25. The result has lower numbers, since getting multiple heads isn't as likely with the new coin.
+
+**9. Binomial distribution**
+
+The binomial distribution describes the probability of the number of successes in a sequence of independent trials. In other words, it can tell us the probability of getting some number of heads in a sequence of coin flips. Note that this is a discrete distribution since we're working with a countable outcome.The binomial distribution can be described using two parameters, n and p. n represents the total number of trials being performed. n and p are also the second and third arguments of rbinom.Here's what the distribution looks like for 10 coins. We have the biggest chance of getting 5 heads total, and a much smaller chance of getting 0 heads or 10 heads.
+
+**10. What's the probability of 7 heads?**
+
+To get the probability of getting 7 heads out of 10 coins, we can use dbinom. The first argument is the number of heads or successes. The second argument is the number of trials, n, and the third is the probability of success, p.If we flip 10 coins, there's about a 12% chance that 7 of them will be heads.
+
+**11. What's the probability of 7 or fewer heads?**
+
+pbinom gives the probability of getting a number of successes less than or equal to the first argument. The probability of getting 7 or fewer heads out of 10 coins is about 95%.
+
+**12. What's the probability of more than 7 heads?**
+
+We can use the lower-dot-tail argument to get the probability of a number of successes greater than the first argument. Note that this is the same as 1 minus the same pbinom call from the previous slide.
+
+**13. Expected value**
+
+The expected value of the binomial distribution can be calculated by multiplying n times p. The expected number of heads we'll get from flipping 10 coins is 10 times 0-point-5, which is 5.
+
+**14. Independence**
+
+It's important to remember that in order for the binomial distribution to apply, each trial must be independent, so the outcome of one trial shouldn't have an effect on the next.For example, if we're picking randomly from these cards with zeros and ones, we have a 50-50 chance of getting a 0 or a 1.
+
+**15. Independence**
+
+But since we're sampling without replacement, the probabilities for the second trial are different due to the outcome of the first trial. Since these trials aren't independent, we can't calculate accurate probabilities for this situation using the binomial distribution.
+
+**16. Let's practice!**
+
+Time to explore binary outcomes using the binomial distribution.
 
 ## Simulating sales deals
 
@@ -705,6 +1174,87 @@ It’s time to explore one of the most important probability distributions in st
 ## The normal distribution
 
 Theory. Coming soon ...
+
+
+**1. The normal distribution**
+
+The next probability distribution we'll discuss is the normal distribution. It's one of the most important probability distributions you'll learn about since a countless number of statistical methods rely on it, and it applies to more real-world situations than the distributions we've covered so far.
+
+**2. What is the normal distribution?**
+
+The normal distribution looks like this. Its shape is commonly referred to as a "bell curve". The normal distribution has a few important properties.
+
+**3. Symmetrical**
+
+First, it's symmetrical, so the left side is a mirror image of the right.
+
+**4. Area = 1**
+
+Second, just like any continuous distribution, the area beneath the curve is 1.
+
+**5. Curve never hits 0**
+
+Third, the probability never hits 0, even if it looks like it at the tail ends. Only 0-point-006% of its area is contained beyond the edges of this graph.
+
+**6. Described by mean and standard deviation**
+
+The normal distribution is described by its mean and standard deviation. Here is a normal distribution with a mean of 20 and standard deviation of 3, and here is a normal distribution with a mean of 0 and a standard deviation of 1. When a normal distribution has mean 0 and a standard deviation of 1, it's a special distribution called the standard normal distributionNotice how both distributions have the same shape,
+
+**7. Described by mean and standard deviation**
+
+but their axes have different scales.
+
+**8. Areas under the normal distribution**
+
+For the normal distribution, 68% of the area is within 1 standard deviation of the mean.
+
+**9. Areas under the normal distribution**
+
+95% of the area falls within 2 standard deviations of the mean,
+
+**10. Areas under the normal distribution**
+
+and 99-point-7% of the area falls within three standard deviations. This is sometimes called the 68-95-99-point-7 rule.
+
+**11. Lots of histograms look normal**
+
+There's lots of real-world data shaped like the normal distribution. For example, here is a histogram of the heights of women that participated in the National Health and Nutrition Examination Survey. The mean height is around 161 centimeters and the standard deviation is about 7 centimeters.
+
+**12. Approximating data with the normal distribution**
+
+Since this height data closely resembles the normal distribution, we can take the area under a normal distribution with mean 161 and standard deviation 7 to approximate what percent of women fall into different height ranges.
+
+**13. What percent of women are shorter than 154 cm?**
+
+For example, what percent of women are shorter than 154 centimeters? We can answer this using the pnorm function, which takes the area of the normal distribution less than some number. We pass in the number of interest, 154, as well as the mean and standard deviation of the normal distribution we're using. This gives us about 16% of women are shorter than 154 centimeters.
+
+**14. What percent of women are taller than 154 cm?**
+
+To find the percent of women taller than 154 centimeters, we can add lower-dot-tail equals FALSE, which will take the area to the right of the first argument.
+
+**15. What percent of women are 154-157 cm?**
+
+To get the percent of women between 154 and 157 centimeters tall we can take the area below 157 and subtract the area below 154, which leaves us the area between 154 and 157.
+
+**16. What percent of women are 154-157 cm?**
+
+which leaves us the area between 154 and 157.
+
+**17. What height are 90% of women shorter than?**
+
+We can also calculate percentages from heights using qnorm. To figure out what height 90% of women are shorter than, we pass 0-point-9 into qnorm along with the same mean and standard deviation we've been working with. This tells us that 90% of women are shorter than 170 centimeters tall.
+
+**18. What height are 90% of women taller than?**
+
+Similarly, we can figure out the height 90% of women are taller than by setting the lower-dot-tail argument of qnorm to FALSE.
+
+**19. Generating random numbers**
+
+Just like with other distributions, we can generate random numbers from a normal distribution using rnorm, passing in the sample size we want along with the distribution's mean and standard deviation. Here, we've generated 10 more random heights.
+
+**20. Let's practice!**
+
+Time to practice using the normal distribution!
 
 ## Distribution of Amir's sales
 
@@ -820,6 +1370,59 @@ Great work! In the current market, Amir makes sales over $1000 about 97.7% of th
 ## The central limit theorem
 
 Theory. Coming soon ...
+
+
+**1. The central limit theorem**
+
+Now that you're familiar with the normal distribution, it's time to learn about what makes it so important.
+
+**2. Rolling the dice 5 times**
+
+Let's go back to our dice rolling example. We have a vector of the numbers 1 to 6 called die. To simulate rolling the die 5 times, we'll use the sample() function. sample() works the same way as sample_n(), except it samples from a vector instead of a data frame. We pass in the vector we want to sample from, the size of the sample, and set replace to TRUE.This gives us the results of 5 rolls.Now, we'll take the mean of the 5 rolls, which gives us 2.
+
+**3. Rolling the dice 5 times**
+
+If we roll another 5 times and take the mean, we get a different mean. If we do it again, we get another mean.
+
+**4. Rolling the dice 5 times 10 times**
+
+Let's repeat this 10 times: we'll roll 5 times and take the mean.To do this, we'll use replicate. We pass in 10 so that the process is repeated 10 times, followed by the snippet of code we want to be run, which is the rolling and averaging.This returns a vector of 10 different sample means.Let's plot these sample means.
+
+**5. Sampling distributions**
+
+A distribution of a summary statistic like this is called a sampling distribution. This distribution, specifically, is a sampling distribution of the sample mean.
+
+**6. 100 sample means**
+
+Now let's do this 100 times. If we look at the new sampling distribution, its shape somewhat resembles the normal distribution, even though the distribution of the die is uniform.
+
+**7. 1000 sample means**
+
+Let's take 1000 means. This sampling distribution more closely resembles the normal distribution.
+
+**8. Central limit theorem**
+
+This phenomenon is known as the central limit theorem, which states that a sampling distribution will approach a normal distribution as the number of trials increases.In our example, the sampling distribution became closer to the normal distribution as we took more and more sample means.It's important to note that the central limit theorem only applies when samples are taken randomly and are independent, for example, randomly picking sales deals with replacement.
+
+**9. Standard deviation and the CLT**
+
+The central limit theorem, or CLT, applies to other summary statistics as well.If we take the standard deviation of 5 rolls 1000 times, the sample standard deviations are distributed normally, centered around 1-point-9, which is the distribution's standard deviation.
+
+**10. Proportions and the CLT**
+
+Another statistic that the CLT applies to is proportion.Let's sample from the sales team 10 times with replacement and see how many draws have Claire as the outcome. In this case, 10% of draws were Claire. If we draw again, there are 40% Claires.
+
+**11. Sampling distribution of proportion**
+
+If we repeat this 1000 times and plot the distribution of the sample proportions, it resembles a normal distribution centered around 0-point-25, since Claire's name was on 25% of the tickets.
+
+**12. Mean of sampling distribution**
+
+Since these sampling distributions are normal, we can take their mean to get an estimate of a distribution's mean, standard deviation, or proportion.If we take the mean of our sample means from earlier, we get 3-point-48. That's pretty close to the expected value, which is 3-point-5!Similarly, the mean of the sample proportions of Claires isn't far off from 0-point-25.In these examples, we know what the underlying distributions look like, but if we don't, this can be a useful method for estimating characteristics of an underlying distribution.The central limit theorem also comes in handy when you have a huge population and don't have the time or resources to collect data on everyone. Instead, you can collect several smaller samples and create a sampling distribution to estimate what the mean or standard deviation is.
+
+**13. Let's practice!**
+
+Now, it's time to practice utilizing the central limit theorem.
 
 ## Visualizing sampling distributions
 
@@ -989,6 +1592,51 @@ Magnificent mean calculation! Amir's average number of users is very close to th
 
 Theory. Coming soon ...
 
+
+**1. The Poisson distribution**
+
+In this video, we'll talk about another probability distribution called the Poisson distribution.
+
+**2. Poisson processes**
+
+Before we talk about probability, let's define a Poisson process.A Poisson process is a process where events appear to happen at a certain rate, but completely at random. For example, the number of animals adopted from an animal shelter each week is a Poisson process - we may know that on average there are 8 adoptions per week, but this number can differ randomly. Other examples would be the number of people arriving at a restaurant each hour, or the number of earthquakes per year in California.
+
+**3. Poisson distribution**
+
+The Poisson distribution describes the probability of some number of events happening over a fixed period of time. We can use the Poisson distribution to calculate the probability of at least 5 animals getting adopted in a week, the probability of 12 people arriving in a restaurant in an hour, or the probability of fewer than 20 earthquakes in California in a year.
+
+**4. Lambda ($\lambda$)**
+
+The Poisson distribution is described by a value called lambda, which represents the average number of events per time period. In the animal shelter example, this would be the average number of adoptions per week, which is 8. This value is also the expected value of the distribution!The Poisson distribution with lambda equals 8 looks like this. Notice that it's a discrete distribution since we're counting events, and 7 and 8 are the most likely number of adoptions to happen in a week.
+
+**5. Lambda is the distribution's peak**
+
+Lambda changes the shape of the distribution, so a Poisson distribution with lambda equals 1, in red, looks quite different than a Poisson distribution with lambda equals 8, in blue, but no matter what, the distribution's peak is always at its lambda value.
+
+**6. Probability of a single value**
+
+Given that the average number of adoptions per week is 8, what's the probability of 5 adoptions in a week? We'll use the dpois function, passing 5 as the first argument and 8 as the second argument to indicate the distribution's mean. This gives us about 9%.
+
+**7. Probability of less than or equal to**
+
+To get the probability that 5 or fewer adoptions will happen in a week, use the ppois function, passing in the same numbers. This gives us about 20%.
+
+**8. Probability of greater than**
+
+Just like other probability functions you've learned about so far, use the lower-dot-tail argument to get the probability of more than 5 adoptions. There's an 81% chance that more than 5 adoptions will occur.If the average number of adoptions rises to 10 per week, there will be a 93% chance that more than 5 adoptions will occur.
+
+**9. Sampling from a Poisson distribution**
+
+Just like other distributions, we can take samples from Poisson distributions using rpois. Here, we'll simulate 10 different weeks at the animal shelter. In one week, there are 13 adoptions, but only 3 in another.
+
+**10. The CLT still applies!**
+
+Just like other distributions, the sampling distribution of sample means of a Poisson distribution looks normal with a large number of samples.
+
+**11. Let's practice!**
+
+Time to practice taking Poisson probabilities!
+
 ## Identifying lambda
 
 Now that you've learned about the Poisson distribution, you know that its shape is described by a value called lambda. In this exercise, you'll match histograms to lambda values.
@@ -1048,6 +1696,47 @@ Perfect Poisson probabilities! Note that if you provide `dpois()` or `ppois()` w
 ## More probability distributions
 
 Theory. Coming soon ...
+
+
+**1. More probability distributions**
+
+In this lesson, we'll discuss a few other probability distributions.
+
+**2. Exponential distribution**
+
+The first distribution is the exponential distribution, which represents the probability of a certain time passing between Poisson events. We can use the exponential distribution to predict, for example, the probability of more than 1 day between adoptions, the probability of fewer than 10 minutes between restaurant arrivals, and the probability of 6-8 months passing between earthquakes. The exponential distribution uses the same lambda value, which represents the rate, that the Poisson distribution does. Note that lambda and rate mean the same value in this context.It's also continuous, unlike the Poisson distribution, since it represents time.
+
+**3. Customer service requests**
+
+For example, let's say that one customer service ticket is created every 2 minutes. We can rephrase this so it's in terms of a time interval of one minute, so half of a ticket is created each minute. We'll use 0-point-5 as the lambda value.The exponential distribution with a rate of one half looks like this.
+
+**4. Lambda in exponential distribution**
+
+The rate affects the shape of the distribution and how steeply it declines.
+
+**5. How long until a new request is created?**
+
+Similar to other continuous distributions, we can use pexp to calculate probabilities.The probability of waiting less than 1 minute for a new request is calculated using pexp, passing in 1 and 0-point-5 as the rate, which gives us about a 40% chance.The probability of waiting more than 4 minutes can be found using lower-dot-tail equals FALSE, giving a 13% chance.Finally, the probability of waiting between 1 and 4 minutes can be found by taking pexp of 4 and subtracting pexp of 1. There's a 50% chance you'll wait between 1 and 4 minutes.
+
+**6. Expected value of exponential distribution**
+
+Recall that lambda is the expected value of the Poisson distribution, which measures frequency in terms of rate or number of events. In our customer service ticket example, this means that the expected number of requests per minute is 0-point-5.The exponential distribution measures frequency in terms of time between events. The expected value of the exponential distribution can be calculated by taking 1 divided by lambda. In our example, the expected time between requests is 1 over one half, which is 2, so there is an average of 2 minutes between requests.
+
+**7. (Student's) t-distribution**
+
+The next distribution is the t-distribution, which is also sometimes called Student's t-distribution. Its shape is similar to the normal distribution, but not quite the same.If we compare the normal distribution, in red, with the t-distribution with one degree of freedom, in blue, the t-distribution's tails are thicker. This means that in a t-distribution, observations are more likely to fall further from the mean.
+
+**8. Degrees of freedom**
+
+The t-distribution has a parameter called degrees of freedom, which affects the thickness of the distribution's tails. Lower degrees of freedom results in thicker tails and a higher standard deviation. As the number of degrees of freedom increases, the distribution looks more and more like the normal distribution.
+
+**9. Log-normal distribution**
+
+The last distribution we'll discuss is the log-normal distribution. Variables that follow a log-normal distribution have a logarithm that is normally distributed.This results in distributions that are skewed, unlike the normal distribution.There are lots of real-world examples that follow this distribution, such as the length of chess games, blood pressure in adults, and the number of hospitalizations in the 2003 SARS outbreak.
+
+**10. Let's practice!**
+
+In addition to the three in this video, there are lots of other probability distributions that are out of the scope of this course, but that you can learn about in other DataCamp courses. For now, it's time to practice the distributions you've learned so far!
 
 ## Too many distributions
 
@@ -1111,6 +1800,67 @@ In this chapter, you'll learn how to quantify the strength of a linear relations
 
 Theory. Coming soon ...
 
+
+**1. Correlation**
+
+Welcome to the final chapter of the course, where we'll talk about correlation and experimental design.
+
+**2. Relationships between two variables**
+
+Before we dive in, let's talk about relationships between numeric variables. We can visualize these kinds of relationships with scatterplots - in this scatterplot, we can see the relationship between the total amount of sleep mammals get and the amount of REM sleep they get.The variable on the x-axis is called the explanatory or independent variable, and the variable on the y-axis is called the response or dependent variable.
+
+**3. Correlation coefficient**
+
+We can also examine relationships between two numeric variables using a number called the correlation coefficient. This is a number between -1 and 1, where the magnitude corresponds to the strength of the relationship between the variables, and the sign, positive or negative, corresponds to the direction of the relationship.
+
+**4. Magnitude = strength of relationship**
+
+Here's a scatterplot of 2 variables, x and y, that have a correlation coefficient of 0-point-99. Since the data points are closely clustered around a line, we can describe this as a near-perfect or very strong relationship. If we know what x is, we'll have a pretty good idea of what the value of y could be.
+
+**5. Magnitude = strength of relationship**
+
+Here, x and y have a correlation coefficient of 0-point-75, and the data points are more spread out.
+
+**6. Magnitude = strength of relationship**
+
+In this plot, x and y have a correlation of 0-point-56 and are therefore moderately correlated.
+
+**7. Magnitude = strength of relationship**
+
+A correlation coefficient around 0-point-2 would be considered a weak relationship.
+
+**8. Magnitude = strength of relationship**
+
+When the correlation coefficient is close to 0, x and y have no relationship and the scatterplot looks completely random. This means that knowing the value of x doesn't tell us anything about the value of y.
+
+**9. Sign = direction**
+
+The sign of the correlation coefficient corresponds to the direction of the relationship. A positive correlation coefficient indicates that as x increases, y also increases. A negative correlation coefficient indicates that as x increases, y decreases.
+
+**10. Visualizing relationships**
+
+To visualize relationships between two variables, we can use a scatterplot created using geom_point.
+
+**11. Adding a trendline**
+
+We can add a linear trendline to the scatterplot using geom_smooth. We'll set the method argument to "lm" to indicate that we want a linear trendline, and se to FALSE so that there aren't error margins around the line.Trendlines like this can be helpful to more easily see a relationship between two variables.
+
+**12. Computing correlation**
+
+To calculate the correlation coefficient between two variables in R, we can use the cor function. The cor function takes in two numeric vectors and will return their correlation coefficient.Note that it doesn't matter which order the vectors are passed into the function since the correlation between x and y is the same thing as the correlation between y and x.
+
+**13. Correlation with missing values**
+
+If you have any missing values in either variable, R will return NA when you calculate correlation. To ignore data points where one or both values are missing, set the use argument of cor to pairwise-dot-complete-dot-obs.
+
+**14. Many ways to calculate correlation**
+
+There's more than one way to calculate correlation, but the method we've been using in this video is called the Pearson product-moment correlation, which is also written as r. This is the most commonly used measure of correlation. Mathematically, it's calculated using this formula where x and y bar are the means of x and y, and sigma x and sigma y are the standard deviations of x and y.The formula itself isn't important to memorize, but know that there are variations of this formula that measure correlation a bit differently, such as Kendall's tau and Spearman's rho, but those are beyond the scope of this course.
+
+**15. Let's practice!**
+
+Okay, time to practice calculating correlations.
+
 ## Guess the correlation
 
 > *Question*
@@ -1171,6 +1921,75 @@ Vibrant visualizations! Scatterplots with trendlines are a great way to verify t
 ## Correlation caveats
 
 Theory. Coming soon ...
+
+
+**1. Correlation caveats**
+
+While correlation is a useful way to quantify relationships, there are some caveats.
+
+**2. Non-linear relationships**
+
+Consider this data. There is clearly a relationship between x and y, but when we calculate the correlation, we get 0-point-18.
+
+**3. Non-linear relationships**
+
+This is because the relationship between the two variables is a quadratic relationship, not a linear relationship. The correlation coefficient measures the strength of linear relationships, and linear relationships only.
+
+**4. Correlation only accounts for linear relationships**
+
+Just like any summary statistic, correlation shouldn't be used blindly, and you should always visualize your data when possible.
+
+**5. Mammal sleep data**
+
+Let's return to the mammal sleep data we discussed in chapter 1.
+
+**6. Body weight vs. awake time**
+
+Here's a scatterplot of each mammal's body weight versus the time they spend awake each day. The relationship between these variables is definitely not a linear one.The correlation between body weight and awake time is only about 0-point-3, which is a weak linear relationship.
+
+**7. Distribution of body weight**
+
+If we take a closer look at the distribution of body weight, it's highly skewed. There are lots of lower weights and a few weights that are much higher than the rest.
+
+**8. Log transformation**
+
+When data is highly skewed like this, we can apply a log transformation. We'll create a new column called log_bodywt which holds the log of each body weight.If we plot the log of bodyweight versus awake time, the relationship looks much more linear than the one between regular bodyweight and awake time.The correlation between the log of bodyweight and awake time is about 0-point-57, which is much higher than the 0-point-3 we had before.
+
+**9. Other transformations**
+
+In addition to the log transformation, there are lots of other transformations that can be used to make a relationship more linear, like taking the square root or reciprocal of a variable. The choice of transformation will depend on the data and how skewed it is. These can be applied in different combinations to x and y, for example, you could apply a log transformation to both x and y, or a square root transformation to x and a reciprocal transformation to y.
+
+**10. Why use a transformation?**
+
+So why use a transformation?Certain statistical methods rely on variables having a linear relationship, like calculating a correlation coefficient. Linear regression is another statistical technique that requires variables to be related in a linear manner, which you can learn all about in this course.
+
+**11. Correlation does not imply causation**
+
+Let's talk about another important caveat of correlation that you may have heard about before: correlation does not imply causation. This means that if x and y are correlated, x doesn't necessarily cause y.For example, here's a scatterplot of the per capita margarine consumption in the US each year versus the divorce rate in the state of Maine. The correlation between these two variables is 0-point-99, which is nearly perfect. However, this doesn't mean that consuming more margarine will cause more divorces. This kind of correlation is often called a spurious correlation.
+
+**12. Confounding**
+
+A phenomenon called confounding can lead to spurious correlations.Let's say we want to know if drinking coffee causes lung cancer. Looking at the data, we find that coffee drinking and lung cancer are correlated, which may lead us to think that drinking more coffee will give you lung cancer.
+
+**13. Confounding**
+
+However, there is a third, hidden variable at play, which is smoking.
+
+**14. Confounding**
+
+Smoking is known to be associated with coffee consumption.
+
+**15. Confounding**
+
+It is also known that smoking causes lung cancer.
+
+**16. Confounding**
+
+In reality, it turns out that coffee does not cause lung cancer and is only associated with it, but it appeared causal due to the third variable, smoking.This third variable is called a confounder, or lurking variable. This means that the relationship of interest between coffee and lung cancer is a spurious correlation.Another example of this is the relationship between holidays retail sales. While it might be that people buy more around holidays as a way of celebrating, it's hard to tell how much of the increased sales is due to holidays, and how much is due to the special deals and promotions that often run around holidays. Here, special deals confound the relationship between holidays and sales.
+
+**17. Let's practice!**
+
+Now that you've learned how to use correlation responsibly, time to practice.
 
 ## What can't correlation measure?
 
@@ -1298,6 +2117,38 @@ Correct! You would expect there to be more air pollution in the neighborhood sit
 
 Theory. Coming soon ...
 
+**1. Design of experiments**
+
+Often, data is created as a result of a study that aims to answer a specific question. However, data needs to be analyzed and interpreted differently depending on how the data was generated and how the study was designed.
+
+**2. Vocabulary**
+
+Experiments generally aim to answer a question in the form, "What is the effect of the treatment on the response?" In this setting, treatment refers to the explanatory or independent variable, and response refers to the response or dependent variable. For example, what is the effect of an advertisement on the number of products purchased? In this case, the treatment is an advertisement, and the response is the number of products purchased.
+
+**3. Controlled experiments**
+
+In a controlled experiment, participants are randomly assigned to either the treatment group or the control group, where the treatment group receives the treatment and the control group does not. In our example, the treatment group will see an advertisement, and the control group will not. Other than this difference, the groups should be comparable so that we can determine if seeing an advertisement causes people to buy more. If the groups aren't comparable, this could lead to confounding, or bias. If the average age of participants in the treatment group is 25 and the average age of participants in the control group is 50, age could be a potential confounder if younger people are more likely to purchase more, and this will make the experiment biased towards the treatment.
+
+**4. The gold standard of experiments will use...**
+
+The gold standard, or ideal experiment, will eliminate as much bias as possible using certain tools. The first tool to help eliminate bias in controlled experiments is to use a randomized controlled trial. In a randomized controlled trial, participants are randomly assigned to the treatment or control group and their assignment isn't based on anything other than chance. Random assignment like this helps ensure that the groups are comparable. The second way is to use a placebo, which is something that resembles the treatment, but has no effect. This way, participants don't know if they're in the treatment or control group. This ensures that the effect of the treatment is due to the treatment itself, not the idea of getting the treatment. This is common in clinical trials that test the effectiveness of a drug. The control group will still be given a pill, but it's a sugar pill that has minimal effects on the response.
+
+**5. The gold standard of experiments will use...**
+
+In a double-blind experiment, the person administering the treatment or running the experiment also doesn't know whether they're administering the actual treatment or the placebo. This protects against bias in the response as well as the analysis of the results. These different tools all boil down to the same principle: if there are fewer opportunities for bias to creep into your experiment, the more reliably you can conclude whether the treatment affects the response.
+
+**6. Observational studies**
+
+The other kind of study we'll discuss is the observational study. In an observational study, participants are not randomly assigned to groups. Instead, participants assign themselves, usually based on pre-existing characteristics. This is useful for answering questions that aren't conducive to a controlled experiment. If you want to study the effect of smoking on cancer, you can't force people to start smoking. Similarly, if you want to study how past purchasing behavior affects whether someone will buy a product, you can't force people to have certain past purchasing behavior. Because assignment isn't random, there's no way to guarantee that the groups will be comparable in every aspect, so observational studies can't establish causation, only association. The effects of the treatment may be confounded by factors that got certain people into the control group and certain people into the treatment group. However, there are ways to control for confounders, which can help strengthen the reliability of conclusions about association.
+
+**7. Longitudinal vs. cross-sectional studies**
+
+The final important distinction to make is between longitudinal and cross-sectional studies. In a longitudinal study, the same participants are followed over a period of time to examine the effect of treatment on the response. In a cross-sectional study, data is collected from a single snapshot in time. If you wanted to investigate the effect of age on height, a cross-sectional study would measure the heights of people of different ages and compare them. However, the results will be confounded by birth year and lifestyle since it's possible that each generation is getting taller. In a longitudinal study,the same people would have their heights recorded at different points in their lives, so the confounding is eliminated. It's important to note that longitudinal studies are more expensive, and take longer to perform, while cross-sectional studies are cheaper, faster, and more convenient.
+
+**8. Let's practice!**
+
+Time to practice your study design skills! 
+
 ## Study types
 
 While controlled experiments are ideal, many situations and research questions are not conducive to a controlled experiment. In a controlled experiment, causation can likely be inferred if the control and test groups have similar characteristics and don't have any systematic difference between them. On the other hand, causation cannot usually be inferred from observational studies, whose results are often misinterpreted as a result.
@@ -1326,3 +2177,24 @@ Determine if each study is a controlled experiment or observational study.
 > ⬜  Neither<br>
 
 Perfect! This is a cross-sectional study since researchers aren't following the same set of thermometers over time and repeatedly measuring their accuracy at different ages.
+
+## Congratulations!
+
+Theory. Coming soon ...
+
+
+**1. Congratulations!**
+
+Congratulations on completing the course! You now have foundational statistics skills that you can use in your analyses and build upon further.
+
+**2. Overview**
+
+In the first chapter of the course, you learned about what statistics can do, as well as summary statistics to measure the center and spread of a distribution.In the second chapter, you learned how to measure chance and how to use and interpret probability distributions. You also learned about the binomial distribution.In chapter three, you learned about the normal distribution and the central limit theorem, one of the most important ideas in statistics. You also saw how the Poisson distribution can be used to model countable outcomes.In the final chapter, you saw how to quantify relationships between two variables using correlation. You also learned about controlled experiments and observational studies and the conclusions that can and cannot be drawn from them.
+
+**3. Build on your skills**
+
+There's still much more that you can do with statistics and much more to learn. Your new skills will set you up for success in this course on the foundations of regression.
+
+**4. Congratulations!**
+
+Thanks for accompanying me on this statistical journey. Congratulations again!

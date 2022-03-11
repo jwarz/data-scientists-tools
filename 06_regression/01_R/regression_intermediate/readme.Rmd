@@ -31,6 +31,55 @@ Extend your linear regression skills to "parallel slopes" regression, with one n
 
 Theory. Coming soon ...
 
+
+**1. Parallel slopes linear regression**
+
+Hi, I'm Richie. Welcome!
+
+**2. The previous course**
+
+This course builds on the skills from the previous course.
+
+**3. From simple regression to multiple regression**
+
+In that last course, you performed linear and logistic regression with a single explanatory variable. This time, you'll learn to fit models that include multiple explanatory variables. This is sometimes called "multiple regression".Including more explanatory variables in the model often gives you more insight into the relationship between the explanatory variables and the response, and can provide more accurate predictions. It's an important step towards mastering regression.
+
+**4. The course contents**
+
+Here's the plan. In Chapter 1, you'll explore parallel slopes linear regression. This is a special case of multiple linear regression, with one numeric explanatory variable and one categorical explanatory variable.Chapter 2 introduces interactions between variables and covers Simpson's Paradox, a counter-intuitive result affecting models containing categorical explanatory variables.Chapter 3 extends linear regression to even more explanatory variables, and gives some deeper insight into how linear regression works.Finally, Chapter 4 introduces multiple logistic regression, the logistic distribution, and digs into how logistic regression works.
+
+**5. The fish dataset**
+
+Here's the fish dataset from the previous course. Each row represents a fish, the mass is the response variable, and there is one numeric and one categorical explanatory variable.
+
+**6. One explanatory variable at a time**
+
+Recall that you run a linear regression by calling lm, passing a formula and a data frame. The formula has the response variable on the left and the explanatory variable on the right, with the variables separated by a tilde.Here you can see mass modeled against length. Printing the model shows the model coefficients. With a single numeric explanatory variable, you get one intercept coefficient and one slope coefficient.Let's change the explanatory variable to species. Recall that when you have a categorical explanatory variable, the coefficients are a little easier to understand if you use "plus zero" to tell R not to include an intercept in the model.Now you get one intercept coefficient for each category. That is, one coefficient for each species of fish.
+
+**7. Both variables at same time**
+
+To include both explanatory variables in the model, you combine them in the right-hand side of the formula, separated with a plus, just like you did with the zero.This time there is one slope coefficient, and one intercept coefficient for each category in the categorical variable.
+
+**8. Comparing coefficients**
+
+Examining the coefficients of each model, it's clear that the numbers are different.Notice that the slope coefficient for length, labeled length_cm, changes from thirty five to forty three once you include species in the model as well. The intercept coefficients for each species show an even bigger change. For example, once you add length into the model, bream, labeled speciesBream, changes from six hundred and eighteen to minus six hundred and seventy two.
+
+**9. Visualization: 1 numeric explanatory var**
+
+Here's the standard visualization for a linear regression with a numeric explanatory variable. You draw a scatter plot, then use geom_smooth with method equals "lm" to add a linear trend line. Setting se to FALSE prevents a standard error ribbon being drawn.
+
+**10. Visualization: 1 categorical explanatory var**
+
+For a categorical response, there are a few possible plots. The simplest one is to draw a box plot for each category. The model coefficients are the means of each category, which I've added using stat_summary with the fun-dot-y argument set to mean. shape equals 15 makes the mean point square.
+
+**11. Visualization: both explanatory vars**
+
+With a numeric and a categorical explanatory variable, you can draw a scatter plot as before. ggplot2 doesn't have an easy way to plot the model results, but fortunately one is provided by the moderndive package.In the plot the lines are parallel to each other. Consequently, this type of regression is nicknamed "parallel slopes regression", and the function to draw the lines is geom_parallel_slopes.
+
+**12. Let's practice!**
+
+Let's begin.
+
 ## Fitting a parallel slopes linear regression
 
 <!-- 
@@ -198,6 +247,55 @@ Parallel slope paradise! The "parallel slope" model name comes from the fact tha
 
 Theory. Coming soon ...
 
+
+**1. Predicting parallel slopes**
+
+Predicting responses is perhaps the most useful feature of regression models. With two explanatory variables, the code for prediction has one subtle difference from the case with a single explanatory variable.
+
+**2. The prediction workflow 1**
+
+The prediction workflow starts with choosing values for explanatory variables. You pick any values you want, and store them in a data frame or tibble.For a single explanatory variable, the data frame has one column. Here, it's a sequence of lengths from 5cm to 60cm, in steps of 5cm.For multiple explanatory variables, it's the same process, but there's a useful trick. expand_grid from the tidyr package returns a data frame of all combinations of its inputs.Here, you have 5cm and each fish species, 10cm and each fish species, through to 60cm and each fish species.
+
+**3. The prediction workflow 2**
+
+Next you add a column of predictions to the data frame. To calculate the predictions, call predict, passing the model and the explanatory data. Here's the code for one explanatory variable.With two or more explanatory variables, other than the model variable name, the code is exactly the same!
+
+**4. Visualizing the predictions**
+
+Just as in the single explanatory variable case, we can visualize the predictions from the model by adding another geom_point layer and setting the data argument to prediction_data.I set the size and shape arguments to make the predictions big square points. A good sign that this worked is that the prediction points lie along the lines calculated by ggplot.
+
+**5. Manually calculating predictions**
+
+In the previous course, you saw how to manually calculate the predictions. The coefficients function extracts the coefficients from the model.The intercept is the first coefficient, and the slope is the second coefficient.Then the response value is the intercept plus the slope times the explanatory variable.
+
+**6. Coefficients for parallel slopes**
+
+For the parallel slopes model, there is an added complication. Each category of the categorical variable has a different intercept. Due to the way we specified the model, the slope coefficient is the first one.
+
+**7. Choosing an intercept with ifelse()**
+
+You can choose this intercept using if-else statements, but this becomes clunky when you have lots of categories.With just four categories, these nested calls to ifelse are hard to write and hard to read. It's a recipe for buggy code.
+
+**8. case_when()**
+
+dplyr has a function called case_when that simplifies the code. Each argument to case_when is a formula, just like you use when specifying a model. On the left-hand side, you have a logical condition. On the right-hand side, you have the value to give to those rows where the condition is met.This is very abstract, so let's look at how we use it for predictions.
+
+**9. Choosing an intercept with case_when()**
+
+The first argument to case_when has a logical condition to check for rows where the species is Bream. On the right-hand side of the formula, we give those rows the value of the bream intercept.Then we repeat this for the other species.  This code does the same thing as the ifelse code, but I find it easier to write and to read.
+
+**10. The final prediction step**
+
+The final step is to calculate the response. As before, the response is the intercept plus the slope times the numeric explanatory variable. This time, the intercept is different for different rows.
+
+**11. Compare to predict()**
+
+The model predicts some negative masses, which isn't a good sign. Let's check that we got the right answer by calling predict.You can see that the predictions are the same numbers as the mass column that we calculated, so our calculations are correct. It's just that this model performs poorly for small fish lengths.
+
+**12. Let's practice!**
+
+Time for you to make predictions.
+
 ## Predicting with a parallel slopes model
 
 <!-- 
@@ -340,6 +438,35 @@ This is the case when you've succeeded! Even for more complicated linear regress
 
 Theory. Coming soon ...
 
+
+**1. Assessing model performance**
+
+The big benefit of using more than one explanatory variable in a model is that you can sometimes get a better fit than when you use a single explanatory variable.
+
+**2. Model performance metrics**
+
+In the last course, you saw two metrics for measuring model performance: the coefficient of determination, and the residual standard error. The coefficient of determination, sometimes known as the R-squared value, measures how good the regression's prediction line fits the observed values, and a larger number is better.The residual standard error, sometimes abbreviated to RSE, is - loosely speaking - the typical size of the residuals.Let's see if these metrics improve when both explanatory variables are included in the fish model.
+
+**3. Getting the coefficient of determination**
+
+To easily get the coefficient of determination, load the dplyr and broom packages.Recall that broom's glance function retrieves model-level metrics as a data frame. Then dplyr's pull function can be used to extract the metric we want. The coefficient of determination is called r-dot-squared. For the mass versus species model, the coefficient of determination is zero-point-seven-two, where zero is the worst possible fit and one is a perfect fit.For the mass versus length model, the coefficient of determination is better, at zero-point-eight-two.For the mass versus both model, the coefficient of determination is even higher, at zero-point-nine-seven.Using this metric, the model with both explanatory variables is the best one, since it has the highest coefficient of determination.
+
+**4. Adjusted coefficient of determination**
+
+Adding more explanatory variables often increases the coefficient of determination for a model, but there is a problem.Including too many explanatory variables in your model can lead to a phenomenon called overfitting. That's when your model is optimized to provide the best fit for that particular dataset, but no longer reflects the general population. In this case, the model would be overfit if it performed well on this fish dataset, but badly on a different fish dataset.A variant metric called adjusted coefficient of determination includes a small penalty term for each additional explanatory variable to compensate for this effect. Its a better metric than the plain coefficient of determination.Its equation is based on the plain coefficient of determination, the number of observations, and the number of explanatory variables, including interactions.The penalty is big enough to worry about if the plain coefficient of determination is small, or if the number of explanatory variables is a sizable fraction of the number of observations.To get this metric, we retrieve the adj-dot-r-dot-squared element from the glanced model.
+
+**5. Getting the adjusted coefficient of determination**
+
+To see the effect of penalization, let's look at the unadjusted and adjusted coefficients side-by-side.Since each model only contains one or two explanatory variables, the effect is tiny.
+
+**6. Getting the residual standard error**
+
+The code to get the residual standard error is the same as before, but this time we pull out sigma. The mass versus species model has an RSE of just over three hundred.The mass versus length model has an RSE of about one hundred and fifty. Finally, the mass versus both model has an RSE of just over one hundred, meaning that it typically gets the mass wrong by about one hundred grams. Since that number is the lowest of the three, by this metric, the mass versus both model is best.That means that all metrics indicate that the model with two explanatory variables is better than the models with just one explanatory variable.
+
+**7. Let's practice!**
+
+Your turn to look at some model metrics.
+
 ## Comparing coefficients of determination
 
 <!-- 
@@ -439,6 +566,51 @@ Explore the effect of interactions between explanatory variables. Considering in
 ## Models for each category
 
 Theory. Coming soon ...
+
+
+**1. Models for each category**
+
+The parallel slopes model enforced a common slope for each category. That's not always the best option.
+
+**2. 4 categories**
+
+Recall that the fish dataset had four different species of fish.One way to give each species a different slope is to run a separate model for each of these.
+
+**3. Splitting the dataset**
+
+There are many smart ways of splitting a dataset into parts and computing on each part. In base-R, you can use split and lapply. In dplyr, you can use nest_by and mutate.We aren't going to do that. Instead, let's filter for each species one at a time and assign the result to individual variables.I'm choosing this approach partly because I don't want fancy code to get in the way of reasoning about models, and partly because running regression models is such a fundamental task that you need to be able to write the code without thinking, and that takes practice. With this approach, you'll be writing the modeling code for every category in the dataset.
+
+**4. 4 models**
+
+Now we have four datasets, we can run four models. Again, there's no fancy looping, just the same model four times.Observe that each model gives a different intercept and a different slope.
+
+**5. Explanatory data**
+
+To make predictions with these models, we first have to create a data frame of explanatory variables. The good news is that since each model has the same explanatory variable, you only have to write this code once. Give your copy and paste fingers a rest.
+
+**6. Making predictions**
+
+Predicting follows the now familiar flow. Add a column with mutate, name it after the response variable, call predict with the model and the explanatory data. The only difference in each case is the model variable.It isn't necessary for calculating the predictions, but to make the plotting code you are about to see easier, I've also included the species in each prediction dataset.
+
+**7. Visualizing predictions**
+
+Here's the standard ggplot for showing linear regression predictions. geom_point makes it a scatter plot, and geom_smooth with method equals "lm" provides prediction lines.Unlike the parallel slopes case, each line has its own slope. This is achieved by setting the color aesthetic.
+
+**8. Adding in your predictions**
+
+To sanity check our predictions, we add them to the plot to see if they align with what ggplot2 calculated. The size and shape are changed to help them stand out. Thankfully, each line of squares follows ggplot's trend lines.
+
+**9. Coefficient of determination**
+
+An important question here is are these models better?The coefficient of determination for a model on the whole fish dataset is point-nine-two.Now here's the coefficient of determination for each of the individual models. The pike number is higher, indicating a better fit, though the numbers for the other models are lower.
+
+**10. Residual standard error**
+
+Here's the residual standard error for the whole dataset model, one hundred and three.For the individual models, this time the pike residual standard error is higher, indicating larger differences between actual and predicted values, but the other models show an improvement over the whole dataset model.This mixed performance result is quite common: the whole dataset model benefits from the increased power of more rows of data, whereas individual models benefit from not having to satisfy differing components of data.
+
+**11. Let's practice!**
+
+Let's try this on the housing data.
 
 ## One model per category
 
@@ -646,6 +818,34 @@ Meritable model metric measuring! It seems that both metrics for the 15 to 30 ag
 
 Theory. Coming soon ...
 
+**1. One model with an interaction**
+
+Messing about with different models for different bits of your dataset is a pain. A better solution is to specify a single model that contains intercepts and slopes for each category. This is achieved through specifying interactions between explanatory variables.
+
+**2. What is an interaction?**
+
+To understand the idea of interactions between explanatory variables, consider what we know about the fish dataset. Different fish species have different mass to length ratios. In statistical terms, we can say that the effect that length has on the expected mass of the fish varies between species. That means that length and species interact. More generally, if the effect of one explanatory variable on the expected response has different values dependent on the values of another explanatory variable, then those two explanatory variables interact.
+
+**3. Specifying interactions**
+
+You've seen how to include multiple explanatory variables in a formula using plus, for example, length plus species. To include an interaction between those variables, you simply swap the plus for a times. I've called this syntax implicit because you didn't write down what interactions are needed - R figures that out itself. Usually this concise syntax is best, but occasionally you may wish to explicitly document which interactions are included in the model. The explicit syntax is to add each explanatory variable separated by plus then add a third term with both explanatory variables separated by a colon. The result is exactly the same, so choosing a syntax depends on personal preference: do you like brevity or detail?
+
+**4. Running the model**
+
+Here's the formula in a model, and there are eight coefficients. As you saw in the models with a categorical explanatory variable, the coefficients are tricky to understand. The (Intercept) coefficient is the intercept for the first species, namely bream. The length coefficient is the slope for the bream. Then the (Intercept) coefficient plus the speciesPerch coefficient is the intercept for perch. And the length coefficient plus the length-speciesPerch coefficient is the slope for perch. It's a mess.
+
+**5. Easier to understand coefficients**
+
+Ironically, to get easier to understand coefficients, we need to make the formula harder to read. This is the same model specified differently. On the right-hand side of the formula, you can see the categorical explanatory variable, species, then an interaction between the two explanatory variables, then zero to remove the global intercept. Now we get an intercept coefficient for each species shown on the top row, and a slope coefficient for each species shown on the bottom row.
+
+**6. Familiar numbers**
+
+You've seen all these coefficient values before. If we examine the coefficients from the model on the bream data from the previous video, you can see that the intercept and slope are the same as in the model we just made. The same is true for the other three species. In fact, the model with the interaction is effectively the same as fitting separate models for each category, only you get the convenience of not having to manage four sets of code.
+
+**7. Let's practice!**
+
+Let's interact with some exercises! 
+
 ## Specifying an interaction
 
 <!--
@@ -724,6 +924,47 @@ Insightful intercept introspection! Sometimes fiddling about with how the model 
 ## Making predictions with interactions
 
 Theory. Coming soon ...
+
+
+**1. Making predictions with interactions**
+
+Let's run through the prediction flow again, this time with the model containing an interaction. I'm hoping you get a sense of deja vu, because you've seen all this code before.
+
+**2. The model with the interaction**
+
+Here's the model of mass versus length and species with an interaction. I've used the version of the formula that gives the clearest coefficients, but I could also have used the simpler length times species syntax; it doesn't affect the predictions.
+
+**3. The prediction flow, again**
+
+Here's the code for the prediction flow. It's exactly the same as the code in the parallel slopes model. R will automatically take care of the interaction, so you don't need to change anything.I love it when things just work!The only thing to remember here is the use of expand_grid to get all the combinations of lengths and species.
+
+**4. Visualizing the predictions**
+
+Here's the plot of predictions - both ggplot's automatic prediction lines, and the points predicted from the model.The plot is identical to the one you saw in the first video of this chapter. This time however, the code is simpler because you don't have four separate models to worry about.
+
+**5. Manually calculating the predictions**
+
+To see how the predictions work, let's manually calculate them. First we get the coefficients from the model using the coefficients function.Then we use square bracket indexing to extract the four intercepts and the four slopes.
+
+**6. Manually calculating the predictions**
+
+As usual, we add the predictions as a column named after the response variable. We'll use case_when to distinguish the calculations for each species.
+
+**7. Manually calculating the predictions**
+
+The first species is bream, so the left-hand side of the first formula filters for rows containing bream.
+
+**8. Manually calculating the predictions**
+
+The calculation for the bream rows is the bream-specific intercept plus the bream-specific slope times the length of the fish.
+
+**9. Manually calculating the predictions**
+
+Then we repeat this for the other three species. The calculated values are the same as those returned by the predict function.
+
+**10. Let's practice!**
+
+Time for you to make some predictions.
 
 ## Predicting with interactions
 
@@ -874,6 +1115,55 @@ Magnificent manual prediction! As before, the prediction just involved adding an
 
 Theory. Coming soon ...
 
+
+**1. Simpson's Paradox**
+
+This chapter looked at the difference between models of a whole dataset and individual models for each category. For some datasets, this can lead to a nonintuitive result known as Simpson's Paradox.
+
+**2. A most ingenious paradox!**
+
+Simpson's paradox is that the trend given by a model on the whole dataset is very different from the trends in subsets of the data.That's pretty abstract, so let's try an example.
+
+**3. Synthetic Simpson data**
+
+Here's a synthetic - that is, made up - dataset designed to demonstrate the paradox.Each row has an x and y coordinate, and the dataset is split into five groups, labeled A to E.
+
+**4. Linear regressions**
+
+Fitting a linear regression of y versus x to the whole dataset shows a positive slope of one point seven five.However, fitting a model that includes the group and an interaction shows something completely different.The bottom row of coefficients contains the slope for each group. Every group has a negative slope, apparently contradicting the fact that the whole dataset has a positive slope.Let's visualize the dataset to try and reconcile these opposite coefficients.
+
+**5. Plotting the whole dataset**
+
+This is the now-standard scatter plot with a linear regression trend line.As x increases, so does y, resulting in a positive slope over the whole dataset.
+
+**6. Plotting by group**
+
+Amending the plot to color the lines by group shows that within each group, y decreases as x increases.
+
+**7. Reconciling the difference**
+
+One moral of this story is that it's helpful to try and visualize your dataset. This is especially true if different models give conflicting results.Some common advice for how to choose which model is best is correct but annoying.It depends on the dataset and what question you are trying to answer.A useful corollary is that you should decide on a question to answer before you start fitting models.
+
+**8. Test score example**
+
+Thinking up examples where the grouped model is best is fairly easy. Here's the same synthetic dataset as before, with different axis labels.If x is the number of hours spent playing video games each month, and y is the score on a test, modeling the whole dataset suggests that playing more video games is related to a higher test score.If we reveal that each group represents the age of the child taking the test, it changes the interpretation. Now older children score more highly in the test, and playing lots of video games is related to a lower score.
+
+**9. Infectious disease example**
+
+Coming up with examples where the model of the whole dataset is more useful than the model split by group is much harder. So much so that I had to ask the internet for suggestions.One proposed example was that for an infectious disease, the infection rate tends to be higher when the population density is higher. In this plot, each point represents a neighborhood in a city.Splitting by city reveals that the highest density areas of each city have lower infection rates. However, this may be due to other things that you haven't included in the model, like the wealth and demographics of the residents.That's an interesting insight, but "increasing population density is related to increased infection rate" is arguably more important.
+
+**10. Reconciling the difference, again**
+
+Unfortunately, resolving these model disagreements is messy. Often, the models including the groups will contain insight that you'd miss otherwise.The disagreements between the models may reveal that you need even more explanatory variables to understand why they are different.Finally, I'm going to repeat the correct but annoying advice: to choose the best model you need contextual information about what your dataset means and what question you are trying to answer.
+
+**11. Simpson's paradox in real datasets**
+
+Such a clear case of Simpson's paradox is very rare. Subtle differences between models are more common. A slope may go to zero instead of changing its direction. You may only see the effect in some groups, but not all of them.
+
+**12. Let's practice!**
+
+Time to play with the paradox.
+
 ## Modeling eBay auctions
 
 <!-- 
@@ -971,6 +1261,63 @@ See how modeling, and linear regression in particular, makes it easy to work wit
 ## Two numeric explanatory variables
 
 Theory. Coming soon ...
+
+
+**1. Two numeric explanatory variables**
+
+In the previous chapters, the models had one numeric and one categorical explanatory variable. Let's see what changes if you have two numeric explanatory variables instead.
+
+**2. Visualizing 3 numeric variables**
+
+Two numeric explanatory variables plus a numeric response variable gives three numeric variables to plot. Since scatter plots are designed to show relationships between two numeric variables, it takes more thinking about. There are two common choices.Either we draw a 3D scatter plot, or a 2D scatter plot, using color for the response variable.
+
+**3. Another column for the fish dataset**
+
+Let's revisit the fish dataset, which now has an extra numeric column, the height of the fish in centimeters.
+
+**4. 3D scatter plot**
+
+To make a 3D scatter plot, you can use scatter3D from the plot3D package. Unlike ggplot, this simply requires three numeric vectors for the x, y, and z coordinates.Writing the name of the dataset and using the dollar operator to access columns three times is tedious, so for code like this I prefer magrittr's dollar pipe.This code does the same thing, but is easier to write and read. The dollar pipe treats each of the arguments in the following function call as though they are columns in the data frame given to the left of the pipe.
+
+**5. 3D scatter plot**
+
+The code is nicer  now, but there is a bigger problem, namely that the plot is impossible to interpret.Some cleanup work like labeling axes can make things easier, but the fundamental problem is that screens are two dimensional, so 3D plots always suffer perspective issues. The only way to circumvent this is to create an interactive plot that the audience can rotate to explore the data from different angles.Maybe virtual reality will solve this one day, but for now let's move on to the next type of plot.
+
+**6. 2D scatter plot, color for response**
+
+The next plot type to explore uses color for the response variable. This is a standard 2D scatter plot so we can use ggplot2.It's an improvement, but ggplot's default color scale doesn't make it easy to pick out differences in blues.
+
+**7. Viridis color scales**
+
+ggplot has a set of color scales called "viridis" that provide easier to distinguish colors.scale_color_viridis_c is used for continuous scales, where you have numeric data.This plot uses the "inferno" palette option, which moves from black through blue and red to yellow. As you move up and to the right in the plot, the colors get brighter, representing heavier fish.
+
+**8. Modeling with 2 numeric explanatory variables**
+
+Although plotting was harder with this extra explanatory variable, modeling isn't much different. The explanatory variables on the right of the formula are separated with a plus, as before.You get a global intercept coefficient, and one slope coefficient for each explanatory variable.
+
+**9. The prediction flow**
+
+The prediction flow is no different. Create a grid of explanatory values with expand_grid, then add a column of predictions with mutate and predict.
+
+**10. Plotting the predictions**
+
+The plotting code also remains the same, though the results look different.The color grid gives a nice overview of how the response variable changes over the plane of the explanatory variables. The heaviest fish are in the top-right, where they are long and tall.
+
+**11. Including an interaction**
+
+To include an interaction in the model, the only change is to replace the plus in the formula with a times. This gives you one extra slope term for the effect of the interaction between the two explanatory variables.
+
+**12. The prediction flow again**
+
+The prediction flow is exactly the same as before. Boring, but pleasingly easy.
+
+**13. Plotting the predictions**
+
+The plotting code is identical, but the colors on the plot are slightly different.In this case, the colors of the square prediction points closely match the colors of the nearby circular data points, which is a nice visual indicator that the model is a good fit.
+
+**14. Let's practice!**
+
+Back to the housing dataset.
 
 ## 3D visualizations
 
@@ -1156,6 +1503,43 @@ Insightful interaction inclusion! Although the predictions from the model are di
 
 Theory. Coming soon ...
 
+
+**1. More than 2 explanatory variables**
+
+Regression models aren't limited to two explanatory variables. Here, we'll consider three of them, and think about what happens when you increase that number even further.
+
+**2. From last time**
+
+In the last video you saw this scatter plot with the response variable, mass, indicated by color, and the explanatory variables shown on the x and y axes. You can see several distinct clusters of points. Perhaps these correspond to the different species of fish.We can check this by faceting on species.
+
+**3. Faceting by species**
+
+Giving each species its own panel with facet_wrap makes the groups of data more easily apparent.There is a noticeable strong positive correlation between length and height for each species of fish. The relationship between the explanatory variables and the response is harder to quantify because you can't determine colors as accurately as x and y coordinates, but for each species you can see that as fish get longer and taller they also get heavier.In general, while it is tricky to include more than three numeric variables in a scatter plot, you can include as many categorical variables as you like using faceting. However, more facets can make it harder to see an overall picture. Plotting rapidly becomes difficult as you increase the number of variables to display.
+
+**4. Different levels of interaction**
+
+By contrast, modeling doesn't get much harder as you increase the number of explanatory variables. Here, there are three explanatory variables and the only change is that you include an extra plus.The main tricky thing about including more explanatory variables in models is that there are more options regarding interactions. This model specifies no interactions between variables.You could also include 2-way, or "pairwise" interactions between the explanatory variables.A third option is to include a 3-way interaction between all the explanatory variables.This syntax quickly becomes cumbersome to type, so fortunately there are shortcuts.
+
+**5. All the interactions**
+
+You've already seen the concise syntax for including all the interactions. Simply swap the plus operators for times symbols. Both these formulas mean the same thing.You still need a plus before the zero to denote not including a global intercept term.
+
+**6. Only 2-way interactions**
+
+To get only 2-way interactions in the model, but not the 3-way interaction, you can use a new syntax, namely wrapping the explanatory variables in parentheses and raising them to the power of two.Here, the power of operator has a special meaning; it doesn't square the explanatory variable values. To do that, you need to wrap the terms in the I function, like you saw in the previous course.
+
+**7. The prediction flow**
+
+The prediction flow with an extra variable contains no surprises. This is exactly what you've seen before. Modeling code scales nicely with more variables.
+
+**8. Visualizing predictions**
+
+Likewise, the plotting code is the same as before. The colors of the square prediction points are similar to the colors of the nearby circular data points, indicating that the model provides a good fit.
+
+**9. Let's practice!**
+
+Let's make some models!
+
 ## Visualizing many variables
 
 <!-- 
@@ -1327,6 +1711,47 @@ Premier predicting! The plot nicely shows that the house price decreases as the 
 
 Theory. Coming soon ...
 
+
+**1. How linear regression works**
+
+Let's see how linear regression works. To keep things understandable, we'll stick to simple linear regression, with a single numeric explanatory variable.
+
+**2. The standard simple linear regression plot**
+
+Here is the standard scatter plot of a simple linear regression.
+
+**3. Visualizing residuals**
+
+Here's the same plot, showing the residuals. That is, the actual response minus the predicted response.For the best fit, we want those lines to be as short as possible. That is, we want a metric that measures the size of all the residuals, and we want to make that as small as possible.
+
+**4. A metric for the best fit**
+
+The simplest idea for that metric would be to add up all the residuals.This doesn't work because some residuals are negative, so they would make the total smaller instead of larger.Instead, we do the next easiest thing, which is to square each residual so that they are non-negative, and then add them up.This metric is called the sum of squares.The tricky part is determining which intercept and slope coefficients will result in the smallest sum of squares.
+
+**5. A detour into numerical optimization**
+
+To solve this problem, we need to take a detour into numerical optimization, which means finding the minimum point of a function.Consider this quadratic equation.  The y-value is x-squared minus x plus ten. The plot shows that the minimum point of the function occurs when x is a little above zero and y is a little below ten, but how can we find it exactly?
+
+**6. Using calculus to solve the equation**
+
+I can solve this with calculus by taking the derivative, setting that derivative to zero, rearranging for x, then substituting back into the original equation to find y.It gets the right answer. x is zero-point-five and y is nine-point-seven-five.However, not all equations can be solved in this analytic fashion, and ever since Newton and Liebniz invented calculus, mathematicians have been trying to find ways of avoiding it. In fact, one of the perks of being a data scientist is that you can just let R figure out how to find the minimum.
+
+**7. optim()**
+
+To perform numerical optimization in R, you need a function to minimize. In this case, it takes x as an input, and returns x-squared minus x plus ten.Then you call optim. The first argument is an initial guess at the answer. For more complicated functions, this is sometimes important, but here you could pick anything. The second argument is the function to call, without parentheses.In the output, par is the estimate for the x-value. It's close to the correct answer of zero-point-five, and if you need better accuracy, there are many options you can play with to improve the answer.value is the estimated y-value, which is spot on.The other pieces of output are diagnostic values, which we don't need here.
+
+**8. Slight refinements**
+
+There are two changes to the code which aren't needed here but will assist us in the linear regression case.The function passed to optim is only allowed to have one argument, so to optimize for multiple variables, you need to pass them as a numeric vector. Here, calc_quadratic takes a numeric vector called coeffs, then extracts the first element and calls it x.Secondly, passing a named vector as the initial guess to the par argument of optim makes the output easier to read. Now the par element in the output is named "x".
+
+**9. A linear regression algorithm**
+
+While lm() is hundreds of lines of code, you can implement simple linear regression for a specific dataset in just a few lines.You define a function that accepts the intercept and slope, and returns the sum of the squares of residuals. You'll have to use the trick of giving the function a single coeffs argument, then extracting the individual numbers.You'll perform the rest of the calculation yourself in the exercises.Then you call optim, passing an initial guess for the coefficients and your sum of squares function.That's it!
+
+**10. Let's practice!**
+
+Time to delve into linear regression's internals!
+
 ## The sum of squares
 
 <!--
@@ -1456,6 +1881,43 @@ Extend your logistic regression skills to multiple explanatory variables. Unders
 ## Multiple logistic regression
 
 Theory. Coming soon ...
+
+**1. Multiple logistic regression**
+
+Let's switch from linear regression to logistic regression.
+
+**2. Bank churn dataset**
+
+We'll revisit the three-column bank churn dataset from the previous course. has_churned is the response, denoting whether or not the customer churned, time_since_first_purchase is a measure of the length of relationship with the customer, and time_since_last_purchase is a measure of the recency of activity of the customer. The explanatory variables have been transformed to protect commercially sensitive information.
+
+    1 https://www.rdocumentation.org/packages/bayesQR/topics/Churn
+
+**3. glm()**
+
+Recall that to perform a logistic regression, there are two changes compared to a linear regression. Firstly, you call glm, for generalized linear models, rather than lm. Secondly, you include a family argument to specify the error distribution, set to binomial. You'll explore the binomial function later in the chapter. To extend logistic regression to multiple explanatory variables, you change the formula in the same way as linear regression, with a plus to ignore interactions, or a times to include interactions. There's no new syntax here.
+
+**4. Prediction flow**
+
+The prediction flow should also feel familiar, since you've seen all the techniques already. Use expand_grid to make a tibble of explanatory variables, then mutate to add a column of predictions. The only change from the linear regression case is that you need to specify type equals "response" in the call to predict.
+
+**5. The four outcomes**
+
+Recall that when the response variable has two possible values, there are four outcomes for the model. Either it correctly predicts positive and negative responses, or it gets it wrong with a false positive or false negative. We can quantify and visualize these four outcomes using a confusion matrix.
+
+    1 https://campus.datacamp.com/courses/introduction-to-regression-in-r/simple-logistic-regression?ex=10
+
+**6. Confusion matrix**
+
+The code flow is the same as before. Get the actual responses from the dataset and the predicted responses from the model, rounded to give zeroes and ones. Then use table to get counts of each of the four outcomes. yardstick's conf_mat function converts it to a confusion matrix object. That lets you plot the result as a mosaic plot using autoplot, and display metrics like model accuracy, sensitivity and specificity, using summary.
+
+**7. Visualization**
+
+Visualizing the plot when you have multiple explanatory variables is trickier. As with linear regression visualizations, you can use faceting to provide different panels for categorical variables. For the case of two numeric explanatory variables, you can use the technique of mapping the response variable to color. A nice trick here is to give predicted probabilities less than zero-point-five one color, and predicted probabilities above zero-point-five another color. This is achieved with ggplot2's scale_color_gradient2 function, setting midpoint to zero-point-five. You'll see how it looks in the exercises.
+
+**8. Let's practice!**
+
+Let's get logistic! 
+
 
 ## Visualizing multiple explanatory variables
 
@@ -1654,6 +2116,51 @@ Metric magic! Generating a confusion matrix and calculating metrics like accurac
 
 Theory. Coming soon ...
 
+
+**1. The logistic distribution**
+
+In order to understand logistic regression, you need to know about the logistic distribution.
+
+**2. Gaussian probability density function (PDF)**
+
+Before we get to the logistic distribution, let's look at the Gaussian, or normal distribution. Hopefully, you are familiar with the famous "bell curve" of its probability density function, made with the dnorm function.For the purposes of regression, we care more about the area under this curve. By integrating the dnorm function - calculating the area underneath it - we get another curve, known as the cumulative distribution function.
+
+**3. Gaussian cumulative distribution function (CDF)**
+
+To get the cumulative distribution function, or CDF, you call pnorm instead of dnorm.The y-axis is near zero on the far left of the plot, and near one on the far right of the plot. This is a feature of the CDF curve for all distributions. When x has its minimum possible value, in this case minus infinity, y will be zero. When x has its maximum possible value, in this case infinity, y will be one.You can think of the CDF as a transformation from the values of x to probabilities. When x is one, the CDF is curve is at zero-point-eight-four. That means that for a normally distributed variable x, the probability that x is less than one is eighty-four percent.
+
+**4. Gaussian inverse CDF**
+
+Since the CDF transforms from x-values to probabilities, you also need a way to get back from probabilities to x-values. This is the inverse CDF.Here we have a new dataset with probabilities from nearly zero to nearly one. The inverse CDF is calculated with qnorm.The line plot you see is the same as the CDF plot from the previous slide, but with the x and y axes flipped.
+
+**5. Distribution function names**
+
+The function names for distribution curves all follow a pattern. The PDF function starts with "d", the CDF function starts with "p", and the inverse CDF starts with "q". Then the names end with an abbreviation of the distribution name.dlogis, plogis, and qlogis follow the same naming convention as the normal distribution functions.
+
+**6. glm()'s family argument**
+
+Performing linear regression with lm is the same as performing it with glm and setting the error distribution family to gaussian.Switching from linear regression to logistic regression is done by changing the family argument to binomial.So, what are these family arguments?
+
+**7. gaussian()**
+
+gaussian is a function. Calling it and wrapping the result in str shows the structure - it returns an object that contains several other functions.Between them, these functions contain all the details for turning a generalized regression into a specific type of regression like linear or logistic regression.
+
+**8. linkfun and linkinv**
+
+Two elements of the family object are especially important. The linkfun element provides a transformation of the response variables, and the linkinv element undoes that transformation.For the gaussian case, it is boring because each transformation is just the identity function: it returns the same value that you put into it, since no special transformation is needed. For logistic regression however, it becomes more exciting.
+
+**9. Logistic PDF**
+
+Here's the logistic distribution PDF. It looks a little bit like the Gaussian PDF, but the tails at the extreme left and right of the plot are fatter.
+
+**10. Logistic distribution**
+
+The CDF for the logistic distribution is also known as the logistic function. The two terms are interchangeable.It has a fairly simple equation: one divided by one plus e to the minus x.The inverse CDF is sometimes called the logit function; again, the terms are interchangeable.Its equation is the logarithm of one divided by one plus p.In order to see what these curves look like, you'll have to try the exercises.
+
+**11. Let's practice!**
+
+Let's look at those curves!
+
 ## Cumulative distribution function
 
 <!--
@@ -1820,6 +2327,43 @@ Perfect parameter play! The logistic distribution consists of a whole family of 
 
 Theory. Coming soon ...
 
+
+**1. How logistic regression works**
+
+Let's see how logistic regression works. The principle is the same as for linear regression: choose a metric that measures how far the predicted responses are from the actual responses, and optimize that metric.
+
+**2. Sum of squares doesn't work**
+
+In the linear regression case, the metric to optimize was the sum of squares. That is, you calculated each predicted response minus the corresponding actual response, squared it, then took the sum.In the case of logistic regression, the actual response is always either zero or one, and the predicted response is between these two values.It turns out that the sum of squares metric optimizes poorly under these restrictions, and that there is a better metric.
+
+**3. Likelihood**
+
+This is the likelihood metric. Unlike the sum of squares, where the goal was to find the minimum possible value, with likelihood you want to find the maximum value.You take the product of the predicted and actual responses,
+
+**4. Likelihood**
+
+and add the product of one minus the predicted responses and one minus the actual responses.
+
+**5. Likelihood**
+
+Then you sum over all data points.Since the actual response only has two possible values, this equation simplifies in two different ways.When the actual response is one, the equation for each observation simplifies to the predicted response, y_pred. As y_pred increases, the metric increases too, and the maximum likelihood occurs when y_pred is one, the same as the actual value.When the actual response is zero, the equation simplifies to one minus the predicted response. As y_pred decreases, the metric increases, and the maximum likelihood occurs when y_pred is zero.In either case, you get a higher likelihood score when the predicted response is close to the actual response.
+
+**6. Log-likelihood**
+
+When calculating the likelihood, y_pred is often close to zero or one, which means you end up adding up lots of very small numbers, which introduces numerical error.It is more efficient to compute the log-likelihood. The only difference in this equation is that you take the logarithm of the predicted response terms.Optimizing to find the log-likelihood gives the same coefficients as optimizing to find the likelihood.
+
+**7. Negative log-likelihood**
+
+Since we want to maximize likelihood, but the optim function defaults to finding minimums, one tweak to make is to calculate the negative log-likelihood. That is, include a minus sign when you calculate the sum of each observation's likelihood contribution.
+
+**8. Logistic regression algorithm**
+
+Now we are set to write our logistic regression algorithm. The metric function takes a coefficients argument, you extract the intercept and slope from it, perform some more calculation that you'll see in the exercises, and then call optim to find the coefficients that minimize the metric.
+
+**9. Let's practice!**
+
+Almost there!
+
 ## Likelihood & log-likelihood
 
 <!--
@@ -1941,3 +2485,29 @@ glm(has_churned ~ time_since_last_purchase, data = churn, family = binomial)
 ```
 
 Ace algorithmic implementation! To make a really simple version of `glm()`, you just needed a function to calculate the negative log-likelihood, and a general-purpose optimization function.
+
+## Congratulations
+
+Theory. Coming soon ...
+
+
+**1. Congratulations**
+
+Well done! You've learned linear and logistic regression!
+
+**2. You learned things**
+
+In Chapter 1 you fitted, visualized, predicted and assessed parallel slopes linear regression models.In Chapter 2 you explored interactions between explanatory variables, and tried to resolve Simpson's Paradox.In Chapter 3 you saw that although visualization gets tricky with more explanatory variables, modeling easily handles them.In Chapter 4 you ran logistic regression with multiple explanatory variables, and explored the logistic distribution.On top of that, you implemented algorithms for linear regression and logistic regression. That's a really advanced thing, so well done!
+
+**3. There is more to learn**
+
+In order to master regression, there are a few more things to learn that we didn't have time for in this course.Firstly, it is common practice to split your data into separate training and testing datasets. You calculate the model coefficients on the training set, then assess the performance of the model on the testing set. This helps prevent overfitting, where your model only works well for one specific dataset.Secondly, an even stronger remedy against overfitting is to use cross-validation. This involves fitting and assessing the model several times, against several random training-testing splits to give a set of models from which to choose.Thirdly, in order to help determine which explanatory variables should be included in the model, linear and logistic regression return the significance of each coefficient, which is a measure of whether the coefficient is really different from zero, or it just appears to be different from zero by chance.
+
+**4. Advanced regression**
+
+DataCamp has many more courses on advanced regression techniques. You're now ready to take them!
+
+**5. Let's practice!**
+
+Have fun regressing!
+

@@ -29,6 +29,87 @@ In this part, you'll learn how to overcome some of the most common dirty data pr
 
 Theory. Coming soon ...
 
+
+**1. Data type constraints**
+
+Hi and welcome to the course. My name is Maggie, and I'll be guiding you as you learn how to clean data in R.
+
+**2. Course outline**
+
+In this course, you'll learn how to diagnose and locate different problems in your data and how they can can come up during your workflow.
+
+**3. Course outline**
+
+You'll also learn about what can go wrong if your data isn't properly cleaned,
+
+**4. Course outline**
+
+and how to address different types of dirty data.
+
+**5. Course outline**
+
+In this chapter, we'll discuss the most common problems you might encounter and how to address them. Let's get started!
+
+**6. Why do we need clean data?**
+
+To understand why we need clean data, let's take a look at the data science workflow.In a typical data science workflow, we usually access raw data first, explore and process it, then develop insights. Finally, we report these insights.
+
+**7. Why do we need clean data?**
+
+Dirty data can appear before we even access the data, due to mistakes such as typos and misspellings.
+
+**8. Why do we need clean data?**
+
+If we don't address these mistakes early on, they'll follow us through our entire workflow, which means we could end up drawing incorrect conclusions.
+
+**9. Data type constraints**
+
+You've probably encountered different types of data before, such as text, numbers, categories, and dates. Each of these data types is treated differently, so if each variable isn't the correct data type, we risk compromising our analysis.
+
+**10. Glimpsing at data types**
+
+Let's look at an example. Here's a data frame containing revenue generated and quantity of items sold for different sales orders.To look at the data types of each column in "sales", we can load the dplyr package and use glimpse. This gives us the data type for each column. The order ID and quantity have data type "dbl" or double, which is the same thing as numeric - double is just a way of specifying how many decimal places the number can have. However, the revenue column has the data type character, when it should be numeric.
+
+**11. Checking data types**
+
+We can use the is-dot-numeric function on the revenue column and see that it's not numeric.Another way to do this check is to use the assert_is_numeric function from the assertive package. This provides extra protection because it will throw an error and stop our script from running, so we'll immediately know that something's amiss.If we call assert_is_numeric on something that is numeric, nothing is returned.
+
+**12. Checking data types**
+
+All data types have an is-dot function that returns TRUE or FALSE and an assert-is function that returns nothing or an error.
+
+**13. Why does data type matter?**
+
+We can use the class function on the revenue column to see that it's a character type.If we want to know what the average revenue is, we get an NA and a warning, since taking the mean of text doesn't make much sense. This is why it's important to check that our data types are what we expect. Otherwise, we might think we're getting one thing, in this case an average, when we're actually getting something completely different, which is an NA. We'll need to convert this column to a numeric type in order to get the average.
+
+**14. Comma problems**
+
+Printing revenue shows a comma in each number. We'll need to remove them before converting the strings to numbers.
+
+**15. Character to number**
+
+This can be done using str_remove from the stringr package. The first argument is the string that we want to remove from, which is the revenue column. The second argument is what we want to remove, the comma. If we look at revenue_trimmed, all the commas are gone!To convert revenue_trimmed to a numeric type, we pass it into as-dot-numeric.
+
+**16. Putting it together**
+
+We can put it all together into the sales data frame by calling mutate. We create a new column called revenue_usd using str_remove and as-dot-numeric.
+
+**17. Same function, different outcomes**
+
+Now, taking the mean of revenue_usd gives us the average revenue, instead of the NA that we got earlier.
+
+**18. Converting data types**
+
+Just like the is-dot and assert-is functions, there are as-dot functions to convert to any data type.
+
+**19. Watch out: factor to numeric**
+
+Be careful when converting a factor to a numeric. Factors are a data type that represent a limited set of possible categories. Here, we have a product_type vector, which is a factor. 1000 represents clothing, 2000 represents food, and 3000 represents electronics.If we call as-numeric on product_type, we get these numbers, which isn't what we're looking for. This is due to the way that factors are encoded in R. Instead, we need to use as-character first, and then as-numeric.
+
+**20. Let's practice!**
+
+Time to use your new knowledge of data types!
+
 ## Common data types
 
 Since different data types are treated and act differently, it's important to be able to identify the data type that's most suitable for the data you're working with. Here, you'll learn match different data with the data type that makes the data easiest to process and extract insights from.
@@ -336,6 +417,57 @@ Great work! By removing characters and converting to a numeric type, you were ab
 ## Constraints
 ### Range constraints
 
+Theory. Coming soon ...
+
+
+**1. Range constraints**
+
+Now that we've discussed data type constraints, let's talk about another type of constraint: range constraints.
+
+**2. What's an out of range value?**
+
+Many variables have some range that you can reasonably expect all of the data points to fall within. For example, the college entrance test in the US is scored between 400 and 1600, so there shouldn't be any scores below 400 or above 1600. Other examples are the weight of a package, which can't be negative, or heart rate, which is expected to be between 60 and 100 beats per minute in most adults.Since we know what these reasonable ranges are, we know that there's something off if we see an SAT score of 2000 or a weight of -5 pounds in our dataset.
+
+**3. Finding out of range values**
+
+Let's say we're given some data containing movie ratings. Movies are rated using a five-star system, so all ratings should fall between 0 and 5.
+
+**4. Finding out of range values**
+
+To see if there's any data that's clearly out of range, we can create a histogram.We'll create a vector called breaks, which contains the minimum rating, then 0, the bottom of the expected range, then 5, the top of the expected range, then the maximum rating. We'll create a histogram of avg_rating using geom_histogram, setting the breaks argument to the breaks vector we just created.We end up with a histogram broken up into 3 groups: too low, in range, and too high. We can easily see now that there's one value below 0 and two values above 5 in our dataset.
+
+**5. Finding out of range values**
+
+We can also use the assert_all_are_in_closed_range function, which takes in a lower value and an upper value. It will give an error if anything falls outside of the specified range.
+
+**6. Handling out of range values**
+
+Once we identify that there are values out of range, how do we deal with them? We could remove those data points completely, but this should only be done when only a small proportion of the values are out of range, otherwise, we would significantly increase the amount of bias in our dataset. We could also treat each out of range value as missing, or replace it with `NA`. This allows us to use different imputation techniques for missing data, which we'll discuss in more detail later in the course.We can also replace out of range values with the range limit. For example, if we know our ratings should fall between 0 and 5 and there's a value of 6, we can replace the 6 with 5 so that it's in range.Finally, we can replace the values with some other number based on our knowledge of the dataset. For example, we could replace them with the average rating of all movies.
+
+**7. Removing rows**
+
+To remove out of range rows, we can use the filter function to get all the rows with values that fall into the range. In this case, we want all the ratings greater than or equal to 0 and less than or equal to 5, which will eliminate the rows that have an out of range rating.If we create a histogram of avg_rating now, we can see that there are no more out of range values left in the dataset.
+
+**8. Treat as missing**
+
+To treat values as missing, we'll need to replace all the out of range values with NA. We can do this using the replace function, which takes in the column you want to replace values in, the condition that should be met for a replacement to happen, and what the replacement should be. Here, we create a new column called rating_miss, replacing values of the avg_rating column that are too big with NA.
+
+**9. Replacing out of range values**
+
+We can also use the replacement function to replace out of range values with the range limit. Here, we replace all the values of avg_rating that are greater than 5 with 5.
+
+**10. Date range constraints**
+
+Dates can also be out of range. A common scenario is when data contains dates in the future. In our movies data, all of the dates should be in the past, since it's not possible for us to have a movie rating for a movie that no one has seen yet.We can use the assert_all_are_in_past function from the assertive package to check for future dates, and it looks like we have one.We can take a closer look at this row by filtering for date_recorded greater than today's date. Just like numbers, dates can be compared using greater than, less than, and equals equals operators. The today function from lubridate will get the current date.
+
+**11. Removing out-of-range dates**
+
+We can remove the rows with future dates using filter as well, but this time, we filter for date_recorded less than or equal to today.When we use assert_all_are_in_past now, nothing is returned, so we know that our range constraints have been met.
+
+**12. Let's practice!**
+
+Now it's time to practice wrangling your data with ranges.
+
 *What's an out of range value?*
 
 * SAT score: 400-1600
@@ -437,6 +569,102 @@ Fabulous filtering! Handling data from the future like this is much easier than 
 ### Uniqueness constraints (Duplicates)
 
 Theory. Coming soon ...
+
+**1. Uniqueness constraints**
+
+Sometimes we might have data containing duplicated data points caused by an error earlier in the pipeline. Duplicated data can have lots of unwanted side effects, but uniqueness constraints help us find and fix these duplicated data points.
+
+**2. What's a duplicate?**
+
+A duplicate is a data point that has the same values as another data in all columns, or in most columns.
+
+**3. Why do duplicates occur?**
+
+Duplicates can arise from data entry errors or other human errors,
+
+**4. Why do duplicates occur?**
+
+from bugs or design errors in data pipelines,
+
+**5. Why do duplicates occur?**
+
+but they most commonly arise from errors in joining data together from multiple sources.
+
+**6. Full duplicates**
+
+A full duplicate occurs when there are multiple rows that have the same value in every column. Here, rows 2 and 4 are full duplicates of each other, and rows 5 and 6 are also full duplicates of each other.
+
+**7. Finding full duplicates**
+
+We can find full duplicates using R's built-in "duplicated" function. If we pass in our data frame, called credit_scores, we get a logical vector, which is TRUE for each row that is a duplicate. If we take the sum of this vector, we get the total number of duplicates in the dataset, which is 2.
+
+**8. Finding full duplicates**
+
+We can check out the rows that are duplicates by using the duplicated function inside of filter, like this.
+
+**9. Dropping full duplicates**
+
+Since full duplicates are exact copies of each other, we can deal with these by simply removing them from the dataset, leaving only one copy behind. This can be done using dplyr's distinct function on our data frame. If we count the number of duplicates in the dataset now, we get 0.
+
+**10. Partial duplicates**
+
+Partial duplicates are rows of data that have much of the same information and refer to the same data point, but there may be some columns that differ between them. Here, rows 3 and 4 are partial duplicates of each other and rows 5 and 6 are partial duplicates of each other. They have the same name and address, but different credit scores. This can happen due to data entry errors or technical errors. In this example, some data from a year ago may have gotten mixed with the data from this year.
+
+**11. Finding partial duplicates**
+
+To include partial duplicates in our search, we can use dplyr's count function to count the number of occurrences of each pair of first name and last name, then filter for the pairs that occur more than once. This will give us data points that share the same name, but may differ in address or credit score.
+
+**12. Finding partial duplicates**
+
+We can save this as a data frame called dup_ids and then filter to take a look at all the rows that have a duplicate. This gives us a list of the full duplicates and the partial duplicates in the dataset.
+
+**13. Handling partial duplicates: dropping**
+
+One way to handle partial duplicates is to
+
+**14. Handling partial duplicates: dropping**
+
+drop all duplicates
+
+**15. Handling partial duplicates: dropping**
+
+and keep only one of them.
+
+**16. Dropping partial duplicates**
+
+In R, we can also use the distinct function to drop partial duplicates, but this time, we pass in the column names that duplicates should be matched on. Here, it's first name and last name. We also set the dot-keep_all argument to TRUE, which will keep all columns of the data frame instead of only first_name and last_name.
+
+**17. Handling partial duplicates: summarizing**
+
+Another way to handle partial duplicates is to summarize them using a summary statistic, like the mean or max. Since the credit scores differ in our example,
+
+**18. Handling partial duplicates: summarizing**
+
+we can take the mean credit score for each individual
+
+**19. Handling partial duplicates: summarizing**
+
+keeping only one copy of each duplicate,
+
+**20. Handling partial duplicates: summarizing**
+
+and use the mean as the value for credit score.
+
+**21. Handling partial duplicates: summarizing**
+
+
+
+**22. Summarizing partial duplicates**
+
+To summarize partial duplicates, we group by first_name and last_name, and then mutate, adding a column containing the mean credit score for each name. Since we've grouped before mutating, the mean_score column contains the mean score for each person.
+
+**23. Summarizing partial duplicates**
+
+We can pipe all of this into distinct, using first and last name and setting dot-keep_all to TRUE to remove the extra duplicates. We can also remove the old credit_score column to clean things up.
+
+**24. Let's practice!**
+
+Time to dive in to some duplicated data!
 
 #### Full duplicates
 
@@ -598,6 +826,66 @@ Awesome aggregation! Aggregation of partial duplicates allows you to keep some i
 
 Categorical and text data can often be some of the messiest parts of a dataset due to their unstructured nature. In this chapter, you’ll learn how to fix whitespace and capitalization inconsistencies in category labels, collapse multiple categories into one, and reformat strings for consistency.
 
+## Checking membership
+
+Theory. Coming soon ...
+
+**1. Checking membership**
+
+Nice work on Chapter 1! In Chapter 2, we'll discuss problems that arise in text and categorical data. Let's get started!
+
+**2. Categorical data**
+
+A variable is categorical when it can only take on values from a predefined set of values. Categorical variables represent distinct groups. Marriage status, household income category, and t-shirt size are all examples of categorical variables. As we discussed in Chapter 1, categories are stored as factors in R.
+
+**3. Factors**
+
+Under the hood, factors are stored as numbers, where one number represents each category. Each number has a corresponding label to make it easier for humans to read and understand output. For example, marriage status has two categories. Category 1 is labeled as unmarried, and category 2 is labeled as married.
+
+**4. Factor levels**
+
+Factors have something called levels, which are all the different possible values that a factor can hold. Here, we see that there are four possible values that tshirt_size can have: small, medium, large, and extra-large.
+
+**5. Values that don't belong**
+
+Since factors have these predefined levels, they cannot have values that fall outside of those levels. For example, if we asked people what t-shirt size they want, and someone responds with small-slash-medium, we won't be able to process that order since our vendor doesn't make that size.
+
+**6. How do we end up with these values?**
+
+How do we end up with values that aren't members of the predefined set of categories? Inconsistencies like this can arise due to data entry errors where data is inputted using free text instead of a multiple-choice system, as well as data parsing errors.
+
+**7. Filtering joins: a quick review**
+
+Recall that filtering joins are a type of join that keeps or removes observations from the first table, but doesn't add any new columns. The first kind of filtering join is a semi-join, which answers the question, "What observations of X are also in Y?"
+
+**8. Filtering joins: a quick review**
+
+The other kind is an anti-join, which answers the question, "What observations of X are not in Y?" We can use these filtering joins to find and remove values of categorical variables that don't belong.
+
+**9. Blood type example**
+
+Let's take a look at an example. We have a data frame called study_data, which contains data from a study about babies' blood types. study_data has the name, birthday, and blood type of each child. We also have a data frame called blood_types that contains all the possible blood types that a human can have.
+
+**10. Blood type example**
+
+Notice the problem here? Jennifer has blood type Z-positive, which is not a real blood type. Luckily, we can use the blood_types data frame as our ground truth to fix this.
+
+**11. Finding non-members**
+
+To find invalid blood types in our study data, we want to find all the blood types in study_data that are NOT in the blood_types data frame. This means we'll need an anti-join.
+
+**12. Anti-join**
+
+We can use dplyr's anti_join function to get the rows of study_data with a blood type not in the blood_types data frame.
+
+**13. Removing non-members**
+
+To remove the invalid blood types from our study_data, we want to find all the rows with a blood type in the official blood_types data frame. This means we'll need to use a semi-join.
+
+**14. Semi-join**
+
+We can use dplyr's semi-join function to get the rows of study_data that have a blood type contained in the official blood_types data frame. This removes the data with the Z-positive blood type. 
+
 ## Membership constraints
 
 So far, you've learned about a number of different problems you can run into when you have dirty data, including 
@@ -724,6 +1012,55 @@ Great joining! Anti-joins can help you identify the rows that are causing issues
 ## Categorical data problems
 
 Theory. Coming soon ...
+
+**1. Categorical data problems**
+
+Now that we've discussed membership constraints, we'll take a deeper dive into categorical data and discuss other ways to address those pesky values that don't belong besides removing them.
+
+**2. Categorical data problems**
+
+There are two specific types of dirty categorical data that we'll discuss. The first is when there is inconsistency within a category. For example, "Lizard" with a capital "L" and "lizard" with a lowercase "L" should be mapped to the same category even though their capitalization differs. The other type is when there are too many categories. If we only have one data point with "Pug", one data point with "Lab", and one data point with "Boxer", those categories might not be so useful on their own. It will be easier to work with our data if we collapse them all into one category, "Dog".
+
+**3. Example: animal classification**
+
+Let's start out with an example. We have a data frame called animals which contains different characteristics of animals and their type, such as mammal, fish, or bird.
+
+**4. Checking categories**
+
+We can explore all the different type categories in the data using count. At a glance, we can see if there are any categories that need correction. Right off the bat, we can see that there are multiple categories for mammal, including " mammal " with extra spaces before and after the word, "MAMMAL" in all caps,and "Mammal " with one capital letter and an extra space.
+
+**5. Case inconsistency**
+
+To fix the case inconsistency between the different mammal categories, we can use the str_to_lower function from the stringr package. Looking at row 3, we can see that the mammal with a capital M has been converted to all lowercase.
+
+**6. Case inconsistency**
+
+If we now count the type_lower category, we can see that there are nine categories instead of ten since the all caps "MAMMAL" was converted to lowercase "mammal".
+
+**7. Case inconsistency**
+
+We could also convert everything to uppercase using the str_to_upper function.
+
+**8. Whitespace inconsistency**
+
+To address the inconsistency in the white space around the word "mammal", we can use the stringr function str_trim. This will remove any white space from the beginning of the string and the end of the string, but not the middle of the string. Now the category in row 3 matches the category in row 1.
+
+**9. Whitespace inconsistency**
+
+If we now look at the different categories, there's only one mammal category, so all of the mammals in the dataset have been mapped to the same category.
+
+**10. Too many categories**
+
+Take a look at the categories we have now. Notice that most of our dataset is comprised of mammals and birds. There are only two amphibians, two fish, one bug, one invertebrate, and one reptile. That's 5 extra categories for only 7 data points, and summary statistics for these groups won't be very useful since they only contain one or two observations.
+
+**11. Collapsing categories**
+
+We can solve this problem by collapsing these categories into a new, broader category called "other". First, we'll create a vector called other_categories that stores the categories we want to collapse together. Next, we'll load the forcats package and add a new column to the animals data frame called type_collapsed. To create this column, we'll use the fct_collapse function. We pass type_trimmed to fct_collapse since this is the factor we want to base our new column on, and then we use other equals other_categories. This will tell the function that all the categories contained in the other_categories vector should be renamed to "other". Now, row 4 has the type "other" instead of "fish".
+
+**12. Collapsing categories**
+
+If we count the categories in our data frame now, there are only three! This makes it easier to compare all other animals to birds and mammals. 
+
 
 ## Identifying inconsistent categorical data
 
@@ -857,6 +1194,51 @@ Clean collapsing! You've reduced the number of categories from 12 to 9, and you 
 
 Theory. Coming soon ...
 
+
+**1. Cleaning text data**
+
+In the last lesson of this chapter, we'll talk about different ways to address dirty text data.
+
+**2. What is text data?**
+
+Before we dive in, let's take a look at some examples of text data. Names, phone numbers, email addresses, and passwords are all text data.Text data is very common, but it can be difficult to work with since it can be unstructured.
+
+**3. Unstructured data problems**
+
+Because text data doesn't usually have a consistent structure, there are a number of problems that we can run into while working with it. The first is formatting inconsistencies, since there are often multiple ways of formatting the same information. For example, phone numbers can be written in a variety of ways with or without spaces, parentheses, hyphens, and other punctuation, and credit card numbers can be written with or without spaces.Information inconsistency happens when different data points offer different amounts of information. For example, one phone number could include a country code, while others may not, or one person might fill in a "name" field using their first and last name, while another might use only their first name. Data entered can also be invalid, such as a phone number with only 4 digits or a zip code that doesn't exist.
+
+**4. Customer data**
+
+To learn about addressing these problems, we'll look at an example dataset of customers that contains customer names, companies, and credit card numbers. Notice that some rows have spaces in the credit card number while others have hyphens.Dirty text data like this can interfere with pipelines and processes that rely on this data. For example, sales software might only be able to process credit card numbers that are consistently formatted.
+
+**5. Detecting hyphenated credit card numbers**
+
+To clean up this text data, we can use functions from the stringr package.Before we can clean this data, we'll need to find which values need cleaning. This can be done using the str_detect function, which takes in a character vector, in this case the name column of the customers data frame, and the pattern that you want to detect, which is a hyphen. This will return a logical vector indicating whether a hyphen is found in the credit_card column in each row.
+
+**6. Replacing hyphens**
+
+Now that we've identified where our issues lie, we can use the str_replace_all function, which takes in the column of text data, the string we want to replace, and the replacement string. In this example, we want to replace all of the hyphens in the credit_card column with spaces so that all of the credit card numbers have consistent formatting.
+
+**7. Removing hyphens and spaces**
+
+An alternative solution is to remove the hyphens and spaces from the credit card numbers so that they contain numbers only. This can be done using the str_remove_all function. Here, we take the credit_card column, remove all hyphens, and then remove all spaces. We can add this to our data frame using mutate.
+
+**8. Finding invalid credit cards**
+
+Now that we've removed all the hyphens and spaces, all of the credit card numbers should have exactly 16 numbers. We can find invalid credit cards using the str_length function, which returns the length of each string in a column. str_length can be used in combination with a filter to find all the customers whose credit_card number does not contain exactly 16 characters.
+
+**9. Removing invalid credit cards**
+
+We can remove these invalid numbers from the dataset by filtering for rows that have a credit card with a length of 16. Now we'll be able to charge customers with ease!
+
+**10. More complex text problems**
+
+To deal with more complex text data problems, regular expressions can be used. A regular expression is a sequence of characters that allows for robust searching within a string. For example, we could search for all credit cards that have a 4 as their first digit.In regular expressions, there are certain characters that get treated differently. All the stringr functions we learned about use regular expressions, so when searching for or replacing one of these special characters, the fixed function needs to be wrapped around the text, like this.We won't discuss regular expressions any further, but check out these courses to learn more about them.
+
+**11. Let's practice!**
+
+Time to practice cleaning some text data!
+
 ## Detecting inconsistent text data
 
 You've recently received some news that the customer support team wants to ask the SFO survey participants some follow-up questions. However, the auto-dialer that the call center uses isn't able to parse all of the phone numbers since they're all in different formats. After some investigation, you found that some phone numbers are written with hyphens (`-`) and some are written with parentheses (`(`,`)`). In this exercise, you'll figure out which phone numbers have these issues so that you know which ones need fixing.
@@ -934,6 +1316,57 @@ sfo_survey_mod %>%
 Mission accomplished! Thanks to your savvy string skills, the follow-up survey will be done in no time!
 
 ## Uniformity
+
+Theory. Coming soon ...
+
+
+**1. Uniformity**
+
+Great work on Chapter 2! In this chapter, we'll focus on more advanced data cleaning problems.
+
+**2. Uniformity**
+
+The first problem we'll tackle is uniformity. Uniformity issues are when continuous data points have different units or different formats. For example, temperature can be written in degrees Celsius or Fahrenheit, weight can be measured in kilograms, grams, or pounds, money can be in US dollars, UK pounds, or even Japanese yen, and dates can be written in different orders.
+
+**3. Where do uniformity issues come from?**
+
+Uniformity issues arise when you're using multiple data sources that may store data in different ways, or from unstructured data entry that doesn't require specific units or formatting.
+
+**4. Finding uniformity issues**
+
+Let's take a look at the nyc_temps dataset, which contains daily average temperatures in New York City during April of 2019.
+
+**5. Finding uniformity issues**
+
+Since outliers can be a sign of uniformity issues, it's usually helpful to do some basic plotting to identify any outliers.Let's create a scatter plot of the dataset. This doesn't look quite right - there are three unusually high temperatures. An outdoor temperature of over 50 degrees Celsius would be very concerning.
+
+**6. What to do?**
+
+There's no one best option for dealing with this data. In order to figure out what to do, we'll need to do some deeper research into the dataset.There were no big climate events in New York during this month, so there's probably something else up with these values. After speaking with the person in charge of temperature data collection, we learn that on these three days, the thermometer was broken and data needed to be pulled in from another source. However, this other source measured temperature in Fahrenheit instead of Celsius.
+
+**7. Unit conversion**
+
+Since we know exactly why these data points aren't uniform, we can adjust them to fit with the rest of the data points. Here, we have the formula to convert temperature in Fahrenheit to Celsius. We only want to apply this formula to the ones that are in Fahrenheit. To do this, we'll use the ifelse function. ifelse takes in a condition, the value to use if the condition is true, and the value to use if the condition is false. Let's add a column to nyc_temps called temp_c. ifelse will check if the original temperature is over 50, convert it to Celsius if it is, and keep the original temperature otherwise. The first temperature was already in Celsius, so temp_c contains the same value, but 58-point-5 got converted to 14-point-7.
+
+**8. Unit conversion**
+
+If we create the same scatterplot as before using the temp_c column, the temperatures all range between 4 and 20, which matches what we expected.
+
+**9. Date uniformity**
+
+Dates can also pose uniformity problems, since there are lots of different ways to write them. In this example, dates are written in three different ways.We can use special formatting strings to convert them to uniform Date objects so they're all written in the same way. These are the ones we'll need for this dataset, but there are so many others like these - you can always type this in your R console to get a list of all available date formats.
+
+**10. Parsing multiple formats**
+
+To convert these all to Date objects, we'll use the parse_date_time function from the lubridate package. We pass in the vector of dates to convert, and a vector of format strings to the "orders" argument. This contains the three different formats that we saw in our data frame.Just like that, all of the dates are in the exact same format!If we try to parse a date that's not in one of the formats we specified, NA will be returned instead.
+
+**11. Ambiguous dates**
+
+Sometimes dates can be ambiguous and you won't be able to tell what format they follow.For example, is this date in February or April? As with other cleaning tasks, this is highly dependent on your data and where it came from. One option is to treat these dates as missing. If your data comes from multiple sources, you may notice that one source uses one format and another source uses a different format. From there, you'll be able to make an educated guess about the format of the date based on which source it came from. You can also try and figure out what the format is based on other dates in the dataset. If you know there should be one data point per date, you might be able to figure it out.
+
+**12. Let's practice!**
+
+Time to practice unit and date conversions!
 
 In this section, you’ll dive into more advanced data cleaning problems, such as ensuring that weights are all written in kilograms instead of pounds. You’ll also gain invaluable skills that will help you verify that values have been added correctly and that missing values don’t negatively impact your analyses.
 
@@ -1046,6 +1479,47 @@ Crafty currency conversion! The points in your last scatter plot all fall within
 
 Theory. Coming soon ...
 
+
+**1. Cross field validation**
+
+In this lesson, we'll talk about using cross field validation to find dirty data.
+
+**2. What is cross field validation?**
+
+Cross field validation is essentially a sanity check on your data to check that one value makes sense based on other values in your dataset.Here, 52% and 58% add up to 110%, which doesn't make sense in this context, so we know that one or more of these values are wrong.
+
+**3. Credit card data**
+
+Here's a data frame called credit_cards, which contains information on credit card accounts, including the date it was opened, the amount of cash back the account has received on dining, groceries, and gas, as well as the total cash back and the age of the account.
+
+**4. Validating numbers**
+
+For this type of credit card, there are only three categories of purchases that you can earn cash back on, so we know that the three categories should add up to the total.
+
+**5. Validating numbers**
+
+To find any accounts where the categories don't sum up to the total, we can first create a new column called theoretical_total, which contains the sum of dining, grocery, and gas cash back. Then, we can filter for rows where the theoretical_total is not equal to the total_cb, or the actual total. We have two rows that don't add up correctly.
+
+**6. Validating date and age**
+
+We can also validate dates and ages in a similar way, since we know that the difference between today's date and the date_opened should be the account's age.
+
+**7. Calculating age**
+
+To calculate age in years, we take the origin date, in this case Sept 9, 2015, and use the percent-minus-minus-percent operator followed by the today function. This will calculate how much time has passed between the origin date and today.However, this returns a special data type, so we'll need to convert it to numeric using as-dot-numeric. We'll pass "years" in quotes as the second argument to convert the time interval into a number of years.Finally, if we want only the number of years, we can use the floor function to get rid of the decimals.
+
+**8. Validating age**
+
+We can use the same mutate and filter strategy as we used when validating the cash back totals. We'll create a column called theor_age to hold the calculated age, and compare it to the account age.We have two accounts that have mismatched ages.
+
+**9. What next?**
+
+Once we find this invalid data, what do we do with it? Just like other data cleaning problems, there is no one-size-fits-all solution, since finding the best solution is dependent on the dataset.We can decide to drop inconsistent data, set it to missing and impute it, or apply some rules using domain knowledge, but in order to know what the best approach is, we have to have a good understanding of where the dataset comes from and the different sources feeding into it.
+
+**10. Let's practice!**
+
+Time to do some cross field validation on your own!
+
 * Cross field validation = sanity check
 * Does this value makes senese based on another values?
 
@@ -1095,6 +1569,85 @@ accounts_mod %>%
 Vigorous validating! There are three accounts that all have ages off by one year, but none of them are the same as the accounts that had `total` inconsistencies, so it looks like these two bookkeeping errors may not be related.
 
 ## Completeness
+
+Theory. Coming soon ...
+
+
+**1. Completeness**
+
+Welcome back! In this lesson, we'll talk about completeness and missing data.
+
+**2. What is missing data?**
+
+Missing data is one of the most common and most important data cleaning problems. Data is considered "missing" when there is no value stored for a variable in an observation. Missing data is most commonly represented as NA or NaN, but can take on arbitrary values like 0, 99, or a dot.
+
+**3. What is missing data?**
+
+Like a lot of the problems that we've seen so far, missing data can happen due to technical
+
+**4. What is missing data?**
+
+and human errors.Missing data can take many forms, so let's take a look at an example.
+
+**5. Air quality**
+
+Let's take a look at the airquality dataset. It contains ozone, solar radiation, wind, and temperature measurements for different days of the year.
+
+**6. Air quality**
+
+Here, we have some missing values, which are represented as NA in R.
+
+**7. Finding missing values**
+
+We can find missing values in a dataset using the is-dot-na function, which returns TRUE if a value is missing and FALSE if it's not, for every value in a data frame.
+
+**8. Counting missing values**
+
+If we wrap is-dot-na with sum, we get the total number of NAs in the entire dataset. However, this isn't separated by column, so we don't know where exactly our missing values are.
+
+**9. Visualizing missing values**
+
+That's where visualization comes in. We can use the vis_miss function from the visdat package. This will give us a plot that shows missing values in black, and present values in gray. We can look down a column of the plot to see how many missing values there are in each column, and can look from left to right to get a sense if there are a lot of rows with multiple missing values. Here, the Ozone column has the most missing values. Solar radiation also has some missing values, but not as many. None of the other columns have missing data.It looks like the missingness is pretty random, but let's take a deeper look.
+
+**10. Investigating missingness**
+
+Let's see if there are any differences between the rows with missing and non-missing ozone values.We'll create a new column called miss_ozone, using is-dot-na to determine if the row is missing the ozone value or not. Then, we group by miss_ozone and use summarize_all, taking the median of each variable. We also set na-dot-rm to TRUE so that the median function ignores any missing values.The first row has the median of each variable for all rows with non-missing ozone values, and the second row has the median of each variable for all rows with missing ozone. Most of the medians look quite similar, but there's about a thirty degree difference in temperature! This suggests that Ozone is missing for days that had high temperatures.
+
+**11. Investigating missingness**
+
+If we sort the observations by temperature, then use vis_miss, we can see that all the missing values of Ozone are clustered in last observations, which are the observations with the highest temperatures. Something must break in the sensor when it gets too hot out!
+
+**12. Types of missing data**
+
+Let's talk about the types of missing data. Data can be missing completely at random, missing at random, or missing not at random.
+
+**13. Types of missing data**
+
+When data is missing completely at random, there is no pattern to the missingness and no relationship between missing data and any other values. This could happen from something like data entry errors.
+
+**14. Types of missing data**
+
+When data is missing at random, there is a systematic relationship between missing data and other observed values in the dataset. This is just like what we observed with the air quality data where there was a relationship between missingness and temperature. "Missing at random" is actually a misleading name, since there's nothing random about this type of missing data.
+
+**15. Types of missingness**
+
+When data is missing not at random, there is a systematic relationship between the missing data and unobserved values. For example, when it's really hot outside, the thermometer might stop working, so we don't have temperature measurements for days with high temperatures. However, we have no way to tell this just from looking at the data since we can't actually see what the missing temperatures are.
+
+**16. Dealing with missing data**
+
+There are lots of ways to deal with missing data. We can remove any rows that contain missing data. We can also impute, or fill in, missing values using statistical measures or domain knowledge.There are also more complicated algorithmic approaches or ones that require some machine learning. Each missingness type requires a specific approach, and each type of approach has pros and cons. To learn more, check out these courses!
+
+**17. Dropping missing values**
+
+We can remove rows with missing values by filtering for rows where the Ozone value is not NA and the Solar radiation value is not NA.
+
+**18. Replacing missing values**
+
+We can replace missing values using mutate combined with ifelse. We create a new column called ozone_filled. If the Ozone value is missing, we use the mean Ozone value. If the Ozone value isn't missing, we use the original value.
+
+**19. Let's practice!**
+
+Now that you know how to tackle missing data, time to practice!
 
 ### Types of missingness
 
@@ -1242,6 +1795,106 @@ Great job! Since your assertions passed, there's no missing data left, and you c
 
 # 3. Record Linkage
 
+## Comparing strings
+
+**1. Comparing strings**
+
+Welcome to the final chapter of the course! In this chapter, we'll be focusing on string matching and record linkage.
+
+**2. Measuring distance between values**
+
+If we have two values, a 3 and a 10,
+
+**3. Measuring distance between values**
+
+we can measure the distance between them
+
+**4. Measuring distance between values**
+
+using subtraction. The distance between them is 10 minus 3, which is 7. Comparing numbers is easy, but how do we compare strings? Before we dive into record linkage, we need to learn about how to measure distance between strings.
+
+**5. Minimum edit distance**
+
+Edit distance is a way of measuring how different two strings are from each other, based on the four basic kinds of typos, which are inserting a character,
+
+**6. Minimum edit distance**
+
+deleting a character,
+
+**7. Minimum edit distance**
+
+substituting one character for another,
+
+**8. Minimum edit distance**
+
+and transposing, or swapping the positions of, two characters. Minimum edit distance is the fewest number of typos you'd need to convert one string to another.
+
+**9. Edit distance = 1**
+
+Here are some examples. To turn "dog" into "dogs", we insert an "s".
+
+**10. Edit distance = 1**
+
+To turn "bath" into "bat", we remove the "h".
+
+**11. Edit distance = 1**
+
+To turn "cats" into "rats", we substitute an "r" for the "c".
+
+**12. Edit distance = 1**
+
+To turn "sing" into "sign", we swap the positions of the "n" and the "g". Since all of these pairs require only one edit, they all have an edit distance of 1.
+
+**13. A more complex example**
+
+Let's look at a more complex example and calculate the edit distance between "baboon" and "typhoon".
+
+**14. A more complex example**
+
+First, we'll need to insert an "h".
+
+**15. A more complex example**
+
+Then, we'll need to substitute "t" for "b",
+
+**16. A more complex example**
+
+substitute "y" for "a",
+
+**17. A more complex example**
+
+and substitute "p" for "b". This gives us a total of 4 actions, or an edit distance of 4.
+
+**18. Types of edit distance**
+
+There are multiple types of edit distance that each calculate distance between strings a little differently. The Damerau-Levenshtein distance is what you just learned. The Levenshtein distance does not count transposition as a single action - instead, it counts as 2: a deletion and an insertion. The Longest Common Subsequence, or LCS, distance considers only insertion and deletion as actions. There are also other more complex ways of calculating string distance, such as Jaro-Winkler or Jaccard distance. Each method has a relative advantage in different circumstances, but going into the details of when to use each one is out of the scope of the course. However, feel free to experiment with the different methods and use the one that gives you the best results.
+
+**19. String distance in R**
+
+Let's go back to our baboon-typhoon example. To calculate edit distances in R, you can use stringdist from the stringdist package, passing it the two strings to compare and the method you want to use. In this case, we're using "dl", which stands for Damerau-Levenshtein.
+
+**20. Other methods**
+
+Using the method argument, we can also calculate different types of distances that we've discussed. The output of Jaccard is on a scale of 0 to 1, where numbers closer to 0 indicate that the strings are more similar.
+
+**21. Comparing strings to clean data**
+
+In chapter 2, you collapsed multiple categories into one using manually defined categories. But if there are too many variations to type out, we can use string distance to map them to the correct category.
+
+**22. Comparing strings to clean data**
+
+Here's a survey where participants in New York, Chicago, Los Angeles, and Seattle were asked where they currently live, and how likely they are to consider moving away on a scale of 1 to 5. The survey had free text entry, so the city column is riddled with typos. To map them to the correct spelling, we can compare the distance between each survey response and the set of possible answers, and choose the one that's closest.
+
+**23. Remapping using string distance**
+
+The fuzzyjoin package allows us to do joins based on string distance. We can use stringdist_left_join to join the survey data to cities. Just like the stringdist function, we can pass in the method we want to use for string distance.
+
+**24. Remapping using string distance**
+
+We can also use the max_dist argument to adjust how close we want the strings to be in order to consider them a match. Notice how we get an NA, since the typo in row 8 wasn't close enough to any of the cities to be assigned to one. 
+
+---
+
 Record linkage is a powerful technique used to merge multiple datasets together, used when values have typos or different spellings. In this section, you'll learn how to link records by calculating the similarity between strings—you’ll then use your new skills to join two restaurant review datasets into one clean master dataset.
 
 **Link or join?**
@@ -1367,6 +2020,95 @@ zagat_mod %>%
 
 Fabulous fixing! Now that you've created consistent spelling for each city, it will be much easier to compute summary statistics by city.
 
+## Generating and comparing pairs
+
+Theory. Coming soon ...
+
+
+**1. Generating and comparing pairs**
+
+Now that we know how to compare strings to each other, let's talk about record linkage.
+
+**2. When joins won't work**
+
+Here, we have two tables showing basketball game schedules from different television networks. If we want to get a full list of the basketball games being televised, we need to combine these two tables.
+
+**3. When joins won't work**
+
+However, some of the games in the second table are duplicates of games already listed in the first table. Since there's no consistent identifier between the two tables, a regular join won't work. This is where record linkage comes in.
+
+**4. What is record linkage?**
+
+Record linkage involves linking data together that comes from multiple sources that don't share a common identifier, but contain data on the same entity.
+
+**5. What is record linkage?**
+
+Generally, we start by cleaning the different datasets.
+
+**6. What is record linkage?**
+
+Then, we find pairs of records, or rows, that we want to compare.
+
+**7. What is record linkage?**
+
+We compare those records to each other,
+
+**8. What is record linkage?**
+
+and score them based on how similar they are.
+
+**9. What is record linkage?**
+
+Finally, we link the most similar pairs together.Our string comparison skills will come in handy for the third step, which is comparing the pairs.
+
+**10. What is record linkage?**
+
+But before we can do this, we need to generate pairs.
+
+**11. Pairs of records**
+
+Here, we have two data frames, A and B, and we want to use record linkage to identify if any of the records in Table A are referring to the same person as any records in Table B.
+
+**12. Generating pairs**
+
+In order to figure out whether any of the rows are matches, we'll need to compare every single row in table A with every single row in table B.
+
+**13. Generating pairs in R**
+
+To generate pairs of rows in R, we can use the reclin package. The pair_blocking function takes in our two data frames and returns an object that contains every possible pair of records.
+
+**14. Too many pairs**
+
+But imagine if we had a thousand rows in each table. That means we'd have a million possible pairs of records, so this approach isn't scalable.
+
+**15. Blocking**
+
+To solve this problem, what if we only choose pairs that have a matching state? This drastically reduces the number of possible pairs - now we only have 8 instead of 25.This technique is called blocking: we only consider pairs when they agree on the blocking variable. In this case, the blocking variable is state.
+
+**16. Pair blocking in R**
+
+To use blocking, we can use the same pair_blocking function, but this time use the blocking_var argument, which takes in a column name as a string. Just as we expected, we get 8 pairs instead of 25.
+
+**17. Comparing pairs**
+
+Now that we have our pairs, we'll need to compare them to see which pairs are the most similar.
+
+**18. Comparing pairs**
+
+We can do this by piping the output of pair_blocking to the compare_pairs function. We use the by argument to indicate that the name column of each data frame should be compared, and the default_comparator argument to indicate how strings should be compared. Here, we're using the longest common subsequence method. Notice that there's a set of parentheses after lcs since we're calling a function.The output shows a table with each pair and the corresponding score between the name of each pair.
+
+**19. Comparing multiple columns**
+
+We can also compare multiple columns of the data frames by passing a vector of columns to the by argument.Now, we get a score for the name column and the zip column.
+
+**20. Different comparators**
+
+We can also use different methods to compare strings, such as Jaccard or Jaro-Winkler.
+
+**21. Let's practice!**
+
+It's time to compare and generate some pairs!
+
 ## reclin: Linking records with Pair Blocking
 ### Pair Blocking
 
@@ -1446,6 +2188,69 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
 
 Crafty comparisons! Choosing a comparator and the columns to compare is highly dataset-dependent, so it's best to try out different combinations to see which works best on the dataset you're working with. Next, you'll build on your string comparison skills and learn about record linkage!
 
+
+
+## Scoring and linking
+
+Theory. Coming soon ...
+
+
+**1. Scoring and linking**
+
+Now that we've compared our pairs, it's time to score them and link the data together.
+
+**2. Last lesson**
+
+In the last lesson, we worked with these two data frames
+
+**3. Where we left off**
+
+and learned how to create and compare pairs of records. Remember that the x and y columns contain the row numbers of each pair. However, all of the comparison results are separated by column, so we'll need to combine them.
+
+**4. Scoring pairs**
+
+That's where scoring comes in.
+
+**5. Scoring with sums**
+
+One way that we could combine the separate scores is by adding them together.
+
+**6. Summing**
+
+We can do this using score_simsum, which will create a new column called simsum that holds the total score for each row.
+
+**7. Summing**
+
+We can see that the highest score is between row 2 in df_A and row 3 in df_B, which both referred to someone named Keaton Snyder.
+
+**8. Disadvantages of summing**
+
+However, summing doesn't account for the fact that having a very similar name is a stronger indicator that the records refer to the same person, while having the same sex doesn't tell us as much.Instead of summing, we can use a probabilistic way of scoring that accounts for these differences between variables.
+
+**9. Scoring probabilistically**
+
+We can use the score_problink function, which gives us a weight for each row. The higher the weight, the more similar the pair is.The highest weight is again between Keaton Z Snyder and Keaton Snyder.
+
+**10. Linking pairs**
+
+Now that we've scored each pair, how do we pick which ones are matches?
+
+**11. Selecting matches**
+
+We can select the pairs that we consider matches using select_n_to_m. This will select the matches with the highest scores, ensuring that any record in one data frame is only linked to one record in the other data frame at most.Here, the only pair considered a match is row 2 of df_A and row 3 of df_B.
+
+**12. Linking the data**
+
+Now that we've selected which pairs are matches, we can finally link the two data frames together using the link function.
+
+**13. Linked data**
+
+The left side holds the data from df_A, and the right side holds the data from df_B. The first row has data for both sides, since that's the match we found, while the rest of the people were found only in one of the two data frames.
+
+**14. Let's practice!**
+
+Now that you've learned how to link data, let's practice!
+
 ### Score then select or select then score?
 
 Record linkage requires a number of steps that can be difficult to keep straight. In this section, you'll solidify your knowledge of the record linkage process so that it's a breeze when you code it yourself!
@@ -1488,3 +2293,40 @@ pair_blocking(zagat, fodors, blocking_var = "city") %>%
 ```
 
 Lovely linking! Now that your two datasets are merged, you can use the data to figure out if there are certain characteristics that make a restaurant more likely to be reviewed by Zagat or Fodor's.
+
+## Congratulations!
+
+Theory. Coming soon ...
+
+
+**1. Congratulations!**
+
+Congrats on finishing the course! You're now equipped with data cleaning skills.
+
+**2. What you learned**
+
+In this course, you learned how to diagnose dirty data, what the side effects of dirty data are and how they can impact an analysis, and how to clean data to prevent these side effects.
+
+**3. Chapter 1: Common Data Problems**
+
+In chapter 1, you learned about type constraints, range constraints and uniqueness constraints.
+
+**4. Chapter 2: Text and Categorical Data**
+
+In chapter 2, you learned about problems specific to text and categorical data, including membership constraints, cleaning categorical variables, and cleaning text data.
+
+**5. Chapter 3: Advanced Data Problems**
+
+In chapter 3, you looked at more advanced data problems, like unifying inconsistently formatted data, cross field validation, and dealing with missing data.
+
+**6. Chapter 4: Record Linkage**
+
+In chapter 4, you learned how to use record linkage to link datasets when traditional joins can't be used.
+
+**7. Expand and build upon your new skills**
+
+There is still much more to learn to become a data cleaning expert! Check out these courses where you can learn more about working with categorical data, manipulating text data, and writing clean R code to prevent dirty data in the first place.
+
+**8. Congratulations!**
+
+Don't forget to apply the valuable skills you've learned to your own data tasks. Congratulations, and have fun learning!

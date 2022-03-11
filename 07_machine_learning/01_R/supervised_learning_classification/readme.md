@@ -118,6 +118,77 @@ kNN to self-driving vehicle road sign recognition.
 
 Theory. Coming soon …
 
+**1. Classification with nearest neighbors**
+
+Hi! My name is Brett Lantz and I’m a data scientist at the University of
+Michigan and the author of the book “Machine Learning with R.” Machine
+learning utilizes computers to turn data into insight and action.This
+course focuses on a subset of machine learning. The sub-domain called
+supervised learning focuses on training a machine to learn from prior
+examples.When the concept to be learned is a set of categories, the task
+is called classification. From identifying diseases, predicting the
+weather, or detecting whether an image contains a cat, classification
+tasks are diverse yet common.In this course, you’ll learn classification
+methods while exploring four real-world applications. Let’s get started!
+
+**2. Classification tasks for driverless cars**
+
+If your experiences on the road are anything like mine, self-driving
+cars can’t get here soon enough! It’s easy to imagine aspects of
+autonomous driving that involve classification; for example, when a
+vehicle’s camera observes an object, it must classify the object before
+it can react.Though the algorithms that govern autonomous cars are
+sophisticated, we can simulate aspects of their behavior. In this
+example, we’ll suppose the vehicle can see but not distinguish the
+roadway signs. Your job will be to use machine learning to classify the
+sign’s type.
+
+**3. Understanding Nearest Neighbors**
+
+To start training a self-driving car, you might supervise it by
+demonstrating the desired behavior as it observes each type of sign. You
+stop at intersections, yield to pedestrians, and change speed as
+needed.After some time under your instruction, the vehicle has built a
+database that records the sign as well as the target behavior. The image
+here illustrates this dataset.I suspect you already see some
+similarities, the machine can too! A nearest neighbor classifier takes
+advantage of the fact that signs that look alike should be similar to,
+or “nearby” other signs of the same type. For example, if the car
+observes a sign that seems similar to those in the group of stop signs,
+the car will probably need to stop.
+
+**4. Measuring similarity with distance**
+
+So how does a nearest neighbor learner decide whether two signs are
+similar? It does so by literally measuring the distance between
+them.That’s not to say that it measures the distance between signs in
+physical space, a stop sign in New York is the same as a stop sign in
+Los Angeles, but instead, it imagines the properties of the signs as
+coordinates in what is called a feature space.Consider, for instance,
+the sign’s color. By imagining the color as a 3-dimensional feature
+space measuring levels of red, green, and blue, signs of similar color
+are located naturally close to one another.Once the feature space has
+been constructed in this way, you can measure distance using a formula
+like those you may have seen in a geometry class. Many nearest neighbor
+learners use the Euclidean distance formula here, which measures the
+straight-line distance between two points. If the formula is confusing,
+don’t worry; R will compute it for you.
+
+**5. Applying nearest neighbors in R**
+
+An algorithm called k-Nearest Neighbors, or kNN, uses the principle of
+nearest neighbors to classify unlabeled examples. We’ll get into the
+specifics later, but for now it suffices to know that, by default, R’s
+knn function searches a dataset for the historic observation most
+similar to the newly-observed one.The knn function is part of the class
+package, and requires three parameters: first, the set of training data;
+second, the test data to be classified; and third, the labels for the
+training data.
+
+**6. Let’s practice!**
+
+The test car is ready at the track. Can you help it drive away?
+
 ## Recognizing a road sign with kNN
 
 After several trips with a human behind the wheel, it is time for the
@@ -174,7 +245,6 @@ signs_all  <- readr::read_csv("data/knn_traffic_signs.csv")
     ## Delimiter: ","
     ## chr  (2): sample, sign_type
     ## dbl (49): id, r1, g1, b1, r2, g2, b2, r3, g3, b3, r4, g4, b4, r5, g5, b5, r6...
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -333,6 +403,63 @@ matrix lets you look for patterns in the classifier’s errors.
 
 Theory. Coming soon …
 
+**1. What about the ‘k’ in kNN?**
+
+You may be wondering why kNN is called ‘k’ Nearest Neighbors, what
+exactly is ‘k’? The letter k is a variable that specifies the number of
+neighbors to consider when making the classification. You can imagine it
+as determining the size of the neighborhoods. Until now, we’ve ignored
+k, and thus R has used the default value of ‘1’. This means that only
+the single nearest, most similar, neighbor was used to classify the
+unlabeled example. While this seems OK on the surface, let’s work
+through an example to see why the value of k may have a substantial
+impact on the performance of our classifier.
+
+**2. Choosing ‘k’ neighbors**
+
+Suppose our vehicle observed the sign at the center of the image here.
+Its five nearest neighbors are depicted. The single nearest neighbor is
+a speed limit sign, which shares a very similar background color.
+Unfortunately, in this case, a kNN classifier with k set to one would
+make an incorrect classification. Slightly further away are the second,
+third, and fourth nearest neighbors, which are all pedestrian crossing
+signs. Suppose we set k to three. What would happen? The three nearest
+neighbors, a speed limit sign and two pedestrian crossing signs, would
+take a vote. The category with the majority of nearest neighbors, in
+this case the pedestrian crossing sign, is the winner. Increasing k to
+five allows the five nearest neighbors to vote. The pedestrian crossing
+sign still wins with a margin of 3-to-2. Note that in the case of a tie,
+the winner is typically decided at random.
+
+**3. Bigger ‘k’ is not always better**
+
+In the previous example, setting k to a higher value resulted in a
+correct prediction. But it is not always the case that bigger is better.
+A small k creates very small neighborhoods; the classifier is able to
+discover very subtle patterns. As this image illustrates, you might
+imagine it as being able to distinguish between groups even when their
+boundary is somewhat “fuzzy.” On the other hand, sometimes a “fuzzy”
+boundary is not a true pattern, but rather due to some other factor that
+adds randomness into the data. This is called noise. Setting k larger,
+as this image shows, ignores some potentially-noisy points in an effort
+to discover a broader, more general pattern.
+
+**4. Choosing ‘k’**
+
+So, how should you set k? Unfortunately, there is no universal rule. In
+practice, the optimal value depends on the complexity of the pattern to
+be learned, as well as the impact of noisy data. Some suggest a rule of
+thumb starting with k equal to the square root of the number of
+observations in the training data. For example, if the car had observed
+100 previous road signs, you might set k to 10. An even better approach
+is to test several different values of k and compare the performance on
+data it has not seen before.
+
+**5. Let’s practice!**
+
+In the next coding exercise, you’ll have an opportunity to see the
+impact of k on the vehicle’s ability to correctly classify signs.
+
 ## Understanding the impact of ‘k’
 
 There is a complex relationship between k and classification accuracy.
@@ -388,7 +515,7 @@ k_7 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types, k = 7)
 mean(signs_actual == k_7)
 ```
 
-    ## [1] 0.9491525
+    ## [1] 0.9661017
 
 3.  Revise the code once more by setting `k = 15`, plus find the
     accuracy value one more time.
@@ -399,7 +526,7 @@ k_15 <- knn(train = signs[-1], test = signs_test[-1], cl = sign_types, k = 15)
 mean(signs_actual == k_15)
 ```
 
-    ## [1] 0.8813559
+    ## [1] 0.8983051
 
 You’re a kNN pro! Which value of k gave the highest accuracy?
 
@@ -457,6 +584,70 @@ learner is about its classifications.
 
 Theory. Coming soon …
 
+**1. Data preparation for kNN**
+
+You’ve now seen the kNN algorithm in action while simulating aspects of
+a self-driving vehicle. You’ve gained an understanding of the impact of
+k on the algorithm’s performance, and know how to examine the neighbors’
+votes to better understand which predictions are closer to unanimous.But
+before applying kNN to your own projects, you’ll need to know one more
+thing: how to prepare your data for nearest neighbors.
+
+**2. kNN assumes numeric data**
+
+As noted previously, nearest neighbor learners use distance functions to
+identify the most similar, or nearest examples. Many common distance
+functions assume that your data are in numeric format, as it is
+difficult to define the distance between categories.For example, there’s
+no obvious way to define the distance between “red” and “yellow”;
+consequently, the traffic sign dataset represented these using numeric
+color intensities. But suppose that you have a property that cannot be
+measured numerically, such as whether a road sign is a rectangle,
+diamond, or octagon. A common solution uses 1/0 indicators to represent
+these categories. This is called dummy coding.A binary “dummy” variable
+is created for each category except one. This variable is set to ‘1’ if
+the category applies and ‘0’ otherwise. The category that is left out
+can be easily deduced, if the stop sign is not a rectangle or a diamond,
+then it must be an octagon.Dummy coded data can be used directly in a
+distance function; two rectangle signs, both having values of ‘1’, will
+be found to be closer together than a rectangle and a diamond.
+
+**3. kNN benefits from normalized data**
+
+It is also important to be aware that when calculating distance, each
+feature of the input data should be measured with the same range of
+values.This was true for the traffic sign data; each color component
+ranged from a minimum of zero to a maximum of 255.However, suppose that
+we added the 1/0 dummy variables for sign shapes into the distance
+calculation. Two different shapes may differ by at most one unit, but
+two different colors may differ by as much as 255 units!Such a different
+scale allows the features with a wider range to have more influence over
+the distance calculation, as this figure illustrates. Here, the topmost
+speed limit sign is closer to the pedestrian sign than it is to its
+correct neighbors, simply because the range of blue values is wider than
+the 0-to-1 range of shape values.Compressing the blue axis so that it
+also follows a 0-to-1 range corrects this issue, and the speed limit
+sign is now closer to its true neighborhood.
+
+**4. Normalizing data in R**
+
+R does not have a built-in function in R to rescale data to a given
+range, so you’ll need to create one yourself. The code here defines a
+function called normalize which can be used to perform min-max
+normalization. This rescales a vector x such that it its minimum value
+is zero and its maximum value is one. It does this by subtracting the
+minimum value from each value of x and dividing by the range of x
+values.After applying this function to r-one, one of the color vectors,
+we can use the summary function to see that the new minimum and maximum
+values are 0 and 1 respectively. Calculating the same summary statistics
+for the unnormalized data shows a minimum of 3 and a maximum of 251.
+
+**5. Let’s practice!**
+
+I hope you enjoyed your time simulating the training of an autonomous
+car. After a brief test of what you’ve learned about normalization,
+you’ll get started on another interesting classification task.
+
 ## Why normalize data?
 
 Before applying kNN to a classification task, it is common practice to
@@ -483,6 +674,78 @@ suggestions.
 ## Understanding Bayesian methods
 
 Theory. Coming soon …
+
+**1. Understanding Bayesian methods**
+
+Some smartphones and apps predict the user’s destination to offer routes
+and traffic estimates without the user even asking. If you didn’t know
+about machine learning, the phone’s ability to predict the future this
+way might seem a bit like magic!The phone obviously keeps a record of
+the user’s past locations. It then uses this data to forecast the user’s
+most probable future location, much like a meteorologist estimates the
+precipitation probability in a weather report.A branch of statistics
+called Bayesian methods apply the work of 18th century statistician
+Thomas Bayes, who proposed rules for estimating probabilities in light
+of historic data. By applying these methods to my own location tracking
+data, you will learn how probability estimates can forecast action.
+Let’s see where the data finds me!
+
+**2. Estimating probability**
+
+This map shows the number of times my phone recorded my position at four
+different locations. Based on this data, my phone can predict that at
+any given time my most probable location is at work, because I was there
+57-point-5 percent of the time: 23 of the past 40 times it checked.This
+illustrates how the probability of an event is estimated from historic
+data; it the number of times the event happened, divided by the number
+of times it could have happened.But even though I am at work a lot, the
+phone should not predict I am there all the time. Instead, it should
+incorporate additional data like time of day to better tailor its
+predictions to the situation. This requires an understanding of how to
+combine information from several events into a single probability
+estimate.
+
+**3. Joint probability and independent events**
+
+When events occur together, they have a joint probability. Their
+intersection can be depicted using a Venn diagram like those shown here.
+These show that there is a much greater probability that I am at work in
+the afternoon than the evening; the overlap is much greater for work and
+afternoon.The joint probability of two events is computed by finding the
+proportion of observations they occurred together.Sometimes one event
+does not influence the probability of another. These are said to be
+independent events. For example, my location is unrelated to most other
+users’ locations. Knowing where they are does not provide information
+about where I might be. This notion of independent events will be
+important later on.However, many of the other data elements my phone
+collects, such as the time and date, are VERY predictive of where I may
+be. When one event is predictive of another, they are called dependent.
+
+**4. Conditional probability and dependent events**
+
+These are the basis of prediction with Bayesian methods.Conditional
+probability expresses exactly how one event depends on another. The
+formula shows that the probability of event A given B is equal to their
+joint probability divided by the probability of B.We can use this to
+compute the 4% probability that I am at work, given the knowledge that
+it is evening. In comparison, there is an 80% chance I am at work in the
+afternoon.
+
+**5. Making predictions with Naive Bayes**
+
+The algorithm known as “Naive Bayes” applies Bayesian methods to
+estimate the conditional probability of an outcome.The naivebayes
+package provides a function to build this model. Because the location
+depends on the time of day, it is specified as
+location-tilde-time-of-day; this form is called the R formula interface,
+which relates the outcome to be predicted to its predictors.The
+corresponding predict() function computes conditional probabilities to
+predict a future location based on the future conditions.
+
+**6. Let’s practice!**
+
+In the next exercises, you’ll apply what you’ve learned to a real
+dataset that tracked my location over time.
 
 ## Computing probabilities
 
@@ -519,12 +782,10 @@ locations <- read_csv("data/locations.csv")
 ```
 
     ## Rows: 2184 Columns: 7
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (4): weekday, daytype, hourtype, location
     ## dbl (3): month, day, hour
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -740,6 +1001,72 @@ other.
 
 Theory. Coming soon …
 
+**1. Understanding NB’s “naivety”**
+
+In the previous exercises, you built a simple Naive Bayes model that
+used historic location data to predict my future location. To build a
+more sophisticated model, you might add additional data points to help
+inform the estimated probability of my location.But until now, we’ve
+only considered conditional probability when a single event predicts
+another. Adding more predictors complicates matters and is the reason
+why this method is called “naive.” Keep listening to find out why.
+
+**2. The challenge of multiple predictors**
+
+With a single predictor, conditional probability is based on the overlap
+between the two events, as the Venn diagram here illustrates.When we
+start adding more events, the Venn diagram can start to look a bit
+messy. Here it is with three events, imagine it with dozens or more!
+And, as confusing as this looks to us, for a number of reasons it also
+becomes more inefficient for a computer to calculate the overlap.
+
+**3. A “naive” simplification**
+
+Instead, the Naive Bayes algorithm uses a shortcut to approximate the
+conditional probability we hope to compute.Rather than treating the
+problem as the intersection of all of the related events, the algorithm
+makes a so-called “naive” assumption about the data. Specifically, it
+assumes that the events are independent.When events are independent, the
+joint probability can be computed by multiplying the individual
+probabilities. Therefore, under the naive assumption, the algorithm does
+not need to observe all of the possible intersections in the full Venn
+diagram. Instead, it simply multiplies the probabilities from a series
+of much simpler intersections.Researchers have found that although the
+naive assumption is rarely true in practice, the Naive Bayes model still
+performs admirably on many real-world tasks. So there’s little need to
+worry about a potential downside.
+
+**4. An “infrequent” problem**
+
+There is one other potential issue to be aware of when building a Naive
+Bayes model. Suppose you have a set of predictors, chained together
+under the naive assumption. Suppose further that one of those events has
+never been observed previously in combination with the outcome. For
+instance, I may never have gone into work on a weekend. I may do this
+someday in the future, I just haven’t done so before.In this case, the
+Venn diagram for work and weekend has no overlap; the joint probability
+of these two events is zero. And whenever zero is multiplied in a chain,
+the entire sequence becomes zero. For this reason, the weekend event
+seems to have “veto” power over the entire prediction. No matter how
+overwhelming the rest of the evidence, any predicted probability of work
+on a weekend will always be zero.
+
+**5. The Laplace correction**
+
+The solution to this problem involves adding a small number, usually
+‘1’, to each event and outcome combination to eliminate this veto power.
+This is called the Laplace correction or Laplace estimator. After adding
+this correction, each Venn diagram now has at least a small bit of
+overlap; there is no longer any joint probability of zero. As a result,
+there will be at least some predicted probability for every future
+outcome even if it has never been seen before.
+
+**6. Let’s practice!**
+
+The Naive Bayes function you’ve used so far will let you set the Laplace
+parameter; you’ll see its impact in the coming exercises as you build a
+more sophisticated location model.
+
 ## Who are you calling naive?
 
 The Naive Bayes algorithm got its name because it makes a “naive”
@@ -915,6 +1242,73 @@ are all possible even if never previously observed.
 
 Theory. Coming soon …
 
+**1. Applying Naive Bayes to other problems**
+
+Smartphone destination suggestions are a very specific application of
+Naive Bayes. But the algorithm can also be used for many other types of
+problems. Naive Bayes tends to work well on problems where the
+information from multiple attributes needs to be considered
+simultaneously and evaluated as a whole. The process is somewhat
+analogous to how a medical doctor might evaluate symptoms and test
+results to make a final diagnosis. Historically, Naive Bayes has also
+been frequently used for classifying text data, like identifying whether
+or not an email is spam. In this video, I’ll present some of the
+challenges you may encounter when applying the algorithm to other
+classification tasks.
+
+**2. How Naive Bayes uses data**
+
+Consider the fact that Naive Bayes makes predictions by computing
+conditional probabilities of events and outcomes. Beginning with a
+tabular dataset, it builds frequency tables that count the number of
+times each event overlaps with the outcome of interest. The
+probabilities are then multiplied, naively, in a chain of all the
+events. A consequence of this approach is that each of the predictors
+used in Naive Bayes typically comprises a set of categories. Numeric
+properties, like age or time-of-day, are difficult for Naive Bayes to
+use as-is without knowing more about the properties of the data.
+Similarly, unstructured text data also defies categorization. Thus, it
+is generally necessary to prepare these types of data before using them
+with Naive Bayes.
+
+**3. Binning numeric data for Naive Bayes**
+
+A technique called binning is a simple method for creating categories
+from numeric data. The idea is to divide a range of numbers into a
+series of sets called “bins.” For instance, you might divide a numbers
+into bins based on percentiles by creating a category for the bottom
+25%, the next 25%, and so on. Perhaps a better approach is to group
+ranges of values into meaningful bins. For instance, you might group
+times into categories like afternoon and evening, and temperature
+readings into values like hot, warm, and cold. You can use R’s data
+preparation functions to recode data this way.
+
+**4. Preparing text data for Naive Bayes**
+
+Text documents are considered unstructured data because they do not
+conform to the typical table or spreadsheet format of most datasets. A
+common process for adding structure to text data uses a model called
+bag-of-words. The bag-of-words model does not consider word order,
+grammar, or semantics. It simply creates an event for each word that
+appears in a particular collection of text documents. For example, the
+bag-of-words for this document on Naive Bayes would include events for
+words like “naive” and “bayes” and “understanding.” In spreadsheet form,
+this results in a wide table where the rows are documents and the
+columns are words that may appear in the documents. Each spreadsheet
+cell indicates whether or not the word appeared in that document. When
+the Naive Bayes algorithm is applied to the bag of words, it can
+estimate the probability of the outcome given the evidence provided by
+the words in the text. For instance, a document with the words “viagra”
+and “prescription” is more likely to be spam than a document with the
+words “naive” and “bayes.” Naive Bayes models trained with bag of words
+can be very effective text classifiers.
+
+**5. Let’s practice!**
+
+You can learn more about this in DataCamp’s course on text mining, which
+will teach you how to apply R’s tm package to build datasets you can use
+with Naive Bayes.
+
 ## Handling numeric predictors
 
 Numeric data is often **binned** before it is used with Naive Bayes.
@@ -941,6 +1335,73 @@ technique while illustrating how to apply it to fundraising data.
 ## Making binary predictions with regression
 
 Theory. Coming soon …
+
+**1. Making binary predictions with regression**
+
+If you’ve spent any time at all studying data science, you are likely to
+have encountered regression analysis, which is a branch of statistics
+interested in modeling numeric relationships within data.Regression
+methods are perhaps the single most common form of machine learning. The
+technique can be adapted to virtually any type of problem in any domain.
+In this video, you’ll see how regression methods can be used to classify
+a binary outcome.Later, you’ll use what you learn to predict whether or
+not someone will donate to charity a topic directly related to my own
+work as a fund-raising data scientist.
+
+**2. Introducing linear regression**
+
+In its most basic form, regression involves predicting an outcome y
+using one or more predictors, labeled as x variables. The y variable is
+known as the dependent variable, as it seems to depend upon the
+x’s.Suppose you have a numeric y which you plot versus a numeric x term,
+resulting in the figure seen here. The y might reflect something like
+income or life expectancy, while the x-axis could represent age or
+education.Linear regression involves fitting the straight line to this
+data that best captures the relationship between the x and y terms.
+
+**3. Regression for binary classification**
+
+Suppose you have a binary y outcome instead something that can take only
+‘1’ or ‘0’ values, like “donate” or “not donate.” Constructing a plot of
+y versus x, the points fall in two flat rows rather than spread along
+the diagonal.You can still apply a straight line to the data, but this
+doesn’t seem to fit very well. Additionally, for some values of x, the
+model will predict values less than 0 or greater than 1. This is
+obviously not ideal.
+
+**4. Introducing logistic regression**
+
+Now imagine the same binary outcome, but rather than trying to model it
+with a straight line, we use a curve instead. This is the idea behind
+logistic regression.A type of S-shaped curve called a logistic function
+has the property that for any input value of x, the output is always
+between 0 and 1 just like a probability.The greater this probability,
+the more likely the outcome is to be the one labeled ‘1’.
+
+**5. Making predictions with logistic regression**
+
+In R, logistic regression uses the glm function with the syntax as shown
+here. First, the terms y, x1, x2, and x3 specify the dependent and
+independent variables that will go into your model. This is called the R
+formula interface, and is a way to define the model’s form.You will
+replace the y and x terms with the outcome and predictors needed for
+your analysis.The family parameter specifies the type of model you are
+building, because GLM can be be used to do many different types of
+regression. In this case, family = “binomial” tells R to perform
+logistic regression.Once the model has been built, it can be used to
+estimate probabilities. Supplying the type = “response” parameter to the
+predict function produces the predicted probabilities which are easier
+to interpret than the default log-odds values.To make predictions, the
+probabilities must be converted into the outcome of interest using an
+ifelse step. This if/else predicts ‘1’ if the predicted probability is
+greater than 50%, and ‘0’ otherwise. Sometimes you may need to set this
+threshold higher or lower to make the model more or less aggressive.
+
+**6. Let’s practice!**
+
+Though this may seem confusing at first, you’ll have an opportunity to
+practice building logistic regression models and making predictions in
+the coming exercises.
 
 ## Building simple logistic regression models
 
@@ -979,12 +1440,10 @@ donors <- read_csv("data/donors.csv") |>
 ```
 
     ## Rows: 93462 Columns: 13
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (3): recency, frequency, money
     ## dbl (10): donated, veteran, bad_address, age, has_children, wealth_rating, i...
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -1164,6 +1623,70 @@ WORSE than if it were to predict non-donor for every record.
 
 Theory. Coming soon …
 
+**1. Model performance tradeoffs**
+
+As the previous exercise illustrated, rare events create challenges for
+classification models. When one outcome is very rare, predicting the
+opposite can result in a very high accuracy. This was the case in the
+donations dataset; because only about 5% of people were donors,
+predicting non-donation resulted in an overall accuracy of 95% but an
+accuracy of zero on the outcome that mattered the most: the donations.In
+cases like these, it may be necessary to to sacrifice a bit of overall
+accuracy in order to better target the outcome of interest.
+
+**2. Understanding ROC curves**
+
+A visualization called an ROC curve provides a way to better understand
+a model’s ability to distinguish between positive and negative
+predictions the outcome of interest versus all others.To understand how
+it works, imagine that you were working on a project where the positive
+outcome is ‘X’ and the negative outcome is ‘O’. The classifier is trying
+to distinguish between the two. If the classifier is poor, the X’s and
+O’s will remain very mixed as shown here.The ROC curve depicts the
+relationship between the percentage of positive examples as it relates
+to the percentage of the other outcomes. Here, because the X’s and O’s
+are even, the ROC curve makes a diagonal line showing that the
+proportion of interesting examples rises evenly with the proportion of
+negative examples.On the other hand, suppose we have a machine learning
+model that is able to sort the examples of interest so they appear at
+the front of the dataset. The outcomes might be arranged as shown here,
+with more X’s on the left than on the right.When the ROC curve is drawn
+for this arrangement, it is no longer on the diagonal because the model
+is able to identify several positive examples for each negative example
+it accidentally prioritized.The diagonal line is the baseline
+performance for a very poor model. The further another curve is away
+from this, the better it is performing. Conversely, a model that is very
+close to the diagonal line is not performing very well at all. To
+
+**3. Area under the ROC curve**
+
+quantify this performance, a measurement called AUC, or Area Under the
+Curve, is used. The AUC literally measures the area under the ROC
+curve.The baseline model that is no better than random chance has an AUC
+of 0-point-50, because it divides the 1-by-1 unit square perfectly in
+half.A perfect model has an AUC of 1-point-00, with a curve all the way
+in the upper-left of the square.Most real-world results are somewhere in
+between. Generally speaking, the closer the AUC is to 1-point-00, the
+better, but there are some cases where AUC can be misleading.
+
+**4. Using AUC and ROC appropriately**
+
+Curves of varying shapes can have the same AUC value. For this reason,
+it is important to look not only at the AUC but also how the shape of
+each curve indicates how a model is performing across the range of
+predictions.For example, one model may do extremely well at identifying
+a few easy cases at first but perform poorly on more difficult cases.
+Another model may do just the opposite. As this figure shows, both may
+end up with the same AUC.ROC curves are an important tool for comparing
+models and selecting the best model for your specific project needs.
+When used with a single model, it can help to visualize the tradeoff
+between true positives and false positives for the outcome of interest.
+
+**5. Let’s practice!**
+
+In the next exercise, you’ll have the opportunity to plot an ROC curve
+for the donation data, to see how well the model is really performing.
+
 ## Calculating ROC Curves and AUC
 
 The previous exercises have demonstrated that accuracy is a very
@@ -1243,6 +1766,71 @@ about how the model will be used.
 ## Dummy variables, missing data, and interactions
 
 Theory. Coming soon …
+
+**1. Dummy variables, missing data, and interactions**
+
+All of the predictors used in a regression analysis must be numeric.
+This means that all categorical data must be represented as a number.
+Missing data also poses a problem, as the empty value cannot be used to
+make predictions.In this video, you will learn tips for preparing these
+types of data to be used in a logistic regression model. You will also
+learn about how to model the interactions among predictors an important
+step in building more powerful predictive models.
+
+**2. Dummy coding categorical data**
+
+In chapter 1, you learned about dummy coding, which creates a set of
+binary (one-zero) variables that represent each category except one that
+serves as the reference group.Dummy coding is the most common method for
+handling categorical data for logistic regression. The glm function will
+automatically dummy code any factor type variables used in the model.
+Simply apply the factor function to the data as in the example here.Keep
+in mind that you may run into a case where a categorical feature is
+represented with numbers, such as 1, 2, 3 for ‘hot’, ‘warm’, and ‘cold’.
+Even in the case, it may be advisable to convert this to a factor. This
+allows each category to have a unique impact on the outcome.
+
+**3. Imputing missing data**
+
+By default, the regression model will exclude any observation with
+missing values on its predictors. This may not be a big deal for small
+amounts of missing data, but can very quickly become a much larger
+problem.With categorical missing data, a missing value can be treated
+like any other category. You might construct categories for male,
+female, other, and missing.When a numeric value is missing, the solution
+is less clear. One potential solution uses a technique called
+imputation. This fills, or imputes, the missing value with a guess about
+what the value may be. A very simple strategy is called mean imputation,
+which as you might expect, imputes the average. Because records having
+missing data may differ systematically from those without, a binary 1/0
+missing value indicator can be added to model the fact that a value was
+imputed. Sometimes, this becomes one of the model’s most important
+predictors!It is important to note that although this strategy is OK for
+simple predictive models, it is not appropriate for every regression
+application. More sophisticated forms of imputation use models to
+predict the missing data based on the non-missing values.
+
+**4. Interaction effects**
+
+An interaction effect considers the fact that two predictors, when
+combined, may have a different impact on an outcome than the sum of
+their separate individual impacts. Their combination may strengthen,
+weaken, or completely eliminate the impact of the individual
+predictors.For example, obesity and smoking are both known to be harmful
+to one’s health, but put together they may be even more harmful.
+Alternatively, two predictors may be harmful when applied separately,
+but when combined they neutralize, suppress, or nullify each other.Being
+able to model these combinations is important for creating the best
+predictive models. As illustrated here, the R formula interface uses the
+multiplication symbol to create an interaction between two predictors.
+The resulting model will include terms for each of the individual
+components as well as the combined effect.
+
+**5. Let’s practice!**
+
+In the next series of exercises, you will apply dummy coding, missing
+value imputation, and interaction effects to build a stronger donation
+model.
 
 ## Coding categorical features
 
@@ -1335,12 +1923,10 @@ donors <- read_csv("data/donors.csv") |>
 ```
 
     ## Rows: 93462 Columns: 13
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (3): recency, frequency, money
     ## dbl (10): donated, veteran, bad_address, age, has_children, wealth_rating, i...
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -1485,6 +2071,63 @@ patterns are certainly predictive of future giving.
 ## Automatic feature selection
 
 Theory. Coming soon …
+
+**1. Automatic feature selection**
+
+Unlike some machine learning methods, regression typically asks the
+human to specify the model’s predictors ahead of time. Thus, each of the
+donation models you’ve built so far required a little bit of
+fund-raising subject-matter expertise to identify the variables that may
+be predictive of donations.Sometimes you may not have this type of
+insight ahead of time. You may not know what all of the predictors mean,
+or you may have so many predictors there’s no easy way to sort through
+them all.A process called automatic feature selection can be used here,
+but as you’ll soon see, with this great power comes great responsibility
+to apply it carefully.
+
+**2. Stepwise regression**
+
+Stepwise regression involves building a regression model step by step,
+evaluating each predictor to see which ones add value to the final
+model. A procedure called backward deletion begins with a model
+containing all of the predictors. It then checks to see what happens
+when each one of the predictors is removed from the model. If removing a
+predictor does not substantially impact the model’s ability to predict
+the outcome, then it can be safely deleted. At each step, the predictor
+that impacts the model the least is removed– assuming, of course, it has
+minimal impact. This continues step-by-step until only important
+predictors remain.The same idea applied in the other direction is called
+forward selection. Beginning with a model containing no predictors, it
+examines each potential predictor to see which one, if any, offers the
+greatest improvement to the model’s predictive power. Predictors are
+added step-by-step until no new predictors add substantial value to the
+model.Keep in mind that although the figures here show the same final
+model for backward and forward stepwise, this is not always the case. It
+is possible that the two could come to completely different conclusions
+about the most important predictors.
+
+**3. Stepwise regression caveats**
+
+This is just one of the potential caveats of stepwise regression. Not
+only can backward and forward selection create completely different
+models, but neither is guaranteed to find the best possible model.
+Statisticians also raise concerns about the fact that a stepwise model
+violates some of the principles that allow a regression model to explain
+data as well as predict. Of course, if you only care about the
+PREDICTIVE power, this may not be a very big concern– the use of
+stepwise doesn’t mean the model’s predictions are worthless; it simply
+means that the model may over or understate the importance of some of
+the predictors.Perhaps most importantly, feature selection methods like
+stepwise regression allow the model to be built in the absence of theory
+or even common sense. This can result in a model that seems
+counterintuitive in the real world.It may be best to consider stepwise
+regression as just one tool for exploring potential models in the
+absence of another good starting point.
+
+**4. Let’s practice!**
+
+You’ll have a chance to see how to build a stepwise regression model
+during the next coding exercise.
 
 ## The dangers of stepwise regression
 
@@ -1697,6 +2340,90 @@ scenario.
 
 Theory. Coming soon …
 
+**1. Making decisions with trees**
+
+Sometimes a difficult or complex decision can be made simpler by
+breaking it down into a series of smaller decisions. If you’re
+considering whether to take a new job offer, you might define
+requirements for accepting the position. Does it offer a high enough
+salary? Does it have a long commute or require long hours? Does it
+provide free coffee?Classification trees, also known as decision trees,
+work much the same way. They are used to find a set of if/else
+conditions that are helpful for taking action. As you will see soon,
+because their decisions are easily understood without statistics, they
+can be useful for business strategy, especially in areas where
+transparency is needed, like loan application approval.
+
+**2. A decision tree model**
+
+Let’s start by considering the decision tree structure. As you might
+expect, it closely resembles real-world trees. The goal is to model the
+relationship between predictors and an outcome of interest.Beginning at
+the root node, data flows through if/else decision nodes that split the
+data according to its attributes.The branches indicate the potential
+choices, and the leaf nodes denote the final decisions. These are also
+known as terminal nodes because they terminate the decision making
+process.
+
+**3. Decision trees for prediction**
+
+To understand how the tree structure is built, let’s consider a business
+process like whether or not to provide someone a loan. After an
+applicant fills out a form with personal information like income, credit
+history, and loan purpose, the bank must quickly decide whether or not
+the individual is likely to repay the debt.Using historical applicant
+data and loan outcomes, a classification tree can be built to learn the
+criteria that were most predictive of future loan repayment.
+
+**4. Divide-and-conquer**
+
+Growing the decision tree uses a process called divide-and-conquer
+because it attempts to divide the dataset into partitions with similar
+values for the outcome of interest. For loan applications, it needs to
+separate the applicants who are likely to repay from those who are
+likely to default on the debt.Suppose the tree considers two aspects of
+each applicant: the credit score and the requested loan amount. This
+figure visualizes these characteristics in relation to whether the loan
+was repaid.To divide-and-conquer, the algorithm looks for an initial
+split that creates the two most homogeneous groups.
+
+**5. Divide-and-conquer**
+
+First, it splits into groups of “high” and “low” credit scores.
+
+**6. Divide-and-conquer**
+
+Then, it divides-and-conquers again with another split, creating groups
+for “high” and “low” requested loan amounts.
+
+**7. The resulting tree**
+
+Each one of these splits results in an if/else decision in the tree
+structure, as shown here. If the credit score is low, it predicts “loan
+default.” If the credit score is high and the loan value is large, it
+also predicts “default.” Otherwise, it predicts “repaid.”Obviously, a
+decision tree built on actual lending data is likely to be much more
+complex. But this illustrates the basic process of how such a tree might
+be built; you’ll learn more about how it works shortly. For now, let’s
+ignore the implementation details to focus on putting the algorithm to
+work.
+
+**8. Building trees in R**
+
+There are several packages that can be used to build classification
+trees in R. One of the most widely used is called rpart for recursive
+partitioning, a synonym for divide-and-conquer.Simply use the rpart
+function with the R formula interface to specify the outcome and
+predictors. The “class” parameter tells rpart to build a classification
+tree.And like the other machine learning methods you’ve seen before, the
+predict function obtains the predicted class values for the test
+dataset.
+
+**9. Let’s practice!**
+
+In the next exercise, you’ll have a chance to apply what you’ve learned
+to actual Lending Club loan data.
+
 ## Building a simple decision tree
 
 The `loans` dataset contains 11,312 randomly-selected people who applied
@@ -1859,6 +2586,76 @@ makes its decisions.
 
 Theory. Coming soon …
 
+**1. Growing larger classification trees**
+
+Starting from a seed, real-world trees need the proper combination of
+soil, water, air, and light to grow. Just like understanding these
+principles helps you become a better gardener, knowing a bit about the
+growing conditions of decision trees will help you produce more robust
+classification models.In this lesson, you’ll learn more about how trees
+grow, branch out, and sometimes even outgrow their environment.
+
+**2. Choosing where to split**
+
+Earlier, you learned that classification trees use divide-and-conquer to
+identify splits that create the most “pure”, or homogeneous,
+partitions.To see how this works in practice, let’s consider the tree
+being built with data on loan applicants’ credit and requested amount.
+For each of these predictors, the algorithm attempts a split on the
+feature values and then calculates the purity of the resulting
+partitions. The split that produces the purest partitions will be used
+first.Here, split A divides the data into partitions with high and low
+credit scores, while split B divides the data into large and small loan
+amounts. Split B results in one very homogeneous partition, but its
+other partition is very mixed. In comparison, split A results in two
+partitions that are both relatively pure.As a result, the tree will
+choose split A first. It then continues to divide-and-conquer further.
+
+**3. Axis-parallel splits**
+
+As the tree continues to grow, it creates smaller and more homogeneous
+partitions as shown here. You may have noticed, however, that there was
+an easier way to create a set of perfectly-pure partitions simply use a
+diagonal line to divide the outcomes.Unfortunately, a decision tree
+cannot discover this itself because a diagonal line requires a it to
+consider two features at once, which is not possible in the
+divide-and-conquer process.Instead, a decision tree always creates
+so-called axis-parallel splits. This limitation is a potential weakness
+of decision trees; they can be overly complex when modeling certain
+patterns in the data.
+
+**4. The problem of overfitting**
+
+Generally speaking, decision trees have the tendency to become very
+complex very quickly. A tree can happily divide-and-conquer until it
+classifies every example correctly, or until it runs out of feature
+values to split upon.When a tree has grown overly large and overly
+complex, it may experience the problem of overfitting. Rather than
+modeling the most important trends in the data, a tree that has been
+over-fitted tends to model the noise. It focuses on extremely subtle
+patterns that may not apply more generally.More-so than many other
+machine learning algorithms, classification trees have this tendency to
+overfit the dataset it is trained on.
+
+**5. Evaluating model performance**
+
+When a machine learning model has been over-fitted to its training
+dataset, you must take care not to over-estimate how well the model will
+perform in the future. Just because it perfectly classifies every
+training example correctly does not mean it will do so on unseen
+data.Thus, it is important to simulate unseen future data by
+constructing a test dataset that the algorithm cannot use when growing
+the tree. A simple method for constructing test sets involves holding
+out a small random portion of the full dataset. This is a fair estimate
+of the tree’s performance; if the tree performs much more poorly on the
+test set than the training set, it suggests the model may have been
+over-fitted.
+
+**6. Let’s practice!**
+
+You’ll get a chance to construct random test sets in the next exercises.
+Good luck!
+
 ## Why do some branches split?
 
 A classification tree grows using a **divide-and-conquer** process. Each
@@ -1970,8 +2767,8 @@ table(loans_test$pred, loans_test$outcome)
 
     ##          
     ##           default repaid
-    ##   default     829    662
-    ##   repaid      565    772
+    ##   default     780    613
+    ##   repaid      617    818
 
 4.  Compute the accuracy of the predictions using the `mean()` function.
 
@@ -1980,7 +2777,7 @@ table(loans_test$pred, loans_test$outcome)
 mean(loans_test$pred == loans_test$outcome)
 ```
 
-    ## [1] 0.5661245
+    ## [1] 0.5650636
 
 Awesome! How did adding more predictors change the model’s performance?
 
@@ -2006,6 +2803,73 @@ Right! Rare events cause problems for many machine learning approaches.
 ## Tending to classification trees
 
 Theory. Coming soon …
+
+**1. Tending to classification trees**
+
+In the previous video, you learned that decision trees have a tendency
+to grow overly large and complex very quickly. If this were to happen to
+trees in your yard, you’d be outside with clippers, looking to trim away
+some of the excess greenery. Grooming healthy classification trees
+likewise requires this kind of attention. In this lesson, you’ll learn
+about pruning strategies, which help ensure the trees are just right not
+too large and not too small.
+
+**2. Pre-pruning**
+
+One method of preventing a tree from becoming too large involves
+stopping the growing process early. This is known as pre-pruning.Perhaps
+the simplest approach to pre-pruning stops divide-and-conquer once the
+tree reaches a predefined size. The figure here shows a tree that has
+been stopped early because it reached a maximum depth of three levels.
+Another pre-pruning method requires a minimum number of observations at
+a node in order for a split to occur. For example, this figure stops the
+tree from growing any branch with fewer than 10 observations.Both of
+these pre-pruning strategies prevent the tree from growing too large.
+However, a tree stopped too early may fail to discover subtle or
+important patterns it might have discovered later.
+
+**3. Post-pruning**
+
+To address this concern, it is also possible to grow a very large tree,
+knowing that it will be overly complex, but then prune it back to reduce
+the size. This is known as post-pruning.In post-pruning, nodes and
+branches with only a minor impact on the tree’s overall accuracy are
+removed after the fact. This figure illustrates a tree that grew to four
+levels deep, but had a branch pruned away because its presence did not
+substantially improve the classification accuracy.The relationship
+between the tree’s complexity and the accuracy can be depicted visually
+as illustrated here. As the tree becomes increasingly complex, the model
+makes fewer errors. However, though the performance improves a lot at
+first, it then improves only slightly for the later increases in
+complexity. This trend provides insight into the optimal point at which
+to prune the tree; simply look for the point at which the curve
+flattens. The horizontal dotted line identifies the point at which the
+error rate becomes statistically similar to the most complex model.
+Typically, you should prune the tree at the complexity level that
+results in a classification error rate just under this line.
+
+**4. Pre- and post-pruning with R**
+
+The rpart decision tree package provides a function for creating this
+visualization, as well as performing pre- and post-pruning.Pre-pruning
+is performed when building the decision tree model. The
+rpart-dot-control function can be supplied with a maxdepth parameter
+that controls the maximum depth of the decision tree, or a minsplit
+parameter that dictates the minimum number of observations a branch must
+contain in order for the tree to be allowed to split. Then, simply
+supply the resulting control object to the rpart function when building
+the tree.Post-pruning is applied to a decision tree model that has been
+previously built. The plotcp function will generate a visualization of
+the error rate versus model complexity, which provides insight into the
+optimal cutpoint for pruning. When this value has been identified, it
+can be supplied to the prune function’s complexity parameter, cp, to
+create a simpler pruned tree.
+
+**5. Let’s practice!**
+
+In the next several exercises, you will have a chance to apply both pre-
+and post-pruning methods to the Lending Club data to examine the impact
+on the tree complexity and test set accuracy. Let’s see what happens!
 
 ## Preventing overgrown trees
 
@@ -2052,7 +2916,7 @@ loans_test$pred <- predict(loan_model, loans_test, type = "class")
 mean(loans_test$pred == loans_test$outcome)
 ```
 
-    ## [1] 0.5891089
+    ## [1] 0.5753182
 
 3.  In the model controls, remove `maxdepth` and add a minimum split
     parameter, `minsplit`, set to `500`.
@@ -2066,7 +2930,7 @@ loans_test$pred <- predict(loan_model, loans_test, type = "class")
 mean(loans_test$pred == loans_test$outcome)
 ```
 
-    ## [1] 0.5979491
+    ## [1] 0.5753182
 
 Nice work! It may seem surprising, but creating a simpler decision tree
 may actually result in greater performance on the test dataset.
@@ -2120,7 +2984,7 @@ loans_test$pred <- predict(loan_model_pruned, loans_test, type = "class")
 mean(loans_test$pred == loans_test$outcome)
 ```
 
-    ## [1] 0.6028996
+    ## [1] 0.5880481
 
 Great job! As with pre-pruning, creating a simpler tree actually
 improved the performance of the tree on the test dataset.
@@ -2147,6 +3011,74 @@ trees!
 ## Seeing the forest from the trees
 
 Theory. Coming soon …
+
+**1. Seeing the forest from the trees**
+
+Consider the ways that decision trees parallel trees in the natural
+environment: from a root node that grows into branches and leaf nodes
+that sometimes need pruning, you might think that by now we would have
+exhausted the tree metaphors.In fact, there is one more.Just as living
+trees can be grouped as a forest, a number of classification trees can
+be combined into a collection known as a decision tree forest. For
+reasons that you will soon see, these forests are among the most
+powerful machine learning classifiers, yet remain remarkably efficient
+and easy to use.
+
+**2. Understanding random forests**
+
+Because of their combine versatility and power, decision tree forests
+have become one of the most popular approaches for classification.This
+power does not come from a single tree that has grown large and complex,
+but rather from a collection of smaller, simpler trees that together
+reflect the data’s complexity. Each of the forest’s trees is diverse,
+and may reflect some subtle pattern in the outcome to be
+modeled.Generating this diversity is the key to building powerful
+decision tree forests. However, if you were to grow 100 trees on the
+same set of data, you’d have 100 times the same tree. Growing diverse
+trees requires the growing conditions to be varied from tree to
+tree.This is done by allocating each tree a random subset of data; one
+may receive a vastly different training set than another. The term
+random forests refers to a specific growing algorithm in which both the
+features and examples may differ from tree to tree.
+
+**3. Making decisions as an ensemble**
+
+It seems somewhat counterintuitive to think that a group of trees built
+on small, random subsets of the data could perform any better than a
+single really complex tree that had the benefit of learning the entire
+dataset.But the forest’s power is based on the same principles that
+govern successful team work in business or on the athletic field. In
+these cases, it is certainly advantageous to have team members that are
+extremely good at some tasks. However, these people typically have
+weaknesses in other areas. For this reason, it is even better for the
+team to have members with complementary skills. Even if none of the
+members is especially strong, good teamwork usually wins.Machine
+learning methods like random forests that apply this principle are
+called ensemble methods. All ensemble methods are based on the principle
+that weaker learners become stronger with teamwork. In a random forest,
+each tree is asked to make a prediction, and the group’s overall
+prediction is determined by a majority vote. Though each tree may
+reflect only a narrow portion of the data, the overall consensus is
+strengthened by these diverse perspectives.
+
+**4. Random forests in R**
+
+The R package randomForest implements the random forest algorithm. The
+function offers two parameters of note.The first, ntree, dictates the
+number of trees to include in the forest. Setting this sufficiently
+large will ensure good representation of the complete set of data. Don’t
+worry even with a large number of trees, the model typically runs
+relatively quickly as it uses only a portion of the full dataset.The
+second parameter, mtry, is the number of features selected at random for
+each tree. By default, it uses the square root of the total number of
+predictors. Generally, this parameter is OK to leave as is.As usual, the
+predict function uses the model to make predictions.
+
+**5. Let’s practice!**
+
+By now I’m sure you’re excited to see a random forest in action. In the
+next exercises you’ll have a chance to grow one and compare its
+performance to the best decision tree.
 
 ## Understanding random forests
 
@@ -2193,7 +3125,7 @@ may vary slightly each time you create the forest.
 library(randomForest)
 ```
 
-    ## randomForest 4.6-14
+    ## randomForest 4.7-1
 
     ## Type rfNews() to see new features/changes/bug fixes.
 
@@ -2213,7 +3145,7 @@ loans_test$pred <- predict(loan_model, loans_test)
 mean(loans_test$pred == loans_test$outcome)
 ```
 
-    ## [1] 0.6000707
+    ## [1] 0.6004243
 
 Wow! Great job! Now you’re really a classification pro! Classification
 is only one of the problems you’ll have to tackle as a data scientist.

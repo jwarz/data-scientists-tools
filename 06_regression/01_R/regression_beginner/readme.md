@@ -74,6 +74,7 @@ Joschka Schwarz
         performance](#measuring-logistic-model-performance)
     -   [Accuracy, sensitivity,
         specificity](#accuracy-sensitivity-specificity)
+    -   [Congratulations](#congratulations)
 
 **Short Description**
 
@@ -104,6 +105,94 @@ between the response and explanatory variables using model coefficients.
 ## A tale of two variables
 
 Theory. Coming soon …
+
+**1. A tale of two variables**
+
+Hi, I’m Richie. Welcome to the course. You’ll be learning about
+relationships between pairs of variables. Let’s start with a real
+example.
+
+**2. Swedish motor insurance data**
+
+This dataset on Swedish motor insurance claims is as simple as it gets.
+Each row represents a region in Sweden, and the two variables are the
+number of claims made in that region, and the total payment made by the
+insurance company for those claims, in Swedish krona.
+
+**3. Descriptive statistics**
+
+This course assumes you have experience of calculating descriptive
+statistics on variables in a data frame. For example, calculating the
+mean of each variable. There are many ways to do this in R; the code
+shown uses the dplyr package.The course also assumes you understand the
+correlation between two variables. Here, the correlation is
+zero-point-eight-eight, a strong positive correlation. That means that
+as the number of claims increases, the total payment typically increases
+as well.
+
+**4. What is regression?**
+
+Regression models are a class of statistical models that let you explore
+the relationship between a response variable and some explanatory
+variables.That is, given some explanatory variables, you can make
+predictions about the value of the response variable. In the insurance
+dataset, if you know the number of claims made in a region, you can
+predict the amount that the insurance company has to pay out.That lets
+you do thought experiments like asking how much the company would need
+to pay if the number of claims increased to two hundred.
+
+**5. Jargon**
+
+The response variable, the one you want to make predictions on, is also
+known as the dependent variable. These two terms are completely
+interchangeable.Explanatory variables, used to explain how the
+predictions will change, are also known as independent variables. Again,
+these terms are interchangeable.
+
+**6. Linear regression and logistic regression**
+
+In this course we’re going to look at two types of regression. Linear
+regression is used when the response variable is numeric, like in the
+motor insurance dataset.Logistic regression is used when the response
+variable is logical. That is, it takes TRUE or FALSE values.We’ll limit
+the scope further to only consider simple linear regression and simple
+logistic regression. This means you only have a single explanatory
+variable.
+
+**7. Visualizing pairs of variables**
+
+Before you start running regression models, it’s a good idea to
+visualize your dataset. To visualize the relationship between two
+numeric variables, you can use a scatter plot.The course assumes your
+data visualization skills are strong enough that you can understand the
+ggplot code written here. If not, try taking one of DataCamp’s courses
+on ggplot before you begin this course.In the plot, you can see that the
+total payment increases as the number of claims increases. It would be
+nice to be able to describe this increase more precisely.
+
+**8. Adding a linear trend line**
+
+One refinement we can make is to add a trend line to the scatter plot. A
+trend line means fitting a line that follows the data points. In ggplot,
+trend lines are added using geom_smooth().Setting the method argument to
+“lm”, for “linear model” gives a trend line calculated with a linear
+regression. This means the trend line is a straight line that follows
+the data as closely as possible.By default, geom_smooth() also shows a
+standard error ribbon, which I’ve turned off by setting se to FALSE.The
+trend line is mostly quite close to the data points, so we can say that
+the linear regression is a reasonable fit.
+
+**9. Course flow**
+
+Here’s the plan for the course. First, we’ll visualize and fit linear
+regressions. Then we’ll make predictions with them. Thirdly, we’ll look
+at ways of quantifying whether or not the model is a good fit. In the
+final chapter, we’ll run through this flow again using logistic
+regression models.
+
+**10. Let’s practice!**
+
+Let’s get started.
 
 ## Which one is the response variable?
 
@@ -206,6 +295,80 @@ makes adding linear trend lines easy.
 ## Fitting a linear regression
 
 Theory. Coming soon …
+
+**1. Fitting a linear regression**
+
+You may have noticed that the linear regression trend lines in the
+scatter plots were straight lines. That’s a defining feature of a linear
+regression.
+
+**2. Straight lines are defined by two things**
+
+Straight lines are completely defined by two properties. The intercept
+is the y value when x is zero. The slope is the steepness of the line,
+equal to the amount y increases if you increase x by one.The equation
+for a straight line is that the y value is the intercept plus the slope
+times the x value.
+
+**3. Estimating the intercept**
+
+Here’s the trend line from the Swedish insurance dataset. Let’s try to
+estimate the intercept.
+
+**4. Estimating the intercept**
+
+To find the intercept, look at where the trend line intersects the y
+axis.
+
+**5. Estimating the intercept**
+
+It’s below half way to the fifty mark, so I’d guess it’s about twenty.
+
+**6. Estimating the slope**
+
+To estimate the slope, we need two points. To make the guessing easier,
+I’ve chosen points where the line is close to the gridlines.
+
+**7. Estimating the slope**
+
+First, we calculate the change in y values between the points. One y
+value is about four hundred and the other is about one hundred and
+fifty, so the difference is two hundred and fifty.
+
+**8. Estimating the slope**
+
+Now we do the same for the x axis. One point is at one hundred and ten,
+the other at forty. So the difference is seventy.
+
+**9. Estimating the slope**
+
+To estimate the slope we divide one number by the other. Two hundred and
+fifty divided by seventy is about three point five, so that is our
+estimate for the slope.Let’s run a linear regression to check our guess.
+
+**10. Running a model**
+
+To run a linear regression model, you call the lm function with two
+arguments. The first argument is a formula. This is a type of variable
+used by many modeling functions. The response variable is written to the
+left of the tilde, and the explanatory variable is written to the
+right.The data argument takes the data frame containing the
+variables.When you print the resulting model, it tells you the code you
+used to create it, and two coefficients.These coefficients are the
+intercept and slope of the straight line. It seems our guesses were
+pretty close. The intercept is very close to our estimate of twenty. The
+slope, indicated here as n_claims, is three point four, slightly lower
+than what we guessed.
+
+**11. Interpreting the model coefficients**
+
+That means that we expect the total payment to be twenty plus three
+point four times the number of claims. So for every additional claim, we
+expect the total payment to increase by three point four.
+
+**12. Let’s practice!**
+
+Time to fit some models.
 
 ## Estimate the intercept
 
@@ -321,6 +484,67 @@ nearby convenience stores increases, so does the price of the house.
 ## Categorical explanatory variables
 
 Theory. Coming soon …
+
+**1. Categorical explanatory variables**
+
+So far we looked at running a linear regression using a numeric
+explanatory variable. Now let’s look at what happens with a categorical
+explanatory variable.
+
+**2. Fish dataset**
+
+Let’s take a look at some data on the masses of fish sold at a fish
+market. Each row of data contains the species of a fish, and its mass.
+The mass will be the response variable.
+
+**3. Visualizing 1 numeric and 1 categorical variable**
+
+To visualize the data, scatter plots aren’t ideal because species is
+categorical. Instead, we can draw a histogram for each of the
+species.Because the dataset is fairly small I set the bins argument of
+geom_histogram() to just nine.To give a panel for each species, I used
+facet_wrap(). This takes the name of the variable to split on, wrapped
+in the vars() function.
+
+**4. Summary statistics: mean mass by species**
+
+Let’s calculate some summary statistics. First we group by species then
+we summarize to calculate their mean masses.You can see that the mean
+mass of a bream is six hundred and eighteen grams. The mean mass for a
+perch is three hundred and eighty two grams, and so on.
+
+**5. Linear regression**
+
+Let’s run a linear regression using mass as the response variable and
+species as the explanatory variable. The syntax is the same: you call
+lm(), passing a formula with the response variable on the left and the
+explanatory variable on the right, and setting the data argument to the
+data frame.This time we have four coefficients: an intercept, and one
+for three of the fish species.A coefficient for bream is missing, but
+the number for the intercept looks familiar. The intercept is the mean
+mass of the bream that you just calculated.You might wonder what the
+other coefficients are, and why perch has a negative coefficient, since
+fish masses can’t be negative.The coefficients for each category are
+calculated relative to the intercept. If you subtract two hundred and
+thirty five point six from six hundred and seventeen point eight, you
+get three hundred and eighty two, which is the mean mass of a perch.This
+way of displaying results can be useful for models with multiple
+explanatory variables, but for simple linear regression, it’s just
+confusing. Fortunately, we can fix it.
+
+**6. No intercept**
+
+By changing the formula slightly to append “plus zero”, we specify that
+all the coefficients should be given relative to zero. Equivalently, it
+means we are fitting a linear regression without an intercept term.Now
+these coefficients make more sense. They are all just the mean masses
+for each species.This is a reassuringly boring result. When you only
+have a single, categorical explanatory variable, the linear regression
+coefficients are the means of each category.
+
+**7. Let’s practice!**
+
+Time for you to try it.
 
 ## Visualizing numeric vs. categorical
 
@@ -487,6 +711,87 @@ how to transform variables in a dataset.
 ## Making predictions
 
 Theory. Coming soon …
+
+**1. Making predictions**
+
+The big benefit of running models rather than simply calculating
+descriptive statistics is that models let you make predictions.
+
+**2. The fish dataset: bream**
+
+Here’s the fish dataset again. This time, we’ll look only at the bream
+data. There’s a new explanatory variable too: the length of each fish,
+which we’ll use to predict the mass of the fish.
+
+**3. Plotting mass vs. length**
+
+Here’s a scatter plot of mass versus length for the bream data, with a
+linear trend line.
+
+**4. Running the model**
+
+Before we can make predictions, we need a model. As before, we call lm
+with a formula and the dataset. The response, mass in grams, goes on the
+left-hand side of the formula, and the explanatory variable, length in
+centimeters, goes on the right. We need to assign the result to a
+variable to reuse later on.
+
+**5. Data on explanatory values to predict**
+
+The principle behind predicting is to ask questions of the form “if I
+set the explanatory variables to these values, what value would the
+response variable have?”.That means that the next step is to choose some
+values for the explanatory variables. For this model, the only
+explanatory variable is the length of the fish. I’ve chosen a vector of
+lengths from twenty centimeters to forty centimeters.The explanatory
+variables need to be stored inside a data frame. Here, I’m using a
+tibble, which is a data frame variant that’s easier to work with. I
+could also have used a standard data-dot-frame.
+
+**6. Call predict()**
+
+The next step is to call predict, passing the model object and the data
+frame of explanatory variables.predict returns a vector of predictions,
+one for each row of the explanatory data.
+
+**7. Predicting inside a data frame**
+
+Having a vector of predictions isn’t that helpful for programming with.
+It’s easier to work with if the predictions are in a data frame
+alongside the explanatory variables.I’ve started with the explanatory
+data, then used mutate to add a new column, named after the response
+variable, mass_g, and calculated it with the same predict code from the
+previous slide. The prediction data frame contains the explanatory
+variable and the predicted response.Now we can answer questions like
+“how heavy would we expect a bream with length twenty five centimeters
+to be?”, even though the original dataset didn’t include a bream of that
+exact length. Looking at the prediction data, you can see that the
+predicted mass is three hundred and twenty eight grams.
+
+**8. Showing predictions**
+
+Let’s include the predictions we just made to the scatter plot. We add
+another geom_point layer, and set the data argument to the prediction
+data frame we just created.I’ve colored the points blue to distinguish
+them from the data points.Notice that the predictions lie exactly on the
+trend line.
+
+**9. Extrapolating**
+
+All the fish were between twenty three and thirty eight centimeters, but
+the linear model allows us to make predictions outside that range. This
+is called extrapolating.Let’s see what prediction we get for a ten
+centimeter bream. The code is the same as before, but with a length of
+ten in the explanatory data frame.Wow. The predicted mass is almost
+minus five hundred grams! This is obviously not physically possible, so
+the model performs poorly here. Extrapolation is sometimes appropriate,
+but can lead to misleading or ridiculous results. You need to understand
+the context of your data in order to determine whether it is sensible to
+extrapolate.
+
+**10. Let’s practice!**
+
+I predict that you are about to make some predictions.
 
 ## Predicting house prices
 
@@ -663,6 +968,97 @@ nonsense or not.
 ## Working with model objects
 
 Theory. Coming soon …
+
+**1. Working with model objects**
+
+The model objects created by lm contain a lot of information. In this
+video, you’ll see how to extract it.
+
+**2. coefficients()**
+
+Here’s the model of mass versus length in the bream dataset. Printing it
+shows the code used to create it, and the coefficients. To use those
+coefficients in the rest of your analysis, you need to be able to
+extract them from the object. You do this with the coefficients
+function. It returns a named numeric vector of coefficients. The names
+are the names of the coefficients.
+
+**3. fitted()**
+
+“Fitted values” is jargon for predictions on the original dataset used
+to create the model. Access them with the fitted function.The result is
+a numeric vector of length thirty five, which is the number of rows in
+the bream dataset.The fitted function is essentially a shortcut for
+taking the explanatory variable columns from the dataset, then feeding
+them to the predict function.
+
+**4. residuals()**
+
+“Residuals” are a measure of inaccuracy in the model fit, and are
+accessed with the residuals function. Like fitted values, there is one
+residual for each row of the dataset.Each residual is the actual
+response value minus the predicted response value. In this case, the
+residuals are the masses of breams, minus the fitted values.You’ll see
+more on how to use the fitted values and residuals to assess the quality
+of your model in Chapter 3.
+
+**5. summary()**
+
+The summary function shows a more extended printout of the details of
+the model.Let’s step through this piece by piece.
+
+**6. summary(): call**
+
+First, you see the code you used to create the model.
+
+**7. summary(): residuals**
+
+Then you see some summary statistics of the residuals. If the model is a
+good fit, the residuals should follow a normal distribution. Look at the
+median, and see if the number is close to zero. Then look at the first
+and third quartiles and see if they have about the same absolute value.
+That is, the number labeled 1Q is about minus the number labeled 3Q.You
+can get a more accurate sense of this by drawing plots, but this is a
+quick check.
+
+**8. summary(): coefficients**
+
+Next you see details of the coefficients. The numbers in the first
+column are the ones returned by the coefficients function. The numbers
+in the last column are the p-values, which refer to statistical
+significance. These are beyond the scope of this course, but you can
+learn about them in DataCamp’s courses on inference.
+
+**9. summary(): model metrics**
+
+Finally, there are some metrics on the performance of the model. These
+will be discussed in the next chapter.
+
+**10. tidy()**
+
+While summary shows lots of information, it is designed to be read, not
+to be manipulated with code. In R, functions for programming with should
+return either a vector, like coefficients, fitted, and residuals did, or
+a data frame.The broom package provides functions that return data
+frames. This makes the model results easy to manipulate with dplyr,
+ggplot2, and other tidyverse packages.The tidy function returns the
+coefficient details in a data frame.
+
+**11. augment()**
+
+augment returns observation level results. You get one row for each row
+of the data frame used to create the model. On the left, you can see the
+mass and length variables that we used to create the model. Dot-fitted
+contains the fitted values, and dot-resid contains the residuals.
+
+**12. glance()**
+
+glance returns model-level results. These are the performance metrics
+that you saw near the bottom of the summary output, plus a few others.
+
+**13. Let’s practice!**
+
+Your turn to extract some model elements.
 
 ## Extracting model elements
 
@@ -1161,6 +1557,80 @@ frames for easier programming.
 
 Theory. Coming soon …
 
+**1. Regression to the mean**
+
+Let’s take a short break from thinking about regression modeling, to a
+related concept called “regression to the mean”. Regression to the mean
+is a property of the data, not a type of model, but linear regression
+can be used to quantify its effect.
+
+**2. The concept**
+
+You already saw that each response value in your dataset is equal to the
+sum of a fitted value, that is, the prediction by the model, and a
+residual, which is how much the model missed by.Loosely speaking, these
+two values are the parts of the response that you’ve explained why it
+has that value, and the parts you couldn’t explain with your model.There
+are two possibilities for why you have a residual. Firstly, it could
+just be because your model isn’t great. Particularly in the case of
+simple linear regression where you only have one explanatory variable,
+there is often room for improvement. However, it usually isn’t possible
+or desirable to have a perfect model because the world contains a lot of
+randomness, and your model shouldn’t capture that.In particular, extreme
+responses are often due to randomness or luck. That means that extremes
+don’t persist over time, because eventually the luck runs out.This is
+the concept of regression to the mean. Eventually, extreme cases will
+look more like average cases.
+
+**3. Pearson’s father son dataset**
+
+Here’s a classic dataset on the heights of fathers and their sons,
+collected by Karl Pearson, the statistician who the Pearson correlation
+coefficient is named after.The dataset consists of over a thousand pairs
+of heights, and was collected as part of nineteenth century scientific
+work on biological inheritance. It lets us answer the question, “do tall
+fathers have tall sons?”, and “do short fathers have short sons?”.
+
+**4. Scatter plot**
+
+Here’s a scatter plot of the sons’ heights versus the fathers’ heights.
+I’ve added a line where the sons and fathers heights are equal, using
+geom_abline. The color and size arguments are used to help it stand
+out.I also used coord_fixed, so that one centimeter on the x-axis
+appears the same as one centimeter on the y-axis.If sons always had the
+same height as their fathers, all the points would lie on this green
+line.
+
+**5. Adding a regression line**
+
+Let’s add a linear regression line to the plot. You can see that the
+regression line isn’t as steep as the first line.On the left of the
+plot, the blue line is above the green line, suggesting that for very
+short fathers, their sons are taller than them on average.On the far
+right of the plot, the blue line is below the green line, suggesting
+that for very tall fathers, their sons are shorter than them on average.
+
+**6. Running a regression**
+
+Running a model quantifies the predictions of how much taller or shorter
+the sons will be.Here, the sons’ heights are the response variable, and
+the fathers’ heights are the explanatory variable.
+
+**7. Making predictions**
+
+Now we can make predictions. Consider the case of a really tall father,
+at one hundred and ninety centimeters. At least, that was really tall in
+the late nineteenth century. The predicted height of the son is one
+hundred and eighty three centimeters. Tall, but but quite as tall as his
+dad.Similarly, the prediction for a one hundred and fifty centimeter
+father is one hundred and sixty three centimeters. Short, but not quite
+as short as his dad.In both cases, the extreme value became less extreme
+in the next generation.
+
+**8. Let’s practice!**
+
+Time to apply regression to the mean to sports and finance.
+
 ## Home run!
 
 <!--
@@ -1327,6 +1797,98 @@ small amount in 2019.
 ## Transforming variables
 
 Theory. Coming soon …
+
+**1. Transforming variables**
+
+Sometimes, the relationship between the explanatory variable and the
+response variable may not be a straight line. To fit a linear regression
+model, you need to transform the explanatory variable or the response
+variable, or both of them.
+
+**2. Perch dataset**
+
+Consider the perch in the the fish dataset.
+
+**3. It’s not a linear relationship**
+
+The upward curve in the mass versus length data prevents us drawing a
+straight line that follows it closely.
+
+**4. Bream vs. perch**
+
+To understand why the bream had a strong linear relationship between
+mass and length, but the perch don’t, you need to understand your data.
+I’m not a fish expert, but looking at the picture of the bream on the
+left, it has a very narrow body. I guess that as bream get bigger, they
+mostly just get longer and not wider.By contrast, the perch on the right
+has a round body, so I guess that as it grows, it gets fatter and taller
+as well as longer. Since the perches are growing in three directions at
+once, maybe the length cubed will give a better fit.
+
+**5. Plotting mass vs. length cubed**
+
+Here’s an update to the previous plot. The only change is that the
+x-axis is now length to the power three. The data points fit the line
+much better, so we’re ready to run a model.
+
+**6. Modeling mass vs. length cubed**
+
+To model a variable raised to the power of something, there is a slight
+change to the way the formula is written.The caret symbol has a special
+meaning inside model formulas. To tell lm that you want exponentiation,
+you need to wrap that term inside the I function. The I function is
+sometimes pronounced “as is”.Otherwise, everything is the same, with the
+response variable on the left and the explanatory variable on the right.
+
+**7. Predicting mass vs. length cubed**
+
+You create the explanatory data frame in the same way as usual. Notice
+that you specify the lengths, not the lengths cubed. R takes care of the
+transformation automatically.The code for adding predictions is the same
+mutate and predict combination you’ve seen before.
+
+**8. Plotting mass vs. length cubed**
+
+The predictions have been added to the plot of mass versus length cubed
+as blue points. As you might expect, they follow the line drawn by
+ggplot.It gets more interesting on the original x-axis. Notice how the
+blue points curve upwards to follow the data. Your linear model has
+non-linear predictions, after the transformation is undone.
+
+**9. Facebook advertising dataset**
+
+Let’s try one more example using a Facebook advertising dataset. The
+flow of online advertising is that you pay money to Facebook, who show
+your advert to Facebook users. If a person sees the advert, it’s called
+an impression. Then some people who see the advert will click on it.
+
+**10. Plot is cramped**
+
+Let’s look at impressions versus spend. If we draw the standard plot,
+the majority of the points are crammed into the bottom-left of the plot,
+making it difficult to assess whether there is a good fit or not.
+
+**11. Square root vs square root**
+
+By transforming both the variables with square roots, the data are more
+spread out throughout the plot, and the points follow the line fairly
+closely. Square roots are a common transformation when your data has a
+right-skewed distribution.
+
+**12. Modeling and predicting**
+
+Running the model and creating the explanatory dataset are the same as
+usual. You don’t need to wrap the square root term in the model formula
+in I; that’s only needed for exponentiation.Prediction requires an extra
+step. Because we took the square root of the response variable (not just
+the explanatory variable), the predict function will predict the square
+root of the number of impressions.That means that we have to undo the
+square root by squaring the predicted responses. Undoing the
+transformation of the response is called backtransformation.
+
+**13. Let’s practice!**
+
+Time to transform some variables.
 
 ## Transforming the explanatory variable
 
@@ -1582,6 +2144,112 @@ the leverage and influence of each observation used to create the model.
 
 Theory. Coming soon …
 
+**1. Quantifying model fit**
+
+It’s usually important to know whether or not predictions from your
+model are nonsense. In this chapter, we’ll look at ways of quantifying
+how good your model is.
+
+**2. Bream and perch models**
+
+Previously, you ran models on mass versus length for bream and perch. By
+simply looking at these scatter plots, you can get a sense that there is
+a linear relationship between mass and length for bream but not for
+perch. It would be useful to quantify how strong that linear
+relationship is.
+
+**3. Coefficient of determination**
+
+The first metric we’ll discuss is the coefficient of determination. This
+is sometimes called “r-squared”. For boring historical reasons, it’s
+written with a lower case r for simple linear regression, and an upper
+case R when you have more than one explanatory variable.It is defined as
+the proportion of the variance in the response variable that is
+predictable from the explanatory variable. We’ll get to a human-readable
+explanation shortly.A score of one means you have a perfect fit, and a
+score of zero means your model is no better than randomness.What
+constitutes a good score depends on your dataset. A score of zero-point
+five on a psychological experiment may be exceptionally high because
+humans are inherently hard to predict, but in other cases a score of
+zero-point nine may be considered a poor fit.
+
+**4. summary()**
+
+summary shows several performance metrics at the end of its output. The
+coefficient of determination is written in the second to last line, and
+titled “Multiple R-squared”. Its value about zero-point-eight-eight.
+
+**5. glance()**
+
+Since summary isn’t easy to program with, a better way to extract the
+metric is to use glance from broom. Calling glance on the model returns
+several model metrics in a tibble.Then you can use dplyr’s pull function
+to pull out the r-squared value.
+
+**6. It’s just correlation squared**
+
+For simple linear regression, the interpretation of the coefficient of
+determination is straightforward. It is simply the correlation between
+the explanatory and response variables, squared.
+
+**7. Residual standard error (RSE)**
+
+The second metric we’ll look at is the residual standard error, or
+RSE.Recall that each residual is the difference between a predicted
+value and an observed value. The RSE is, very roughly speaking, a
+measure of the typical size of the residuals. That is, how much the
+predictions are typically wrong by.It has the same unit as the response
+variable. In the fish models, the response unit is grams.
+
+**8. summary() again**
+
+summary also displays the RSE. It is shown in the third to last line,
+titled “residual standard error”. The value for the bream model is about
+seventy four.
+
+**9. glance() again**
+
+As with the coefficient of determination, to get the RSE as a variable,
+it’s best to use glance. Here, RSE is named sigma.
+
+**10. Calculating RSE: residuals squared**
+
+To calculate the RSE yourself, it’s slightly more complicated. First,
+you take the square of each residual.
+
+**11. Calculating RSE: sum of residuals squared**
+
+Then you take the sum of these residuals squared.
+
+**12. Calculating RSE: degrees of freedom**
+
+Then you calculate the degrees of freedom of the residuals. This is the
+number of observations minus the number of model coefficients.
+
+**13. Calculating RSE: square root of ratio**
+
+Finally, you take the square root of the ratio of those two numbers.
+Reassuringly, the value is still seventy four.
+
+**14. Interpreting RSE**
+
+You saw that the RSE for the bream model was seventy four. That means
+that the difference between predicted bream masses and observed bream
+masses is typically about seventy four grams.
+
+**15. Root-mean-square error (RMSE)**
+
+Another related metric is the root-mean-square error. This is calculated
+in the same way, except you don’t subtract the number of coefficients in
+the second to last step. It performs the same task as residual standard
+error, namely quantifying how inaccurate the model predictions are, but
+is worse for comparisons between models. You need to be aware that RMSE
+exists, but typically you should use RSE instead.
+
+**16. Let’s practice!**
+
+Let’s make some metrics.
+
 ## Coefficient of determination
 
 <!-- 
@@ -1774,6 +2442,84 @@ trees, so you can compare accuracy across different classes of models.
 
 Theory. Coming soon …
 
+**1. Visualizing model fit**
+
+There are several plots that can quantify the performance of a model.
+We’ll look at these plots and their interpretation first, then the code
+to draw them.
+
+**2. Hoped for properties of residuals**
+
+If a linear regression model is a good fit, then the residuals are
+approximately normally distributed, with mean zero.
+
+**3. Bream and perch again**
+
+Earlier we ran models on the bream and perch datasets. From looking at
+the scatter plots with linear trend lines, it appeared that the bream
+model was a reasonable fit, but the perch model wasn’t because the
+observed masses increased faster than linearly with the lengths.
+
+**4. Residuals vs. fitted values**
+
+The first diagnostic plot is of residuals versus fitted values. The blue
+line is a LOESS trend line, which is a smooth curve following the data.
+These aren’t good for making predictions with, but are useful for
+visualizing trends.If residuals met the assumption that they are
+normally distributed with mean zero, then the trend line should closely
+follow the y equals zero line on the plot. For the bream dataset, this
+is true.By contrast, the perch model doesn’t meet the assumption. The
+residuals are above zero when the fitted value is small or big, and
+below zero in the middle.
+
+**5. Q-Q plot**
+
+The second plot type is called a Q-Q plot. It shows whether or not the
+residuals follow a normal distribution.On the x-axis, the points are
+quantiles from the normal distribution. On the y-axis, you get the
+standardized residuals, which are the residuals divided by their
+standard deviation.It sounds technical, but interpreting this plot is
+easy. If the points track along the straight line, they are normally
+distributed. If not, they aren’t.Here, most of the bream points follow
+the line closely. Two points at each extreme don’t follow the line.
+These are labelled 14 and 30, which correspond to the row of the bream
+dataset where the bad residuals occur.The perch dataset doesn’t track
+the line as closely. In particular, you can see on the right hand side
+of the plot that the residuals are larger than expected. That means the
+model is a particularly poor fit for the longer lengths of perch.
+
+**6. Scale-location**
+
+The third plot shows the square root of the standardized residuals
+versus the fitted values. It’s often called a scale-location plot,
+because that’s easier to say.Where the first plot showed whether or not
+the residuals go positive or negative as the fitted values change, this
+plot shows whether the size of the residuals gets bigger or smaller.The
+residuals for the bream dataset get a little bigger as the fitted values
+increase, but it’s not a huge change.Again, the plot of the perch model
+has a trend line that goes up and down all over the place, indicating a
+poor fit.
+
+**7. autoplot()**
+
+Drawing the plots is straightforward. Load the ggplot2 and ggfortify
+packages, then call autoplot, passing the model object.The only tricky
+part is the which argument. That tells you which of the plots to draw.
+Unfortunately, they have numbers instead of descriptive names, so you
+have to read the documentation to remember which number corresponds to
+which plot. Fortunately, the argument is vectorized so you can draw all
+the plots at once.
+
+**8. autoplot() with the perch model**
+
+Here’s an example with the perch model. which is set to one to three, so
+all the plots are drawn. nrow and ncol determine the layout of the
+plots.
+
+**9. ‘Autoplots, roll out!’ -Plotimus Prime**
+
+Autoplots, roll out!
+
 ## Residuals vs. fitted values
 
 <!-- 
@@ -1924,6 +2670,110 @@ sanity-checking the quality of your models.
 ## Outliers, leverage, and influence
 
 Theory. Coming soon …
+
+**1. Outliers, leverage, and influence**
+
+Sometimes, datasets contains weird values. Here, we’ll look at how to
+spot the weird values, and the consequences they have for your
+regression models.
+
+**2. Roach dataset**
+
+Let’s look at another part of the fish dataset, this time filtering for
+the roaches.
+
+**3. Which points are outliers?**
+
+Here’s the standard plot of mass versus length. The technical term for
+an unusual data point is an outlier. So which of these points
+constitutes an outlier?
+
+**4. Extreme explanatory values**
+
+The first kind of outlier is when you have explanatory variables that
+are extreme. In the simple linear regression case, it’s easy to find and
+visualize them. There is one really short roach and one really long
+roach that I’ve colored cyan here.
+
+**5. Response values away from the regression line**
+
+The other property of outliers is when the point lies a long way from
+the model predictions. Here, there’s a roach with mass zero, which seems
+biologically unlikely. It’s shown as a triangle.
+
+**6. Leverage**
+
+Leverage quantifies how extreme your explanatory variable values are.
+That is, it measures the first type of outlier we discussed. With one
+explanatory variable, you can find the values by filtering, but with
+many explanatory variables, the mathematics is more complicated. To
+calculate leverage, you need a model object. For historical reasons, the
+leverage function is called hatvalues. Like the fitted values and
+residuals functions, it returns a numeric vector with as many values as
+there are observations.
+
+**7. The .hat column**
+
+augment, from the broom package, will also calculate leverage. The
+values are stored in the dot-hat column.
+
+**8. Highly leveraged roaches**
+
+Let’s find the values with high leverage. After augmenting, we select
+the columns of interest: the mass, the length, and dot-hat, renamed here
+as “leverage”. Then we arrange the rows by descending leverage values
+and get the head. The top two are the same observations we identified
+earlier. The really long roach and the really short roach.
+
+**9. Influence**
+
+A related concept to leverage is influence. This is a type of “leave one
+out” metric. That is, it measures how much the model would change if you
+reran it without that data point. I like to think of it as the torque of
+the point. The amount of turning force, or torque, when using a wrench
+is equal to the linear force times the length of the wrench. In a
+similar way, the influence of each observation is based on the size of
+the residuals and the leverage. It isn’t a straightforward
+multiplication; instead we use a metric called Cook’s distance.
+
+**10. Cook’s distance**
+
+The calculations for Cook’s distance require some linear algebra, but
+the important thing to know is that it is based on the size of the
+residuals and the leverage, and that a bigger number denotes more
+influence for the observation. The cooks-dot-distance function returns
+the values as a vector.
+
+**11. The .cooksd column**
+
+Here’s the output from augment again. Cook’s Distance is contained in
+the dot-cooksd column.
+
+**12. Most influential roaches**
+
+Using the same approach, we can find the most influential roaches. We
+augment, then select the columns of interest, then arrange to get the
+top values. Here, you can see the two points that were highly leveraged,
+and the fish with zero mass that gave it a large residual.
+
+**13. Removing the most influential roach**
+
+To see how influence works, let’s remove the most influential roach.
+This is the one with the shortest length, at twelve-point-nine
+centimeters. We draw the usual plot, but add another regression line
+using the dataset without that short fish. The slope of the line has
+completely changed just by having one less data point.
+
+**14. autoplot()**
+
+autoplot also lets you draw diagnostic plots of leverage and influence,
+by setting the which argument to 4, 5, or 6. I find these plots less
+helpful for diagnosis than the previous three we looked at, other than
+seeing the labels of the most influential observations.
+
+**15. Let’s practice!**
+
+Let’s get under the influence.
 
 ## Leverage
 
@@ -2083,6 +2933,96 @@ using confusion matrices.
 ## Why you need logistic regression
 
 Theory. Coming soon …
+
+**1. Why you need logistic regression**
+
+The datasets you’ve seen so far all had a numeric response variable. Now
+we’ll explore the case of a binary response variable.
+
+**2. Bank churn dataset**
+
+Consider this dataset on churn at a European financial services company
+in 2006. There are 400 rows, each representing a customer. If the
+customer closed all accounts during the time period, they were
+considered to have churned, and that column is marked with a one. If
+they still had an open account at the end of the time period,
+has_churned is marked with a zero. Using one and zero for the response
+instead of a logical variable makes the plotting code easier.The two
+explanatory variables are the time since the customer first bought a
+service, and the time since they last bought a service. Respectively,
+they measure the length of relationship with the customer, and the
+recency of the customer’s activity.The time columns contain negative
+values because they have been standardized for confidentiality reasons.
+
+**3. Churn vs. recency: a linear model**
+
+Let’s run a linear model of churn versus recency and see what happens.We
+can use the coefficients function to pull out the intercept and slope.
+The intercept is about point-five and the slope is slightly positive at
+zero-point-zero-six.
+
+**4. Visualizing the linear model**
+
+Here’s a plot of the data points with the linear trend. I used
+geom_abline rather than geom_smooth so the line isn’t limited to the
+extent of the data.All the churn values are zero or one, but the model
+predictions are fractional. You can think of the predictions as being
+probabilities that the customer will churn.
+
+**5. Zooming out**
+
+Zooming out by setting axis limits with xlim and ylim shows the problem
+with using a linear model. In the bottom-left of the plot, the model
+predicts negative probabilities. In the top-right, the model predicts
+probabilities greater than one.Both situations are impossible.
+
+**6. What is logistic regression?**
+
+The solution is to use logistic regression models, which are a type of
+generalized linear model, used when the response variable is
+logical.Whereas linear models result in predictions that follow a
+straight line, logistic models result in predictions that follow a
+logistic curve, which is S-shaped.
+
+**7. Linear regression using glm()**
+
+Before we run a logistic regression, it’s worth noting that you can run
+a linear regression using the glm function, for generalized linear
+models. Replace lm with glm and set the family argument to gaussian.
+family specifies the family of distributions used for the residuals. You
+can pass it with or without quotes.Here, the coefficients are the same
+as before.
+
+**8. Logistic regression: glm() with binomial family**
+
+To run a logistic regression, you also call glm. This time, set the
+family argument to binomial to specify residuals from the binomial
+distribution.As before, you get two coefficients, an intercept and one
+for the numerical explanatory variable. The interpretation is a little
+different; we’ll come to that later.
+
+**9. Visualizing the logistic model**
+
+Let’s add the glm predictions to the plot. ggplot will draw a logistic
+regression trend line with geom_smooth, shown in blue here. Notice that
+the prediction line is slightly curved.Look closely at the differences
+from our previous use of geom_smooth. In the method argument, use “glm”
+not “lm”. You also need to add a method-dot-args argument, containing a
+list of the other arguments passed to glm. In this case, you need to set
+family equals binomial inside the list.
+
+**10. Zooming out**
+
+Now zooming out shows that the logistic regression curve never goes
+below zero or above one.To interpret this curve, when the standardized
+time since last purchase is very small, the probability of churning is
+close to zero. When the time since last purchase is very high, the
+probability is close to one. That is, customers who recently bought
+things are less likely to churn.
+
+**11. Let’s practice!**
+
+Let’s get logistic on this dataset.
 
 ## Exploring the explanatory variables
 
@@ -2247,6 +3187,104 @@ make some predictions with the model.
 ## Predictions and odds ratios
 
 Theory. Coming soon …
+
+**1. Predictions and odds ratios**
+
+Let’s see how to make predictions with your logistic regression model.
+
+**2. The ggplot predictions**
+
+You’ve already seen how ggplot2 will give you a glm prediction line.
+
+**3. Making predictions**
+
+To make a prediction with a logistic model, you use the same technique
+as for linear models.Create a data frame or tibble of explanatory
+variable values.Then add a response column calculated using predict.
+There is one change here. As well as passing the model object and the
+explanatory data to predict, you also need to set the type argument to
+“response” to get the probabilities of churning.
+
+**4. Adding point predictions**
+
+As with the linear case, we can add those predictions onto the plot by
+setting the data argument of geom_point to the prediction data frame. As
+expected, these points follow the trend line.
+
+**5. Getting the most likely outcome**
+
+One simpler prediction you can make, rather than calculating
+probabilities of a response, is to calculate the most likely response.
+That is, if the probability of churning is less than 0-point-5, the most
+likely outcome is that they won’t churn. If their probability is greater
+then 0-point-5, it’s more likely that they will churn.To calculate this,
+simply round the predicted probabilities.
+
+**6. Visualizing most likely outcome**
+
+We can plot the most likely outcome by using the prediction data and
+overriding the y aesthetic to use the numbers we just calculated. For
+recently active customers, the most likely outcome is that they don’t
+churn. Otherwise, the most likely outcome is that they churn.
+
+**7. Odds ratios**
+
+There is another way to talk about binary responses, commonly used in
+gambling. The odds ratio is the probability that something happens,
+divided by the probability that it doesn’t. For example, a probability
+of zero-point-two-five is the same as the odds of “three to one
+against”, because the probability of the event not happening is
+zero-point-seven-five, which is three times as much.The plot shows the
+relationship between the two terms.
+
+**8. Calculating odds ratio**
+
+We can calculate the odds ratio by dividing the predicted response
+probability by one minus that number.
+
+**9. Visualizing odds ratio**
+
+It doesn’t make sense to visualize odds with the original data points,
+so we need a new plot.Here, the dotted line where the odds ratio is one
+indicates where churning is just as likely as not churning. In the
+bottom-left, the predictions are below one, so the chance of churning is
+less than the chance of not churning. In the top-right, the chance of
+churning is about five times more than the chance of not churning.
+
+**10. Visualizing log odds ratio**
+
+One nice property of logistic regression odds ratios is that on a
+log-scale, they change linearly with the explanatory variable. This plot
+adds scale_y\_log10.
+
+**11. Calculating log odds ratio**
+
+This nice property of the logarithm of odds ratios means log-odds ratio
+is another common way of describing logistic regression predictions. In
+fact, predict will return the log odds ratio if you don’t specify the
+type argument.Compare the two different ways that the log odds ratio is
+calculated here, and make sure you understand the code.
+
+**12. All predictions together**
+
+Here are all the values calculated in the prediction dataset. Some
+column names are abbreviated for better printing. Notice that the log
+odds ratio is the same in both cases.
+
+**13. Comparing scales**
+
+Each way of describing responses has different benefits.Most likely
+outcome is easiest to understand because the answer is always yes or no,
+but this lacks precision.Probabilities and odds ratios are still fairly
+easy to understand for a data literate audience. However, the non-linear
+predictions make it hard to reason about how changes in the explanatory
+variable will change the response.Log odds ratio is difficult to
+interpret for individual values, but the linear relationship with the
+explanatory variables makes it easy to reason about changes.
+
+**14. Let’s practice!**
+
+Let’s make some predictions.
 
 ## Probabilities
 
@@ -2579,6 +3617,92 @@ reason about.
 
 Theory. Coming soon …
 
+**1. Quantifying logistic regression fit**
+
+Now we’ll assess the performance of the logistic regression models. The
+diagnostic plots we drew for linear models are less useful in the
+logistic case. Instead, we’ll look at confusion matrices.
+
+**2. The four outcomes**
+
+A logical response variable leads to four possible outcomes. If the
+customer didn’t churn and we predicted they wouldn’t, or if they did
+churn and we predicted that, the model did well.There are two bad cases.
+Predicting the customer churned when they didn’t is called a false
+positive. Predicting the customer didn’t churn when they did is called a
+false negative.The counts of each outcome are called a confusion matrix.
+
+**3. Confusion matrix: counts of outcomes**
+
+Recall the model of churn versus recency. Getting the counts of model
+outcomes is a rare task that is nicer to do in base R code rather than
+tidyverse code.First, we get the actual responses from the has_churned
+column of the dataset.Next we get the predicted responses from the
+model. fitted works on logistic models in the same way as linear models,
+returning the predicted values of each observation in the dataset. These
+fitted values are probabilities. To get the most likely outcome, we need
+to round the values to zero or one.Finally, we use table to get the
+counts of each combination of values. This is the confusion matrix
+mentioned earlier.We correctly predicted that one hundred and forty one
+customers didn’t churn and eighty nine customers did churn. There were
+fifty nine false positives and one hundred and eleven false negatives.
+
+**4. Visualizing the confusion matrix: mosaic plot**
+
+The yardstick package lets you easily plot the confusion matrix and
+calculate performance metrics.We convert the table into a yardstick
+confusion matrix object using conf_mat. Then, just as with linear model
+objects, we can simply call autoplot.autoplot draws a mosaic plot of the
+confusion matrix. To interpret this, start by looking at the column
+widths. The width of each column is proportional to the fraction of
+observations in each category of actual values. Here, there are two
+hundred actual churns and two hundred actual not churns, so each column
+has the same width.Then each column displays the fraction of predicted
+observations with each value. Here, just over a quarter of the actual
+not churns were predicted to be churns, so the block in the bottom left
+is just over a quarter of the height of the first column.
+
+**5. Performance metrics**
+
+Calling summary on the confusion matrix returns lots of model
+performance metrics. Since we used zero and one for the response values
+instead of a factor, the second column contains the positive response,
+so we set event_level to “second”.We’ll explore three metrics.
+
+**6. Accuracy**
+
+The first metric is the model accuracy. This is the proportion of
+correct predictions. That is, the number of true negatives plus the true
+positives, divided by the total number of observations. Higher accuracy
+is better.The total number of correct observations is one hundred and
+forty one plus eighty nine. We divide this total by the total number of
+observations, which is the sum of all four numbers.
+
+**7. Sensitivity**
+
+The second metric in the summary is sensitivity. This is the proportion
+of observations where the actual response was true where the model also
+predicted that they were true. That is, the number of true positives
+divided by the sum of the false negatives and true positives. Higher
+sensitivity is better.Here, eighty nine of the two hundred customers who
+churned were correctly predicted to churn.
+
+**8. Specificity**
+
+The third metric in the summary is specificity. This is the proportion
+of observations where the actual response was false where the model also
+predicted that they were false. That is, the number of true negatives
+divided by the sum of the true negatives and false positives. Again,
+higher specificity is better, though there is often a tradeoff where
+improving specificity will decrease sensitivity, or increasing
+sensitivity will decrease specificity.Here, one hundred and forty one of
+the two hundred customers who didn’t churn were correctly predicted to
+not churn.
+
+**9. Let’s practice!**
+
+Let’s calculate some metrics.
+
 ## Calculating the confusion matrix
 
 <!-- 
@@ -2716,3 +3840,44 @@ of that metric.
 Insightful metric identification! Accuracy, sensitivity, and specificity
 are the most important performance metrics for logistic regression
 models.
+
+## Congratulations
+
+Theory. Coming soon …
+
+**1. Congratulations**
+
+Well done! You made it through the course!
+
+**2. You learned things**
+
+In Chapter 1 you saw how to fit a simple linear regression with both a
+numeric and a categorical explanatory variable, and how to interpret the
+model coefficients.In Chapter 2 you saw how to make predictions with a
+linear regression model, how to work with model objects, what regression
+to the mean means, and how to transform model variables.In Chapter 3 you
+saw how to quantify and visualize model fit, and learned about outliers,
+leverage, and influence of observations.In Chapter 4 you fitted a simple
+logistic regression model, calculated its predictions in several
+different ways, and calculated performance metrics using a confusion
+matrix.
+
+**3. Multiple explanatory variables**
+
+The next step in your journey is to learn how to run regressions with
+more than one explanatory variable.
+
+**4. Unlocking advanced skills**
+
+Once you’ve done that, it will unlock a lot more DataCamp content
+covering advanced modeling and machine learning skills.
+
+**5. Regression is important everywhere**
+
+Regression is such an important modeling technique because it is used in
+so many different fields. Naturally, DataCamp has courses that
+specialize in these applications.
+
+**6. Let’s practice!**
+
+I hope you enjoyed the course. Happy learning!

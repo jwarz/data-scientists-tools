@@ -160,6 +160,59 @@ cross-validation and root-mean-square error (RMSE).
 
 Theory. Coming soon …
 
+**1. Welcome to the Toolbox**
+
+Welcome to the machine learning toolbox course. I’m Max Kuhn,
+statistician and author of the caret package, which I’ve been working on
+for over a decade.
+
+**2. Supervised Learning**
+
+Today caret is one of the most widely used packages in R for supervised
+learning (also known as predictive modeling).Supervised learning is
+machine learning when you have a “target variable,” or something
+specific you want to predict.A classic example of supervised learning is
+predicting which species an iris is, based on its physical measurements.
+Another example would be predicting which customers in your business
+will “churn” or cancel their service.In both of these cases, we have
+something specific we want to predict on new data: species and churn.
+
+**3. Supervised Learning**
+
+There are two main kinds of predictive models: classification and
+regression.Classification models predict qualitative variables, for
+example the species of a flower, or “will a customer churn”. Regression
+models predict quantitative variables, for example the price of a
+diamond.Once we have a model, we use a “metric” to evaluate how well the
+model works. A metric is quantifiable and gives us an objective measure
+of how well the model predicts on new data.For regression problems, we
+will focus on “root mean squared error” or RMSE as our metric of
+choice.This is the error that linear regression models typically seek to
+minimize, for example in the lm() function in R. It’s a good, general
+purpose error metric, and the most common one for regression models.
+
+**4. Evaluating Model Performance**
+
+Unfortunately, it’s common practice to calculate RMSE on the same data
+we used to fit the model. This typically leads to overly-optimistic
+estimates of model performance. This is also known as overfitting.A
+better approach is to use out-of-sample estimates of model
+performance.This is the approach caret takes, because it simulates what
+happens in the real world and helps us avoid over-fitting.
+
+**5. In-sample error**
+
+However, it’s useful to start off by looking at in-sample error, so we
+can contrast it later with out-of-sample error on the same
+dataset.First, we load the mtcars dataset and fit a model to the first
+20 rows.Next, we make in-sample predictions, using the predict function
+on our model.Finally, we calculate RMSE on our training data, and get
+pretty good results.
+
+**6. Let’s practice!**
+
+Let’s practice calculating RMSE on some other datasets.
+
 ## In-sample RMSE for linear regression
 
 > ## *Question*
@@ -234,6 +287,60 @@ predictions!
 ## Out-of-sample error measures
 
 Theory. Coming soon …
+
+**1. Out-of-sample error measures**
+
+Hi! I’m Zach Deane Mayer, and I’m one of the co-authors of the caret
+package. I have a passion for data science, and spend most of my time
+working on and thinking about problems in machine learning.
+
+**2. Out-of-sample error**
+
+This course focuses on predictive, rather than explanatory modeling. We
+want models that do not overfit the training data and generalize well.
+In other words, our primary concern when modeling is “do the models
+perform well on new data?”The best way to answer this question is to
+test the models on new data. This simulates real world experience, in
+which you fit on one dataset, and then predict on new data, where you do
+not actually know the outcome.Simulating this experience with a
+train/test split helps you make an honest assessment of yourself as a
+modeler.This is one of the key insights of machine learning: error
+metrics should be computed on new data, because in-sample validation (or
+predicting on your training data) essentially guarantees
+overfitting.Out-of-sample validation helps you choose models that will
+continue to perform well in the future.This is the primary goal of the
+caret package in general and this course specifically: don’t overfit.
+Pick models that perform well on new data.
+
+**3. Example: out-of-sample RMSE**
+
+Let’s walk through a simple example of out-of-sample validation: We
+start with a linear regression model, fit on the first 20 rows of the
+mtcars dataset.Next, we make predictions with this model on a NEW
+dataset: the last 12 observations of the mtcars dataset. The 12 cars in
+this test set will not be used to determine the coefficents of the
+linear regression model, and are therefore a good test of how well we
+can predict on new data.In practice, rather than manually splitting the
+dataset, we’d actually use the createResamples or createFolds function
+in caret, but the manual split simplifies this example.Finally, we
+calculate root-mean-squared-error (or RMSE) on the test set by comparing
+the predictions from our model to the actual MPG values for the test
+set.RMSE is a measure of the model’s average error. It has the same
+units as the test set, so this means our model is off by 5 to 6 miles
+per gallon, on average.
+
+**4. Compare to in-sample RMSE**
+
+Compared to in-sample RMSE from a model fit on the full dataset, our
+model is significantly worse.If we had used in-sample error, we would
+have fooled ourselves into thinking our model is much better than it
+actually is in reality.It’s hard to make predictions on new data, as
+this example shows. Out-of-sample error helps account for this fact, so
+we can focus on models that predict things we don’t already know.
+
+**5. Let’s practice!**
+
+Let’s practice this concept on some example data.
 
 ## Out-of-sample RMSE for linear regression
 
@@ -445,6 +552,80 @@ model may overfit the data used to train it.
 ## Cross-validation
 
 Theory. Coming soon …
+
+**1. Cross-validation**
+
+In the last video, we manually split our data
+
+**2. Cross-validation**
+
+we manually split our data into a single test set, and evaluated
+out-of-sample error once.
+
+**3. Cross-validation**
+
+However, this process is a little fragile: the presence or absence of a
+single outlier can vastly change our out-of-sample RMSE.
+
+**4. Cross-validation**
+
+A better approach than a simple train/test split is using multiple test
+sets and averaging out-of-sample error, which gives us a more precise
+estimate of true out-of-sample error. One of the most common approaches
+for multiple test sets is known as “cross-validation”, in which we split
+our data into ten “folds” or train/test splits. We create these folds in
+such a way that each point in our dataset occurs in exactly one test
+set. This gives us 10 test sets, and better yet, means that every single
+point in our dataset occurs exactly once. In other words, we get a test
+set that is the same size as our training set, but is composed of
+out-of-sample predictions!
+
+**5. Cross-validation**
+
+We assign each row to its single test set randomly, to avoid any kind of
+systemic biases in our data. This is one of the best ways to estimate
+out-of-sample error for predictive models.
+
+**6. Fit final model on full dataset**
+
+One important note: after doing cross-validation, you throw all
+resampled models away and start over! Cross-validation is only used to
+estimate the out-of-sample error for your model. Once you know this, you
+re-fit your model on the full training dataset, so as to fully exploit
+the information in that dataset.
+
+**7. Fit final model on full dataset**
+
+This, by definition, makes cross-validation very expensive: it
+inherently takes 11 times as long as fitting a single model (10
+cross-validation models plus the final model). The train function in
+caret does a different kind of re-sampling known as bootstrap
+validation, but is also capable of doing cross-validation, and the two
+methods in practice yield similar results.
+
+**8. Cross-validation**
+
+Lets fit a cross-validated model to the mtcars dataset. First, we set
+the random seed, since cross-validation randomly assigns rows to each
+fold and we want to be able to reproduce our model exactly. The train
+function has a formula interface, which is identical to the formula
+interface for the lm function in base R. However, it supports fitting
+hundreds of different models, which are easily specified with the
+“method” argument. In this case, we fit a linear regression model, but
+we could just as easily specify method = ‘rf’ and fit a random forest
+model, without changing any of our code. This is the second most useful
+feature of the caret package, behind cross-validation of models: it
+provides a common interface to hundreds of different predictive models.
+The trControl argument controls the parameters caret uses for
+cross-validation. In this course, we will mostly use 10-fold
+cross-validation, but this flexible function supports many other
+cross-validation schemes. Additionally, we provide the verboseIter =
+TRUE argument, which gives us a progress log as the model is being fit
+and lets us know if we have time to get coffee while the models run.
+
+**9. Let’s practice!**
+
+Let’s practice cross-validating some models.
 
 ## Advantage of cross-validation
 
@@ -975,6 +1156,51 @@ cross-validation and area under the curve (AUC).
 
 Theory. Coming soon …
 
+**1. Logistic regression on sonar**
+
+Classification models differ from regression models
+
+**2. Classification models**
+
+in that you’re trying to predict a categorical target. For example,
+predicting whether or not a loan will default.This is still a form of
+supervised learning, like with regression problems. As before, we can
+use a train/test split to explore how well our model generalizes to new
+data.In this chapter, we’ll be working with the ‘sonar’ dataset, a
+classic statistics dataset which contains some characteristics of a
+sonar signal for objects that are either rocks or mines. The goal here
+is to train a classifier that can reliably distinguish rocks from mines.
+
+**3. Example: Sonar data**
+
+Let’s load the sonar dataset and take a look at it. Note that the target
+is either “R” for rock and “M” for mine and most of the predictors are
+numbers measuring some aspect of a sonar signal.
+
+**4. Splitting the data**
+
+Analyzing sonar and radar signals was one of the original applications
+of machine learning. As with the diamonds and Boston housing datasets in
+the previous chapter, we’ll start by splitting the dataset randomly into
+training and test sets.This time; however, we’ll do a 60/40 split,
+instead of 80/20. The sonar dataset is very small, so a 40% split gives
+us a more reliable test set. It would be even better to use multiple
+80/20 splits and average the results of each 20% split.We’ll discuss
+this idea in more detail later.
+
+**5. Splitting the data**
+
+First, we randomly order the dataset. This is important to avoid bias in
+our train/test split and make sure we get a representative sample of the
+whole dataset.Next, we identify a row that’s about 60% of the way
+through the dataset. This row will be the last observation in our
+training set.Finally, we check that our training set is 60% of the
+entire dataset.
+
+**6. Let’s practice!**
+
+Let’s practice making train/test splits.
+
 ## Why a train/test split?
 
 > ## *Question*
@@ -1142,6 +1368,66 @@ an lm model.
 
 Theory. Coming soon …
 
+**1. Confusion matrix**
+
+A really useful tool for evaluating binary classification models is
+known as a “confusion matrix”. This is a matrix of the model’s predicted
+classes vs the actual outcomes in reality.It’s called a confusion matrix
+because it reveals how “confused” the model is between the 2 classes,
+and highlights instances in which one class is confused for the other.
+
+**2. Confusion matrix**
+
+The columns of the confusion matrix are the true classes, while the rows
+of the confusion matrix are the predicted classes. From left-to-right,
+top-to-bottom, the cells of the matrix are: true positives, false
+positives, false negatives, and true negatives.The main diagonal of the
+confusion matrix is the cases where the model is correct (true positives
+and true negatives) and the second diagonal of the confusion matrix is
+the cases where the model is incorrect (false negatives and false
+positives).Let’s briefly review the 4 possible outcomes with a binary
+classification model: True positives are cases where the model correctly
+predicted yes. False positives are cases where the model incorrectly
+predicted yes. False negatives are cases where the model incorrectly
+predicted no. And True negatives are cases where the model correctly
+predicted no.All 4 of these outcomes are important when evaluating a
+predictive model’s accuracy, so it’s useful to look at them
+simultaneously in a single table.
+
+**3. Confusion matrix**
+
+To generate a confusion matrix, we start by fitting a model to our
+training set. In this case, we’ll use a simple logistic regression
+model.Next, we predict on the test set, and cut the predicted
+probabilities with a threshold to get class assignments.In other words,
+the logistic regression model outputs the probability that an object is
+a mine, but we need to use these probabilities to make a binary
+decision: rock or mine.In the simplest case, we use a probability of 50%
+as our cutoff, and assign anything under 50% as a rock and anything over
+50% as a mine.
+
+**4. Confusion matrix**
+
+Next we make a 2-way frequency table, using the “table” function in R.
+This table reveals a high number of false positives and false negatives:
+our model is frequently wrong.
+
+**5. Confusion matrix**
+
+Rather than calculate our error rate by hand, we’ll now let the
+“confusionMatrix” function in caret do it for us. This function provides
+the same 2-way frequency table as the table function in base R, but
+outputs a number of useful statistics as well.The most useful statistic
+in this table is the accuracy, which is not very impressive.Compare this
+to the “no information rate” or the case where we always predict the
+dominant class, which is mines. At about 50%, the no information rate
+reveals that using a dummy model that always predicts mines is more
+accurate than our logistic regression!
+
+**6. Let’s practice!**
+
+Let’s practice calculating confusion matrices.
+
 ## Confusion matrix takeaways
 
 > ## *Question*
@@ -1271,6 +1557,48 @@ Good job!
 ## Class probabilities and predictions
 
 Theory. Coming soon …
+
+**1. Class probabilities and predictions**
+
+In the previous video, we worked through an example confusion matrix
+using 50% as the classification cutoff threshold.
+
+**2. Different thresholds**
+
+However, we’re not limited to using this threshold. For example, if we
+wanted to catch more mines (at the expense of more false positives), we
+could use a cutoff of 10%. On the other hand, if we wanted to be more
+certain of our predicted mines (at the expense of catching fewer of
+them) we could use 90% as our threshold.In other words, choosing a
+threshold is an exercise in balancing the true positive rate (or percent
+of mines we catch) with the false positive rate (or percent of non-mines
+we incorrectly flag as mines). Choosing a threshold is therefore very
+important, and also somewhat dependent on a cost-benefit analysis of the
+problem at hand.Unfortunately, there’s not a good heuristic for choosing
+prediction thresholds ahead of time. You usually have to use a confusion
+matrix on your test set to find a good threshold.
+
+**3. Confusion matrix**
+
+Let’s work through an example and pretend we want fewer predicted mines,
+with a greater degree of certainty in each prediction. To do this, we
+could use a larger cutoff value on our predicted probabilities, for
+example 99% rather than 50%, and make the same 2-way frequency table we
+used in the previous exercise.
+
+**4. Confusion matrix with caret**
+
+As before, we can also use caret’s helper functions to calculate the
+statistics associated with this confusion matrix. In this case, we get
+an accuracy of 30%, which is better than our last attempt, but still far
+below the 51% accuracy of the no-information model that always predicts
+mines.
+
+**5. Let’s practice!**
+
+Lets play around with some more confusion thresholds and see if we can
+manually find a good classification threshold for our rocks vs mines
+model.
 
 ## Probabilities and classes
 
@@ -1417,6 +1745,50 @@ lower threshold: 58 (40 + 18) as compared to 47 for the 0.50 threshold.
 
 Theory. Coming soon …
 
+**1. Introducing the ROC curve**
+
+Manually evaluating classification thresholds is hard work!
+
+**2. The challenge**
+
+In order to do this correctly, we’d have to manually calculate dozens
+(or hundreds) of confusion matrices, and then visually inspect them
+until we find one we like.This seems un-scientific, as it requires a lot
+of manual work, is heuristic-based, and could easily overlook a
+particular important threshold. We need a more systematic approach to
+evaluating classification thresholds.
+
+**3. ROC curves**
+
+One common approach to this problem is to let the computer iteratively
+evaluate every possible classification threshold and then calculate the
+true-positive rate and false-positive rate for each of them. We can then
+plot the true postive / false positive rate at every possible threshold,
+and visualize the trade-off between the 2 extreme models (predict all
+mines vs predict all rocks, or 100% true positive rate vs 0% false
+positive rate).The resulting curve is called a ROC curve, or receiver
+operating characteristic curve. (Don’t worry, no one actually remembers
+that acronym.) The ROC curve was developed during World War 2 as a
+method of analyzing radar signals. In this historically interesting
+case, a true positive would be correctly identifying a bomber by it’s
+radar signal, while a false positive would be identifying a flock of
+birds as a bomber.
+
+**4. An example ROC curve**
+
+Let’s take a look at a ROC curve for one of our models from the previous
+video. We use our predicted probabilities along with the actual classes
+as inputs to the colAUC function from the caTools package. If we specify
+the argument plotROC = TRUE, the function also plots the ROC curve for
+us.Here, the X axis is the false positive rate, the y axis is the true
+positive rate, and we can see each possible prediction threshold as a
+point on the curve. Each of these points represents a confusion matrix
+we didn’t have to evaluate by hand.
+
+**5. Let’s practice!**
+
+Let’s practice creating some ROC curves.
+
 ## What’s the value of a ROC curve?
 
 > ## *Question*
@@ -1480,6 +1852,52 @@ calculating a confusion matrix.
 ## Area under the curve (AUC)
 
 Theory. Coming soon …
+
+**1. Area under the curve (AUC)**
+
+Just looking at a ROC curves starts to give us a good idea of how to
+evaluate whether or not our predictive model is any good.
+
+**2. From ROC to AUC**
+
+One interesting observation is that models with random predictions tend
+to produce curves that closely follow the diagonal line. On the other
+hand, models with a classification threshold that allows for perfect
+separation of classes produce a “box” with a single point at (1,0) to
+represent a model where it is possible to achieve a 100% true positive
+rate and 0% false positive rate. Wouldn’t that be nice?Continuing with
+this example, if we calculate the area under each of these 2 ROC curves,
+an interesting property emerges: the area under the curve for a perfect
+model is exactly 1, as our plot represents a 1 by 1 square, and the
+average area under the curve for a random model is point-5, as our plot
+represents a diagonal line.
+
+**3. Defining AUC**
+
+We can use this insight to formalize a measure of model accuracy known
+as “AUC” or “area under the curve.” This metric is calculated based on
+the ROC curve plot, and is extremely useful. Its a single-number summary
+of the model’s accuracy that does not requires us to manually evaluate
+confusion matrices.This number summarizes the model’s performance across
+all possible classification thresholds, and is a single metric we can
+use to rank different models within the same dataset.
+
+**4. Defining AUC**
+
+It ranges from 0 to 1, where point-5 is the AUC of a random model and
+1-point-0 is the AUC of a perfect model. (A perfectly anti-predictive
+model would have an AUC of 0, but that rarely happens).In practice most
+models fall between point-5 and 1-point-0, while a really bad model can
+occasionally be in the point-4 range. As a very rough rule of thumb, AUC
+can be thought of as a letter grade, where point-9 is an “A”, point-8 is
+a “B”, point-7 is a “C”, point-5 is an “F”, and so on. I’m generally
+happy with a model that has an AUC of point-8 or higher, and models in
+the point-7 range are often useful.
+
+**5. Let’s practice!**
+
+Fortunately, the caret package automates calculating the area under the
+ROC curve for us. Let’s practice making use of this versatile metric.
 
 ## Model, ROC, and AUC
 
@@ -1680,6 +2098,67 @@ model parameters through cross-validation and grid search.
 
 Theory. Coming soon …
 
+**1. Random forests and wine**
+
+Now that we’ve explored simple, linear models for classification and
+regression, lets move on to something more interesting.
+
+**2. Random forests**
+
+Random forests are a very popular type of machine learning model. They
+are very useful, especially for beginners, because they are quite robust
+against over-fitting.Random forests typically yield very accurate,
+non-linear models with no extra work on the part of the data scientist.
+This makes them very useful on many real-world problems.
+
+**3. Random forests**
+
+The drawback to random forests is that, unlike linear models, they have
+“hyperparameters” to tune; and unlike regular parameters, for instance
+slope or intercept in a linear model, hyperparameters cannot be directly
+estimated from the training data. They must be manually specified by the
+data scientist as inputs to the predictive model.However, these
+hyperparameters can impact how the model fits the data, and the optimal
+values for these parameters vary dataset to dataset. In practice, the
+default values of the hyperparameters for random forests are often fine,
+but occasionally they aren’t and will need adjustment.Fortunately, we
+have the caret package to help us.
+
+**4. Random forests**
+
+Random forests start with a simple decision tree model, which is fast,
+but usually not very accurate.
+
+**5. Random forests**
+
+Random forests improve the accuracy of a single model by fitting many
+decision trees, each fit to a different bootstrap sample of the original
+dataset.This is called bootstrap aggregation or bagging, and is a
+well-known technique for improving the performance of predictive
+models.Random forests take bagging one step further by randomly
+re-sampling the columns of the dataset at each split. This additional
+level of sampling often helps yield even more accurate models.
+
+**6. Running a random forest**
+
+Let’s fit a random forest using caret.First, we load the sonar dataset,
+and then set the random seed so our results are reproducible.Next, we
+fit a model using the train function, and pass the “ranger” argument to
+fit a random forest. Ranger is a great package for fitting random
+forests in R, and is often much faster than the original randomForest
+package in R.Finally, we plot the result, to see which hyperparameters
+for the random forest give the best results.
+
+**7. Plotting the results**
+
+Finally, we plot the result, to see which hyperparameters for the random
+forest give the best results.In this case it looks like smaller values
+yield higher accuracy.
+
+**8. Let’s practice!**
+
+Let’s practice fitting some random forests.
+
 ## Random forests vs. linear models
 
 > ## *Question*
@@ -1795,6 +2274,59 @@ Caret makes it very easy to try out many different models.
 ## Explore a wider model space
 
 Theory. Coming soon …
+
+**1. Explore a wider model space**
+
+One of the big differences between a random forest and the linear
+regression models we’ve been exploring up to now, is that random forests
+require “tuning”.
+
+**2. Random forests require tuning**
+
+In other words, random forests have “hyperparameters” that control how
+the model is fit. Unlike the “parameters” of a model (for example the
+split points in random forests or coefficients in linear regression),
+hyperparameters must be selected by hand, before fitting the model.The
+most important of these hyperparameters is the “mtry” or the number of
+randomly selected variables used at each split point in the individual
+decision tress that make up the random forest.This number is tunable:
+you could look at as few as 2 or as many as 100 variables per split.
+Forests that used 2 variables would tend to be more random, while
+forests that used 100 variables would tend to be less
+random.Unfortunately, due to their nature, it’s hard to know the best
+value of these hyperparameters without trying them out on your training
+data. For some datasets, 2-variable random forests are best, and on
+other datasets, 100-variable random forests are best.
+
+**3. Example: sonar data**
+
+Once again, caret saves us a lot of boring manual work and automates
+this process of hyperparameter selection. Not only does caret do
+cross-validation to tell us our model’s out-of-sample error, it also
+automates a process called “grid search” for selecting hyperparameters
+based on out-of-sample error.To start, we can play with the tuneLength
+argument to the train function. This argument is used to tell train to
+explore more models along its default tuning grid. First, we load the
+Sonar dataset from the mlbench package, and then we fit a random forest
+with a very fine tuning grid by specifying tuneLength = 10.This will
+take longer than the default model, which uses a tunelength of 3. This
+means we get a potentially more accurate model, but at the expense of
+waiting much longer for it to run.Also note that we’re using the method
+= ‘ranger’ argument to the train function. This uses the ranger package
+in R to fit a random forest, which is much faster than the more widely
+known randomForest package. I highly recommend using ranger if you do
+any random forest modeling. It’s a lot faster and yields very similar
+results.After the model is fit, we can then plot the results
+
+**4. Plot the results**
+
+and visually inspect the model’s accuracy for different values of mtry.
+In this case, it looks like mtry = 14 yields the highest out-of-sample
+accuracy.
+
+**5. Let’s practice!**
+
+Let’s explore the tuneLength argument on some other models.
 
 ## Advantage of a longer tune length
 
@@ -1952,6 +2484,44 @@ between runtime and how deep you want to grid-search the model.
 
 Theory. Coming soon …
 
+**1. Custom tuning grids**
+
+In the last video, we learned how to use the tuneLength argument to
+customize caret models. However, we’re not limited to the defaults train
+chooses for us.
+
+**2. Pros and cons of custom tuning**
+
+We can pass our own, fully-customized grids as data.frames to the
+tuneGrid argument in train function. This is the most flexible method of
+fitting and tuning caret models, and gives us complete control over the
+models that are explored during grid search.The major drawback of this
+method is that it requires the most knowledge of the how the model
+works, and can dramatically increase the model’s runtime if you use a
+very large tuning grid. However, it also gives you full control over the
+model you are tuning, and if you know the algorithm well, you can
+exploit that knowledge to get better results from your models.
+
+**3. Custom tuning example**
+
+Lets make a custom tuning grid. To start, we need to make a data.frame
+with the values of tuning parameters we want to explore. Random forests
+have a single tuning parameter (mtry), so we make a data.frame with a
+single column. In the last video, we saw that mtry values of 2, 8, and
+14 did well, so we’ll make a grid that explores the lower portion of the
+tuning space in more detail, looking at 2,3,4 and 5, as well as 10 and
+20 as values for mtry.After fitting our model, we can plot the results.
+
+**4. Custom tuning**
+
+In this case the tuning value of 10 looks to be the best, though perhaps
+not quite as good as the 14 caret chose by default in the previous
+video.
+
+**5. Let’s practice!**
+
+Let’s explore some custom tuning grids on other datasets.
+
 ## Advantages of a custom tuning grid
 
 > ## *Question*
@@ -2101,6 +2671,69 @@ caret models.
 
 Theory. Coming soon …
 
+**1. Introducing glmnet**
+
+Now we’ll introduce one of my favorite predictive models: the glmnet
+model.
+
+**2. Introducing glmnet**
+
+Glmnet models are an extension of generalized linear models (or the glm
+function in R). However, they have built-in variable selection that is
+useful on many real-world datasets. In particular, it helps linear
+regression models better handle collinearity–or correlation among the
+predictors in a model–and also helps prevent them in being
+over-confident in results derived from small sample sizes. There are 2
+primary forms of glmnet models: lasso regression, which penalizes the
+number of non-zero coefficients, and ridge regression, which penalizes
+the absolute magnitude of the coefficients. These penalties are
+calculated during the model fit, and are used by the optimizer to adjust
+the linear regression coefficients. In other words, a glmnet attempts to
+find a parsimonious model, with either few non-zero coefficients, or
+small absolute magnitude coefficients, that best fit the input dataset.
+This is an extremely useful model, and pairs particularly well with
+random forest models, as it tends to yield different results.
+
+**3. Tuning glmnet models**
+
+glmnet models are a combination of 2 types of models: lasso regression
+(with a penalty on the number of non-zero coefficients) and ridge
+regression (with a penalty on large coefficients). Furthermore, glmnet
+models can fit a *mix* of lasso and ridge models, this is, a model with
+a small penalty on both the number of non-zero coefficients and their
+absolute magnitude. This gives glmnet models many parameters to tune.
+The alpha parameter ranges from 0 to 1, where 0 is pure ridge
+regression, 1 is pure lasso regression, and any value between is a mix
+of the two. Lambda, on the other hand, ranges from 0 to positive
+infinity, and controls the size of the penalty. Higher values of lambda
+will yield simpler models, and high enough values of lambda will yield
+intercept-only models that just predict the mean of the response
+variable in the training data.
+
+**4. Example: “don’t overfit”**
+
+Let’s take a look at the “don’t overfit” dataset, which is based on the
+first Kaggle competition I ever competed in. This dataset has almost as
+many columns as rows, which makes it challenging for traditional linear
+regression models. We’ll make a custom trainControl object that predicts
+class probabilities and uses AUC to perform grid search and select
+models.
+
+**5. Try the defaults**
+
+We’ll start with a simple model that uses the default caret tuning grid:
+3 values of alpha and 3 values of lambda, and plot the result.
+
+**6. Plot the results**
+
+As you can see, the model with an alpha (or mixing percentage) of around
+0-point-55 and a medium value of lambda (or regularization parameter)
+does the best on this dataset.
+
+**7. Let’s practice!**
+
+Let’s explore the glmnet model in some more detail.
+
 ## Advantage of glmnet
 
 > ## *Question*
@@ -2186,12 +2819,10 @@ overfit <- read_csv("data/overfit.csv")
 ```
 
     ## Rows: 250 Columns: 201
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr   (1): y
     ## dbl (200): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15,...
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -2316,6 +2947,57 @@ final model parameters.
 ## glmnet with custom tuning grid
 
 Theory. Coming soon …
+
+**1. glmnet with custom tuning grid**
+
+Random forest models are relatively easy to tune, as there’s really 1
+parameter of importance: mtry.
+
+**2. Custom tuning glmnet models**
+
+Glmnet models, on the other hand, have 2 tuning parameters: alpha (or
+the mixing parameter between ridge and lasso regression) and lambda (or
+the strength of the penalty on the coefficients).However, there’s a
+trick to glmnet models: for a single value of alpha, glmnet fits all
+values of lambda simultaneously! This is called the sub-model trick,
+because we can fit a number of different models simultaneously, and then
+explore the results of each sub-model after the fact. We can also
+exploit this trick to get faster-running grid searches, while still
+exploring finely-grained tuning grids.
+
+**3. Example: glmnet tuning**
+
+With glmnet models, I usually like to explore 2 values of alpha: 0 and
+1, with a wide range of lambdas. caret will use the sub model trick to
+collapse the entire tuning grid down to 2 model fits, which will run
+pretty fast, even for 10 folds of cross-validation.Let’s start by making
+a custom tuning grid, with alphas of 0 and 1 and lambdas between 0 and
+point-1. We use the sequence function to make a sequence of lambdas and
+we use the length argument to determine the length of this sequence.Next
+we fit a glmnet model using the train function with our custom tuning
+grid, and plot the results.
+
+**4. Compare models visually**
+
+Recall that alpha equals 0 is ridge regression, and alpha equals 1 is
+lasso regression. In this case, we can see that lasso regression with a
+small lambda penalty is the best.
+
+**5. Full regularization path**
+
+We can also plot the full regularization path for all of the models with
+alpha = 0. This is a special plot, specific to glmnet models. On the
+left is the intercept only model (high value of lambda) and on the right
+is the full model with no penalty (low value of lambda). The plot shows
+how the regression coefficients are “shrunk” from right to left as you
+increase the strength of the penalty on coefficient size, and therefore
+decrease the complexity of the model. You can also see some lines
+hitting zero as we increase lambda, which represents these coefficients
+dropping out of the model.
+
+**6. Let’s practice!**
+
+Let’s explore this tuning grid on some other datasets.
 
 ## Why a custom tuning grid?
 
@@ -2535,6 +3217,51 @@ accurate predictions.
 
 Theory. Coming soon …
 
+**1. Median imputation**
+
+Real world data have missing values.
+
+**2. Dealing with missing values**
+
+This is a problem for most statistical or machine learning algorithms:
+they usually require numbers to work with, and don’t know what to do
+with missing data.One common approach is to throw out rows with missing
+data, but this is generally not a good idea. It can lead to biases in
+your dataset and generate over-confident models. It can also, in extreme
+cases, lead to you throwing out all of your data.A much better strategy
+is to use the median to guess what a missing value would be, if it
+weren’t missing. This is a very good idea if your data are “missing at
+random” and lets you model data that include rows with missing values.
+
+**3. Example: mtcars**
+
+Let’s generate some data with missing values.We’ll start with the mtcars
+dataset, which contains measurements of the physical characteristics of
+some cars. In this case, we want to predict the car’s MPG, based on the
+other attributes of the car.Let’s pretend some manufacturers don’t
+report their car’s horsepower, and randomly replace some points in this
+column with missing values.We can then split the dataset into a data
+frame of predictors (X) and the target we want to predict (Y). This
+demonstrates caret’s non-formula interface for modeling.Unfortunately,
+due to the missing values in X, when we go to fit the model, it fails
+with a cryptic error. This is a point where many new users get stuck,
+and need to come looking for help.
+
+**4. A simple solution**
+
+The simple solution to this problem is to pass “medianImpute” to the
+preProcess argument for train, which tells caret to impute the missing
+values in X with their medians.caret actually does this imputation
+INSIDE each fold of the cross validation, so you get an honest
+assessment of the entire modeling process: the random forest model is
+fit after the imputation.This model now runs without error, and does not
+require you as a data scientist to do any additional work to clean your
+data.
+
+**5. Let’s practice!**
+
+Let’s practice using median imputation.
+
 ## Median imputation vs. omitting rows
 
 > ## *Question*
@@ -2650,6 +3377,49 @@ in your model validation.
 ## KNN imputation
 
 Theory. Coming soon …
+
+**1. KNN imputation**
+
+There are some problems with median imputation.
+
+**2. Dealing with missing values**
+
+It’s very fast, but it can produce incorrect results if the input data
+has a systematic bias and is missing not-at-random. In other words, if
+there is a pattern in the data that leads to missing values, median
+imputation can miss this.It is therefore useful to explore other
+strategies for missing imputation, particularly for linear models. (Tree
+based models such as random forests tend to be more robust to the
+missing-not-at-random case). One useful type of missing value imputation
+is k-nearest-neighbors, or knn imputation.This is a strategy for
+imputing missing values based on other, “similar” non-missing rows. This
+method tries to overcome the missing-not-at-random problem by inferring
+what the missing value would be, based on observations that are similar
+in other, non-missing variables.
+
+**3. Example: missing not at random**
+
+Fortunately, the train function has a built-in method to do this.Let’s
+make a dataset that has some missing-not-at-random data. We’ll look at
+the mtcars dataset, and pretend that smaller cars (those with a lower
+displacement) don’t report their horsepower.In this case, using median
+imputation will be incorrect. Since only medium and large sized cars
+report their horsepower, the median non-missing value for horsepower
+will be medium to large. This bias can lead to inaccurate models, as
+we’re assuming the wrong value for horsepower in these small cars.
+
+**4. Example: missing not at random**
+
+Using knn imputation is much better, and will use the displacement and
+number of cylinders variables to make an educated guess as to the value
+of horsepower. This will tend to use the smaller cars with known
+horsepower to guess the missing values.This model is more accurate, with
+an RMSE of 3.56 vs 3.61 for the model that used median imputation, but
+it’s a bit slower.
+
+**5. Let’s practice!**
+
+Let’s explore knn imputation on some other datasets.
 
 ## Comparing KNN imputation to median imputation
 
@@ -2781,6 +3551,65 @@ Nice!
 ## Multiple preprocessing methods
 
 Theory. Coming soon …
+
+**1. Multiple preprocessing methods**
+
+The preprocess argument to train can do a lot more than missing value
+imputation.
+
+**2. The wide world of preProcess**
+
+It exposes a very wide range of pre-processing steps that can have a
+large impact on the results of your models.You can also chain together
+multiple preprocessing steps. For example, you can use median
+imputation, then center and scale your data, then fit a glm model. This
+is a common “recipe” for preprocessing data prior to fitting a linear
+model.Note that there is an “order of operations” to the preprocessing
+steps. For example, median imputation always happens prior to centering
+and scaling, and principal components analysis always happens after
+centering and scaling. You can read the help file for the preProcess
+function for much more detail on this.
+
+**3. Example: preprocessing mtcars**
+
+Let’s load the mtcars dataset, and add some missing at random data.Now
+let’s use our linear model recipe: median imputation, then center and
+scale, then fit a glm model.This is as simple as passing a character
+vector of instructions to the preProcess argument for train. Imputation
+will happen first, then centering and scaling, then fitting the glm
+model.
+
+**4. Example: preprocessing mtcars**
+
+We can add additional transformations to our model as well, for example
+principle components analysis after centering and scaling. This yields a
+slightly more accurate model, in terms of RMSE.
+
+**5. Example: preprocessing mtcars**
+
+There are many other cool transformation we can use, for example the
+spatial sign transformation. This transformation projects your data onto
+a sphere, and is very useful for datasets with lots of outliers or
+particularly high dimensionality, but in this case it doesn’t improve
+our model.
+
+**6. Preprocessing cheat sheet**
+
+The number of preprocessing steps caret provides can be a little
+overwhelming, so I’ll leave you with this cheat sheet:First of all,
+always start with median imputation. This will save you all kinds of
+weird issues with messy datasets.Just remember to also try knn
+imputation if you suspect your data might have values missing
+not-at-random.Second, for linear models like lm, glm, and glmnet, always
+center and scale. You just get better results.Third, it’s worth trying
+PCA and spatial sign transformation for your linear models. Sometimes
+these methods can yield better results.Finally, tree-based models such
+as random forests or GBMs typically don’t need much preprocessing. You
+can usually get away with just median imputation.
+
+**7. Let’s practice!**
+
+Let’s try these transformations on some other datasets.
 
 ## Order of operations
 
@@ -2938,6 +3767,53 @@ caret.
 ## Handling low-information predictors
 
 Theory. Coming soon …
+
+**1. Handling low-information predictors**
+
+In the real world, the data we’re using for predictive modeling is often
+messy.
+
+**2. No (or low) variance variables**
+
+Some variables in our dataset might not contain much information. For
+example, variables that are constant, or very close to constant, don’t
+contain much useful information and it can sometimes be useful to remove
+them prior to modeling.Nearly constant variables are particularly
+tricky, because it is easy for one fold of cross-validation to end up
+with a constant column. Constant columns can mess up a lot of models,
+and should be avoided. Furthermore, nearly constant columns contain
+little information, which means that these variables tend not to have an
+impact on the results of your model.In general, I remove extremely
+low-variance variables from my datasets prior to modeling. This speeds
+up my models and makes them run with fewer bugs and generally doesn’t
+have a large impact on their accuracy.
+
+**3. Example: constant column in mtcars**
+
+Let’s have a look at the mtcars dataset from the last video. We’ll add a
+constant-valued column to this dataset, and then try to fit our linear
+regression “recipe.”
+
+**4. Example: constant column in mtcars**
+
+As you can see, something has gone horribly wrong with this model, but
+it’s hard to tell what. All of the metrics are missing.This error is due
+to the constant-valued column, which has a standard deviation of 0.
+Therefore, when we try to scale the column by dividing by the standard
+deviation, we end up with a whole bunch of missing values, which throw
+off the subsequent stages of modeling.
+
+**5. caret to the rescue (again)**
+
+Fortunately, caret again saves us a lot of work. We can add “zv” to the
+preprocessing argument to remove constant-valued columns, or “nzv” to
+remove nearly constant columns. By adding the “zv” argument to our pca
+and regression recipe, we solve the error and get useful results out of
+our caret model.
+
+**6. Let’s practice!**
+
+Let’s explore nearly constant, or low-variance columns in more detail.
 
 ## Why remove near zero variance predictors?
 
@@ -3156,6 +4032,75 @@ out-of-sample accuracy to make sure your model makes good predictions.
 
 Theory. Coming soon …
 
+**1. Principle components analysis (PCA)**
+
+Principle components analysis (or PCA) is one of my favorite
+preprocessing steps for linear regression models. You’ll notice that I
+used it as an example in many of the previous videos.
+
+**2. Principle components analysis**
+
+PCA is incredibly useful because it combines all the low-variance and
+correlated variables in your dataset into a single set of high-variance,
+perpendicular predictors. As we saw before, low variance variables can
+be problematic for cross-validation, but can also contain useful
+information. It’s better to find a systematic way to use that
+information, rather than throw it away.Furthermore, perpendicular
+predictors are useful because they are perfectly uncorrelated. Linear
+regression models have trouble with correlation between variables (also
+known as collinearity), and PCA elegantly removes this issue from the
+equation.
+
+**3. PCA: a visual representation**
+
+PCA searches for high-variance linear combinations of the input data
+that are perpendicular to each other. The first component of PCA is the
+highest variance component, and is the highest variance axis of the
+original dataset. The second PCA component has the second highest
+variance, and so on.This diagram illustrates how PCA works. We have 2
+correlated variables, x and y. When plotted together, we can see their
+relationship. PCA transforms the data with respect to this correlation,
+and finds a new variable (the long diagonal arrow pointing up and to the
+right) that reflects the shared correlation of x and y. After finding
+the first PCA component, the second PCA component is constrained to be
+perpendicular, and is the second arrow going up and to the left.In other
+words, the first PCA component reflects the similarity between x and y,
+while the second PCA component emphasizes the difference between x and
+y. This idea is easy to illustrate in 2 dimensions, but also extends to
+multiple dimensions.
+
+**4. Example: blood-brain data**
+
+Let’s take a look at the blood-brain dataset, which contains lots of
+predictors, many of which are low-variance. We can use the nearZeroVar
+function from the caret package to identify these variables.
+
+**5. Example: blood-brain data**
+
+We can start by just removing the zero variance predictors from the
+dataset with the “zv” argument, prior to modeling. This yields some
+warnings, but no error, and our models run successfully.
+
+**6. Example: blood-brain data**
+
+Next, we can try removing low variance variables with the “nzv”
+argument. This gets rid of all the warnings and yields slightly better
+accuracy.
+
+**7. Example: blood-brain data**
+
+Finally, we can do PCA on the full dataset, removing only the
+zero-variance predictors, which contain no information. This gives the
+best results, because we include the low-variance predictors in the
+model, but combine them together in an intelligent way using PCA.
+
+**8. Let’s practice!**
+
+Finally, we can do PCA on the full dataset, removing only the
+zero-variance predictors, which contain no information. This gives the
+best results, because we include the low-variance predictors in the
+model, but combine them together in an intelligent way using PCA.
+
 ## Using PCA as an alternative to nearZeroVar()
 
 An alternative to removing low-variance predictors is to run PCA on your
@@ -3218,6 +4163,44 @@ best one(s).
 
 Theory. Coming soon …
 
+**1. Reusing a trainControl**
+
+In this chapter, we will work on a more realistic dataset:
+
+**2. A real-world example**
+
+customer churn at a telecom company. We will work through fitting a
+couple different predictive models, and then compare them and choose the
+best one.In order to do a proper apples-to-apples comparison between
+models, we’ll need to explicitly define the training and test folds and
+make sure each model uses exactly the same split for each fold.We can do
+this by pre-defining a trainControl object, which explicitly specifies
+which rows are used for model building and which are used as holdouts.
+This trainControl object can then be used across multiple models.
+
+**3. Example: customer churn data**
+
+Before we start modeling, lets load the customer churn data, from the
+C50 package in R. Then we can summarize the target variable, and find
+that about 14% of the customers churned.
+
+**4. Example: customer churn data**
+
+Next, we make train / test indexes for cross validation using caret’s
+createFolds function.Note that these folds preserve the class
+distribution: the first fold has about a 14% churn rate.
+
+**5. Example: customer churn data**
+
+Now, we use these folds to create a trainControl object, which we can
+re-use to fit multiple models. Each model fit with this train control
+will have exactly the same cross-validation folds.This will allow us to
+later compare these models and be sure we are making a fair comparison.
+
+**6. Let’s practice!**
+
+Let’s practice making trainControl objects for multiple models.
+
 ## Why reuse a trainControl?
 
 > ## *Question*
@@ -3277,6 +4260,43 @@ models using the same CV folds.
 ## Reintroducing glmnet
 
 Theory. Coming soon …
+
+**1. Reintroducing glmnet**
+
+Recall the glmnet model we learned about earlier.
+
+**2. glmnet review**
+
+It is a linear regression model with built-in variable selection and is
+a great baseline model for any predictive modeling problem. It is almost
+always the first model I try on new datasets.It is a useful baseline,
+because it is fast, uses variable selection to ignore noisy variables,
+and also provides linear regression coefficients you can use to
+understand patterns in your data. It yields models that are just as
+interpretable as models from the lm or glm functions in R.A business
+analyst could use these coefficients to understand key drivers of churn,
+but even if you only care about predictions, glmnet is a solid baseline
+that fits quickly and often provided very accurate models.
+
+**3. Example: glmnet on churn data**
+
+Glmnet models are simple, fast, and interpretable. Let’s fit one to the
+churn dataset.After fitting the model, we can plot the results, and look
+at the relationship between alpha and lambda and the AUC of the model.
+
+**4. Visualize results**
+
+In this case, it looks like an alpha of 1 yields the best results on the
+churn dataset. Caret automatically chooses the best values for alpha and
+lambda, so we don’t need to do anything after looking at this plot, but
+its useful to understand how our models works.
+
+**5. Plot the coefficients**
+
+We can also plot the glmnet coefficients, and see how our best model
+evolves as we increase or decrease the penalty on the coefficients.
+
+**6. Let’s practice!**
 
 ## glmnet as a baseline model
 
@@ -3420,6 +4440,43 @@ compared to other models.
 
 Theory. Coming soon …
 
+**1. Reintroducing random forest**
+
+Next, lets try a random forest model on the churn dataset. After glmnet,
+random forest is always the second model I try on any new predictive
+modeling problem.
+
+**2. Random forest review**
+
+Random forests are slower than glmnet models, and are a bit more of a
+black-box in terms of interpretability, but in a lot of situations can
+yield much more accurate models with little parameter tuning. Another
+important aspect of random forests is that they require little
+pre-processing. There’s no need to log transform or otherwise normalize
+your predictors, and they handle the missing-not-at-random case pretty
+well, even with median imputation. They also automatically capture
+threshold effects and variable interactions by default, both of which
+occur often in real-world data. These features make random forests
+typically (though not always) more accurate than glmnet models, and are
+also easier to tune (but slower-running).
+
+**3. Random forest on churn data**
+
+This model is even easier to fit than glmnet. The default caret values
+for the tuning parameters are great, so we don’t need a custom tuning
+grid. Let’s use our custom trainControl object from the last video, and
+fit a random forest model to the churn data using the ranger package.
+
+**4. Random forest on churn data**
+
+As with the glmnet model, we can plot the results from the
+cross-validation and see how mtry relates to AUC. Again, caret has
+automatically chooses the best results for mtry, so we don’t need to do
+anything after viewing this plot, but it’s a useful method for
+understanding the model.
+
+**5. Let’s practice!**
+
 ## Random forest drawback
 
 > ## *Question*
@@ -3533,6 +4590,39 @@ easily compare it to the baseline model.
 
 Theory. Coming soon …
 
+**1. Comparing models**
+
+After fitting 2 (or more models), the next step is deciding which one
+makes the best predictions on new data.
+
+**2. Comparing models**
+
+First of all, we have to make sure they were fit on the exact same
+training and test sets during cross-validation, so we’re sure that we’re
+making an apples-to-apples comparison of their results.We want to pick
+the model with the highest average AUC across all 10 folds, but also
+typically want a model with a low standard deviation in AUC.Fortunately,
+the caret package provides a handy function for collecting the results
+from multiple models. This function is called “resamples” and provides a
+variety of methods for assessing which of 2 models is the best for a
+given dataset.
+
+**3. Example: resamples() on churn data**
+
+Let’s use the resamples function to compare our glmnet and random forest
+models on the churn dataset.First, we make a list of models, and name
+each one for future reference.Next, we collect all the results from all
+the different cross-validation folds using the resamples function.
+
+**4. Summarize the results**
+
+Finally, we can summarize the results using the summary function on the
+resamples object, and choose which model is the best on this dataset.
+
+**5. Let’s practice!**
+
+Let’s practice with the resamples function.
+
 ## Matching train/test indices
 
 > ## *Question*
@@ -3608,6 +4698,54 @@ comparing models, that we’ll explore further in the next exercises.
 ## More on resamples
 
 Theory. Coming soon …
+
+**1. More on resamples**
+
+Resamples provides a ton of cool methods
+
+**2. Comparing models**
+
+for comparing models. It’s one of my favorite functions in the caret
+package (thanks Max!) and actually inspired me to write my own package
+(caretEnsemble) for ensembling lists of caret models.
+
+**3. Box-and-whisker**
+
+Let’s start with a simple box and box-and-whisker plot of AUC scores. We
+can use this to chose the model with the highest average AUC in this
+case the random forest model.
+
+**4. Dot plot**
+
+We can also use a dotplot to show the same information in a visually
+simpler manner.
+
+**5. Density plot**
+
+A density plot shows the full distribution of AUC scores using a kernel
+density plot, and can be a useful way to look for outlier folds with
+unusually high or low AUC.
+
+**6. Scatter plot**
+
+We can also use a scatterplot to directly compare the AUC on all 10
+cross-validation folds. This plot shows us that on every fold, the
+random forest model provided higher AUC than the glmnet model, and would
+make us very confident in choosing the random forest model for this
+particular churn modeling problem.
+
+**7. Another dot plot**
+
+Finally, if we had many models to compare (let’s pretend we’d also fit
+an SVM, a GBM, and a decision tree model), we can still summarize them
+using the same functions. In this case, I typically choose the dotplot,
+which gives a very clean summary, even for dozens of models.Here, it
+seems that the random forest model gives us very good predictions on our
+churn data.
+
+**8. Let’s practice!**
+
+Let’s explore the resamples plots in more detail.
 
 ## Create a box-and-whisker plot
 
@@ -3920,3 +5058,30 @@ many caret models. Now for a brief farewell message from Max…
 ## Summary
 
 Theory. Coming soon …
+
+**1. Summary**
+
+We hope that you’ve enjoyed this course and found it helpful.
+
+**2. What you’ve learned**
+
+In summary, you’ve learned how to use R and the caret package to carry
+out the basic steps of model fitting and evaluation using out-of-sample
+error and cross-validation. You looked at how to tune model parameters
+for better results. And you applied data preprocessing techniques like
+median and knn imputation and PCA to avoid problems due to missing data
+or correlated predictors.
+
+**3. Goals of the caret package**
+
+A major goal of the caret package is to simplify many common steps in
+the predictive modeling process and to help you try different types of
+models and pre-processing techniques without being exposed to the
+specific syntax within each R package.This is just the beginning; each
+data set that you encounter is likely to have its own idiosyncrasies and
+might require different approaches. Fortunately, R has a wealth of
+predictive modeling algorithms that you can use to solve your problems.
+
+**4. Go build some models!**
+
+Thanks for spending time with us. Now go build some models!

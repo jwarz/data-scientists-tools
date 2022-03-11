@@ -27,6 +27,63 @@ The k-means algorithm is one common approach to clustering. Learn how the algori
 
 Theory. Coming soon ...
 
+
+**1. Welcome to the course!**
+
+Hi! I'm Hank Roark, I'm a long-time data scientist and user of the R language, and I'll be your instructor for this course on unsupervised learning in R.
+
+**2. Chapter 1 overview**
+
+In this first chapter I will define 'unsupervised learning', provide an overview of the three major types of machine learning, and you will learn how to execute one particular type of unsupervised learning using R.
+
+**3. Types of machine learning**
+
+There are three major types of machine learning. The first type is unsupervised learning. The goal of unsupervised learning is to find structure in unlabeled data. Unlabeled data is data without a target, without labeled responses.Contrast this with supervised learning. Supervised learning is used when you want to make predictions on labeled data, on data with a target.Types of predictions include regression, or predicting how much of something there is or could be, and classification which is predicting what type or class some thing is or could be.The final type is reinforcement learning, where a computer learns from feedback by operating in a real or synthetic environment.
+
+**4. Labeled vs. unlabeled data**
+
+Here is a quick example of the difference between labeled and unlabeled data. The table on the left is an example with three observations about shapes, each shape with three features, represented by the three columns. This table, the one on the left is an example of unlabeled data.
+
+**5. Labeled vs. unlabeled data**
+
+If an additional vector of labels is added, like the column of labels on the right hand side, labeling each observation as belonging to one of two groups, then we would have labeled data.
+
+**6. Unsupervised learning - clustering**
+
+Within unsupervised learning there are two major goals. The first goal is to find homogeneous subgroups within a population. As an example let us pretend we have a population of six people. Each member of this population might have some attributes, or features — some examples of features for a person might be annual income, educational attainment, and gender.
+
+**7. Unsupervised learning - clustering**
+
+With those three features one might find there are two homogeneous subgroups, or groups where the members are similar by some measure of similarity.
+
+**8. Unsupervised learning - clustering**
+
+Once the members of each group are found, we might label one group subgroup A and the other subgroup B. The process of finding homogeneous subgroups is referred to as clustering.
+
+**9. Clustering examples**
+
+There are many possible applications of clustering. One use case is segmenting a market of consumers or potential consumers. This is commonly done by finding groups, or clusters, of consumers based on demographic features and purchasing history.
+
+**10. Clustering examples**
+
+Another example of clustering would be to find groups of movies based on features of each movie and the reviews of the movies. One might do this to find movies most like another movie.
+
+**11. Unsupervised learning - dimensionality reduction**
+
+The second goal of unsupervised learning is to find patterns in the features of the data. One way to do this is through 'dimensionality reduction'. Dimensionality reduction is a method to decrease the number of features to describe an observation while maintaining the maximum information content under the constraints of lower dimensionality.
+
+**12. Unsupervised learning - dimensionality reduction**
+
+Dimensionality reduction is often used to achieve two goals, in addition to finding patterns in the features of the data.Dimensionality reduction allows one to visually represent high dimensional data while maintaining much of the data variability. This is done because visually representing and understanding data with more than 3 or 4 features can be difficult for both the producer and consumer of the visualization.The third major reason for dimensionality reduction is as a preprocessing step for supervised learning. More on this usage will be covered later.
+
+**13. Challenges and benefits**
+
+Finally a few words about the challenges and benefits typical in performing unsupervised learning.In unsupervised learning there is often no single goal of the analysis. This can be presented as someone asking you, the analyst, "to find some patterns in the data." With that challenge, unsupervised learning often demands and brings out the deep creativity of the analyst.Finally, there is much more unlabeled data than labeled data. This means there are more opportunities to apply unsupervised learning in your work.
+
+**14. Let's practice!**
+
+Now it's your turn to practice what you've learned.
+
 ## Identify clustering problems
 
 > *Question*
@@ -48,6 +105,27 @@ Theory. Coming soon ...
 ## Introduction to k-means clustering
 
 Theory. Coming soon ...
+
+
+**1. Introduction to k-means clustering**
+
+Now that we have some conceptual understanding of unsupervised learning and the different goals of unsupervised learning, let's dig right in with one popular approach to unsupervised learning.
+
+**2. k-means clustering algorithm**
+
+K-means is a clustering algorithm, an algorithm used to find homogeneous subgroups within a population. K-means is the first of two clustering algorithms to be covered in this course.The K-means algorithm works by first assuming the number of subgroups, or clusters, in the data and then assigns each observation to one of those subgroups. In the next video, we will go deeper into how the k-means algorithm works to achieve this goal.For example, one might hypothesize that this data shown on the screen contain 2 subgroups.The k-means algorithm would assign all points in the top right hand corner to one subgroup and all observations in the bottom left hand corner to the other subgroup.
+
+**3. k-means in R**
+
+k-means in R comes with the base R install. Invoking k-means in R is simply a function call to kmeans() function, typically with three parameters.The first parameter is the data, represented as 'x' here. In k-means, like many machine learning algorithms, the data is structured in a matrix with one observation per row of the matrix and one feature in each column of the matrix.The next parameters for 'kmeans' is the number of predetermined groups or clusters. This parameter is called 'centers', for reasons that will be covered in the next video.Finally, the kmeans algorithm has a random component. The implication of this stochastic component is that a single run of kmeans may not find the optimal solution to kmeans.To overcome the random component of the algorithm, 'kmeans' can be run multiple times with the 'best' outcome across all runs being selected as the single outcome. 'nstart' is the parameter that specifies the number of times 'kmeans' will be repeated.There are other parameters to 'kmeans' and I encourage you to check those out in the R documentation when you are ready.
+
+**4. First exercises**
+
+The first exercises use synthetic data that were generated from three subgroups. But if you plot the data it might only appear to be two subgroups. Later in this chapter, you will see how k-means can be used to estimate the number of subgroups when the number of subgroups is not known a priori.Later in this first chapter of the course, you will get experience applying 'kmeans' with a real world, but fun, dataset.
+
+**5. Let's practice!**
+
+With that information, let's get started on the first exercise using 'kmeans'.
 
 ## k-means clustering
 
@@ -123,6 +201,71 @@ Excellent! Let's see how the `kmeans()` function works under the hood in the nex
 ## How k-means works and practical matters
 
 Theory. Coming soon ...
+
+
+**1. How k-means works and practical matters**
+
+In this section I am going to help build intuition about how 'kmeans' works internally.
+
+**2. Objectives**
+
+My goal is to do this through visual understanding; if you are interested in the mathematics, there are many sources available on the web and in print. After that, I will present methods for determining the number of subgroups, or clusters, if that is not known beforehand.
+
+**3. Observations**
+
+Here is data with 2 features. I know that the data for this sample is originally from two subgroups.The first step in the 'kmeans' algorithm is to randomly assign each point to one of the two clusters.
+
+**4. Random cluster assignment**
+
+This is the random aspect of the kmeans algorithm. Cluster one is represented by empty green circles and cluster two is represented by empty blue triangles.The next step of 'kmeans' is to calculate the centers of each of the two subgroups.
+
+**5. Cluster centers calculated**
+
+The centers of each subgroup is the average position of all the points in that subgroup. The center for each subgroup is shown as the solid green circle and the solid blue triangle for subgroups 1 and 2 respectfully.Next, each point in the data is assigned to the cluster of the nearest center.
+
+**6. Iteration 1 - after reassignment**
+
+Here, you can see that all the points closest to the solid blue triangle center have been assigned to that cluster. The equivalent is true for the other subgroup.This completes one iteration of the 'kmeans' algorithm. The 'kmeans' algorithm will finish when no points change assignment.In this case, many points change cluster assignment, so another iteration will be completed.
+
+**7. Iteration 2**
+
+Here, we see the kmeans algorithm after completion of 2 iterations. New cluster centers have been calculated and each observation has been assigned to the cluster of the nearest center.
+
+**8. Iteration 3**
+
+And here is the algorithm after completion of three iterations. Again some points have changed cluster assignments so another iteration of algorithm will complete.
+
+**9. Iteration 4**
+
+And this is after completion of the fourth iteration.
+
+**10. Iteration 5**
+
+The algorithm is completed after the fifth iteration. No observations have changed assignment from the end of the fourth to the end of this iteration so the 'kmeans' algorithm stops. This final plot thus shows the cluster assignments for each observation and the cluster centers for each of the two clusters.There are other stopping criteria that you can specify for the 'kmeans' algorithm, such as stopping after some number of iterations or if the cluster centers move less than some distance.
+
+**11. Model selection**
+
+Because kmeans has a random component, it is run multiple times and the best solution is selected from the multiple runs. The 'kmeans' algorithm needs a measurement of model quality to determine the 'best' outcome of multiple runs.'kmeans' in R uses the total within cluster sum of squares as that measurement. The 'kmeans' run with the minimum total within cluster sum of squares is considered the best model.Total within cluster sum of squares is easy to calculate. For each cluster in the model and for each observation assigned to that cluster, calculate the squared distance from the observation to the cluster center. This is just the squared Euclidean distance from plane geometry class.Sum all of the squared distances calculated and that is the total within cluster sum of squares.
+
+**12. Model selection**
+
+R does all of this model selection automatically. By specifying 'nstart' in kmeans, the algorithm will be run 'nstart' times and the run with the lowest total within cluster sum of squares will be the resulting model. This helps the algorithm find a global minimum instead of a local minimum, but does not guarantee that outcome. In the hands-on exercises I will show you how to determine the total within cluster sum of squares from the results of running kmeans.
+
+**13. Running k-means multiple times**
+
+Here is a visual example of running the 'kmeans' algorithm on the same data multiple times. In this case it is known that there are three clusters within the data. The graph on the top right has lowest total within cluster sum of squares.Another item of note — cluster membership is color-coded in these plots, notice the even between runs that find approximately same solution that the cluster memberships are assigned differently — this is not a big deal, just a result of the 'kmeans' algorithm that you should keep in mind. For repeatability, use R's set-seed function before running 'kmeans' to guarantee reproducibility.
+
+**14. Determining the best number of clusters**
+
+If you don't know the number of subgroups within the data beforehand, there is a way to heuristically determine the number of clusters.You could use trial and error, but instead the best approach is to run 'kmeans' with 1 through some number of clusters, recording the total within cluster sum of squares for each number of clusters. This is then plotted with the number of clusters on the horizontal axis and the total within cluster sum of squares on the vertical axis — this type of plot is referred to as a scree plot.
+
+**15. Determining the best number of clusters**
+
+There may be an 'elbow' in the plotted data, a place where the total within cluster sum of squares decreases much slower with the addition of another cluster. In the plot above, the elbow appears at 2 clusters. This value can then be used to approximate the number of clusters if it is not given or known beforehand.
+
+**16. Let's practice!**
+
+Cool, let's practice what you've learned.
 
 ## Handling random algorithms
 
@@ -200,6 +343,27 @@ Looking at the scree plot, it looks like there are inherently 2 or 3 clusters in
 
 Theory. Coming soon ...
 
+
+**1. Introduction to the Pokemon data**
+
+So far you have applied what you have learned about the 'kmeans' algorithm to synthetic data. In this final set of exercises you will apply your learning to a 'real world' data set.
+
+**2. "Real" data exercise**
+
+This data is about 800 Pokemon from the Pokemon Games (sorry, this isn't from Pokemon Go). This may not be dataset where you have already built intuition. This is normal in data science. You may want to gain some intuition about the data by researching Pokemon in the Pokemon games, or as we will have you do, by poking around in the data.
+
+**3. The Pokemon dataset**
+
+The data was originally collected by Alberto Barradas and is hosted on Kaggle at the address on the screen. The data contains 6 features for each Pokemon: Hit Points, Attack, Defense, Special Attack, Special Defense, and Speed. This is unlabeled data because there is not a single outcome that we want to predict, just some measurements of each Pokemon's abilities.For the data curious, more information on Pokemon and these features can be found at the second address on the screen. Along with exploring the data, this is another way to build intuition about the data.
+
+**4. Data challenges**
+
+In the next set of exercises, you will have multiple steps to complete that are typical in handling real world data.The first is determining which variables to use for clustering — it is important to consider which feature should be used in the clustering exercise. Sometimes trying multiple subsets of features is an important step to find patterns in the data.The next, and something we will delay to a later chapter, is scaling the data. If the features being used in modeling are of different units or scales, scaling the data to a common measure is often completed in order to improve the insights gained from unsupervised learning.In this example, you will be finding homogeneous subgroups of Pokemon. The number of clusters is not known beforehand so you will have to make a determination. In real world data, a nice clean elbow on the scree plot rarely exists, so as an analyst, you will have to use some judgement in this step.Finally, a common output of any analysis exercise is a visual representation of the outcomes. This can also be helpful to gain some additional intuition into the data and the resulting models.
+
+**5. Let's practice!**
+
+This may seem like a lot, but we'll guide you through step-by-step, providing hints and templates all along the way. Let's practice.
+
 ## Practical matters: working with real data
 
 Dealing with real data is often more challenging than dealing with synthetic data.  Synthetic data helps with learning new concepts and techniques, but the next few exercises will deal with data that is closer to the type of real data you might find in your professional or academic pursuits.
@@ -267,6 +431,31 @@ Nice job! You're really getting the hang of k-means clustering quickly!
 
 Theory. Coming soon ...
 
+
+**1. Review of k-means clustering**
+
+Congratulations! You have completed the first of four chapters in the Unsupervised Learning in R course.
+
+**2. Chapter review**
+
+You have covered much in a short period. As a review:You have learned the difference between supervised and unsupervised learning and about the two major goals of unsupervised learning, you have successfully created several k-means cluster models in R, gained intuition about how the k-means algorithm works, learned how to use model selection to handle the circumstance where the number of subgroups is not known beforehand, and finally, you performed clustering to gain insights on a fun real-world dataset.
+
+**3. Coming up: chapter 2**
+
+Coming up in Chapter 2, I will cover hierarchical clustering, which is a clustering method that is used when the number of clusters is not provided a priori.
+
+**4. Coming up: chapter 3**
+
+In Chapter 3, you will learn about principal components analysis, a method for doing dimensionality reduction.
+
+**5. Coming up: chapter 4**
+
+And finally in Chapter 4 you will apply everything you learned in the first three chapters to a data set covering breast cancer tumor observations. This will reinforce your learning from the earlier chapters and help you apply these skills to your own datasets.
+
+**6. See you in the next chapter!**
+
+See you in the next chapter.
+
 # 2. Hierarchical clustering
 
 Hierarchical clustering is another popular method for clustering. The goal of this chapter is to go over how it works, how to use it, and how it compares to k-means clustering.
@@ -274,6 +463,46 @@ Hierarchical clustering is another popular method for clustering. The goal of th
 ## Introduction to hierarchical clustering
 
 Theory. Coming soon ...
+
+**1. Introduction to hierarchical clustering**
+
+In this chapter, you will learn about a different method of clustering called hierarchical clustering.
+
+**2. Hierarchical clustering**
+
+Hierarchical clustering is used when the number of clusters is not known ahead of time. This is different from kmeans clustering where you first have to specify the number of clusters and then execute the algorithm. There are two approaches to hierarchical clustering: bottom-up and top-down. This course will focus on bottom-up clustering.
+
+**3. Simple example**
+
+To gain intuition about this, let's start with a simple example of five observations each with two features.
+
+**4. Five clusters**
+
+Bottom-up hierarchical clustering starts by assigning each point to its own cluster. So in this example, there are five clusters because there are five points. They are color-coded for reference.
+
+**5. Four clusters**
+
+The next step of bottom-up hierarchical clustering is to find the closest two clusters and to join them together into a single cluster. In this example, we now have four clusters since the purple and orange clusters are combined into a single cluster.
+
+**6. Three clusters**
+
+This process continues iteratively, finding the next pair of clusters that are closest to each other and combining them into a single cluster. Here you can see the green and red clusters are combined, resulting in a total of three clusters at this step in the algorithm.
+
+**7. Two clusters**
+
+Again, the hierarchical cluster algorithm continues by joining the two closest clusters together into a single cluster.
+
+**8. One cluster**
+
+This continues until there is only one cluster. Once there is only a single cluster, the hierarchical clustering algorithm stops. I have skipped a few details, like how distance is measured between clusters -- those details are not needed right now; but I will cover them in the next few videos.
+
+**9. Hierarchical clustering in R**
+
+Performing hierarchical clustering in R requires only one parameter -- the distance between the observations. There are many ways to calculate the distance between observations -- for this class we will use standard Euclidean distance. This is calculated using the dist() function in R. The parameter to dist() is a matrix of the same structure as other matrices used in machine learning: one observation per row, one feature per column. The resultant distance matrix is then passed in as the 'd' parameter to the hclust() function in R. This will then return a hierarchical clustering model for interrogation and use. There are a few more parameters available in the hclust() function, but this is enough to get started with creating models. We will cover other typical options later, and as before when you are ready the R documentation for hclust() is a good resource.
+
+**10. Let's practice!**
+
+OK, let's practice what you've learned in the coming exercises. 
 
 ## Hierarchical clustering with results
 
@@ -304,6 +533,47 @@ Awesome! Now that you've made your first hierarchical clustering model, let's le
 ## Selecting number of clusters
 
 Theory. Coming soon ...
+
+
+**1. Selecting number of clusters**
+
+Now that you have created your first hierarchical cluster model in R, let's take the next step in how to interpret and use a hierarchical cluster model.
+
+**2. Interpreting results**
+
+If you look at the summary of the hierarchical clustering model the output is somewhat technical and opaque. In all honesty it's not that useful of a summary.
+
+**3. Dendrogram**
+
+To remedy this issue, first let's build a little more intuition about the hierarchical clustering algorithm.I will be using the same example of 5 observations each with the 2 features you've seen before. These are color-coded and presented in the 2-dimensional plane on the left.The same five points are also presented on the right. On this side we will be building a tree, a dendrogram, which represents the clustering process.
+
+**4. Dendrogram**
+
+As described before, every observation is made a cluster. Then the closest two clusters are joined together into a single cluster. This is equivalent to two points being joined on the tree representation of the clusters.
+
+**5. Dendrogram**
+
+This process continues, finding the closest two clusters and joining them into a new cluster. The distance between the clusters is represented as the height of the horizontal line on the dendrogram.
+
+**6. Dendrogram**
+
+The next iteration then joins the next two closest clusters.
+
+**7. Dendrogram**
+
+This algorithm continues until only one cluster is remaining. This also completes the tree representation, the dendrogram, of the results of the hierarchical clustering algorithm.
+
+**8. Dendrogram plotting in R**
+
+To create the dendrogram in R, the output of the hclust() function, the model, is passed into R's plot() function.The next step typical in hierarchical clustering is to determine the number of clusters you want in the model. This is one of the key model selection steps for this algorithm. A way to think about this is as drawing a cut line at a particular 'height' or distance, between the clusters.Choosing the number of clusters based on distance between the clusters is equivalent to drawing a line on the dendrogram at a height equal to the desired distance between clusters. This is done using the abline() function in R, using the 'h' parameter to specify the height to draw the line, and optionally a color for the line, using the parameter 'c-o-l'.Here I show the results of abline() with a horizontal red line. Specifying height of the line is the equivalent of specifying that you want clusters that are no further apart than that height. Distance between cluster can be any metric, but throughout this course we will be using Euclidean distance.In this example, the result is two clusters with the blue, purple, and orange observations assigned to cluster 1 and the red and green observations assigned to cluster 2.
+
+**9. Tree "cutting" in R**
+
+Finally, to make cluster assignments for each observation in the cluster, you can use the "cut tree" function in R. The "cut tree" function takes as its parameters the hierarchical cluster model and either the height at which to cut the dendrogram tree, the 'h' parameter, or the number of clusters you want to maintain, the 'k' parameter. The results are a vector with a numeric cluster assignment for each observation.
+
+**10. Let's practice!**
+
+Ok, now it's your turn to practice what you've learned.
 
 ## Interpreting dendrogram
 
@@ -344,6 +614,47 @@ If you're wondering what the output means, remember, there are 50 observations i
 ## Clustering linkage and practical matters
 
 Theory. Coming soon ...
+
+
+**1. Clustering linkage and practical matters**
+
+I have a couple more details of hierarchical clustering to cover before wrapping up this chapter.
+
+**2. Linking clusters in hierarchical clustering**
+
+The first detail to cover is how the distance between clusters is determined. As soon as the first two observations are combined into a cluster, the hierarchical clustering algorithm needs rules about how to measure the distance between clusters.There are four methods available in R to measure the distance, or similarity, between clusters.The first method, and the method that is the default to the hclust() function, is the 'complete' method. In the complete method, the distance -- or similarity -- is determined pairwise between all observations in cluster 1 and cluster 2, and the largest distance is used as the distance between the clusters.The second common linkage method is the single method. Again, the pairwise similarity is calculated between points in each cluster, and the smallest such similarity is used as the distance between the clusters.The third common linkage method is the average method. This method uses the average of the pairwise similarities as the distance between the two clusters.The final method works a little different. In the 'centroid' method the centroid of cluster 1 is calculated and the centroid of cluster 2 is calculated, and the distance between the clusters is the distance between the centroids.
+
+**3. Linking methods: complete and average**
+
+In practice, the choice of linkage is one of those model parameters you will need to choose based on the insights provided by the distance methods. As a rule of thumb, 'Complete' and 'Average' tend to produce more balanced trees and are the most commonly used.Here we see the same data with complete linkage on the left hand side and average linkage on the right hand side.
+
+**4. Linking method: single**
+
+'Single' tends to produce trees where observations are fused in one at a time, producing unbalanced trees.
+
+**5. Linking method: centroid**
+
+'Centroid' linkage can create inversions where clusters are fused below either of the individual clusters; this is undesirable behavior -- as such, this method is used much less often than the others.You can see the inversion here in the clusters with the boxes around them. Those clusters have been fused into the tree below where the individual clusters have been fused.
+
+**6. Linkage in R**
+
+Specifying linkage in R is only a matter of specifying the 'method' parameter in the call to the hclust() function. The value of the parameter is a string specifying the linkage method -- here we show creating hierarchical cluster models with complete, average, and single linkages.
+
+**7. Practical matters**
+
+As a final practical matter, many of the machine learning methods, including kmeans and hierarchical clustering, are sensitive to the data which is on different scales or units of measurement.To resolve this, the data is transformed through a linear transformation before performing clustering. This transformation subtracts the mean of a feature from each of the observations, and divides each feature observation by the standard deviation of the feature. This is sometimes referred to as normalization and has the effect of producing a population where the normalized feature has a mean of zero and a standard deviation of one.If you know any of the features are on different scales or units of measure, then it is customary to normalize all the features. Even when the same scales and units of measures are used, it is good practice to check the variability of the means and standard deviations of the features. If the means and standard deviations vary across the features scaling is in order.
+
+**8. Practical matters**
+
+To check the means of all the features the colMeans() function is used, passing in the data matrix. Because features are in the columns this will return the mean value of each feature in the given observations. To calculate the standard deviation of each feature, the apply() function is used, applying the sd() function to each column, or axis 2, of the matrix.
+
+**9. Practical matters**
+
+Producing a matrix where all features have been normalized is done by passing the original matrix to the scale() method in R. The output is a matrix of the same size, with each feature normalized. Here we show checking that the normalized matrix has column means which are zero, within floating point precision, and column standard deviations of 1.
+
+**10. Let's practice!**
+
+Alright, let's get some practice.
 
 ## Linkage methods
 
@@ -455,6 +766,43 @@ Looking at the table, it looks like the hierarchical clustering model assigns mo
 
 Theory. Coming soon ...
 
+
+**1. Review of hierarchical clustering**
+
+Congratulations, you have now successfully completed the clustering chapters.
+
+**2. Hierarchical clustering review**
+
+In this latest chapter you have learned to create hierarchical clustering models in R,
+
+**3. Linking methods: complete and average**
+
+describe how different linkage methods between clusters affect the results of hierarchical clustering,
+
+**4. Hierarchical clustering**
+
+have gained some intuition
+
+**5. Iterating**
+
+about how the hierarchical clustering algorithm functions,
+
+**6. Dendrogram**
+
+saw how to visually represent the results of hierarchical clustering as a dendrogram,
+
+**7. How k-means and hierarchical clustering differ**
+
+learned the difference between kmeans and hierarchical clustering methods and their outputs,
+
+**8. Practical matters**
+
+and you have successfully applied hierarchical clustering to the Pokemon dataset, dealing with practical matters like scaling the data.
+
+**9. Let's practice!**
+
+Let's continue to the third chapter!
+
 # 3. Dimensionality reduction with PCA
 
 Principal component analysis, or PCA, is a common approach to dimensionality reduction. Learn exactly what PCA does, visualize the results of PCA with biplots and scree plots, and deal with practical issues such as centering and scaling the data before performing PCA.
@@ -462,6 +810,47 @@ Principal component analysis, or PCA, is a common approach to dimensionality red
 ## Introduction to PCA
 
 Theory. Coming soon ...
+
+
+**1. Introduction to PCA**
+
+
+
+**2. Two methods of clustering**
+
+Thus far in this course you have learned about two techniques for performing clustering to find similar subgroups within an overall population.The next type of unsupervised machine learning which will be covered is dimensionality reduction. Dimensionality reduction has two main goals: to find structure within features and to aid in visualization.
+
+**3. Dimensionality reduction**
+
+In this course, I will be covering one particular and popular method of dimensionality reduction -- principal components analysis.Principal component analysis has three goals -First, PCA will find a linear combination of the original features. A linear combination just means it takes some fraction of some or all of the features and adds them together. These new features are called principal components.Second, in those new features, PCA will maintain as much variance as it can from the original data for a given number of principal components.Third, the new features are uncorrelated, or orthogonal to each other.
+
+**4. PCA intuition**
+
+As with clustering methods, lets build up some intuition about how principal components analysis achieves these goals by studying the simplest example possible.Here we show a data set with two dimensions, or features -- x on the horizontal axis and y on the vertical axis.Each point on the plane represents an observation in the data set, plotted as points.The goal of PCA would be to find a lower dimensional representation of this data that maintains and describes the maximum amount of variance from the original data. Because the original data is of 2 dimensions, the lower dimensional representation will be only one dimension, or feature. That is, PCA will help us map this data from 2 features to 1 feature while maintaining as much data variability as possible.
+
+**5. PCA intuition**
+
+The first step is to fit a regression line through the data. This line is determined such that it explains all the data with the minimum residual error when those points are mapped to the line.This line is the first principal component of this data.
+
+**6. PCA intuition**
+
+Now we have a new dimension along the line. Each point is then mapped on the line -- projected onto the line. This projected value on the new line is sometimes referred to as the component scores or the factor scores.
+
+**7. Visualization of high dimensional data**
+
+Principal components analysis is also often used to aid in visualization of data of high dimensions. Data with more than 3 or 4 features is often difficult to develop an effective visualization for communication, and can put high cognitive loads on the consumers of the visualization.
+
+**8. Visualization**
+
+Here I am showing the well known iris data set. The iris data set consists of four physical measures of a population of three different types of iris flowers.On the left hand side, each of the four variables is scatter-plotted versus each of the other three variables. The different types of the flowers are plotted as different colors.The right hand side is the result of using PCA to map the four original variables to one variable. On the right hand side, the component scores of the original data is shown, using only the first principal component from the iris data set. The first principal component maintains 92% of the variability of the original data.
+
+**9. PCA in R**
+
+Creating a PCA model in R uses the 'prcomp' function. The first parameter this function is the original data, one observation per row, one feature per column, as in other machine learning applications.The scale parameter indicates if the data should be scaled to standard deviation of one (1) before performing PCA -- more on this in a later video. The center parameters indicates if the data should be centered around zero (0) before performing PCA. I highly recommend also leaving this parameter as TRUE.Finally, performing summary on the output of 'prcomp' Indicates the variance explained by each principal component, the cumulative proportion of variance explained as each principal component is added to the previous principal component, and the standard deviations of the principal components.Again, you are encouraged to look at the R documentation for the prcomp() function when you are ready to dig into the options and results of this function more.
+
+**10. Let's practice!**
+
+Ok, enough, time to create your first principal components model.
 
 ## PCA using prcomp()
 
@@ -527,6 +916,35 @@ Right! Calling `dim()` on `pr.out$rotation` and `pokemon`, you can see they have
 ## Visualizing and interpreting PCA results
 
 Theory. Coming soon ...
+
+
+**1. Visualizing and interpreting PCA results**
+
+Great work on making your first PCA model. In this video, we will explore some additional visualizations often used to understand PCA models.
+
+**2. Biplot**
+
+The first of the two visualizations is known as a biplot. This plot shows all of the original observations as points plotted in the first two principal components. A biplot also shows the original features as vectors mapped onto the first two principal components.In this case, the original features of petal length and petal width are in the same direction in the first two principal components, indicating that these two features are correlated in the original data.
+
+**3. Scree plot**
+
+The second type of plot is a scree plot. Scree plots for PCA either show the proportion of variance explained by each principal component, as on the left hand side here. Or they show the cumulative percentage of variance explained as the number of principal components increases (until all of the original variance is explained when the number of principal components equals the number of features in the original data). This is shown on the right hand side.
+
+**4. Biplots in R**
+
+Creating a biplot in R from the results of 'prcomp' only requires passing the PCA model into the function 'biplot'.
+
+**5. Scree plots in R**
+
+Building up the scree plots requires a few additional steps. First, the standard deviations of each principle component is accessed through the 'sdev' component of the PCA model. Because we want variance instead of standard deviation -- and variance is defined as the square of standard deviation -- we must take the square of each element of 'sdev'.Finally, the proportion of variance for each principle component is determined by dividing by the total variance explained. This is then plotted using R's base plot,
+
+**6. Scree plot**
+
+or your favorite plotting function.
+
+**7. Let's practice!**
+
+Ok, let's get started creating some visualizations to help interpret PCA models. We will guide you along the way.
 
 ## Interpreting biplots (1)
 
@@ -615,6 +1033,35 @@ Awesome! Notice that when the number of principal components is equal to the num
 
 Theory. Coming soon ...
 
+
+**1. Practical issues with PCA**
+
+Before PCA is wrapped up there are some practical issues of using PCA on real world data that will be helpful to know.
+
+**2. Practical issues with PCA**
+
+There are three types of items that need to be considered to complete a successful principal components analysis.The first of these, is dealing with scaling the data. I'll cover this in more detail in just a moment.The second item that sometimes needs to be considered is what to do with observations that have missing data in one or more of the features. There are many ways to address this issue, with one of the simplest approaches being to not include, or drop, observations with missing data.A more complex approach to dealing with missing data is to estimate or impute the missing values. While I will not go into more detail on this item, I wanted you to be aware of these strategies.The third practical matter is how to handle observations with features that are categories -- that is, features that are not numerical. The first strategy is the simplest -- do not include the categorical features in modeling.The second strategy is more involved and requires using one of many methods to encode the categorical features as numbers. This is more detail than I want to cover in this introductory course, but wanted to make sure you were aware of them if the situation presents itself.
+
+**3. mtcars dataset**
+
+Now let's dig into the importance of scaling. Here we will look at the mtcars dataset. This dataset has information about various car models, things like miles per gallon, horsepower, and number of cylinders. Each feature is in different units of measure.
+
+**4. Scaling**
+
+As with clustering, when features are measured in different units or scales, it is often required to center the data by subtracting the means of each feature, and dividing each feature by its standard deviation to normalize the data.Here it's shown that the means of the features and the standard deviations of the features vary quite a bit, indicating that centering and scaling the data are in order before performing PCA.
+
+**5. Importance of scaling data**
+
+A way to understand the importance of scaling the data is to review the biplots of the mtcars data with and without scaling.In the example on the left hand side, without scaling, the displacement and horsepower features are the features with the largest loadings in the first two principal components, with all the other features being overwhelmed. This is because those two features, displacement and horsepower, have the most variance in the data... but that is true only because they are on a different unit of measure from the other features.On the right hand side is the same original data on a biplot but with scaling performed before doing PCA. This biplot now shows a more even distribution of the loading vectors.
+
+**6. Scaling and PCA in R**
+
+Unlike the clustering algorithms, prcomp in R has the option to perform scaling and centering directly in the principal components algorithm. There are two parameters, center, and scale, used to perform this in R. Setting these to TRUE or FALSE will perform or not perform scaling and centering.
+
+**7. Let's practice!**
+
+The coming exercises will help you practice what you've learned.
+
 ## Practical issues: scaling
 
 You saw in the video that scaling your data before doing PCA changes the results of the PCA modeling. Here, you will perform PCA with and without scaling, then visualize the results using biplots.
@@ -657,6 +1104,35 @@ Good job! The new `Total` column contains much more variation, on average, than 
 
 Theory. Coming soon ...
 
+
+**1. Additional uses of PCA and wrap-up**
+
+Congratulations again, you have completed the exercises for principal components analysis.
+
+**2. Dimensionality reduction**
+
+During this chapter you have learned how to perform PCA in R and have gained some geometric intuition about how the algorithm works.
+
+**3. Data visualization**
+
+You have learned how PCA can be used to help visualize high dimensionality data,
+
+**4. Interpreting PCA results**
+
+how to interpret PCA models by making and reading biplots and scree plots,
+
+**5. Importance of data scaling**
+
+and how to deal with one of the most common practical issues when doing PCA: centering and scaling.
+
+**6. Up next**
+
+In the next and final chapter, you will apply everything you have learned about unsupervised learning to understanding a real-world data set.
+
+**7. Let's practice!**
+
+Let's get started!
+
 # 4. Putting it all together with a case study
 
 The goal of this chapter is to guide you through a complete analysis using the unsupervised learning techniques covered in the first three chapters. You'll extend what you've learned by combining PCA as a preprocessing step to clustering using data that consist of measurements of cell nuclei of human breast masses.
@@ -664,6 +1140,35 @@ The goal of this chapter is to guide you through a complete analysis using the u
 ## Introduction to the case study
 
 Theory. Coming soon ...
+
+
+**1. Introduction to the case study**
+
+Thus far you have successfully learned how to do two types of clustering, kmeans and hierarchical, and one type of dimensionality reduction, principal component analysis.
+
+**2. Objectives**
+
+This chapter is a little different. In this chapter I am going to guide you through a complete analysis using the unsupervised learning techniques you have just learned. I have three reasons for doing this: One, reinforce what you have already learned. Two, add in a few steps not covered before, such as getting and preparing the data, and seeing if the results of unsupervised learning would make good features for supervised learning, and Three, emphasize the creativity required to be successful at unsupervised learning.
+
+**3. Example use case**
+
+The dataset you will be using in this analysis was published in a paper by Bennett and Mangasarian. Their data consisted of measurements of nuclei of cells of human breast masses. Each observation, or row, is of a single mass or group of cells and consists of ten features. Each feature is a summary statistic of measurements from the cells in that mass.There is also a target variable, or label, in the dataset. The label would be used if you were doing modeling using supervised learning -- it will not be used for modeling during this analysis.
+
+**4. Analysis**
+
+At a high level you will complete six steps during this analysis. Downloading and preparing the data for modeling, doing some high level exploratory analysis, performing principal component analysis and using visualizations and other mechanisms to interpret the results, completing two types of clustering, understanding and comparing the two types, and finally, combining Principal Component Analysis as a preprocessing step to clustering.During the coding exercises, you will be guided through each step.
+
+**5. Review: PCA in R**
+
+The exercises immediately following this video include completing principal components analysis on the data. As a reminder, the function in R to do principal component analysis is 'prcomp', and takes as its parameters a matrix of the data with each observation as a row of the matrix and one feature per column of the matrix, plus the options for scaling and centering the data. As covered earlier, if the data uses different scales or units of measure, centering and scaling the data before performing PCA can improve the results of the analysis. And don't forget that the summary function in R, with the output of prcomp() as the input, provides important information about the amount of variability described by each principal component.
+
+**6. Unsupervised learning is open-ended**
+
+The analysis you are going to step through is but one path that could have been taken -- as you complete this chapter you might want to give thought to what other approaches you might take when presented with an analysis using unsupervised learning.
+
+**7. Let's practice!**
+
+I hope you'll have fun with the next exercises. We'll help you with hints and templates along the way.
 
 ## Preparing the data
 
@@ -805,6 +1310,31 @@ Great work! Before moving on, answer the following question: What is the minimum
 
 Theory. Coming soon ...
 
+
+**1. PCA review and next steps**
+
+Before moving on, let me quickly review the analysis thus far and get you on the way to the final steps.
+
+**2. Review thus far**
+
+So far in this chapter you have completed 2 new steps typical in unsupervised analysis: downloading the data and performing some basic exploratory analysis. These are steps you will have to do in any machine learning work.You also completed a rather detailed principal component analysis and learned a bit about some latent, or unseen, variables that might exist in the observations.
+
+**3. Next steps**
+
+As a reminder, the next (and final) steps in this particular analysis are to complete two types of clustering on the data, and combine PCA and clustering together. The first exercise on hierarchical clustering also has you compare the results of the clustering to the diagnosis -- if you were doing supervised learning, this step would provide you insights as to if the clusters would be useful features.Next, there is a comparison of the results of the two types of clustering; this type of work is done to contrast the results of the two algorithms and see if they produce similar or different sub-groupings.Finally, you'll combine PCA and clustering. PCA is often used as a preprocessing step for different types of machine learning -- when done that way it creates a type of regularization that helps avoid overfitting the data. In a coming exercise, you will see how PCA affects the results of clustering.
+
+**4. Review: hierarchical clustering in R**
+
+Just some quick reminders on hierarchical clustering:The R function for hierarchical clustering is hclust. hclust takes a matrix of the pair wise distance between observations as its input. You will continue to use Euclidean distance for this exercise.
+
+**5. Review: k-means in R**
+
+And to do kmeans in R, use the kmeans function. The kmeans function takes a matrix of the data, the same matrix you prepared earlier in this chapter. kmeans also requires the number of clusters to be decided before the algorithm is run, which is specified using the centers parameter to kmeans.Recall that the kmeans algorithm has a stochastic or random aspect. To improve the chances of finding a global minimum kmeans is run repeatedly keeping the 'best' results, as measured by total within cluster sum of squares, from all the runs -- the number of times kmeans is run is specified by the nstart parameter to kmeans.
+
+**6. Let's practice!**
+
+Ok, let's get started.
+
 ## Communicating PCA results
 
 This exercise will check your understanding of the PCA results, in particular the loadings and variance explained. The loadings, represented as vectors, explain the mapping from the original features to the principal components. The principal components are naturally ordered from the most variance explained to the least variance explained.
@@ -933,3 +1463,57 @@ table(wisc_pr_hclust_clusters, diagnosis)
 table(wisc_hclust_clusters, diagnosis)
 table(wisc_km$cluster, diagnosis)
 ```
+
+## Wrap-up and review
+
+Theory. Coming soon ...
+
+
+**1. Wrap-up and review**
+
+Congratulations! You have completed the final case study chapter and the course on unsupervised learning in R. I imagine you are ready to be done, so let's quickly wrap up.
+
+**2. Case study wrap-up**
+
+This last chapter presented an entire data analysis using unsupervised learning, from beginning to end. With the knowledge of how to gather and explore a data set, and a creative approach to modeling using unsupervised learning you are prepared to tackle real world problems.
+
+**3. Types of clustering**
+
+During this course you have learned how to perform kmeans and hierarchical clustering using R, resulting in finding homogeneous subgroups within a population.
+
+**4. Dimensionality reduction**
+
+You've learned to decrease the dimensions of data while maintaining maximum data variability using principal components analysis.
+
+**5. Model selection**
+
+Also, you've seen how to deal with challenges you are likely to experience in your work, such as variable and model selection,
+
+**6. Interpreting PCA results**
+
+interpreting the results of your modeling,
+
+**7. Importance of scaling data**
+
+and the importance of scaling and centering your data.
+
+**8. Course review**
+
+All of this has been done using only a few methods and constructs in the R system, demonstrating some of its known strengths for data analysis work.
+
+**9. Dendrogram**
+
+Also, you have gained intuition about how each of the algorithms works internally,
+
+**10. Strengths and weaknesses of each algorithm**
+
+the technical strengths and weakness of each algorithm, and how and when to do model selection.
+
+**11. Course review**
+
+Finally, you completed an example use case from beginning to end.
+
+**12. Hone your skills!**
+
+I hope you've enjoyed learning about unsupervised learning in R. The best way to hone your skills is to practice applying them to interesting real-world datasets that you're motivated to explore. Thanks!
+
