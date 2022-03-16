@@ -1,0 +1,4 @@
+id,name,vals
+29192,"Robert, Withaker",144|48|32
+49301,"Elisa, Waters",22|289
+34456,"Karla, Schmidt",458
