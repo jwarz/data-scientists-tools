@@ -28,105 +28,7 @@
 | [Machine Learning in the tidyverse](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_in_the_tidyverse) | 1. Foundations of "tidy" Machine learning<br/>2. Multiple Models with broom<br/>3. Build, Tune & Evaluate Regression Models<br/>4. Build, Tune & Evaluate Classification Models | --- |
 | [Cluster Analysis](https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis) | 1. Calculating distance between observations<br/>2. Hierarchical clustering<br/>3. K-means clustering | --- |
 
-<table>
-  <thead>
-    <tr>
-      <th>Topic</th>
-      <th>Content</th>
-      <th>Packages</th>
-      <th>Functions</th>
-    </tr>
-  </thead>
-	<tbody>
-		<tr>
-			<td rowspan="9"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a></td>
-			<td rowspan="9">
-			  <ol>
-          <li>k-Nearest Neighbors (kNN)</li>
-          <li>Naive Bayes</li>
-          <li>Logistic Regression</li>
-          <li>Classification Trees</li>
-        </ol>
-			</td>
-			<td><a href="https://CRAN.R-project.org/package=class">class</a></td>
-			<td>knn()</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/majkamichal/naivebayes">naivebayes</a></td>
-			<td>naivebayes()</td>
-		</tr>
-		<tr>
-			<td rowspan="2"><a href="https://github.com/xrobin/pROC">pROC</a></td>
-			<td>roc()</td>
-		</tr>
-		<tr>
-			<td>auc()</td>
-		</tr>
-		<tr>
-			<td rowspan="3"><a href="https://github.com/bethatkinson/rpart">rpart</a></td>
-			<td>rpart()</td>
-		</tr>
-		<tr>
-			<td>plotcp()</td>
-		</tr>
-		<tr>
-			<td>prune()</td>
-		</tr>
-		<tr>
-			<td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td>
-			<td>rpart.plot()</td>
-		</tr>
-		<tr>
-			<td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td>
-			<td>randomForest()</td>
-		</tr>
-	</tbody>
-</table>
 
----
-
-<table>
-  <thead>
-    <tr>
-      <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Topic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-      <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-      <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Packages&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-    </tr>
-  </thead>
-	<tbody>
-		<tr>
-			<td rowspan="6"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a></td>
-			<td rowspan="6">
-			  <ol>
-          <li>k-Nearest Neighbors (kNN)</li>
-          <li>Naive Bayes</li>
-          <li>Logistic Regression</li>
-          <li>Classification Trees</li>
-        </ol>
-			</td>
-			<td rowspan="3">Topic 1</td>
-			<td><img height="50px" align="center" src="img/logo_class.png"/><a href="https://CRAN.R-project.org/package=class">&nbsp;&nbsp;class</a></td>
-		</tr>
-		<tr>
-			<td><img height="50px" align="center" src="img/logo_naivebayes.png"/><a href="https://github.com/majkamichal/naivebayes">&nbsp;&nbsp;naivebayes</a></td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/xrobin/pROC">pROC</a></td>
-		</tr>
-		<tr>
-		  <td rowspan="3">Topic 2</td>
-		  <td><img height="50px" align="center" src="img/logo_rpart.png"/><a href="https://github.com/bethatkinson/rpart">&nbsp;&nbsp;rpart</a></td>
-		</tr>
-		<tr>
-			<td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td>
-		</tr>
-		<tr>
-			<td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td>
-		</tr>
-	</tbody>
-</table>
-
----
 
 <table>
   <thead>
@@ -137,6 +39,7 @@
     </tr>
   </thead>
 	<tbody>
+		<! –– SUPERVISED LEARNING: CLASSIFICATION ––>
 		<tr>
 			<td rowspan="6"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a></td>
 			<td rowspan="6">
@@ -154,6 +57,7 @@
 		<tr><td><img height="50px" align="center" src="img/logo_rpart.png"/><a href="https://github.com/bethatkinson/rpart">&nbsp;&nbsp;rpart</a></td></tr>
 		<tr><td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td></tr>
 		<tr><td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td></tr>
+		<! –– SUPERVISED LEARNING: REGRESSION ––>
 		<tr>
 			<td rowspan="7"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_regression">Supervised Learning: Regression</a></td>
 			<td rowspan="7">
@@ -173,5 +77,17 @@
 		<tr><td><a href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></td></tr>
 		<tr><td><a href="https://github.com/imbs-hl/ranger">ranger</a></td></tr>
 		<tr><td><a href="https://github.com/dmlc/xgboost">xgboost</a></td></tr>
+		<! –– UNSUPERVISED LEARNING ––>
+		<tr>
+			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/unsupervised_learning">Unsupervised Learning</a></td>
+			<td rowspan="1">
+			  <ol>
+          <li>Unsupervised Learning in R</li>
+          <li>Hierarchical clustering</li>
+          <li>Dimensionality Reduction with PCA</li>
+        </ol>
+		</td>
+			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+		</tr>
 	</tbody>
 </table>

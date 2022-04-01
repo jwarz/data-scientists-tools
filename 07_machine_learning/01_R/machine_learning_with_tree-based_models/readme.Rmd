@@ -1,0 +1,2290 @@
+---
+title: "Machine Learning with Tree-Based Models in R"
+author: "Joschka Schwarz"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 2
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = T)
+```
+
+**Short Description**
+
+Learn how to use tree-based models and ensembles to make classification and regression predictions with tidymodels.
+
+**Long Description**
+
+Tree-based machine learning models can reveal complex non-linear relationships in data and often dominate machine learning competitions. In this course, you'll use the tidymodels package to explore and build different tree-based models—from simple decision trees to complex random forests. You’ll also learn to use boosted trees, a powerful machine learning technique that uses ensemble learning to build high-performing predictive models. Along the way, you'll work with health and credit risk data to predict the incidence of diabetes and customer churn.
+
+# 1. Classification Trees
+
+Ready to build a real machine learning pipeline? Complete step-by-step exercises to learn how to create decision trees, split your data, and predict which patients are most likely to suffer from diabetes. Last but not least, you’ll build performance measures to assess your models and judge your predictions.
+
+## Welcome to the course!
+
+Theory. Coming soon ...
+
+
+**1. Welcome to the course!**
+
+Hi and welcome to the course! My name is Sandro and I am a Data Scientist. I will introduce you to some exciting classification and regression methods using decision trees and ensemble models.What exactly are we going to cover?
+
+**2. Course overview**
+
+In Chapter 1, you'll be introduced to a set of supervised learning models known as classification trees.In Chapter 2, you'll build decision trees for regression problems and understand the concepts of cross-validation and bias-variance trade-off.Chapter 3 introduces you to hyperparameter tuning, bagging, and random forests. Finally, Chapter 4 deals with boosting as a powerful ensemble method.Along the way, you'll get to know many useful tools and methods for machine learning.
+
+**3. Decision trees are flowcharts**
+
+Consider this flowchart, which shows a way of classifying living animals. A set of questions like "Can this thing live in water?" or "Does it have feathers?" allow you to narrow down the options until you arrive at a decision.This type of flow chart describes how a computer or an algorithm could go about solving a classification problem. This schema is also found in human decision-making, like holiday planning or deciding where to meet up with your friends.
+
+**4. Advantages of tree-based models**
+
+One of the biggest advantages of decision trees is that they are easy to explain. Anyone able to read a flow-chart is already able to understand a decision tree.In contrast to linear models, trees are able to capture non-linear relationships. Furthermore, trees do not need normalization or standardization of numeric features. Trees can also handle categorical features without the need to create dummy binary indicator variables.Missing values are not a problem, and trees are robust to outliers.Last but not least, it's relatively fast to train a decision tree, so tree methods can handle big datasets.
+
+**5. Disadvantages of tree-based models**
+
+Unfortunately, large and deep trees are hard to interpret. One of the major problems with trees is that they have high variance. If not tuned properly, it's easy to create overly complex trees that do not generalize well to new data, known as overfitting.
+
+**6. The tidymodels package**
+
+There are many great machine learning R packages out there. Throughout the course, we will use the tidymodels package, which orchestrates many of these for you. Among these is parsnip for modeling, rsample for sampling, and yardstick for measuring performance.
+
+**7. The tidymodels package**
+
+To make use of the package, simply type "library parenthesis, tidymodels, then end parenthesis" in your console.It takes care of loading all the other useful packages.
+
+**8. Create a decision tree**
+
+To create a tree model, you first need to create the specification for your later model.This serves as a functional design or skeleton.First, pick a model class, and since we are in a tree-based course, we use decision_tree().
+
+**9. Create a decision tree**
+
+The set_engine() function adds an engine to power or implement the model. We use rpart, which is an R package for "recursive partitioning".
+
+**10. Create a decision tree**
+
+Then, set the mode, like classification or regression.This sets the class of problems the model will solve.
+
+**11. From a model specification to a real model**
+
+A model specification, which you can save, for example, as tree_spec, is only a skeleton. You need to bring it to life using data. We call this process model training or model fitting.Simply call the fit() function on your specification supplying the arguments 'formula' and 'data'. You can read the formula as "outcome is modeled as a function of age and bmi".We used a diabetes dataset in this example. The output informs you about the training time and the number of samples used for training.
+
+**12. Let's build a model!**
+
+Time for you to practice!
+
+## Why tree-based methods?
+
+Tree-based models are one class of methods used in machine learning. They are superior in many ways, but also have their drawbacks.
+
+Which of these statements are true and which are false?
+For each statement, decide whether it is correct or incorrect and drop it into the corresponding bucket.
+
+| Correct statements | Incorrect statements |
+| --- | --- |
+| Trees are robust to outliers in the data. | Trees take longer than other models when trained on large datasets. |
+| Trees can model non-linearity in data, but sometimes learn the noise in the data. | Trees require data preparation, like normalization of numeric variables. |
+
+## Specify that tree
+
+<!-- Guidelines for contexts: https://instructor-support.datacamp.com/en/articles/2375525-course-sequential-exercises. -->
+In order to build models and use them to solve real-world problems, you first need to lay the foundations of your model by creating a *model specification*. 
+This is the very first step in every machine learning pipeline that you will ever build. 
+
+You are going to load the relevant packages and design the specification for your classification tree in just a few steps. 
+
+A magical moment, enjoy!
+
+**Steps**
+
+1. Load the `tidymodels` package.
+2. Pick a model class for decision trees, save it as `tree_spec`, and print it.
+
+```{r}
+# Load the package
+library(readr)
+library(tidymodels)
+
+# Pick a model class
+tree_spec <- decision_tree() 
+
+# Print the result
+tree_spec
+```
+
+3. Set the engine to `"rpart"` and print the result.
+
+```{r}
+# Pick a model class
+tree_spec <- decision_tree() %>% 
+  # Set the engine
+  set_engine("rpart")
+
+# Print the result
+tree_spec
+```
+
+4. Set the mode to `"classification"` and print the result.
+
+```{r}
+# Pick a model class
+tree_spec <- decision_tree() %>% 
+  # Set the engine
+  set_engine("rpart") %>% 
+  # Set the mode
+  set_mode("classification")
+
+# Print the result
+tree_spec
+```
+
+Specific specification! You created a decision tree model class, used an `rpart` engine, and set the mode to "classification". Remember, you will need to perform similar steps every time you design a new model. Come back anytime if you need a reminder!
+
+## Train that model
+
+<!-- Guidelines for contexts: https://instructor-support.datacamp.com/en/articles/2375526-course-coding-exercises. -->
+A model specification is a good start, just like the canvas for a painter. But just as a painter needs color, the specification needs data. Only the final model is able to make predictions:
+
+*Model specification + data = model*
+
+In this exercise, you will train a decision tree that models the risk of diabetes using health variables as predictors. The response variable, `outcome`, indicates whether the patient has diabetes or not, which means this is a binary classification problem (there are just two classes). The dataset also contains health variables of patients like `blood_pressure`, `age`, and `bmi`.
+
+**For the rest of the course, the** `tidymodels` **package will always be pre-loaded.** In this exercise, the `diabetes` dataset is also available in your workspace.
+
+**Steps**
+
+1. Create `tree_spec`, a specification for a decision tree with an `rpart` engine.
+2. Train a model `tree_model_bmi`, where the `outcome` depends only on the `bmi` predictor by fitting the `diabetes` dataset to the specification.
+3. Print the model to the console.
+
+```{r}
+# Load library
+library(readr)
+
+# Load data
+# col_types does not work properly if tidymodels was loaded before
+# diabetes <- read_csv("data/diabetes_tibble.csv", col_types = cols(outcome = col_factor()))
+diabetes <- read_csv("data/diabetes_tibble.csv") |> 
+              mutate(outcome = outcome |> as.factor())
+
+# Create the specification
+tree_spec <- decision_tree() %>% 
+  set_engine("rpart") %>% 
+  set_mode("classification")
+
+# Train the model
+tree_model_bmi <- tree_spec %>% 
+  fit(formula = outcome ~ bmi, 
+      data = diabetes)
+
+# Print the model
+tree_model_bmi
+```
+
+Excellent work! You have defined your model with `decision_tree()` and trained it to predict `outcome` using `bmi` like a professional coach! Printing the model displays useful information, such as the training time, the model formula used during training, and the node details. Remember, *to fit a model to data* is just a different phrase for *training it*. Don't worry about the precise output too much, you'll cover that later!
+
+## How to grow your tree
+
+Theory. Coming soon ...
+
+**1. How to grow your tree**
+
+Welcome back!
+
+**2. Diabetes dataset**
+
+You now know how to create the skeleton or specification of a decision tree and how to train it on real data to create a model.In this section, we’ll use the diabetes dataset from the last exercise.It has an outcome column that indicates if a patient has diabetes or not and some numeric predictors like blood pressure, BMI, and age.
+
+**3. Using the whole dataset**
+
+So far, you used a dataset to fit a decision tree model.Now, how can you test the performance of your model on new data?You would need to collect more data.
+
+**4. Data split**
+
+A common solution for this problem is to split the data into two groups.One part of the data, the training set, is used to estimate parameters, and compare or tune models.The test set is held in reserve until the end of the project.It is used as an unbiased source for measuring final model performance.It is critical that you don't use the test set before this point, otherwise the testing data will have become part of the model development process.
+
+**5. Splitting methods**
+
+There are different ways to create these data partitions. You could take data from the end, from the center, or a random sample. Just select a part of the data set, say 80% of all samples, for the training set and use the rest for the test set. We will introduce more exciting and more robust splitting methods in chapter 2.
+
+**6. The initial_split() function**
+
+The initial_split() function from the rsample package comes in handy because it does all the work for you.The function takes the original data, diabetes, and a proportion argument, say 0-point-9, and randomly assigns samples (rows of the tibble) to the training or test set. If no proportion is given, it assigns 75% of the samples to the training and 25% to the test set.The result is a split object which contains analysis and assessment sets, which are just different names for training and test sets. Here we see that 76 samples are in the test or assessment set, which is about 10% of 768 samples in total.
+
+**7. Functions training() and testing()**
+
+After the initial split, the training() and testing() functions return the actual datasets.Calling the training() function on our split object diabetes_split gives us our training set.Calling the testing() function on our split object diabetes_split gives us our test set.You can compare the number of rows using the nrow() function to validate that the training set has indeed 90% as many rows as the total dataset.
+
+**8. Avoid class imbalances**
+
+Ideally, your training and test sets have the same distribution in the outcome variable. Otherwise, if your data split is very unlucky, you can end up with a training set with no diabetes patients at all, which would result in a useless model.The following code exhibits this problem. First, count the different outcomes of 'yes' and 'no' in the training set using the table() function.Then, count the proportion of 'yes' outcomes among all outcomes in the training set - it's about 15%.Do the same for the test set and find that this contains approximately 63% diabetes patients. This is a real problem if you have a rare disease dataset and end up with no positive outcomes in your training set.
+
+**9. Solution - enforce similar distributions**
+
+A remedy for this is the strata argument, which is set to the target variable "outcome" here.This ensures a random split with a similar outcome distribution in both the training and test sets.
+
+**10. Let's split!**
+
+Enough said, now it's your turn to split the data!
+
+## Train/test split
+
+In order to test your models, you need to build and test the model on two different parts of the data - otherwise, it's like cheating on an exam (as you already know the answers).
+
+The data split is an integral part of the modeling process. You will dive into this by splitting the diabetes data and confirming the split proportions.
+
+The `diabetes` data from the last exercise is pre-loaded in your workspace.
+
+**Steps**
+
+1. Split the `diabetes` tibble into `diabetes_split`, a split of 80% training and 20% test data.
+2. Print the resulting object.
+
+```{r}
+# Create the split
+diabetes_split <- initial_split(diabetes, prop = 0.8)
+
+# Print the data split
+diabetes_split
+```
+
+3. Extract the training and test sets and save them as `diabetes_train` and `diabetes_test`.
+
+```{r}
+# Create the split
+diabetes_split <- initial_split(diabetes, prop = 0.8)
+
+# Extract the training and test set
+diabetes_train <- training(diabetes_split)
+diabetes_test  <- testing(diabetes_split)
+```
+
+4. Verify the correct row proportion in both datasets compared to the `diabetes` tibble.
+
+```{r}
+# Create the split
+diabetes_split <- initial_split(diabetes, prop = 0.8)
+
+# Extract the training and test set
+diabetes_train <- training(diabetes_split)
+diabetes_test  <- testing(diabetes_split)
+
+# Verify the proportions of both sets
+round(nrow(diabetes_train) / nrow(diabetes), 2) == 0.80
+round(nrow(diabetes_test) / nrow(diabetes), 2) == 0.20
+```
+
+You split the data like a samurai! Using `training()` and `testing()` after the split ensures that you save your working datasets. Sharpen your sword for some more splitting magic...
+
+## Avoiding class imbalances
+
+<!-- Guidelines for contexts: https://instructor-support.datacamp.com/en/articles/2375528-course-iterative-exercises -->
+Some data contains very imbalanced outcomes - like a rare disease dataset. When splitting randomly, you might end up with a very unfortunate split. Imagine all the rare observations are in the test and none in the training set. That would ruin your whole training process! 
+
+Fortunately, the `initial_split()` function provides a remedy. You are going to observe and solve these so-called *class imbalances* in this exercise.
+
+There's already a split object `diabetes_split` available with a 75% training and 25% test split.
+
+**Steps**
+
+1. Count the proportion of `"yes"` outcomes in the training and test sets of `diabetes_split`.
+
+```{r}
+# Proportion of 'yes' outcomes in the training data
+counts_train <- table(training(diabetes_split)$outcome)
+prop_yes_train <- counts_train["yes"] / sum(counts_train)
+
+# Proportion of 'yes' outcomes in the test data
+counts_test <- table(testing(diabetes_split)$outcome)
+prop_yes_test <- counts_test["yes"] / sum(counts_test)
+
+paste("Proportion of positive outcomes in training set:", round(prop_yes_train, 2))
+paste("Proportion of positive outcomes in test set:", round(prop_yes_test, 2))
+```
+
+2. Redesign `diabetes_split` using the same training/testing proportion, but the `outcome` variable being equally distributed in both sets.
+3. Count the proportion of `yes` outcomes in both datasets.
+
+```{r}
+# Create a split with a constant outcome distribution
+diabetes_split <- initial_split(diabetes, strata = outcome)
+
+# Proportion of 'yes' outcomes in the training data
+counts_train <- table(training(diabetes_split)$outcome)
+prop_yes_train <- counts_train["yes"] / sum(counts_train)
+
+# Proportion of 'yes' outcomes in the test data
+counts_test <- table(testing(diabetes_split)$outcome)
+prop_yes_test <- counts_test["yes"] / sum(counts_test)
+
+paste("Proportion of positive outcomes in training set:", round(prop_yes_train, 2))
+paste("Proportion of positive outcomes in test set:", round(prop_yes_test, 2))
+```
+
+Impressive - from 40% vs. 20% positive outcomes to 35% in both sets. This was a tough one, but now you know how simple it is to avoid class imbalances! This is even more important in a large dataset with a very imbalanced target variable.
+
+## From zero to hero
+
+<!-- Guidelines for contexts: https://instructor-support.datacamp.com/en/articles/2375526-course-coding-exercises. -->
+You mastered the skills of creating a model specification and splitting the data into training and test sets. 
+You also know how to avoid class imbalances in the split.
+It's now time to combine what you learned in the preceding lesson and build your model using only the training set!
+
+You are going to build a proper *machine learning pipeline*. 
+This is comprised of creating a model specification, splitting your data into training and test sets, and last but not least, fitting the training data to a model. Enjoy!
+
+**Steps**
+
+1. Create `diabetes_split`, a split where the training set contains three-quarters of all `diabetes` rows and where training and test sets have a similar distribution in the `outcome` variable.
+2. Build a decision tree specification for your model using the `rpart` engine and save it as `tree_spec`.
+3. Fit a model `model_trained` using the training data of `diabetes_split` with `outcome` as the target variable and `bmi` and `skin_thickness` as the predictors.
+
+```{r}
+set.seed(9)
+
+# Create the balanced data split
+diabetes_split <- initial_split(diabetes, prop = 0.75, strata = outcome)
+
+# Build the specification of the model
+tree_spec <- decision_tree() %>% 
+  set_engine("rpart") %>% 
+  set_mode("classification")
+
+# Train the model
+model_trained <- tree_spec %>% 
+  fit(formula = outcome ~ bmi + skin_thickness, 
+      data = training(diabetes_split))
+
+model_trained
+```
+
+That pipeline was perfectly handcrafted! Did you see that, according to the nodes, a BMI value of over 42.25 corresponds to a very high risk of diabetes? Let's head over to the engine room to check your model's performance...
+
+## Predict and evaluate
+
+Theory. Coming soon ...
+
+
+**1. Predict and evaluate**
+
+Welcome back! Now that you know how to create a data split and classification tree model, let's learn how to make predictions and evaluate how close they are to the truth.
+
+**2. Predicting on new data**
+
+Like most machine learning packages in R, parsnip has a predict() function.The first argument is the trained model, the second argument is the new or test dataset, and the third argument, type, controls whether the function returns predicted labels or probabilities.
+
+**3. Predicting on new data**
+
+Call the predict() function with the model and the test data. The default argument for type is "class", which produces class labels. If you write type = "prob", the result will contain numeric columns, one for each outcome variable. The numbers are the probability. Note you always get a tibble with rows that correspond to the rows of the new data. This makes working with tidymodels objects very handy.
+
+**4. Confusion matrix**
+
+The confusion matrix is a really useful tool for evaluating binary classification models.It's called a confusion matrix because it reveals how confused the model is between the two classes, and highlights instances in which it confuses one class for the other.
+
+**5. Confusion matrix**
+
+The columns of a confusion matrix correspond to the truth labels,
+
+**6. Confusion matrix**
+
+and the rows represent the predictions.
+
+**7. Confusion matrix**
+
+In a binary classification problem, the confusion matrix will be a 2 by 2 table.The main diagonal contains the counts of correctly classified examples, that is "yes"-predictions that are in fact "yes", and "no" predictions that are in fact "no".A good model will contain most of the examples in the main diagonal (the green squares) and it will have a small number of examples, ideally zero, in the off-diagonal (the red squares).
+
+**8. Confusion matrix**
+
+Let's briefly review the 4 possible outcomes with a binary classification model: True positives or TP are cases where the model correctly predicted yes. True negatives or TN are cases where the model correctly predicted no.False positives or FP are cases where the model predicted positive, but the true labels are negative.False negatives or FN are cases where the model predicted negative, but it's actually positive.
+
+**9. Create the confusion matrix**
+
+So, how to create such a confusion matrix? Simply use the mutate() function to add the true outcome of the diabetes test tibble to the predictions. The resulting tibble pred_combined has two columns: dot-pred_class and true_class.The yardstick package, which is a part of the tidymodels framework, provides the conf_mat() function.You need to specify three arguments: data, which is the data containing your predictions and true values, estimate, which is your prediction column, and truth, which are the true values.The matrix is printed as a result.
+
+**10. Accuracy**
+
+There are quite a few ways of evaluating classification performance. Accuracy measures how often the classifier predicted the class correctly. It is defined as the ratio between the number of correct predictions and the total number of predictions it made. It is quite intuitive and easy to calculate, and in Chapter 3, you'll get to know more helpful performance metrics!The yardstick package makes it very easy to assess accuracy. Just call the accuracy() function the same way you called the conf_mat() function: Simply supply the pred_combined tibble containing predictions and true values, and specify the estimate and truth arguments as before.The result is a tibble with information like the name of the metric, accuracy, and the result. In this case, the model is right about 70% of the time.
+
+**11. Let's evaluate!**
+
+Now that you learned techniques for evaluating classification models, it's your turn!
+
+## Make predictions
+
+<!-- Guidelines for contexts: https://instructor-support.datacamp.com/en/articles/2375526-course-coding-exercises. -->
+Making predictions with data is one of the fundamental goals of machine learning. 
+Now that you know how to split the data and fit a model, it's time to make predictions about unseen samples with your models.
+
+You are going to make predictions about your test set using a model obtained by fitting the training data to a tree specification.
+
+Available in your workspace are the datasets that you generated previously (`diabetes_train` and `diabetes_test`) and a decision tree specification `tree_spec`, which was generated using the following code:
+
+```{r}
+tree_spec <- decision_tree() %>%
+  set_engine("rpart") %>%
+  set_mode("classification") 
+```
+
+**Steps**
+
+1. Fit your specification to the training data using `outcome` as the target variable and all predictors to create `model`.
+2. Use your model to predict the outcome of diabetes for every observation in the test set and assign the result to `predictions`.
+3. Add the true test set outcome to `predictions` as a column named `true_class` and save the result as `predictions_combined`.
+4. Use the `head()` function to print the first rows of the result.
+
+```{r}
+# Train your model
+model <- tree_spec %>% 
+  fit(formula = outcome ~ ., data = diabetes_train)
+
+# Generate predictions
+predictions <- predict(model,
+                       new_data = diabetes_test)
+
+# Add the true outcomes
+predictions_combined <- predictions %>% 
+  mutate(true_class = diabetes_test$outcome)
+  
+# Print the first lines of the result
+head(predictions_combined)
+```
+
+Smooth! Now every predicted `.pred_class` has its `true_class` counterpart. The natural next step would be to compare these two and see how many are correct. You are about to find out in the next exercise.
+
+## Crack the matrix
+
+Visual representations are a great and intuitive way to assess results. One way to visualize and assess the performance of your model is by using a confusion matrix. In this exercise, you will create the confusion matrix of your predicted values to see in which cases it performs well and in which cases it doesn't.
+
+The result of the previous exercise, `predictions_combined`, is still loaded.
+
+**Steps**
+
+1. Calculate the confusion matrix of the `predictions_combined` tibble and save it as `diabetes_matrix`.
+2. Print the result to the console.
+
+```{r}
+# The confusion matrix
+diabetes_matrix <- conf_mat(data = predictions_combined,
+                            estimate = .pred_class,
+                            truth = true_class)
+
+# Print the matrix
+diabetes_matrix
+```
+
+> *Question*
+> ---
+> Out of all true `no` outcomes, what percent did your model correctly predict?<br>
+> <br>
+> ✅ 83%<br>
+> ⬜ 75%<br>
+> ⬜ 55%<br>
+
+Your model found 83% of all negative outcomes, which is not bad! This measure is called *specificity* or the *true negative rate (TNR)*. Let's see how we can quantify this further...
+
+## Are you predicting correctly?
+
+<!-- Guidelines for contexts: https://instructor-support.datacamp.com/en/articles/2375525-course-sequential-exercises. -->
+Your model should be *as good as possible*, right? One way you can assess this is by counting how often it predicted the **correct** classes compared to the total number of predictions it made. As discussed in the video, we call this performance measure **accuracy**. You can either calculate this manually or by using a handy shortcut. Both obtain the same result.
+
+The confusion matrix `diabetes_matrix` and the tibble `predictions_combined` are loaded.
+
+**Steps**
+
+1. Print `diabetes_matrix` to the console and use its entries to directly calculate `correct_predictions`, the number of correct predictions.
+2. Save the **total number** of predictions to `all_predictions`.
+3. Calculate and the accuracy, save it to `acc_manual`, and print it.
+
+```{r}
+# Calculate the number of correctly predicted classes
+correct_predictions <- 84 + 24
+
+# Calculate the number of all predicted classes
+all_predictions <- 84 + 24 + 28 + 17
+
+# Calculate and print the accuracy
+acc_manual <- correct_predictions / all_predictions
+acc_manual
+```
+
+4. Calculate the accuracy using a `yardstick` function and store the result in `acc_auto`.
+5. Print the accuracy estimate.
+
+```{r}
+# The number of correctly predicted classes
+correct_predictions <- 84 + 24
+
+# The number of all predicted classes
+all_predictions <- 84 + 24 + 28 + 17
+
+# The accuracy calculated by hand
+acc_manual <- correct_predictions / all_predictions
+acc_manual
+
+# The accuracy calculated by a function
+acc_auto <- accuracy(predictions_combined,
+                     estimate = .pred_class,
+                     truth = true_class)
+acc_auto$.estimate
+```
+
+> *Question*
+> ---
+> Accuracy is very intuitive but also has its limitations. 
+Imagine we have a naive model that **always** predicts `no`, regardless of the input.
+What would the accuracy be for that model?
+
+The `predictions_combined` tibble from the previous model is still available. 
+Use this and the interactive console to find the answer!<br>
+> <br>
+> ⬜ The accuracy of all *no* predictions is 100%.<br>
+> ⬜ The new model is right about 50% of the time.<br>
+> ⬜ There are no correct predictions for the new model - 0%.<br>
+> ✅ The new model is right in 66% of all cases.<br>
+
+Correct! A naive model always predicting `no` only has a slightly worse accuracy than our model. Luckily there are more useful performance metrics which we'll cover later in the course. Stay tuned for Chapter 3!<br><br> Enjoying the course so far? [Tell us what you think](http://twitter.com/intent/tweet?text=I%20am%20taking%20Machine%20Learning%20with%20Tree-Based%20Models%20in%20R%20on%20@DataCamp!%20So%20far,%20I’ve%20learned%20about%20classification%20trees%20and%20will%20learn%20about%20random%20forests%20and%20boosted%20trees%3A&url=https%3A%2Fdatacamp.com/courses/machine-learning-with-tree-based-models-in-r)​ via Twitter!
+
+# 2. Regression Trees and Cross-Validation
+
+Ready for some candy? Use a chocolate rating dataset to build regression trees and assess their performance using suitable error measures. You’ll overcome statistical insecurities of single train/test splits by applying sweet techniques like cross-validation and then dive even deeper by mastering the bias-variance tradeoff.
+
+## Continuous outcomes
+
+Theory. Coming soon ...
+
+
+**1. Continuous outcomes**
+
+In this section, we’ll talk about another type of decision tree, the regression tree.In regression, the goal is to predict a numeric or quantitative outcome.An example of a continuous numeric outcome is house prices or the number of online store visitors - the underlying value is continuous and can take any positive value.
+
+**2. The dataset**
+
+These examples and the exercises will use data from a survey of chocolate tastings. There is information about the amount of cocoa (in percent), the origin of the bean, the company location, and others.The outcome or response variable is final_grade, which is a numeric double value from 1 to 5.
+
+**3. Construct the regression tree**
+
+Construct the regression tree almost in the same way as a classification tree:Define the model class decision_tree(), set the mode to regression and the engine to "rpart".Afterward, you can train the model by using the fit function as usual. Provide the formula, and data to train on: the dataset chocolate_train.
+
+**4. Predictions using a regression tree**
+
+Predicting with a regression tree is again the same as predicting with a classification tree. Simply call the predict() function and provide the model and new data. In this example, we supply our testing data as the new_data argument.The predicted numbers are chocolate grade scores.
+
+**5. Divide &amp; conquer**
+
+What actually happens during the training of a decision tree? Beginning at the root node, the data is divided into groups according to the feature that will result in the greatest increase in homogeneity in the groups after a split.
+
+**6. Hyperparameters**
+
+For regression trees, the variance or deviation from the mean within a group is aimed to be minimized.There are several “knobs” that we can turn that affect how the tree is grown, and often, turning these knobs - or model hyperparameters - will result in a better performing model.Some of these design decisions are:The min_n parameter defines the minimum number of data points in a node to be split further. The tree_depth is the maximum depth of the tree.cost_complexity is a penalty parameter (a smaller value makes more complex trees).So far, we’ve trained our trees using the default values. These defaults are chosen to provide a decent starting point on most datasets. Finding the optimal hyperparameters is called "tuning", and you will dive into this in Chapter 3.You choose hyperparameters in the very first decision_tree() step. In this example, the hyperparameter tree_depth is four, and the cost_complexity is 0-point-05.
+
+**7. Understanding model output**
+
+Suppose you create a decision tree with tree_depth 1 and fit it to the chocolate_train data.When you print your model to the console, you'll see the following output.First, some information about the fit time and number of samples, then, at the bottom, more details about the decision tree.The first column is the numbered node, here: one to three. The second column is the split criterion, here: root node or cocoa_percent greater than or equal to 0-point-905.The third column is the number of samples in that node, here: 1000 at the root node, 16 at node 2, and 984 at node three. The last column is the mean outcome of all samples in that node. For leaf nodes, that is, those having an asterisk, the model will predict that value.
+
+**8. Let's do regression!**
+
+That was a lot to digest. But since many things are the same as in classification trees, you’ll see the patterns. Off to the exercises.
+
+## Train a regression tree
+
+As you know already, decision trees are a useful tool for classification problems. Moreover, you can also use them to model regression problems. 
+The structural difference is that there will be numeric values (instead of classes) on the leaf nodes.
+
+In this exercise, you will use the chocolate dataset to fit a regression tree. This is very similar to what you already did in Chapter 1 with the `diabetes` dataset.
+
+Available in your workspace is the training data `chocolate_train`.
+
+**Steps**
+
+1. Build `model_spec`, a regression tree specification.
+2. Using the `chocolate_train` data frame, use `model_spec` to train a regression tree that predicts `final_grade` using only the **numerical predictors** in the data.
+
+```{r}
+# Load data
+chocolate <- read_csv("data/chocolate_tibble.csv") |> 
+                mutate(across(where(is.character), as.factor))
+
+# Create the split
+chocolate_split <- initial_split(chocolate, prop = 0.8)
+
+# Extract the training and test set
+chocolate_train <- training(chocolate_split)
+chocolate_test  <- testing(chocolate_split)
+
+# Build the specification
+model_spec <- decision_tree() %>%
+  set_mode("regression") %>%
+  set_engine("rpart")
+
+# Fit to the data
+model_fit <- model_spec %>%
+  fit(formula = final_grade ~ cocoa_percent + review_date,
+      data = chocolate_train)
+
+model_fit
+```
+
+Terrific training of a tree! You specified and fit a regression tree using `cocoa_percent` and `review_date` as predictor variables. Remember that a regression tree is technically the same as a classification tree with the difference that it has numeric values at the terminal nodes and is specified using `"regression"` mode.
+
+## Predict new values
+
+A **predictive** model is one that predicts the outcomes of new, unseen data. Besides the numeric predictors, there are other useful columns in the dataset. The goal of this exercise is to predict the final rating grades of a chocolate tasting based on all other predictor variables that are available.
+
+Loaded in your workspace is the regression tree specification that you created in the last exercise, `chocolate_spec`, as well as the training and testing data (`chocolate_train` and `chocolate_test`).
+
+**Steps**
+
+1. Use `model_spec` to train a regression tree `chocolate_model` that predicts `final_grade` using all predictors in the data.
+2. Predict `final_grade` values using the `chocolate_test` tibble.
+3. Add the results to the `chocolate_test` tibble.
+
+```{r}
+# Train the model
+chocolate_model <- model_spec %>%
+  fit(formula = final_grade ~ .,
+      data = chocolate_train)
+
+# Predict new data
+predictions <- predict(chocolate_model,
+                       new_data = chocolate_test) %>%
+  # Add the test set
+  bind_cols(chocolate_test)
+
+predictions
+```
+
+Wonderful work! You predicted numerical values, namely chocolate grades, using a regression tree. Note the shape of the predictions: a tibble with one column `.pred`, which contains the predicted grades. Using `bind_cols()` glues them back neatly to the test data.
+
+## Inspect model output
+
+A hyperparameter is a value that influences the training process and can have a great impact on model performance. 
+Available in your workspace is a regression tree model that was created using the following code:
+
+```{r}
+model <- decision_tree(tree_depth = 1) %>%
+  set_mode("regression") %>%
+  set_engine("rpart") %>%
+  fit(final_grade ~ ., data = chocolate_train)
+```
+
+As you can see, the `tree_depth` hyperparameter is set to `1`, which means there's only one split in the tree.
+
+What are the possible values for `final_grade` that will be predicted by this regression tree? Use the console to inspect `model` and find the answer.
+
+> *Question*
+> ---
+> ???<br>
+> <br>
+> ⬜ Only 3.183787<br>
+> ⬜ 11.37 or 332.72<br>
+> ✅ 2.27 or 3.198<br>
+> ⬜ Less than 0.905 and greater than 0.905<br>
+
+Exactly! The last value is the prediction. Looks like beans with a lower cocoa percentage were rated higher by the study participants.
+
+## Performance metrics for regression trees
+
+Theory. Coming soon ...
+
+
+**1. Performance metrics for regression trees**
+
+Well done!Now that you’ve trained a regression tree, it’s time to evaluate the performance of the model.
+
+**2. How to measure performance?**
+
+In classification, a single prediction can be either right or wrong, and nothing else. So it makes sense to evaluate classification models using a metric like accuracy or the confusion matrix. In regression, however, your prediction can be almost right or even totally wrong. There is no binary correctness that calculates accuracy. You need to evaluate the regression trees using a different metric.Since the response is some real-valued number, and our prediction is the same, it makes sense to measure how far our predictions are away from the true values.
+
+**3. Common metrics for regression**
+
+There are several metrics for regression and two popular ones are the Mean Absolute Error, or MAE, and the Root Mean Square Error, also known as RMSE.MAE is the average absolute distance between the actual (or observed) values and the predicted values. In this picture, the predictions are depicted by the blue line, and the true values are the black dots. The red bars are the prediction errors, and the mean absolute error would be the average length of the red bars.The root mean squared error is the square root of the average squared length of the red bars.
+
+**4. Formulas and intuition**
+
+The formula for MAE is very straight-forward.You sum up all the absolute differences between the actual and the predicted values and divide them by the number of predictions made to get the average error.The RMSE is similar, but instead of taking the absolute difference between errors, you square the differences of the errors. Then you’ll average those values
+
+**5. Formulas and intuition**
+
+and take the square root of the whole thing. Taking the square root brings the metric back to the original scale of the response.Both MAE and RMSE express average model prediction errors in units of the variable of interest.The key difference between the two is that RMSE punishes large errors more harshly than MAE. Since the errors are squared before they are averaged, the RMSE gives a relatively high weight to large errors. This means the RMSE should be more useful when large errors are particularly undesirable.
+
+**6. Coding: predictions**
+
+Tidymodels provides the yardstick package, which is a toolbox for evaluating your models. Simply load the parsnip package to make predictions and the yardstick package for evaluations, or just the tidymodels package to load both.First, we use the predict function with our model and chocolate_test data to get predicted values.Then, we use the bind_cols() function to add these predictions to the test data as first column dot-pred.
+
+**7. Coding: mae() and rmse()**
+
+This is then passed to the mae() function which also expects the column that contains the predictions or estimates, dot-pred, and the column that contains the truth values, final_grade.The result is a tibble that contains the mean absolute error in the column dot-estimate.The same goes for the rmse() function.This works exactly the same as with the accuracy() function for classification trees.
+
+**8. Let's evaluate!**
+
+Time to put this into practice.
+
+## In-sample performance
+
+It's very important to know whether your regression model is useful or not. A useful model can be one that captures the structure of your training set well. One way to assess this *in-sample* performance is to **predict on training data** and calculate the mean absolute error of all predicted data points.
+
+In this exercise, you will evaluate your in-sample predictions using MAE (mean absolute error). MAE tells you approximately how far away the predictions are from the true values. 
+
+It is calculated using the following formula, where \\(n\\) is the number of predictions made:
+
+$$MAE = \\frac{1}{n} \\cdot \\sum_{i=1}^n \\text{absolute value of the }i\\text{th error}$$
+
+Available in your workspace is your `model`, the regression tree that you built in the last exercises.
+
+**Steps**
+
+1. Create `in_sample_predictions` by using `model` to predict on the `chocolate_train` tibble.
+2. Calculate a vector `abs_diffs` that contains the absolute differences between the in-sample-predictions and the true grades.
+3. Calculate the mean absolute error according to the formula above.
+
+```{r}
+# Predict using the training set
+in_sample_predictions <- predict(model,
+                                 new_data = chocolate_train)
+
+# Calculate the vector of absolute differences
+abs_diffs <- abs(in_sample_predictions$.pred - chocolate_train$final_grade)
+
+# Calculate the mean absolute error
+1 / length(abs_diffs) * sum(abs_diffs)
+```
+
+Excellent! You computed the mean absolute error on the training set. It has the same unit as the outcome variable, in this case, chocolate rating. This in-sample error does not seem to be very high. Let's see how the model performs on the test data.
+
+## Out-of-sample performance
+
+In-sample performance provides insights about how well a model captures the data it is modeling. For predictive models, it's also important to check model performance on new, unseen data, the *out-of-sample* performance.
+
+In this exercise, you will check the **test set predictions** of your model using MAE (mean absolute error). 
+
+Pre-loaded in your workspace again is the `model` that you built and used in the last exercises.
+
+**Steps**
+
+1. Use `model` to predict the out-of-sample `final_grade` and add your predictions to `chocolate_test` using `bind_cols()`.
+2. Calculate the mean absolute error using a `yardstick` function.
+
+```{r}
+# Predict ratings on test set and add true grades
+test_enriched <- predict(model, new_data = chocolate_test) %>%
+    bind_cols(chocolate_test)
+
+# Compute the mean absolute error using one single function
+mae(test_enriched,
+    estimate = .pred,
+    truth = final_grade)
+```
+
+Positive performance! You computed the mean absolute error on the test set using a very simple function call. In-sample and out-of-sample errors are roughly equal, which is a good sign. Keep in mind that most of the `yardstick` functions have the same structure.
+
+## Bigger mistakes, bigger penalty
+
+All errors are wrong, but not all are equally bad. Sometimes large prediction errors are disproportionately more harmful than small errors.
+
+Bigger mistakes, bigger penalty - that’s one of the features of the root mean squared error or RMSE. It squares large errors, which punishes these outliers more harshly than smaller errors.
+
+RMSE can be calculated using the following formula, where the \\(i\\) th `squared_diff` is the square of the \\(i\\) th error.
+
+$$RMSE = \\sqrt{\\frac{1}{n} \\cdot \\sum_{i=1} ^n i\\text{th squared_diff}}$$
+
+In this exercise, you will compute the RMSE of your predictions. 
+
+Available in your workspace is the result of the last exercise, `test_enriched`, the test data with a new column `.pred`, the model's out-of-sample predictions.
+
+**Steps**
+
+1. Calculate the component-wise differences of the predictions and the final grades, square them, and save as `squared_diffs`.
+2. Use the formula above to calculate the RMSE and save it as `rmse_manual`.
+3. Use the `rmse()` function to calculate the error and save as `rmse_auto`.
+4. Print `rmse_manual` and `rmse_auto` to verify that they are the same.
+
+```{r}
+# Calculate the squared differences
+squared_diffs <- (test_enriched$final_grade - test_enriched$.pred)^2
+
+# Compute the RMSE using the formula
+rmse_manual <- sqrt(1 / length(squared_diffs) * sum(squared_diffs))
+
+# Compute the RMSE using a function
+rmse_auto <- rmse(test_enriched,
+                  estimate = .pred,
+                  truth = final_grade)
+
+# Print both errors
+rmse_manual
+rmse_auto
+```
+
+Candid calculation of the RMSE in two ways! Use the RMSE to compare models where large prediction errors shouldn't occur. Which one do you prefer - calculating the error by hand or using `rmse()`? The one you use doesn't matter, the result is the same.
+
+## Cross-validation
+
+Theory. Coming soon ...
+
+
+**1. Cross-validation**
+
+Welcome back!So far, we always used a single train/test split.However, this is a little fragile: a single outlier can vastly change our out-of-sample error.One way to reduce this variance is to average multiple estimates together.This is exactly what cross-validation does.
+
+**2. k-fold cross-validation**
+
+How exactly does it work?The first step is to partition the rows of the training dataset into k subsets of equal sizes.So, if you have 500 data points and you have 5 folds, then there will be 100 data points in each of the folds.
+
+**3. k-fold cross-validation**
+
+In each iteration, you pick one of the k subsets as your test set
+
+**4. k-fold cross-validation**
+
+and the remaining k minus 1 subsets are used as the aggregated training set.
+
+**5. k-fold cross-validation**
+
+
+
+**6. k-fold cross-validation**
+
+You train your machine learning model on each training set and evaluate the model's performance on each test set.
+
+**7. k-fold cross-validation**
+
+Once you are finished you will have 5 estimates of the out-of-sample error.
+
+**8. k-fold cross-validation**
+
+We average those 5 estimates together to get what's called the cross-validated estimate of the error.Since we end up training k models instead of one, it's obvious that cross-validation takes k times as long to evaluate your models this way.
+
+**9. Fit final model on the full dataset**
+
+One important note: You use cross-validation to estimate the out-of-sample error for your model.When finished, you throw all resampled models away and start over, fitting your model on the full training dataset, to fully exploit the information in that dataset.
+
+**10. Coding - Split the data 10 times**
+
+Using the tidymodels package, it's incredibly easy to perform cross-validation.The relevant function is called vfold_cv().It expects the data to be split and v, the number of folds to create. Let's create ten folds of chocolate_train.The result is a tibble with ten rows, each row containing one split together with an id of that fold.
+
+**11. Coding - Fit the folds**
+
+Next, we want to train a model for every fold and measure the out-of-sample performance for that model.tidymodels gives us a shortcut called fit_resamples().It takes the tree specification, tree_spec,the model formula,the resamples, or folds, chocolate_folds,and metrics that you want to assess.The metrics are bundled like a list using the metric_set() function.You already know MAE and RMSE.The result is the previous tibble with a new column dot-metrics containing the out-of-sample errors for every fold. Every result in the dot-metrics column has two rows because we asked for MAE and RMSE in the metric_set.
+
+**12. Coding - Collect all errors**
+
+There is a handy function that extracts all errors from the fitting results.collect_metrics() takes your CV results and an argument summarize, which specifies if you want to calculate summary statistics.The result is a tibble containing every error of every fold.Let's draw a histogram using ggplot2 to visualize these errors. We use the dot-estimate as the x aesthetic and dot-metric as the fill variable.Without cross-validation, we would have only one of the red bars, that is one mean absolute error,and only one of the blue bars, that is one root mean squared error.See how useful cross-validation is for estimating model performance?
+
+**13. Coding - Summarize training sessions**
+
+Of course, you can specify summarize equals TRUE, which is the default in collect_metrics(). This results in a small tibble showing the name and the mean of the metric, and n, the number of errors that were calculated.n here equals 10, because we had 10 folds in our cross-validation, and the mean absolute out-of-sample error in this example is 0-point-383.
+
+**14. Let's cross-validate!**
+
+Let's practice cross-validating your model.
+
+## Create the folds
+
+Splitting data only once into training and test sets has statistical insecurities - there is a small chance that your test set contains only high-rated beans, while all the low-rated beans are in your training set. 
+It also means that you can only measure the performance of your model once.
+
+Cross-validation gives you a more robust estimate of your out-of-sample performance without the statistical pitfalls - it assesses your model more profoundly.
+
+In this exercise, you will create folds of your training data `chocolate_train`, which is pre-loaded.
+
+**Steps**
+
+1. Set a seed of 20 for reproducibility.
+2. Create 10 folds of `chocolate_train` and save the result as `chocolate_folds`.
+
+```{r}
+# Set seed for reproducibility
+set.seed(20)
+
+# Build 10 folds
+chocolate_folds <- vfold_cv(chocolate_train, v = 10)
+
+chocolate_folds
+```
+
+Your fancy folds are almost as perfect as origami! Note that with k-fold CV, your result has `k` rows. Now let's use these folds to fit some models.
+
+## Fit the folds
+
+Now that you split your data into folds, it's time to use them for model training and calculating the out-of-sample error of every single model. This way, you gain a balanced estimation of the performance of your model specification because you evaluated it out-of-sample several times.
+
+Provided in your workspace is `chocolate_folds`, which you created in the last exercise (10 folds of the chocolate training set).
+
+**Steps**
+
+1. Show that you can still do it: create `tree_spec`, a regression tree specification using an `"rpart"` engine.
+2. Use `fit_resamples()` to fit your folds to `tree_spec`, modeling `final_grade` using all other predictors and evaluating with both MAE and RMSE.
+
+```{r}
+# Create a specification
+tree_spec <- decision_tree() %>%
+\t\tset_mode("regression") %>%
+        set_engine("rpart")
+
+# Fit all folds to the specification
+fits_cv <- fit_resamples(tree_spec,
+                 \t\t final_grade ~ .,
+                 \t\t resamples = chocolate_folds,
+                \t\t metrics = metric_set(mae, rmse))
+
+fits_cv
+```
+
+Adequate model automation! Note the result has one row per fold and every entry in the `.metrics` column has two nested rows, one for MAE and one for RMSE. That is a result of the `metrics` argument choice.
+
+## Evaluate the folds
+
+Now that you fit 10 models using all 10 of your folds and calculated the MAE and RMSE of each of these models, it's time to visualize how large the errors are. This way, you build an intuition of the out-of-sample error distribution, which is helpful in assessing your model quality.
+
+You will plot all these errors as a histogram and display the summary statistics across all folds.
+
+The result of the previous exercise, `fits_cv`, is pre-loaded.
+
+**Steps**
+
+1. Collect the out-of-sample errors of all models of `fits_cv` using a single `yardstick` function and save them as `all_errors`.
+2. Create a `ggplot2` histogram using the `.estimate` as the `x` aesthetic and `fill` the bars by `.metric`.
+3. Use the same function as in the first instruction with `summarize = TRUE` to display summary statistics of `fits_cv`.
+
+```{r}
+library(ggplot2)
+
+# Collect the errors
+all_errors <- collect_metrics(fits_cv, summarize = FALSE)
+
+# Plot an error histogram
+ggplot(all_errors , aes(x = .estimate, fill = .metric)) +
+        geom_histogram()
+
+# Collect and print error statistics
+collect_metrics(fits_cv, summarize = TRUE)
+```
+
+Dashing display! You drew all of the errors as a histogram and summarized them in the console. See how RMSE and MAE differ across folds? Without cross-validation, you only would see one of these MAEs and one of these RMSEs.
+
+## Bias-variance tradeoff
+
+Theory. Coming soon ...
+
+
+**1. Bias-variance tradeoff**
+
+Now that we laid the foundations of modeling, you are going to use your new skills to understand a very important concept in machine learning.
+
+**2. Hyperparameters**
+
+When creating a model, the modeler - that's you! - chooses parameters that define the learning process, the hyperparameters. One example is the tree depth, which controls how many splits are made until a decision is reached. Details are to be found in the documentation, like you see here. Stay tuned for chapter three, where we dive deeper into these hyperparameters!
+
+**3. Impact on model complexity**
+
+Using hyperparameters, you control how simple or complex the structure of your model is, as seen in these two examples. We fit a model which constructs 2 levels from the root to the leaf nodes (that's what tree_depth means), and one with 15 levels to our training data. The impact on the final model is huge.
+
+**4. Complex model - overfitting - high variance**
+
+Imagine you want to predict the final_grade in your chocolate dataset. You build a very complex decision tree and find that it fits your training data surprisingly well. In this example, the mean absolute error, calculated by the mae() function, is only around 0-point-2.However, when you check your model on your test set, you observe very large errors. In this case, we say that your model over-fits the data.We call that effect 'high variance'. Our very sophisticated decision tree learned the structure of the training data very well and cannot adapt to the different structure of the test set.
+
+**5. Simple model - underfitting - high bias**
+
+It's easy to simplify your decision tree - for example by using only a few features or columns of the training set.After fitting the new tree and binding together the errors of training and test sets - ouch - all of a sudden you have large errors in both cases.The simple tree is not able to capture the complexity of the training or test set very well.You under-fit the data. We call that effect 'high bias'.
+
+**6. The bias-variance tradeoff**
+
+This chart shows the relationship between these two observations. For very simple models we usually observe high bias and low variance. For overly complex models, we observe very low bias, but high variance.This tradeoff in complexity is called the bias-variance tradeoff. You need to find the right balance of model complexity without overfitting or underfitting the data: the sweet spot in the center.
+
+**7. Detecting overfitting**
+
+What does all this mean in practice?As you have learned in the previous lesson, cross-validation is great for using many training and test sets during model development without even touching the final test set.Suppose you fitted models on all your CV folds. By using the collect_metrics() function on your resampling results, you find a mean out-of-sample error of your folds of 2-point-4. You also fit the final model to the whole training set and measure the in-sample error (using the mae() function) of 0-point-2.As the CV error is much higher than the training error, we can deduce that your model suffers from overfitting. You should decrease the complexity of the tree, for example, by decreasing the number of features or the tree depth.
+
+**8. Detecting underfitting**
+
+Suppose now that you did that and re-fit your model to the whole training set. Again, you calculate your mean absolute in-sample error and see that this is very high. That's a clear indicator that your model now suffers from underfitting. You did too much simplification and should increase the model's complexity.
+
+**9. Let's trade off!**
+
+If you think this is tricky, rest assured: you will understand this step by step in the exercises.
+
+## Call things by their names
+
+## Adjust model complexity
+
+To make good predictions, you need to adjust the complexity of your model.
+Simple models can only represent simple data structures, while complex models can represent fine-grained data structures.
+
+In this exercise, you are going to create trees of different complexities by altering the hyperparameters of a regression tree.
+
+The training data `chocolate_train` is pre-loaded in your workspace.
+
+**Steps**
+
+1. Grow a *decision stump*, a regression tree with only one split.
+
+```{r}
+# Create a model having only one split
+chocolate_model <- decision_tree(tree_depth = 1) %>% 
+\t\tset_mode("regression") %>%
+\t\tset_engine("rpart") %>% 
+\t\tfit(final_grade ~ ., data = chocolate_train)
+chocolate_model
+```
+
+2. Grow a regression tree with a complexity cost of `0.1`.
+
+```{r}
+# Create a model with high cost for complexity
+chocolate_model <- decision_tree(cost_complexity = 0.1) %>% 
+\t\tset_mode("regression") %>%
+\t\tset_engine("rpart") %>% 
+\t\tfit(final_grade ~ ., data = chocolate_train)
+chocolate_model
+```
+
+3. Create a model that has **no penalty** for complexity, **and** a minimum sample size of **2**.
+
+```{r}
+# Create a model that can grow arbitrarily complex
+chocolate_model <- decision_tree(cost_complexity = 0,
+              \t\t\t\t\t min_n = 2) %>% 
+\t\tset_mode("regression") %>%
+        set_engine("rpart") %>% 
+        fit(final_grade ~ ., data = chocolate_train)
+chocolate_model
+```
+
+Amazing alteration! You built models using all available hyperparameters. The simple tree stump should have very high bias, while the last model is so complex that it should have high variance. Let's see how it performs when used for predictions.
+
+## In-sample and out-of-sample performance
+
+Does a more sophisticated model always perform better? As we discussed in the video, that's only half the truth. 
+
+Overfitted models understand the structure of their training set perfectly but cannot generalize to new data. 
+That's a bummer! 
+At the end of the day, the main purpose of a predictive model is to perform well on new data, right? Go investigate!
+
+Pre-loaded is the last model of the previous exercise, `complex_model`, and your training and test data (`chocolate_train` and `chocolate_test`).
+
+**Steps**
+
+1. Use `complex_model` to predict the training set grades, add these predictions to the original training data, and calculate their mean absolute error.
+
+```{r}
+# Predict on and combine with training data and calculate the error
+predict(complex_model, new_data = chocolate_train) %>%
+\tbind_cols(chocolate_train) %>% 
+\tmae(estimate = .pred,
+        truth = final_grade)
+```
+
+2. Adapt your code to predict test set grades, add these predictions to the original test data, and calculate the mean absolute error.
+
+```{r}
+# Predict on and combine with test data and calculate the error
+predict(complex_model, new_data = chocolate_test) %>%
+\tbind_cols(chocolate_test) %>% 
+\tmae(estimate = .pred,
+        truth = final_grade)
+```
+
+You are a great fit for this task, but unfortunately, your model is overfitted. The out-of-sample-error is 10 times higher than the in-sample error, which is close to 0 - that model is way too complex! In the next chapter, you will overcome this by tuning your model's hyperparameters!
+
+# 3. Hyperparameters and Ensemble Models
+
+Time to get serious with tuning your hyperparameters and interpreting receiver operating characteristic (ROC) curves. In this chapter, you’ll leverage the wisdom of the crowd with ensemble models like bagging or random forests and build ensembles that forecast which credit card customers are most likely to churn.
+
+## Tuning hyperparameters
+
+Theory. Coming soon ...
+
+
+**1. Tuning hyperparameters**
+
+Welcome back!
+
+**2. Hyperparameters**
+
+As we discussed earlier in the course, there are several knobs that you can turn to influence the shape and complexity of your trees. Some knobs result in larger or more complex trees, while others force trees to stay small and shallow.These knobs are called "hyperparameters". They control a model's complexity and need to be specified before model training.For decision trees, we have the following three parameters: min_n, which is the minimum number of samples required to split a node, tree_depth, which stands for the maximum depth of a tree, and cost_complexity, which is a penalty number that punishes the size of the tree.
+
+**3. Why tuning?**
+
+When specifying none of these hyperparameters, parsnip chooses the following default values for you: minimum samples per node of 20, maximum depth of 30, and cost_complexity of 0-point-01.These are chosen so that they work well in many cases. However, they may not be the best choice for all datasets.The goal of tuning is now to find the set of hyperparameters that gives your model the best possible performance.
+
+**4. Tuning with tidymodels using the tune package**
+
+Tidymodels has a toolbox containing functions that make tuning hyperparameters real easy: The tune package. The first step is to create a set of hyperparameter values, called a grid, that is the pool in which we search for the best candidate.
+
+**5. Tuning with tidymodels**
+
+The second step is to create a dummy model specification in which we label hyperparameters for tuning.
+
+**6. Tuning with tidymodels**
+
+The third step is to build and evaluate one model for every hyperparameter combination at every grid point.
+
+**7. Tuning with tidymodels**
+
+The fourth step is to select the best performing hyperparameters from all results and plug these into the dummy specification. This way, we get a final specification with the optimal performing hyperparameters.
+
+**8. Step 1: Create placeholders: tune()**
+
+Let's get to coding.To label hyperparameters for tuning, set them equal to tune() in the model specification.It will let other functions know that they need to be optimized.In the printed model specification, the labeled hyperparameters appear under "Main Arguments".
+
+**9. Step 2: Create a tuning grid: grid_regular()**
+
+Tidymodels provides different ways for creating grids. One is the grid_regular() function, which creates an evenly-spaced grid. We use the parameters() function on our specification which extracts the parameters to be tuned and the levels argument to set the number of levels for each parameter to three. We get a tibble with two columns, one for each parameter, and, three times three, nine rows or parameter combinations.
+
+**10. Step 3: Tune the grid: tune_grid()**
+
+The tune_grid() function performs the hyperparameter tuning.It fits a model for every grid point and evaluates the model using  cross-validation and a provided metric.It takes the following arguments: a dummy model specification with labeled parameters for tuning, a model formula, a cross-validation object, resamples, a tuning grid, grid, and a metrics function.
+
+**11. Step 3: Tune the grid: tune_grid()**
+
+The result can be visualized using the autoplot() function.This plot shows a declining accuracy with higher cost-complexity parameter, that means simpler trees perform worse.
+
+**12. Step 4: Use the best parameters: finalize_model()**
+
+The select_best() function is used to select the best performing hyperparameters. We pass our tune_results object as an argument.This function returns a tibble with the hyperparameter values that produced the largest average performance metric value. From our tuning grid, the best performing model was number 4 and had a min_n of 2 and a tree_depth of 8.One last step is needed to finalize the tuning: Once you found the best hyperparameters, you need to plug them into the specification. This is what the finalize_model() function is for.Pass the dummy specification to the finalize_model() function and provide the results of the select_best() function as an argument. In this case, we pass spec_untuned to finalize_model() and provide the final_params tibble.This returns an updated specification with the model hyperparameter values set to the optimal values found during the tuning process.
+
+**13. Let's tune!**
+
+Now it's your turn to tune your models.
+
+## Generate a tuning grid
+
+The standard hyperparameters of most models provide a good fit for most datasets. Yet, they need optimization for the best performance. Otherwise, it's like driving a car with an activated hand brake. Release the brake and tune your models!
+
+In this exercise, you'll create two objects that serve as a starting point: a tuning grid (a set of hyperparameter combinations) and a model specification that you later train with every value of the grid.
+
+**Steps**
+
+1. Create an `rpart` powered classification tree specification, flagging the `tree_depth` and `cost_complexity` parameters for tuning.
+
+```{r}
+# Create a specification with tuning placeholders
+tune_spec <- decision_tree(tree_depth = tune(),
+                           cost_complexity = tune()) %>% 
+  # Specify mode
+  set_mode("classification") %>%
+  # Specify engine
+  set_engine("rpart") 
+
+tune_spec
+```
+
+2. Create a regular grid of `tune_spec`'s hyperparameters that contains two levels for each one.
+
+```{r}
+# Create a specification with tuning placeholders
+tune_spec <- decision_tree(tree_depth = tune(),
+                           cost_complexity = tune()) %>% 
+  # Specify mode
+  set_mode("classification") %>%
+  # Specify engine
+  set_engine("rpart") 
+
+# Create a regular grid
+tree_grid <- grid_regular(parameters(tune_spec),
+                          levels = 2)
+
+tree_grid
+```
+
+Shiny specification and glossy grid! Note that the grid has four grid points (rows) because there are two levels for each of the two hyperparameters, resulting in $2*2$ possible combinations. Time to find out which of these combinations is the best for your model. Let's tune!
+
+## Tune along the grid
+
+After creating the tuning grid and a dummy specification, you need to fit a model on every grid point and evaluate the resulting model. 
+This is very easy in the `tidymodels` framework using the `tune_grid()` function, as introduced in the slides.
+
+In the remaining exercises, you will use the **credit card customers dataset**, which has the following columns:
+
+
+* `still_customer`: flag (*yes* or *no*) that indicates if a customer is still an active customer
+* `total_trans_amt`: total sum of transactions in USD
+* `customer_age`: age of the customer
+* `income_category`: labels like *$60K - $80K* or *Less than $40K* to indicate the category of yearly income
+* … and 16 more columns.
+Feel free to inspect the `customers` tibble in the console! The results of the previous exercise, `tree_grid` and `tune_spec`, are still loaded.
+
+**Steps**
+
+1. Create three cross-validation folds of your dataset and save them as `folds`.
+2. Create `tune_results` by tuning the specification along the grid using all predictors to predict `still_customer`, your CV folds as resamples, and `metric_set(accuracy)`.
+3. Use `autoplot()` to plot the tuning results.
+
+```{r}
+set.seed(275)
+
+# Create CV folds of the customers tibble
+folds <- vfold_cv(customers, 3)
+
+# Tune along the grid
+tune_results <- tune_grid(tune_spec, 
+                          still_customer ~ .,
+                          resamples = folds,
+                          grid = tree_grid,
+                          metrics = metric_set(accuracy))
+
+# Plot the tuning results
+autoplot(tune_results)
+```
+
+Tidy model tuning along the tune grid! The plot shows that trees with a `tree_depth` of only `1` (red line) perform worst and performance declines with higher `cost_complexity` (simpler trees). Let's pick the winner in the next exercise.
+
+## Pick the winner
+
+Once tuning has been performed, it's time to pick the optimal hyperparameters from the results and build the final model. Two helpers from `tidymodels` come in handy:
+
+The function `select_best()` extracts the optimal hyperparameters from a tuning results tibble, and `finalize_model()` plugs these results into the specification, replacing the placeholders.
+
+It's your turn to try this using the results of the last exercise! The objects `tune_spec`, `tune_results`, and `customers` are still loaded.
+
+**Steps**
+
+1. Extract the best-performing parameters of `tune_results` and save them as `final_params`.
+
+```{r}
+# Select the parameters that perform best
+final_params <- select_best(tune_results)
+
+final_params
+```
+
+2. Update your untuned tree specification with `final_params` and save this as `best_spec`.
+
+```{r}
+# Select the parameters that perform best
+final_params <- select_best(tune_results)
+
+# Finalize the specification
+best_spec <- finalize_model(tune_spec, final_params)
+
+best_spec
+```
+
+3. Create your final model by fitting the tuned specification `best_spec` to the `customers` tibble.
+
+```{r}
+# Select the parameters that perform best
+final_params <- select_best(tune_results)
+
+# Finalize the specification
+best_spec <- finalize_model(tune_spec, final_params)
+
+# Build the final model
+final_model <- fit(best_spec,
+                   still_customer ~ .,
+                   data = customers)
+
+final_model
+```
+
+Fearless finalization! You just selected the optimal hyperparameters, plugged them into the specification, and trained the final model. It seems that you now officially gained tuning experience - spot on!
+
+## More model measures
+
+Theory. Coming soon ...
+
+
+## Calculate specificity
+
+Using different measures for model performance allows you to more accurately assess it. 
+There are several metrics for different use cases.
+**Specificity** measures the proportion of **true negative** outcomes correctly identified:
+
+$$\\text{specificity} = \\frac{TN}{TN + FP}$$
+
+This formula implies that with specificity approaching 100%, the number of false positives (FP) *approaches 0*.
+
+In this exercise, you are going to investigate the out-of-sample specificity of your model with cross-validation.
+
+Pre-loaded is the training data of the credit card customers dataset, `customers_train`, and a decision tree specification, `tree_spec`, which was generated using the following code:
+
+```{r}
+tree_spec <- decision_tree() %>% 
+                set_engine("rpart") %>%
+                set_mode("classification")
+```
+
+**Steps**
+
+1. Create three CV folds of `customers_train` and save them as `folds`.
+2. Calculate cross-validated `specificity` using the `fit_resamples()` function that takes your specification `tree_spec`, a model formula, the CV folds, and an appropriate metric set. Use all predictors to predict `still_customer`, saving the results to `specificities`.
+3. Aggregate the results using a single function.
+
+```{r}
+# Create CV folds of the training data
+folds <- vfold_cv(customers_train, v = 3)
+
+# Calculate CV specificity
+specificities <- fit_resamples(tree_spec, 
+                               still_customer ~ .,
+                               resamples = folds,
+                               metrics = metric_set(specificity))
+
+# Collect the metrics
+collect_metrics(specificities)
+```
+
+Well done - you calculated the cross-validated specificity of your model. Such a high specificity indicates that there are very few false positives, so any person the model classifies as positive is likely to be a true positive.
+
+## Draw the ROC curve
+
+Visualizing model performance with a ROC curve allows you to gather the performance across all possible thresholds into a single plot. It shows the sensitivity and specificity for every threshold. The more "up and left" a ROC curve is, the better the model.
+
+You are going to predict class probabilities of credit card customers having churned and plot the results as a ROC curve.
+
+Pre-loaded is a `model`, which is a decision tree that was trained on the credit card customers training set, and the test data, `customers_test`.
+
+**Steps**
+
+1. Use `model` to predict class probabilities on the test set.
+2. Add the results to the test set using `bind_cols()` and save the result as `predictions`.
+3. Calculate the ROC curve of the result.
+4. Plot the ROC curve using `autoplot()`.
+
+```{r}
+# Predict probabilities on test set
+predictions <- predict(model, 
+                       customers_test,
+                       type = "prob") %>% 
+  # Add test set
+  bind_cols(customers_test)
+
+# Calculate the ROC curve for all thresholds
+roc <- roc_curve(predictions, 
+                 estimate = .pred_yes, 
+                 truth = still_customer)
+
+# Plot the ROC curve
+autoplot(roc)
+```
+
+Well predicted, wizard! You predicted on the test set and plotted the ROC curve. It looks really good, being very steep and located very much in the top left corner. Wonder what the area under this curve is? Find out in the following exercise!
+
+## Area under the ROC curve
+
+The area under the ROC curve boils down many other performance estimates to one single number and allows you to assess a model's performance very quickly. For this reason, it is a very common performance measure for classification models.
+
+Using AUC, you can rate the performance of a model using a grading system, where A is the best grade:
+
+
+|AUC       |Grade |
+|:---------|:-----|
+|0.9 - 1   |A     |
+|0.8 - 0.9 |B     |
+|0.7 - 0.8 |C     |
+|0.6 - 0.7 |D     |
+|0.5 - 0.6 |E     |
+
+You are going to calculate your model's AUC using the `predictions` tibble from the last exercise, which is still loaded.
+
+**Steps**
+
+1. Calculate the area under the ROC curve using the `roc_auc()` function and the `predictions` tibble.
+
+```{r}
+# Calculate area under the curve
+auc_result <- roc_auc(predictions,
+                      estimate = .pred_yes, 
+                      truth = still_customer)
+
+print(paste("The area under the ROC curve is", round(auc_result$.estimate, 3)))
+```
+
+Too easy for you! An AUC of over 92% corresponds to grade A in the grading system and suggests a very helpful model!
+
+## Bagged trees
+
+Theory. Coming soon ...
+
+
+**1. Bagged trees**
+
+Decision trees are easy to understand and interpret, but often a small change in the data can result in a very different series of splits and a very different model. This is one of the main drawbacks of decision trees: the high variance that you have observed in the exercises.
+
+**2. Many heads are better than one**
+
+One solution to this is the wisdom of the crowd: The collective knowledge of many people typically exceeds the knowledge of any single individual. This brings up the idea of so-called "ensemble models", which means that you use several models and their predictions together instead of one single model.
+
+**3. Bootstrap &amp; aggregation**
+
+What does the term "bagged trees" mean? Bagging is an ensemble method and is shorthand for Bootstrap Aggregation. Bootstrapping simply means sampling rows at random from the training dataset, with replacement.  When you draw samples with replacement, that means that you'll draw a single training example more than once. This results in a modified version of the training set where some rows are represented multiple times and some rows are absent. This let's you generate new data that's similar to the data you started with. By doing this, you can fit many different, but similar, models.Aggregation is done using the average prediction of all models as the final regression prediction, or the majority vote in classification.
+
+**4. Step 1: Bootstrap and train**
+
+Bagging works in the following way:First, you draw a sample with replacement from the original training setThen, you train a decision tree model using that sampled training set.Repeat these steps as many times as you like - that could be 10 times, 100 times, or 1000. Typically, the more trees, the better the model, but the more training time you need. This example shows an ensemble of three bagged trees.
+
+**5. Step 2: Aggregate**
+
+Now, let's say you have three bootstrapped trees that make up your ensemble. To generate a prediction using a bagged tree model, you generate predictions from each of the trees and then simply aggregate the predictions together to get a final prediction. The bagged, or "ensemble" prediction is the average prediction or majority vote across the bootstrapped trees.Bagging can dramatically reduce the variance of unstable models such as trees, leading to improved performance.
+
+**6. Coding: Specify the bagged trees**
+
+Fitting a bagged decision tree model in R is very similar to fitting a decision tree. The package baguette offers a bag_tree() function that behaves similarly to the decision_tree() function.We specify the mode as "classification" and set the engine to "rpart". Additionally, we can specify how many bagged trees we want to create, using the times parameter. Let's specify an ensemble of 100 bagged trees.
+
+**7. Train all trees**
+
+Fitting works exactly like you already know.Tidymodels is taking care of taking the bootstrap samples and training all of the trees behind the scenes.Simply use the fit() function as usual, using a formula and the training data.Here we use the formula still_customer, as modeled according to all other variables in the data, which is what the dot stands for. The data is set to our credit customers training dataset.When you print the final model, you get a summary of the model ensemble: The fit time is 24 seconds, we have 100 members in our ensemble, that is 100 trees, and finally, a tibble showing the importance of the predictors for the final outcome.In our example, the count of total transactions is the most important predictor.
+
+**8. Let's bootstrap!**
+
+Now that you know how to create a bagged model ensemble, it's your turn to practice.
+
+## Create bagged trees
+
+Ensemble models like bagged trees are more powerful than single decision trees. Each tree in the ensemble gives a vote, and the average or majority vote is your prediction. This ensures you use swarm intelligence instead of relying on a single tree. For bagged trees, the bootstrap method ensures that in every ensemble tree, only a *bootstrapped sample* (sampled with replacement) of the original dataset is used to train the tree and create the prediction.
+
+Put this into practice by building a bagged classification tree yourself!
+
+The credit card customers training data is pre-loaded as `customers_train`.
+
+**Steps**
+
+1. Use `baguette::bag_tree()` to create a bagged tree classification model with an `"rpart"` engine that builds 20 bagged trees.
+
+```{r}
+# Create the specification
+spec_bagged <- baguette::bag_tree() %>%
+  set_mode("classification") %>%
+  set_engine("rpart", times = 20)
+
+spec_bagged
+```
+
+2. Train a model on the training data using `still_customer` as the outcome and `total_trans_amt`, `customer_age`, and `education_level`as predictor variables.
+3. Print the model to see the importance of variables.
+
+```{r}
+# Create the specification
+spec_bagged <- baguette::bag_tree() %>%
+  set_mode("classification") %>%
+  set_engine("rpart", times = 20)
+
+# Fit to the training data
+model_bagged <- fit(spec_bagged,
+                    formula = still_customer ~ total_trans_amt + customer_age + education_level, 
+                    data = customers_train)
+
+# Print the model
+model_bagged
+```
+
+> *Question*
+> ---
+> What is the least important variable for the model?<br>
+> <br>
+> ⬜ Total amount of transactions<br>
+> ⬜ Customer age<br>
+> ✅ Education level<br>
+
+Exactly! The education level seems to be the least important predictor for customer churn, while total transaction amount is quite relevant.
+
+## In-sample ROC and AUC
+
+How well do bagged trees capture the structure of your training set? Are they better than decision trees? Do they overfit? Using ROC and AUC is a great way of assessing this. 
+
+In this exercise, you are going to generate these in-sample predictions and calculate their ROC and AUC. Listen up, there will be surprises!
+
+Pre-loaded is the result of the previous exercise, `model_bagged`, and training data, `customers_train`.
+
+**Steps**
+
+1. Use `model_bagged` to generate **probability** predictions with your training set and add them to the training set tibble, saving the result as `predictions`.
+2. Generate the ROC curve of the `predictions` tibble and plot the result.
+3. Calculate the AUC of the `predictions` tibble.
+
+```{r}
+# Predict on training set and add to training set
+predictions <- predict(model_bagged,
+                       new_data = customers_train, 
+                       type = "prob") %>% 
+    bind_cols(customers_train)
+
+# Create and plot the ROC curve
+roc_curve(predictions, 
+          estimate = .pred_yes, 
+          truth = still_customer) %>% autoplot()
+
+# Calculate the AUC
+roc_auc(predictions,
+        estimate = .pred_yes, 
+        truth = still_customer)
+```
+
+Convincing curve! You created in-sample predictions and got a terrific ROC curve and an AUC value of 99.9%. But wait, that looks too good to be true! Time to check the out-of-sample performance!
+
+## Check for overfitting
+
+A very high in-sample AUC like \\(99.9\\%\\) can be an indicator of overfitting. It is also possible that your dataset is just very well structured, or your model might just be terrific!
+
+To check which of these is true, you need to produce out-of-sample estimates of your AUC, and because you don't want to touch your test set yet, you can produce these using cross-validation on your training set.
+
+Your training data, `customers_train`, and the bagged tree specification, `spec_bagged`, are still available in your workspace.
+
+**Steps**
+
+1. Using `fit_resamples()`, estimate your `roc_auc` metric using **three** CV folds of your training set and the model formula `still_customer ~ total_trans_amt + customer_age + education_level`.
+2. Collect the metrics of the result to display the AUC.
+
+```{r}
+set.seed(55)
+
+# Estimate AUC using cross-validation
+cv_results <- fit_resamples(spec_bagged,
+                            still_customer ~ total_trans_amt + customer_age + education_level, 
+                            resamples = vfold_cv(customers_train, v = 3),
+                            metrics = metric_set(roc_auc))
+ 
+# Collect metrics
+collect_metrics(cv_results)
+```
+
+You revealed the hidden secret! The cross-validated out-of-sample AUC is just over 80%, in contrast to the in-sample AUC of 99.9%. That means your model is overfitting! You should reduce the complexity by increasing `cost_complexity` in the specification, or by tuning your model.
+
+## Random forest
+
+Theory. Coming soon ...
+
+
+**1. Random forest**
+
+Welcome back! Now you know that bagged trees are a big improvement over single decision trees. You might have heard of random forests, which are an improvement upon bagged trees.
+
+**2. Random forest**
+
+Random forests are particularly suited for high-dimensional data. As a result of their ease-of-use and out-of-the-box performance, random forest is a very popular machine learning algorithm and is implemented in a variety of packages, like the ranger or randomForest package. Tidymodels has you covered: the rand_forest() function in the parsnip package provides an interface to these implementations.
+
+**3. Idea**
+
+The basic idea behind random forest is identical to bagging - both are ensembles of trees trained on bootstrapped samples of the training data.However, in the random forest algorithm, there is a slight tweak to the way the decision trees are built that leads to better performance. The key difference is that when training the trees that make up the ensemble, we add a bit of extra randomness to the model - hence the name, random forest.  At each split in the tree, rather than considering all features, or input variables, for the split, we sample a subset of these features or predictors and consider only these few variables as a candidate for the split.
+
+**4. Intuition**
+
+Let's sharpen our intuition using this picture. In this case, there are four trees, and in every split, different predictor variables or features are used to make the next split.Each tree then gives a vote for a class, and the majority vote is the final class prediction.How can using fewer predictors lead to better performance?Well, adding this extra bit of randomness leads to a collection of trees that are further de-correlated (or more different) from one another. So, random forest improves upon bagging by reducing the correlation between the sampled trees.
+
+**5. Coding: Specify a random forest model**
+
+To run the random forest algorithm you will use the rand_forest() function from the parsnip package. Let's take a look at this call.The hyperparameters here are: mtry, the number of predictors seen at each node (the default is the square root of total predictors), trees, the size of your forest, and min_n, which you know from decision trees - it's the smallest node size allowed.As usual, you set the mode using set_mode() and the engine using set_engine(). You can use the ranger engine or the randomForest engine here.
+
+**6. Coding: Specify a random forest model**
+
+A complete sample specification looks like this:Use the rand_forest() function with trees, the size of the forest, to be 100 trees. Use mode classification and the ranger engine.You can always add more trees to improve the performance of the ensemble - more trees almost always means better performance in a random forest.
+
+**7. Training a forest**
+
+The syntax for training a random forest model follows standard conventions for parsnip models.  We take our specification and specify still_customer as the outcome variable and all other columns as the input variables using the familiar formula interface. We choose the data to be customers_train, the training data of credit card customers.
+
+**8. Variable importance**
+
+When specifying the engine, you can also specify the algorithm that controls the node split. Possible values for the ranger engine are impurity or permutation.We'll use impurity here and train a model to the customers_train training data using all predictors.We pass the result to the vip() function from the vip package, which calculates the variable importance for our predictors.This way, you get an intuition for which predictors are more important in your dataset. Here we see that the total amount of transactions is the most helpful predictor.
+
+**9. Let's plant a random forest!**
+
+Now it's your turn to grow your first random forest!
+
+## Bagged trees vs. random forest
+
+What is the main difference between the two ensemble methods *bagged trees* and *random forest*?
+
+> *Question*
+> ---
+> ???<br>
+> <br>
+> ⬜ In a random forest, the decision trees are trained on a random subset of the rows, but in bagging, all the rows are used.<br>
+> ✅ In a random forest, only a subset of features is selected at random at each split in a decision tree. In bagging, all features are used.<br>
+> ⬜ Bagging is a deterministic algorithm that uses no randomness, whereas random forest is non-deterministic, which means there is randomness involved.<br>
+
+Correct! Random forest uses a random subset of features at each split to decorrelate the trees in the forest and reduce overfitting.
+
+## Variable importance
+
+You already know that bagged trees are an ensemble model that overcomes the variance problem of decision trees. Now you learned that the random forest algorithm further improves this by using only a random subset of the features in each tree. This further decorrelates the ensemble, improving its predictive performance.
+
+In this exercise, you will build a random forest yourself and plot the importance of the predictors using the `vip` package. The training data, `customers_train`, is pre-loaded in your workspace.
+
+**Steps**
+
+1. Create `spec`, the specification of a random forest classification model using the `"ranger"` engine and `"impurity"` variable importance.
+2. Create `model` by fitting the tibble `customers_train` to `spec` using `still_customer` as the outcome and all other columns as the predictor variables.
+3. Plot the variable importance using the `vip()` function from the `vip` package (which is not pre-loaded).
+
+```{r}
+# Specify a random forest
+spec <- rand_forest() %>%
+\tset_mode("classification") %>%
+    set_engine("ranger", importance = "impurity")
+
+# Train the forest
+model <- spec %>%
+    fit(still_customer ~ ., 
+        data = customers_train)
+
+# Plot the variable importance
+vip::vip(model)
+```
+
+Good job, ranger! You specified a random forest, trained it on real data, and visualized the variable importance. Seems that the total transaction amount is the most helpful predictor for predicting who is a churned customer.
+
+# 4. Boosted Trees
+
+Ready for the high society of tree-based models? Apply gradient boosting to create powerful ensembles that perform better than anything that you have seen or built. Learn about their fine-tuning and how to compare different models to pick a winner for production.
+
+## Introduction to boosting
+
+Theory. Coming soon ...
+
+
+**1. Introduction to boosting**
+
+Welcome to the final chapter of this course!
+
+**2. Model comparison**
+
+In the first two chapters, you learned how to use the training data to create a single classifier.
+
+**3. Model comparison**
+
+In Chapters two and three, you applied the ensemble methods bagging and random forests to use different training data in parallel to create independent models that use the wisdom of the crowd.The idea is that the combined prediction of individual models is superior to any of the individual predictions on their own. Because the estimators are independent, these can be trained in parallel to speed up the model building.
+
+**4. Model comparison**
+
+Let's discuss an improvement of this idea:
+
+**5. Model comparison**
+
+What if each subsequent model would try to fix the errors of the previous model?
+
+**6. Model comparison**
+
+Then each model would take advantage of the previous estimator's knowledge.This way, models cannot be trained in parallel, but the result should be better because each model is an improvement of its predecessor.
+
+**7. Model comparison**
+
+This technique is called "boosting".Intuitively, this is similar to the way in which we learn. When you are coding and try to solve the exercises of this course, you receive feedback on the correctness of your solution. You learn from the feedback, and if you made a mistake, which of course very rarely happens, you modify your code for the next attempt. This way, you are iteratively learning and improving. That is also the reason why boosted trees generally perform better than bagged trees.
+
+**8. Adaboost**
+
+The first famous boosting algorithm was Adaboost. AdaBoost stands for Adaptive Boosting.In AdaBoost, each predictor pays more attention to the instances wrongly predicted by its predecessor by constantly changing the weights of training instances.The Adaboost Algorithm is as follows:Start by training a decision tree where each observation is assigned an equal weight.
+
+**9. Adaboost**
+
+After evaluating the first tree, increase the weight of the observations that are difficult to classify and lower the weights of these observations that are easy to classify.
+
+**10. Adaboost**
+
+Repeat this process for a specified number of iterations. Subsequent trees help in classifying observations that are not well classified by preceding trees.
+
+**11. Adaboost**
+
+The prediction for the final ensemble model is a weighted sum of the predictions made by previous tree models.Adaboost was improved by adding a technique called gradient descent to the process. In the next lesson, we will dive deeper into this technique called "gradient boosting".
+
+**12. Coding: Specify a boosted ensemble**
+
+Now let's see how to create such a boosted model using tidymodels. boost_tree() is a way to generate a specification of a model before fitting and allows the model to be created using different packages in R.Since tidymodels is set up well, fitting and making predictions follows the same processes as for the other models you've used so far.We set the mode to classification and the engine to "xgboost", a popular R package that implements the gradient boosting algorithm.This way, you're finished specifying your boosting ensemble.There are a number of hyperparameters that you can specify and tune, in fact far more than for bagged trees, but let's go with the defaults for now.Of course, there is more work to do, but it's obvious that the interface to boosting in tidymodels is very easy, and there is not much boilerplate to get started.
+
+**13. Let's boost!**
+
+Now it's your turn to test your understanding of boosting.
+
+## Bagging vs. boosting
+
+<!-- Guidelines for the question: https://instructor-support.datacamp.com/en/articles/2375516-course-multiple-choice-exercises. -->
+The terms *bagging* and *boosting* may sound similar, but these are two machine learning algorithms that follow different approaches. What is one of the main differences between bagged trees and boosted trees?
+
+> *Question*
+> ---
+> ???<br>
+> <br>
+> ⬜ Boosted trees have fewer hyperparameters than bagged trees, making them easier to tune.<br>
+> ⬜ The performance of boosted trees is generally not as great as the performance of bagged trees.<br>
+> ✅ In contrast to bagged trees, boosted trees iteratively improve the model fit by considering past fits.<br>
+
+Correct! Boosting is an iterative algorithm that considers past fits to improve performance.
+
+## Specify a boosted ensemble
+
+Boosting is more advanced than bagging because models are trained sequentially, with each model improving on the previous one, instead of all models learning in parallel. There are several R packages that implement this powerful algorithm, and `tidymodels` has you covered. It provides a simple interface to generate boosted trees.
+
+Your task in the following three steps is to create the initial specification for an ensemble of boosted trees that you will use in the following exercises.
+
+**Steps**
+
+1. Use the appropriate `parsnip` function to specify a boosted tree model.
+
+```{r}
+# Specify the model class
+boost_spec <- boost_tree()
+
+boost_spec
+```
+
+2. Set the mode to `"classification"`.
+
+```{r}
+# Specify the model class
+boost_spec <- boost_tree() %>%
+\t# Set the mode
+\tset_mode("classification")
+
+boost_spec
+```
+
+3. Use the `"xgboost"` package to power your model.
+
+```{r}
+# Specify the model class
+boost_spec <- boost_tree() %>%
+\t# Set the mode
+\tset_mode("classification") %>%
+\t# Set the engine
+\tset_engine("xgboost")
+
+boost_spec
+```
+
+Savvy specification - defining boosted models is just as easy as creating decision trees, isn't it?
+
+## Gradient boosting
+
+Theory. Coming soon ...
+
+
+**1. Gradient boosting**
+
+Welcome back! Let's recap and strengthen what we know about boosting so far.
+
+**2. Recap: boosting**
+
+In boosting, weak learners like decision trees with only one split are used, which perform only slightly better than a random chance. Boosting focuses on sequentially adding up these weak learners and filtering out the observations that a learner gets correct at every step. Basically, the stress is on developing new weak learners to handle the remaining difficult observations at each step.One of the very first boosting algorithms developed was Adaboost. Gradient boosting improved upon some of the features of Adaboost to create a stronger and more efficient algorithm.
+
+**3. Comparison**
+
+Adaboost uses decision stumps as weak learners. Decision stumps are nothing but decision trees with only one single split. It also attaches weights to observations, adding more weight to 'difficult-to-classify' observations and less weight to those that are easy to classify.Gradient boosting uses short, less-complex decision trees instead of decision stumps.Instead of weighing the observations, it uses an error function called a loss function to measure how far off it is.Since the loss function optimization is done using gradient descent, the method is called "gradient boosting".
+
+**4. Pros &amp; cons of boosting**
+
+One of the reasons that boosting is so popular is that if tuned properly, the performance is often better than any other algorithm in your toolbox.An optimized boosted model can outperform even the state of the art in deep learning on many datasets.  Boosting is a good option for unbalanced datasets. In applications like forgery or fraud detection, the classes will be almost certainly imbalanced, where the number of authentic transactions will be huge when compared with unauthentic transactions.One problem that we may encounter in gradient boosting decision trees but not random forests is overfitting due to the addition of too many trees. In random forests, the addition of too many trees won’t cause overfitting. The accuracy of the model doesn’t improve after a certain point, but no problem of overfitting is faced.Depending on how you adjust the learning rate hyperparameter, the learning in boosted ensembles can be slow, especially since it's an iterative and not a parallel algorithm.Additionally, there are a few more tuning hyperparameters than in the other models that you already know.
+
+**5. Hyperparameters for gradient boosting**
+
+Talking about hyperparameters, let's discuss the hyperparameters boosted trees have. There are some that you already know from previous models, and some that we need to introduce.min_n is the minimum number of data points in a node that is required for the node to be split further. Single decision trees have the same parameter.tree_depth is the maximum depth of the tree, the number of splits. Again, you already know this from simple decision trees.sample_size is the amount of data exposed to the fitting routine. This is similar to bagged trees or random forests.trees is the number of trees contained in the ensemble. This is similar to random forests or bagged trees.
+
+**6. Hyperparameters for gradient boosting**
+
+mtry is the number of predictors that will be randomly sampled at each split when creating the tree models. You already know this from random forests.learn_rate is the rate at which the boosting algorithm adapts from iteration to iteration.loss_reduction is the reduction in the loss function required to split further.And finally, stop_iter, the number of iterations without improvement before the algorithm stops.
+
+**7. Let's practice!**
+
+Fine. It's your turn now to train a boosted model using the credit card customers dataset.
+
+## Train a boosted ensemble
+
+Boosted ensemble models are among the most powerful machine learning methods that exist today. After you learned about the theoretical foundations, it's time to put these into practice. You will create a boosted model ensemble using the credit card customers training data.
+
+Pre-loaded in your workspace are the training data `customers_train` and the boosted tree specification that you created previously, `boost_spec`.
+
+**Steps**
+
+1. Train a boosted classification model on the `customers_train` tibble using `still_customer` as the response variable and all other columns as the predictor variables.
+
+```{r}
+# Train the model on the training set
+boost_model <- fit(boost_spec,
+                   formula = still_customer ~ ., 
+                   data = customers_train)
+
+boost_model
+```
+
+> *Question*
+> ---
+> Which of these is **not** a hyperparameter that you can specify in `boost_tree()`?<br>
+> <br>
+> ⬜ `loss_reduction`<br>
+> ⬜ `stop_iter`<br>
+> ✅ `ensemble_size`<br>
+
+Correct, this one does not exist. Instead, the ensemble size is set using the parameter `trees`.
+
+## Evaluate the ensemble
+
+So far, so good. But how good exactly? Prove your model evaluation skills by cross-validating your out-of-sample AUC!
+
+The specification `boost_spec` and the `customers_train` tibble are still loaded.
+
+**Steps**
+
+1. Create five CV folds of your training set and save them as `folds`.
+2. Fit and evaluate a model that predicts `still_customer` for every fold, using your specification, all predictor variables, and the AUC metric.
+3. Collect the metrics of `cv_results` and check the mean AUC.
+
+```{r}
+set.seed(99)
+
+# Create CV folds
+folds <- vfold_cv(customers_train, v = 5)
+
+# Fit and evaluate models for all folds
+cv_results <- fit_resamples(boost_spec,
+\t\t\t    \t\t\tstill_customer ~ ., 
+\t                    \tresamples = folds,
+\t                    \tmetrics = metric_set(roc_auc))
+
+# Collect cross-validated metrics
+collect_metrics(cv_results)
+```
+
+Very well done! A cross-validated out-of-sample AUC of over 95% is very promising, given the model is not tuned yet.
+
+## Compare to a single classifier
+
+You learned that boosted trees are among the best machine learning algorithms available. To underpin that, you will now compare the AUC of a boosted model to a simple decision tree classifier. 
+
+In this exercise, you will use the whole machine-learning pipeline from specification to evaluation.
+
+The training data `customers_train` is still pre-loaded.
+
+**Steps**
+
+1. Specify, fit, and predict probabilities of a boosted model on the training data using the given formula and add the results to the data.
+2. Calculate the in-sample AUC of your predictions.
+
+```{r}
+set.seed(100)
+
+# Specify, fit, predict, and combine with training data
+predictions <- boost_tree() %>%
+  set_mode("classification") %>%
+  set_engine("xgboost") %>% 
+  fit(still_customer ~ ., data = customers_train) %>%
+  predict(new_data = customers_train, type = "prob") %>% 
+  bind_cols(customers_train)
+
+# Calculate AUC
+roc_auc(predictions, 
+        truth = still_customer, 
+        estimate = .pred_yes)
+```
+
+3. Change your code so that the same is done using a simple decision tree classifier.
+
+```{r}
+set.seed(100)
+
+# Specify, fit, predict and combine with training data
+predictions <- decision_tree() %>%
+  set_mode("classification") %>%
+  set_engine("rpart") %>% 
+  fit(still_customer ~ ., data = customers_train) %>%
+  predict(new_data = customers_train, type = "prob") %>% 
+  bind_cols(customers_train)
+
+# Calculate AUC
+roc_auc(predictions, 
+        truth = still_customer,
+        estimate = .pred_yes)
+```
+
+Good job! Boosting beats the decision tree with 99.8% versus 92.9% in-sample AUC.
+
+## Optimize the boosted ensemble
+
+Theory. Coming soon ...
+
+
+**1. Optimize the boosted ensemble**
+
+Welcome back! Now that you created and trained a boosted classifier using the built-in hyperparameters, it's time to alter these hyperparameters to maximize the performance.Let's tune the boosted ensemble!
+
+**2. Starting point: untuned performance**
+
+As a starting point, the out-of-the-box performance observed in the exercises was 95%. That's already fantastic given just the standard hyperparameters were used.
+
+**3. Tuning workflow**
+
+This overview shows the steps you learned for tuning a specification.First, use tune() to flag hyperparameters for tuning in your specification.
+
+**4. Tuning workflow**
+
+Then, create a grid of hyperparameters with grid_regular() or others.
+
+**5. Tuning workflow**
+
+Then, use vfold_cv() to create cross-validation folds.
+
+**6. Tuning workflow**
+
+You pass all that into the tune_grid() function, and go for coffee or a jog.
+
+**7. Tuning workflow**
+
+After you come back, call select_best() to select the best results.
+
+**8. Tuning workflow**
+
+and finalize your model specification with the winners.
+
+**9. Tuning workflow**
+
+As a last step, you fit your final model using the optimal hyperparameters to the training data to get your optimized full model.
+
+**10. Step 1: Create the tuning spec**
+
+Let's get to coding! As a first step, create the model specification.Let's choose and fix 500 trees and optimize for learning rate, tree_depth, and sample_size.The console output reflects these decisions.
+
+**11. Step 2: Create the tuning grid**
+
+Then, we need a grid containing all hyperparameter combinations that we want to try.You already know grid_regular(), which creates an evenly-spaced grid of all the hyperparameters. It takes the tuning parameters, which we extract by applying the function parameters() to our dummy specification, and the levels, which is the number of levels each tuning parameter should get. Let's specify two levels for each of our three tuning parameters.The result is a tibble with 8 rows, that is eight possible combinations of the three hyperparameters having two levels each.Another possibility is grid_random(), which creates a random, and not evenly spaced grid. The size parameter specifies the number of random combinations in the result. Size equals 8 gives us 8 random combinations of values.
+
+**12. Step 3: The tuning**
+
+Now for the actual tuning. The tune_grid() function takes the dummy specification, the model formula, the resamples, which are some cross-validation folds, a tuning grid, and a list of metrics.In our case, the dummy specification is boost_spec, the model formula is "still_customer is modeled as a function of all other parameters", resamples is six folds of the training data customers_train, the tuning grid is tunegrid_boost, which we created in the previous slide, and metrics is a metric_set containing only the roc_auc metric.
+
+**13. Visualize the result**
+
+It's always helpful and interesting to visualize the tuning results. The autoplot() function creates an overview of the tuning results. In our case, we see one plot per sample_size, tree_depth on the x axis, the AUC on the y axis, and different colors for different learning rates.The green line containing the smallest learning rate achieves only an area under curve of 50%, and there seems to be not much difference between a tree_depth of 8 or 12, both have an AUC value of 95 to close to 100%.
+
+**14. Step 4: Finalize the model**
+
+The optimal hyperparameter combination can be extracted using select_best(). This gives you a one-row tibble containing one column for every hyperparameter.We see that Model17 with a tree_depth of 8, a learn_rate of 0-point-1 and a sample_size of 55% yields the best results.Then, plug these into the specification containing the placeholders using finalize_model(). This finalizes your specification after tuning.
+
+**15. Last step: Train the final model**
+
+Finally, you train the final model on the whole training set customers_train. Printing the model reveals information like that it took 2-point-3 seconds to train and is 344 kilobytes in size.
+
+**16. Your turn!**
+
+Now it's your turn to apply that to your boosted ensemble!
+
+## Tuning preparation
+
+Tuning preparation is the foundation for tuning success. There are two main steps in preparing your tuning: marking hyperparameters using `tune()` in the model specification and creating a grid of hyperparameters that is used in tuning.
+
+You are going to execute these two fundamental steps of the tuning process in this exercise.
+
+**Steps**
+
+1. Create a boosting specification with an `"xgboost"` engine for a classification model using 500 trees and mark the following parameters as tuning parameters: `learn_rate`, `tree_depth`, and `sample_size`. Save the result as `boost_spec`.
+2. Build a regular tuning grid for the tuning parameters of `boost_spec` with three levels for each parameter.
+
+```{r}
+# Create the specification with placeholders
+boost_spec <- boost_tree(
+                trees = 500,
+                learn_rate = tune(),
+                tree_depth = tune(),
+                sample_size = tune()) %>%
+  set_mode("classification") %>%
+  set_engine("xgboost")
+
+# Create the tuning grid
+tunegrid_boost <- grid_regular(parameters(boost_spec), 
+                               levels = 3)
+
+tunegrid_boost
+```
+
+Profound preparation! Let's see which of these 27 hyperparameter combinations gives the best tuning result.
+
+## The actual tuning
+
+The best hyperparameters make the best model for your data. Once you decided on a tuning grid, you need to train and evaluate models on every grid point to see which grid point gives the best model performance. 
+
+This can take some time, given that using k-fold cross-validation, an ensemble size of `n` trees, and a tuning grid of `t` combinations makes `k * n * t` models to be trained in total.
+
+It's your turn to perform the actual tuning! Pre-loaded are `customers_train` and the results of the last exercise, `boost_spec` and `tunegrid_boost`:
+
+```{r}
+# A tibble: 27 x 3
+   tree_depth   learn_rate sample_size
+        <int>        <dbl>       <dbl>
+ 1          1 0.0000000001        0.1 
+ 2          8 0.0000000001        0.1 
+ 3         15 0.0000000001        0.1 
+ 4          1 0.00000316          0.1 
+ ...
+```
+
+**Steps**
+
+1. Create six folds of the training data using `vfold_cv()` and save them as `folds`.
+2. Use `tune_grid()` to tune `boost_spec` using your folds, your tuning grid, and the `roc_auc` metric. Save the results as `tune_results`.
+3. Plot the results to visualize the result of the tuning process.
+
+```{r}
+# Create CV folds of training data
+folds <- vfold_cv(customers_train, v = 6)
+
+# Tune along the grid
+tune_results <- tune_grid(boost_spec,
+                          still_customer ~ .,
+                          resamples = folds,
+                          grid = tunegrid_boost,
+                          metrics = metric_set(roc_auc))
+
+# Plot the results
+autoplot(tune_results)
+```
+
+Totally terrific tuning result! Note the large AUC difference between the green and red `learn_rate` lines. A `tree_depth` of 8 or 12 doesn't seem to make much difference regardless of the `learn_rate`.
+
+## Finalize the model
+
+Once you have executed the tuning process and found the best-performing hyperparameters, there are only two last steps to finalize your model: plug the winners into the dummy model specification and re-train your model on the whole training set using this final specification.
+
+This way, your final model will be trained on the whole training set using the optimal hyperparameters.
+
+Pre-loaded in your workspace are `tune_results` from the last exercise, the untuned specification, `boost_spec`, and the training data, `customers_train`.
+
+**Steps**
+
+1. Select the best-performing hyperparameters of `tune_results` and save them as `best_params`.
+
+```{r}
+# Select the final hyperparameters
+best_params <- select_best(tune_results)
+
+best_params
+
+```
+
+2. Create `final_spec` by plugging the best parameters into the untuned specification.
+
+```{r}
+# Select the final hyperparameters
+best_params <- select_best(tune_results)
+
+# Finalize the specification
+final_spec <- finalize_model(boost_spec, best_params)
+
+final_spec
+```
+
+3. Create `final_model`, the final model trained on the whole training set, using all predictor variables.
+
+```{r}
+# Select the final hyperparameters
+best_params <- select_best(tune_results)
+
+# Finalize the specification
+final_spec <- finalize_model(boost_spec, best_params)
+
+# Train the final model on the full training data
+final_model <- final_spec %>% fit(formula = still_customer ~ ., 
+                                  data = customers_train)
+
+final_model
+```
+
+That's the final fit! You plugged the best-performing hyperparameters into your dummy specification and obtained a tuned model from the whole training set! Note that in the training log in the console, you can clearly see how the error (`training_logloss`) declines across iterations.
+
+## Model comparison
+
+Theory. Coming soon ...
+
+
+**1. Model comparison**
+
+Congratulations! You came a long way and made great progress so far. The most important task after model research is comparing these models to choose one that is most useful for you.
+
+**2. Motivation**
+
+The remaining exercises will reveal exactly how to perform a model comparison across all models of this course: Decision Trees, Bagged Trees, Random Forest, and Gradient Boosting. We'll use the test set predictions from each of the models to compute the out-of-sample AUC. The model with the highest AUC is considered to be the best performing model.  Finally, we’ll visualize the ROC curves of all models and plot them all on the same graph.  Let's jump right into it!
+
+**3. Combine predictions**
+
+To simplify programming overhead, we are going to leverage the tidy tibble format of the predictions.Use the bind_cols() function to combine the predictions of the decision_tree, preds_tree,
+
+**4. Combine predictions**
+
+with the bagged tree predictions, preds_bagging,
+
+**5. Combine predictions**
+
+the random forest predictions, preds_forest,
+
+**6. Combine predictions**
+
+the boosted ensemble predictions, preds_boosting,
+
+**7. Combine predictions**
+
+and the column still_customer, which is extracted by selecting it from the test data.
+
+**8. Calculate decision tree AUC**
+
+This way, calculating the AUC is real easy: Just call the roc_auc function with the combined predictions tibble giving the truth column still_customer and the estimate column containing the predicted probabilities. For the decision tree, this would be the preds_tree column, and we see an AUC of 91-point-1 percent.
+
+**9. Calculate bagged tree AUC**
+
+for the bagged ensemble this would be the preds_bagging column, where we see an AUC of 93-point-6 percent.
+
+**10. Calculate random forest AUC**
+
+for the random forest the preds_forest column, where we see an AUC of 97-point-4 percent.
+
+**11. Calculate boosted AUC**
+
+and for the boosted ensemble the preds_boosting column, which states an AUC of 98-point-4 percent.
+
+**12. Combine all AUCs**
+
+If you combine these calls using the bind_rows() function, the AUCs are combined into one single tibble.
+
+**13. Combine all AUCs**
+
+To state which AUC belongs to which model, it's advisable to name all the arguments in the bind_rows() call and provide the dot-id argument to create a result column that contains the model names.The result is a beautiful tibble giving all the AUCs in a tabular form. We see that the boosted tree beats all other models.Well, this can be done more tidy.
+
+**14. Reformat the results**
+
+Let's tidy that up while creating the ROC curves. Right now, the model predictions are stored in one column per model. It would be cleaner if all predictions were in one single numeric column.The pivot_longer() function from the tidyr package can do that. First, provide the tibble to be reshaped, preds_combined.Then, in the cols argument, specify the columns to be transformed into rows, which is all columns that start with "preds_". The argument names_to specifies the name of the new column that stores our identifiers and values_to is the name of the column where all the numeric values go.The result is a tibble with new columns model and predictions containing the same information as before, but in a different shape. We have 4044 rows now, exactly four times the number of rows as before, because we transformed four columns into one row each.
+
+**15. Calculate cutoff values**
+
+The rest is real easy. Group the predictions by model, so that one curve per model is calculated.Then, for every possible cutoff, calculate sensitivity and specificity using the roc_curve() function that takes the truth column "still_customer" and the estimate column "predictions".
+
+**16. Plot ROC curves**
+
+As a last step, we call the autoplot() function on the result to see all the ROC curves on one single plot.See the order in which your models improved? Violet, the decision tree, performs worst, and green, the boosted tree, performs best.
+
+**17. Let's compare!**
+
+Now it's your turn to compare your models!
+
+## Compare AUC
+
+Comparing different models is the core of model selection. In the final two exercises, you'll perform a model comparison across all types of models in this course: decision trees, bagged trees, random forests, and gradient boosting.
+
+The models were all tuned to perfection and trained on the same training set, `customers_train`, and predictions were made for the `customers_test` dataset. The results are numeric probabilities and are available as `preds_combined` in your session:
+
+```{r}
+tibble [1,011 × 5]
+ $ preds_tree    : 0.144 0.441 ...
+ $ preds_bagging : 0.115 0.326 ...
+ $ preds_forest  : 0 0 0 0.286 ...
+ $ preds_boosting: 0.136 0.149 ...
+ $ still_customer: "no","no", ...
+```
+
+**Steps**
+
+1. Calculate the AUC for each prediction column in `preds_combined`, always using `still_customer` as the truth column.
+
+```{r}
+# Calculate the AUC for each model
+auc_tree   <- roc_auc(preds_combined, truth = still_customer, estimate = preds_tree)
+auc_bagged <- roc_auc(preds_combined, truth = still_customer, estimate = preds_bagging)
+auc_forest <- roc_auc(preds_combined, truth = still_customer, estimate = preds_forest)
+auc_boost  <- roc_auc(preds_combined, truth = still_customer, estimate = preds_boosting)
+
+# Print the results
+auc_tree
+auc_bagged
+auc_forest
+auc_boost
+```
+
+2. Combine the results into one single tibble.
+
+```{r}
+# Calculate the AUC for each model
+auc_tree   <- roc_auc(preds_combined, truth = still_customer, estimate = preds_tree)
+auc_bagged <- roc_auc(preds_combined, truth = still_customer, estimate = preds_bagging)
+auc_forest <- roc_auc(preds_combined, truth = still_customer, estimate = preds_forest)
+auc_boost  <- roc_auc(preds_combined, truth = still_customer, estimate = preds_boosting)
+
+# Combine AUCs into one tibble
+combined <- bind_rows(auc_tree,
+                      auc_bagged,
+                      auc_forest,
+                      auc_boost)
+
+combined
+```
+
+3. Change the code so that the arguments to `bind_rows()` are named `decision_tree`, `bagged_tree`, `random_forest`, and `boosted_tree`.
+
+```{r}
+# Calculate the AUC for each model
+auc_tree   <- roc_auc(preds_combined, truth = still_customer, estimate = preds_tree)
+auc_bagged <- roc_auc(preds_combined, truth = still_customer, estimate = preds_bagging)
+auc_forest <- roc_auc(preds_combined, truth = still_customer, estimate = preds_forest)
+auc_boost  <- roc_auc(preds_combined, truth = still_customer, estimate = preds_boosting)
+
+# Combine AUCs into one tibble
+combined <- bind_rows(decision_tree = auc_tree,
+                      bagged_tree   = auc_bagged,
+                      random_forest = auc_forest,
+                      boosted_tree  = auc_boost,
+                      .id = "model")
+
+combined
+```
+
+Cool combination! You calculated and combined the AUC of all models. Note how there is a clear distinction between each of them, with the boosted ensemble having the highest AUC. However, four repeated calls to `roc_auc()` is cumbersome. In the next exercise, you'll learn how to cut this down to just a few lines...
+
+## Plot ROC curves
+
+You saw again that the boosted tree yields the highest AUC. Numbers are fine, but pictures are better! Why not visualize these results? 
+
+You are going to illustrate model performance by plotting all ROC curves on one common plot. As the AUC is literally the area under these ROC curves, the boosted model should have the largest area under its ROC curve and be the one in the upper left corner of the plot.
+
+The predictions tibble, `preds_combined`, is still loaded.
+
+**Steps**
+
+1. Reshape the `preds_combined` tibble so that all columns that start with `"preds_"` are rows instead of columns. Convert the names to a `"model"` column and the values to a column called `"predictions"`.
+2. Group the results by `model`.
+3. Calculate the ROC values for all cutoffs.
+4. Produce a graphical plot of the curves.
+
+```{r}
+# Reshape the predictions into long format
+predictions_long <- tidyr::pivot_longer(preds_combined,
+                                        cols = starts_with("preds_"),
+                                        names_to = "model",
+                                        values_to = "predictions")
+
+predictions_long %>%
+  # Group by model
+  group_by(model) %>% 
+  # Calculate values for every cutoff
+  roc_curve(truth = still_customer,
+            estimate = predictions) %>%
+  # Create a plot from the calculated data
+  autoplot()
+```
+
+Fantastic plot! The ROC curves resemble the AUC differences, and you can clearly see the performance differences, with XGBoost and random forest being the winners. One last tip: The previous AUC exercise can easily be solved with this technique - just replace `roc_curve()` with `roc_auc()` and remove `autoplot()`! Save that code snippet - it might be useful in your own modeling career!<br><br>Congratulations, you almost finished the course and are now able to use tree-based models in R! Did you like the course? [Let us know!](http://twitter.com/intent/tweet?text=I%20just%20finished%20Machine%20Learning%20with%20Tree-Based%20Models%20in%20R%20on%20@DataCamp:&url=https%3A%2Fdatacamp.com/courses/machine-learning-with-tree-based-models-in-r)
+
+## Wrap-up
+
+Theory. Coming soon ...
+
+
+**1. Wrap-up**
+
+Congratulations on all that you have accomplished. By taking this course, you mastered many foundations of machine learning in general and tree-based models in particular.
+
+**2. 1. Data splitting - confusion matrix - accuracy**
+
+In Chapter 1, you learned about basic techniques of machine learning like data splitting and how to use tidymodels to build and evaluate basic classification trees using the confusion matrix and the accuracy metric.
+
+**3. 2. Regression - cross-validation - bias-variance tradeoff**
+
+In Chapter 2, you extended this knowledge to build and evaluate regression trees, apply cross-validation for more robust evaluation, and how to detect and solve bias or variance issues.
+
+**4. 3. Tuning - AUC - bagging - random forest**
+
+In Chapter 3, you learned how to use the tidymodels framework to tune hyperparameters of tree models, and extended your knowledge of classification evaluation to sensitivity, specificity, ROC curves and area under the curve. You also learned how to build bagged tree models and random forests.
+
+**5. 4. Boosting &amp; model comparison**
+
+In Chapter 4, you learned about boosting, how to build an optimal gradient boosting ensemble model, and how to compare different models to see which one performs best.
+
+**6. Thank you!**
+
+I hope that you've enjoyed this course and found it helpful. Thanks again for taking the course and congratulations on all that you have accomplished. I wish you the best of luck on your journey of learning.
+

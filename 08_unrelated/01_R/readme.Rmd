@@ -1,0 +1,45 @@
+---
+title: "Tips"
+author: "Joschka Schwarz"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 2
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = T)
+```
+
+**Merging big files without running out of memory**
+
+Rather than reading them into R at the beginning and then combining them you could have SQLite read them and combine them before sending them to R. That way the files are never individually loaded into R.
+
+```{r}
+# create two sample files
+DF1 <- data.frame(A = 1:2, B = 2:3)
+write.table(DF1, "data1.dat", sep = ",", quote = FALSE, row.names = FALSE)
+rm(DF1)
+
+DF2 <- data.frame(A = 10:11, B = 12:13)
+write.table(DF2, "data2.dat", sep = ",", quote = FALSE, row.names = FALSE)
+rm(DF2)
+
+# now we do the real work
+library(sqldf)
+
+data1 <- file("data1.dat")
+data2 <- file("data2.dat")
+
+sqldf(c("select * from data1", 
+ "insert into data1 select * from data2", 
+ "select * from data1"), 
+ dbname = tempfile())
+```
+
+
+This gives:
+
+```{r}
+sqldf(c("select * from data1", "insert into data1 select * from data2", "select * from data1"), dbname = tempfile())
+```
