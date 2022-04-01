@@ -1,0 +1,2112 @@
+---
+title: "Joining Data in SQL"
+author: "Joschka Schwarz"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 2
+---
+  
+```{r setup, include=FALSE}
+library(DBI)
+con <- dbConnect(RPostgres::Postgres(), 
+                 host='localhost', 
+                 port='5432', 
+                 dbname='countries',
+                 user='jschwarz')
+knitr::opts_chunk$set(echo = TRUE, eval = T, connection = "con")
+```
+
+**Short Description**
+
+Discover all the fundamental in PostgreSQL, like inner, outer self, semi, anti, and cross joins, as well as unions, intersections, and except clauses.
+
+**Long Description**
+
+Now that you've learned the basics of SQL in our <a href="https://learn.datacamp.com/courses/introduction-to-sql">Introduction to SQL</a> course,  it's time to supercharge your queries using joins and relational set theory. In this course, you'll learn all about the power of joining tables while exploring interesting features of countries and their cities throughout the world. You will master inner and outer joins, as well as self joins, semi joins, anti joins and cross joins—fundamental tools in any PostgreSQL wizard's toolbox. Never fear set theory again after learning all about unions, intersections, and except clauses through easy-to-understand diagrams and examples. Lastly, you'll be introduced to the challenging topic of subqueries. You will be able to visually grasp these ideas by using Venn diagrams and other linking illustrations.
+
+# 1. Introduction to joins
+
+In this chapter, you'll be introduced to the concept of joining tables, and will explore the different ways you can enrich your queries using inner joins and self joins. You'll also see how to use the case statement to split up a field into different categories.
+
+## Introduction to INNER JOIN
+
+Theory. Coming soon ...
+
+**1. Welcome to the course!**
+
+Hi, my name is Chester Ismay and I'll be your instructor for this course on Joining Data in PostgreSQL. As the name suggests, the focus of this course is using SQL to join two or more database tables together into a single table, an essential skill for data scientists. In this chapter, you'll learn about the INNER JOIN, which along with LEFT JOIN are probably the two most common JOINs. You'll see diagrams throughout this course that are designed to help you understand the mechanics of the different joins. Let's begin with a diagram showing the layout of some data and then how an INNER JOIN can be applied to that data.
+
+**2. Initial data diagram**
+
+In the videos in this chapter and the next, we'll often work with two tables named left and right. You can see that matching values of the id field are colored with the same color. The id field is known as a KEY field since it can be used to reference one table to another. Both the left and right tables also have another field named val. This will be useful in helping you see specifically which records and values are included in each join.
+
+**3. INNER JOIN diagram**
+
+An INNER JOIN only includes records in which the key is in both tables. You can see here that the id field matches for values of 1 and 4 only. With inner joins we look for matches in the right table corresponding to all entries in the key field in the left table.
+
+**4. INNER JOIN diagram (2)**
+
+So the focus here shifts to only those records with a match in terms of the id field. The records not of interest to INNER JOIN have been faded.
+
+**5. INNER JOIN diagram (3)**
+
+Here's a resulting single table from the INNER JOIN clause that gives the val field from the right table with records corresponding to only those with id value of 1 or 4, which are colored as yellow and purple. Now that you have a sense for how INNER JOIN works, let's try an example in SQL.
+
+**6. prime_ministers table**
+
+The prime_ministers table is one of the tables in the leaders database. It is displayed here. Note the countries that are included. Suppose you were interested in determining nations that have both a prime minister and a president AND putting the results into a single table. Next you'll see the presidents table.
+
+**7. presidents table**
+
+How did I display all of the prime_ministers table in the previous slide? Recall the use of SELECT and FROM clauses as is shown for the presidents table here.Which countries appear in both tables? With small tables like these, it is easy to notice that Egypt, Portugal, Vietnam, and Haiti appear in both tables. For larger tables, it isn't as simple as just picking these countries out visually. So what does the syntax look like for SQL to get the results of countries with a prime minister and a president from these two tables into one?
+
+**8. INNER JOIN in SQL**
+
+The syntax for completing an INNER JOIN from the prime_ministers table to the presidents table based on a key field of country is shown. Note the use of aliases for prime_ministers as p1 and presidents as p2. This helps to simplify your code, especially with longer table names like prime_ministers and presidents. A SELECT statement is used to select specific fields from the two tables. In this case, since country exists in both tables, we must write p1 and the period to avoid a SQL error. Next we list the table on the left of the inner join after FROM and then we list the table on the right after INNER JOIN. Lastly, we specify the keys in the two tables that we would like to match on.
+
+**9. Let's practice!**
+
+You'll now practice applying an inner join to two tables and to three tables. Let's get to it!
+
+## Inner join
+
+Although this course focuses on PostgreSQL, you'll find that these joins and the material here applies to different forms of SQL as well.
+
+Throughout this course, you'll be working with the `countries` database containing information about the most populous world cities as well as country-level economic data, population data, and geographic data.  This `countries` database also contains information on languages spoken in each country.
+
+You can see the different tables in this database by clicking on the corresponding tabs. Click through them to get a sense for the types of data that each table contains before you continue with the course! Take note of the fields that appear to be shared across the tables.
+
+Recall from the video the basic syntax for an `INNER JOIN`, here including all columns in **both** tables:
+
+```{sql,eval=F}
+SELECT *
+FROM left_table
+INNER JOIN right_table
+ON left_table.id = right_table.id;
+```
+
+You'll start off with a `SELECT` statement and then build up to an `INNER JOIN` with the `cities` and `countries` tables.  Let's get to it!
+
+**Steps**
+
+1. Begin by selecting all columns from the `cities` table.
+
+```{sql}
+-- Select all columns from cities
+SELECT *
+FROM cities;
+```
+
+2. Inner join the `cities` table on the left to the `countries` table on the right, keeping all of the fields in both tables. 
+3. You should match the tables on the `country_code` field in `cities` and the `code` field in `countries`. 
+4. **Do not** alias your tables here or in the next step. Using `cities` and `countries` is fine for now.
+
+```{sql}
+SELECT * 
+FROM cities
+  -- Inner join to countries
+  INNER JOIN countries
+    -- Match on the country codes
+    ON cities.country_code = countries.code;
+```
+
+5. Modify the `SELECT` statement to keep only the name of the city, the name of the country, and the name of the region the country resides in.
+6. Alias the name of the city `AS city` and the name of the country `AS country`.
+
+```{sql}
+-- Select name fields (with alias) and region 
+SELECT cities.name AS city, countries.name AS country, region
+FROM cities
+  INNER JOIN countries
+    ON cities.country_code = countries.code;
+```
+
+Great work! In the next exercise you'll explore how you can do more aliasing to limit the amount of writing.
+
+## Inner join (2)
+
+Instead of writing the full table name, you can use table aliasing as a shortcut. For tables you also use `AS` to add the alias immediately after the table name with a space. Check
+out the aliasing of `cities` and `countries` below.
+
+
+```{sql,eval=F}
+SELECT c1.name AS city, c2.name AS country
+FROM cities AS c1
+INNER JOIN countries AS c2
+ON c1.country_code = c2.code;
+```
+
+Notice that to select a field in your query that appears in multiple tables, you'll need to identify which table/table alias you're referring to by using a `.` in your `SELECT` statement.
+
+You'll now explore a way to get data from both the `countries` and `economies` tables to examine the inflation rate for both 2010 and 2015.
+
+Sometimes it's easier to write SQL code out of order: you write the `SELECT` statement after you've done the `JOIN`.
+
+**Steps**
+
+1. Join the tables `countries` (left) and `economies` (right) aliasing `countries AS c` and `economies AS e`. 
+2. Specify the field to match the tables `ON`.
+3. From this join, `SELECT`:\n`c.code`, aliased as `country_code`.\n`name`, `year`, and `inflation_rate`, not aliased.
+
+  * `c.code`, aliased as `country_code`.
+  * `name`, `year`, and `inflation_rate`, not aliased.
+
+```{sql}
+-- Select fields with aliases
+SELECT c.code AS country_code, name, year, inflation_rate
+FROM countries AS c
+  -- Join to economies (alias e)
+  INNER JOIN economies AS e
+    -- Match on code
+    ON c.code = e.code;
+```
+
+Nicely done! Using this short aliases takes some getting used to, but it will save you a lot of typing.
+
+## Inner join (3)
+
+The ability to combine multiple joins in a single query is a powerful feature of SQL, e.g:
+
+```{sql,eval=F}
+SELECT *
+FROM left_table
+  INNER JOIN right_table
+    ON left_table.id = right_table.id
+  INNER JOIN another_table
+    ON left_table.id = another_table.id;
+```
+
+As you can see here it becomes tedious to continually write long table names in joins. This is when it becomes useful to alias each table using the first letter of its name (e.g. `countries AS c`)! It is standard practice to alias in this way and, if you choose to alias tables or are asked to specifically for an exercise in this course, you should follow this protocol.
+
+Now, for each country, you want to get the country name, its region, the fertility rate, and the unemployment rate for both 2010 and 2015.
+
+Note that results should work throughout this course with or without table aliasing unless specified differently.
+
+**Steps**
+
+1. Inner join `countries` (left) and `populations` (right) on the `code` and `country_code` fields respectively.
+2. Alias `countries AS c` and `populations AS p`.
+3. Select `code`, `name`, and `region` from `countries` and also select `year` and `fertility_rate` from `populations` (5 fields in total).
+
+```{sql}
+-- Select fields
+SELECT c.code, name, region, year, fertility_rate
+  -- From countries (alias as c)
+  FROM countries AS c
+  -- Join with populations (as p)
+  INNER JOIN populations AS p
+    -- Match on country code
+    ON c.code = p.country_code;
+```
+
+4. Add an additional `INNER JOIN` with `economies` to your previous query by joining on `code`.
+5. Include the `unemployment_rate` column that became available through joining with `economies`.
+6. Note that `year` appears in both `populations` and `economies`, so you have to explicitly use `e.year` instead of `year` as you did before.
+
+```{sql}
+-- Select fields
+SELECT c.code, name, region, e.year, fertility_rate, unemployment_rate
+  -- From countries (alias as c)
+  FROM countries AS c
+  -- Join to populations (as p)
+  INNER JOIN populations AS p
+    -- Match on country code
+    ON c.code = p.country_code
+  -- Join to economies (as e)
+  INNER JOIN economies AS e
+    -- Match on country code
+    ON c.code = e.code;
+```
+
+7. Scroll down the query result and take a look at the results for Albania from your previous query. Does something seem off to you?
+8. The trouble with doing your last join on `c.code = e.code` and not also including `year` is that e.g. the 2010 value for `fertility_rate` is also paired with the 2015 value for `unemployment_rate`.
+9. Fix your previous query: in your last `ON` clause, use `AND` to add an additional joining condition. In addition to joining on `code` in `c` and `e`, also join on `year` in `e` and `p`.
+
+```{sql}
+-- Select fields
+SELECT c.code, name, region, e.year, fertility_rate, unemployment_rate
+  -- From countries (alias as c)
+  FROM countries AS c
+  -- Join to populations (as p)
+  INNER JOIN populations AS p
+    -- Match on country code
+    ON c.code = p.country_code
+  -- Join to economies (as e)
+  INNER JOIN economies AS e
+    -- Match on country code and year
+    ON c.code = e.code AND e.year = p.year;
+```
+
+Good work! Time to learn something new!
+
+## INNER JOIN via USING
+
+Theory. Coming soon ...
+
+**1. INNER JOIN via USING**
+
+Congratulations on making it through the first set of exercises on using INNER JOIN to combine two or three tables into one! You'll next learn about the USING keyword in SQL and how it can be used in joins.
+
+**2. The INNER JOIN diagram again**
+
+Recall the INNER JOIN diagram you saw in the last video. Think about the SQL code needed to complete this diagram. Let's check it out. We select and alias three fields and use the left table on the left of the join and the right table on the right of the join matching based on the entries for the id key field.
+
+**3. The INNER JOIN diagram with USING**
+
+When the key field you'd like to join on is the same name in both tables, you can use a USING clause instead of the ON clause you have seen so far.Since id is the same name in both the left table and the right table we can specify USING instead of ON here. Note that the parentheses are required around the key field with USING. Let's revisit the example of joining the prime_ministers table
+
+**4. Countries with prime ministers and presidents**
+
+to the presidents table to determine countries with both types of leaders. How could you fill in the blanks to get the result with USING? (Pause for a few seconds)Did you get it? (PAUSE) Ah, I played a bit of a trick on you here. But why does this work? Since an INNER JOIN includes entries in both tables and both tables contain the countries listed, it doesn't matter the order in which we place the tables in the join if we SELECT these columns. You'll be told in the exercises which table to use on the left and on the right to avoid this confusion. Note again the use of the parentheses around country after USING.
+
+**5. Let's practice!**
+
+Now you'll test your understanding of INNER JOINs before we delve into an exercise with USING. Go get 'em!
+
+## Review inner join using on
+
+> *Question*
+> ---
+> Why does the following code result in an error?<br>
+> <br>
+> ⬜ The `languages` table has more rows than the `countries` table.<br>
+> ⬜ There are multiple languages spoken in many countries.<br>
+> ✅ `INNER JOIN` requires a specification of the key field (or fields) in each table.<br>
+> ⬜ Join queries may not be followed by a semi-colon.<br>
+
+```{sql,eval=F}
+SELECT c.name AS country, l.name AS language
+FROM countries AS c
+  INNER JOIN languages AS l;
+```
+
+## Inner join with using
+
+When joining tables with a common field name, e.g.
+
+```{sql,eval=F}
+SELECT *
+FROM countries
+  INNER JOIN economies
+    ON countries.code = economies.code
+```
+
+You can use `USING` as a shortcut:
+
+```{sql,eval=F}
+SELECT *
+FROM countries
+  INNER JOIN economies
+    USING(code)
+```
+
+You'll now explore how this can be done with the `countries` and `languages` tables.
+
+**Steps**
+
+1. Inner join `countries` on the left and `languages` on the right with `USING(code)`. 
+2. Select the fields corresponding to:
+
+  * country name `AS country`,
+  * continent name,
+  * language name `AS language`, and
+  * whether or not the language is official.
+
+Remember to alias your tables using the first letter of their names.
+
+```{sql}
+-- Select fields
+SELECT c.name AS country, continent, l.name AS language, official
+  -- From countries (alias as c)
+  FROM countries AS c
+  -- Join to languages (as l)
+  INNER JOIN languages AS l
+    -- Match using code
+    USING(code);
+```
+
+Well done! Another technique to save you some typing!
+
+## Self-ish joins, just in CASE
+
+Theory. Coming soon ...
+
+**1. Self-ish joins, just in CASE**
+
+You'll now dive into inner joins where a table is joined with itself. Sounds a little selfish, doesn't it? These types of joins, as you may have guessed, are called self joins. You'll also explore how to slice a numerical field into categories using the CASE command. Joining a table to
+
+**2. Join a table to itself?**
+
+itself may seem like a bit of a crazy, strange thing to ever want to do. Self-joins are used to compare values in a field to other values of the same field from within the same table. Let's further explore this with an example. Recall the prime_ministers table from earlier. What if you wanted to create a new table showing countries that are in the same continent matched as pairs? Let's explore a chunk of INNER JOIN code using the prime_ministers table.
+
+**3. Join prime_ministers to itself?**
+
+You might want to pause the video and think about what the resulting tablewill look like. The country column is selected twice as well as continent. The prime_ministers table is on both the left and the right. The vital step here is setting the key columns by which we match the table to itself. For each country, we will have a match if the country in the "right table" (that is also prime_ministers) is in the same continent. Lastly, since the results of this query are more than can fit on the slide, you'll only see the first 14 records. See how we have exactly this in the result! It's a pairing of each country with every other country in its same continent. But do you see a problem here? We don't want to list the country with itself after all. In the next slide, you'll see a way to do this. Pause to think about how to get around this before continuing. We don't want to include rows
+
+**4. Finishing off the self-join on prime_ministers**
+
+where the country is the same in the country1 and country2 fields. The AND clause can check that multiple conditions are met. Here a match will not be made between prime_ministers and itself if the countries match.You, thus, have the correct table now; the results here are again limited in order for them to fit on the slide. Notice that self-join doesn't have a syntax quite as simple as INNER JOIN (You can't just write SELF JOIN in SQL code).
+
+**5. CASE WHEN and THEN**
+
+The next command isn't a join, but is a useful tool in your repertoire. You'll be introduced to using CASE with another table in the leaders database. The states table contains numeric data about different countries in the six inhabited world continents. We'll focus on the field indep_year now. Suppose we'd like to group the year of independence into categories of before 1900, between 1900 and 1930, and after 1930. CASE will get us there! CASE is a way to do multiple if-then-else statements in a simplified way in SQL.
+
+**6. Preparing indep_year_group in states**
+
+You can now see the basic layout for creating a new field containing the groupings. How might we fill them in? After the first WHEN should specify that we want to check for indep_year being less than 1900. Next we want indep_year_group to contain 'between 1900 and 1930' in the next blank. Lastly any other record not matching these conditions will be assigned the value of 'after 1930' for indep_year_group.
+
+**7. Creating indep_year_group in states**
+
+Check out the completed query with completed blanks.Notice how the values of indep_year are grouped in indep_year_group. Also observe how continent relates to indep_year_group.
+
+**8. Let's practice!**
+
+You'll now work on a couple of exercises for practice, then complete a challenge testing your knowledge of the Chapter 1 material.
+
+## Self-join
+
+In this exercise, you'll use the `populations` table to perform a self-join to calculate the percentage increase in population from 2010 to 2015 for each country code!
+
+Since you'll be joining the `populations` table to itself, you can alias `populations` as `p1` and also `populations` as `p2`. This is good practice whenever you are aliasing and your tables have the same first letter. Note that you are required to alias the tables with self-joins.
+
+**Steps**
+
+1. Join `populations` with itself `ON` `country_code`.
+2. Select the `country_code` from `p1` and the `size` field from both `p1` and `p2`. SQL won't allow same-named fields, so alias `p1.size` as `size2010` and `p2.size` as `size2015`.
+
+```{sql}
+-- Select fields with aliases
+SELECT p1.country_code,
+       p1.size AS size2010,
+       p2.size AS size2015
+-- From populations (alias as p1)
+FROM populations AS p1
+  -- Join to itself (alias as p2)
+  INNER JOIN populations AS p2
+    -- Match on country code
+    ON  p1.country_code = p2.country_code;
+```
+
+3. Notice from the result that for each `country_code` you have four entries laying out all combinations of 2010 and 2015.
+4. Extend the `ON` in your query to include only those records where the `p1.year` (2010) matches with `p2.year - 5` (2015 - 5 = 2010). This will omit the three entries per `country_code` that you aren't interested in.
+
+```{sql}
+-- Select fields with aliases
+SELECT p1.country_code,
+       p1.size AS size2010,
+       p2.size AS size2015
+-- From populations (alias as p1)
+FROM populations AS p1
+  -- Join to itself (alias as p2)
+  INNER JOIN populations AS p2
+    -- Match on country code
+    ON p1.country_code = p2.country_code
+        -- and year (with calculation)
+        AND p1.year = p2.year - 5;
+```
+
+5. As you just saw, you can also use SQL to calculate values like `p2.year - 5` for you.  With two fields like `size2010` and `size2015`, you may want to determine the percentage increase from one field to the next:\nWith two numeric fields \\(A\\) and \\(B\\), the percentage growth from \\(A\\) to \\(B\\) can be calculated as \\((B - A) / A * 100.0\\).\nAdd a new field to `SELECT`, aliased as `growth_perc`, that calculates the percentage population growth from 2010 to 2015 for each country, using `p2.size` and `p1.size`.
+
+```{sql}
+-- Select fields with aliases
+SELECT p1.country_code,
+       p1.size AS size2010, 
+       p2.size AS size2015,
+       -- Calculate growth_perc
+       ((p2.size - p1.size)/p1.size * 100.0) AS growth_perc
+-- From populations (alias as p1)
+FROM populations AS p1
+  -- Join to itself (alias as p2)
+  INNER JOIN populations AS p2
+    -- Match on country code
+    ON p1.country_code = p2.country_code
+        -- and year (with calculation)
+        AND p1.year = p2.year - 5;
+```
+
+Nice!
+
+## Case when and then
+
+Often it's useful to look at a numerical field not as raw data, but instead as being in different categories or groups.
+
+You can use `CASE` with `WHEN`, `THEN`, `ELSE`, and `END` to define a new grouping field.
+
+**Steps**
+
+1. Using the `countries` table, create a new field `AS geosize_group` that groups the countries into three groups:
+
+    * If `surface_area` is greater than 2 million, `geosize_group` is `'large'`.
+    * If `surface_area` is greater than 350 thousand but not larger than 2 million, `geosize_group` is `'medium'`.
+    * Otherwise, `geosize_group` is `'small'`.
+
+```{sql}
+SELECT name, continent, code, surface_area,
+    -- First case
+    CASE WHEN surface_area > 2000000 THEN 'large'
+        -- Second case
+        WHEN surface_area > 350000 THEN 'medium'
+        -- Else clause + end
+        ELSE 'small' END
+        -- Alias name
+        AS geosize_group
+-- From table
+FROM countries;
+```
+
+Well done! Time for the last exercise of this chapter!
+
+## Inner challenge
+
+The table you created with the added `geosize_group` field has been loaded for you here with the name `countries_plus`.  Observe the use of (and the placement of) the `INTO` command to create this `countries_plus` table:
+
+```{sql,eval=F}
+SELECT name, continent, code, surface_area,
+    CASE WHEN surface_area > 2000000
+            THEN 'large'
+       WHEN surface_area > 350000
+            THEN 'medium'
+       ELSE 'small' END
+       AS geosize_group
+INTO countries_plus
+FROM countries;
+```
+
+You will now explore the relationship between the size of a country in terms of surface area and in terms of population using grouping fields created with `CASE`.
+
+By the end of this exercise, you'll be writing two queries back-to-back in a single script. You got this!
+
+**Steps**
+
+1. Using the `populations` table focused only for the `year` 2015, create a new field aliased as `popsize_group` to organize population `size` into
+
+    * `'large'` (> 50 million),
+    * `'medium'` (> 1 million), and
+    * `'small'` groups.
+    
+2. Select only the country code, population size, and this new `popsize_group` as fields.
+
+```{sql}
+SELECT country_code, size,
+    -- First case
+    CASE WHEN size > 50000000 THEN 'large'
+        -- Second case
+        WHEN size > 1000000 THEN 'medium'
+        -- Else clause + end
+        ELSE 'small' END
+        -- Alias name (popsize_group)
+        AS popsize_group
+-- From table
+FROM populations
+-- Focus on 2015
+WHERE year = 2015;
+```
+
+3. Use `INTO` to save the result of the previous query as `pop_plus`. You can see an example of this\nin the `countries_plus` code in the assignment text. Make sure to include a `;` at the end of\nyour `WHERE` clause!
+
+```{sql}
+SELECT country_code, size,
+    CASE WHEN size > 50000000 THEN 'large'
+        WHEN size > 1000000 THEN 'medium'
+        ELSE 'small' END
+        AS popsize_group
+-- Into table
+INTO pop_plus
+FROM populations
+WHERE year = 2015;
+```
+
+4. Then, include another query below your first query to display all the records in `pop_plus` using\n`SELECT * FROM pop_plus;` so that you generate results and this will display `pop_plus` in the query result.
+
+```{sql}
+-- Select all columns of pop_plus
+SELECT * FROM pop_plus;
+```
+
+5. Write a query to join `countries_plus AS c` on the left with `pop_plus AS p` on the right matching\non the country code fields.
+6. Sort the data based on `geosize_group`, in ascending order so that `large` appears on top.
+7. Select the `name`, `continent`, `geosize_group`, and `popsize_group` fields.
+
+```{sql}
+-- Select fields
+SELECT name, continent, geosize_group, popsize_group
+-- From countries_plus (alias as c)
+FROM countries_plus AS c
+  -- Join to pop_plus (alias as p)
+  INNER JOIN pop_plus AS p
+    -- Match on country code
+    ON c.code = p.country_code
+-- Order the table    
+ORDER BY geosize_group;
+```
+
+This concludes chapter 1 and you now know the INs of JOINs. Off to chapter 2 to learn the OUTs!
+
+# 2. Outer joins and cross joins
+
+In this chapter, you'll come to grips with different kinds of outer joins. You'll learn how to gain further insights into your data through left joins, right joins, and full joins. In addition to outer joins, you'll also work with cross joins.
+
+## LEFT and RIGHT JOINs
+
+Theory. Coming soon ...
+
+**1. LEFT and RIGHT JOINs**
+
+Congratulations on completing Chapter 1 on INNER JOINs. Welcome to Chapter 2 on OUTER JOINs! You can remember outer joins as reaching OUT to another table while keeping all of the records of the original table. Inner joins keep only the records IN both tables. You'll begin this chapter by exploring (1) LEFT JOINs, (2) RIGHT JOINs, and (3) FULL JOINs, which are the three types of OUTER JOINs. Let's begin by exploring how a LEFT JOIN differs from an INNER JOIN via a diagram.
+
+**2. INNER JOIN diagram**
+
+Recall the inner join diagram from Chapter 1. The only records that were included in the resulting table of the INNER JOIN query were those in which the id field had matching values.
+
+**3. LEFT JOIN initial diagram**
+
+In contrast, a LEFT JOIN notes those records in the left table that do not have a match on the key field in the right table. This is denoted in the diagram by the open circles remaining close to the left table for id values of 2 and 3. These values of 2 and 3 do not appear in the id field of the right table.
+
+**4. LEFT JOIN diagram**
+
+You now see the result of the LEFT JOIN query. Whereas the INNER JOIN kept just the records corresponding to id values of 1 and 4, a LEFT JOIN keeps all of the original records in the left table but then marks the values as missing in the right table for those that don't have a match. The missing values are marked with dark gray boxes here for clarity. Note that the values of 5 and 6 for id in the right table are not found in the result of LEFT JOIN in any way.
+
+**5. Multiple INNER JOIN diagram**
+
+It isn't always the case that each key value in the left table corresponds to exactly one record in the key column of the right table. In these examples, we have this layout. Missing entries still occur for ids of 2 and 3 and the value of R3 is brought into the join from right2 since it matches on id 4. Duplicate rows are shown in the LEFT JOIN for id 1 since it has two matches corresponding to the values of R1 and R2 in the right2 table.
+
+**6. The syntax of a LEFT JOIN**
+
+The syntax of the LEFT JOIN is similar to that of the INNER JOIN. Let's explore the same code you used before to determine the countries with a prime minister and a president, but let's use a LEFT JOIN instead of an INNER JOIN. Further, let's remove continent to save space on the screen. The first four records in this table are the same as those from the INNER JOIN. The last six correspond to the countries that do not have a president and thus their president values are missing.
+
+**7. RIGHT JOIN**
+
+The RIGHT JOIN is much less common than the LEFT JOIN so we won't spend as much time on it here. The diagram will help you to understand how it works. Instead of matching entries in the id column on the left table TO the id column of the right table, a RIGHT JOIN does the reverse. Therefore, we see open circles on the ids of 5 and 6 in the right table since they are not found in the left table. The resulting table from the RIGHT JOIN shows these missing entries in the L_val field.As you can see in SQL the right table appears after RIGHT JOIN and the left table appears after FROM.
+
+**8. Let's practice!**
+
+I'll see you again soon to introduce FULL JOINs after you complete the next few exercises.
+
+## Left Join
+
+Now you'll explore the differences between performing an inner join and a left join using the `cities` and `countries` tables.
+
+You'll begin by performing an inner join with the `cities` table on the left and the `countries` table on the right. Remember to alias the name of the city field as `city` and the name of the country field as `country`.
+
+You will then change the query to a left join. Take note of how many records are in each query here!
+
+**Steps**
+
+1. Fill in the code based on the instructions in the code comments to complete the inner join.  Note how many records are in the result of the join in the query result.
+
+```{sql}
+-- Select the city name (with alias), the country code,
+-- the country name (with alias), the region,
+-- and the city proper population
+SELECT c1.name AS city, code, c2.name AS country,
+       region, city_proper_pop
+-- From left table (with alias)
+FROM cities AS c1
+  -- Join to right table (with alias)
+  INNER JOIN countries AS c2
+    -- Match on country code?
+    ON c1.country_code = c2.code
+-- Order based on descending country code
+ORDER BY code DESC;
+```
+
+2. Change the code to perform a `LEFT JOIN` instead of an `INNER JOIN`. After executing this query, note how many records the query result contains.
+
+```{sql}
+SELECT c1.name AS city, code, c2.name AS country,
+       region, city_proper_pop
+FROM cities AS c1
+  -- Join right table (with alias)
+  LEFT JOIN countries AS c2
+    -- Match on country code
+    ON c1.country_code = c2.code
+-- Order by descending country code
+ORDER BY code DESC;
+```
+
+Perfect! Notice that the `INNER JOIN` version resulted in 230 records. The `LEFT JOIN` version returned 236 rows.
+
+## Left join (2)
+
+Next, you'll try out another example comparing an inner join to its corresponding left join. Before you begin though,
+take note of how many records are in both the `countries` and `languages` tables below.
+
+You will begin with an inner join on the `countries` table on the left with the `languages` table on the right. Then you'll change the code to a left join in the next bullet.
+
+Note the use of multi-line comments here using `/*` and `*/`.
+
+**Steps**
+
+1. Perform an inner join and alias the name of the country field as `country` and the name of the language field as `language`.
+2. Sort based on descending country name.
+
+```{sql}
+/*
+Select country name AS country, the country's local name,
+the language name AS language, and
+the percent of the language spoken in the country
+*/
+SELECT c.name AS country, local_name, l.name AS language, percent
+-- From left table (alias as c)
+FROM countries AS c
+  -- Join to right table (alias as l)
+  INNER JOIN languages AS l
+    -- Match on fields
+    ON c.code = l.code
+-- Order by descending country
+ORDER BY country DESC;
+```
+
+3. Perform a left join instead of an inner join. Observe the result, and also note the change in the number of records in the result.
+4. Carefully review which records appear in the left join result, but not in the inner join result.
+
+```{sql}
+/*
+Select country name AS country, the country's local name,
+the language name AS language, and
+the percent of the language spoken in the country
+*/
+SELECT c.name AS country, local_name, l.name AS language, percent
+-- From left table (alias as c)
+FROM countries AS c
+  -- Join to right table (alias as l)
+  LEFT JOIN languages AS l
+    -- Match on fields
+    ON c.code = l.code
+-- Order by descending country
+ORDER BY country DESC;
+```
+
+Perfect! Notice that the `INNER JOIN` version resulted in 909 records. The `LEFT JOIN` version returned 916 rows.
+
+## Left join (3)
+
+You'll now revisit the use of the `AVG()` function introduced in our introductory SQL course.
+You will use it in combination with left join to determine the average gross domestic product (GDP) per capita **by region** in 2010.
+
+**Steps**
+
+1. Begin with a left join with the `countries` table on the left and the `economies` table on the right.
+2. Focus only on records with 2010 as the `year`.
+
+```{sql}
+-- Select name, region, and gdp_percapita
+SELECT name, region, gdp_percapita
+-- From countries (alias as c)
+FROM countries AS c
+  -- Left join with economies (alias as e)
+  LEFT JOIN economies AS e
+    -- Match on code fields
+    ON c.code = e.code
+-- Focus on 2010
+WHERE year = 2010;
+```
+
+3. Modify your code to calculate the average GDP per capita `AS avg_gdp` for **each region** in 2010.
+4. Select the `region` and `avg_gdp` fields.
+
+```{sql}
+-- Select fields
+SELECT region, AVG(gdp_percapita) AS avg_gdp
+-- From countries (alias as c)
+FROM countries AS c
+  -- Left join with economies (alias as e)
+  LEFT JOIN economies AS e
+    -- Match on code fields
+    ON c.code = e.code
+-- Focus on 2010
+WHERE year = 2010
+-- Group by region
+GROUP BY region;
+```
+
+5. Arrange this data on average GDP per capita for each region in 2010 from highest to lowest average GDP per capita.
+
+```{sql}
+-- Select fields
+SELECT region, AVG(gdp_percapita) AS avg_gdp
+-- From countries (alias as c)
+FROM countries AS c
+  -- Left join with economies (alias as e)
+  LEFT JOIN economies AS e
+    -- Match on code fields
+    ON c.code = e.code
+-- Focus on 2010
+WHERE year = 2010
+-- Group by region
+GROUP BY region
+-- Order by descending avg_gdp
+ORDER BY avg_gdp DESC;
+```
+
+Well done. Notice how gradually you're adding more and more building blocks to your SQL vocabulary. This enables you to answer questions of ever-increasing complexity!
+
+## Right join
+
+Right joins aren't as common as left joins. One reason why is that you can always write a right join
+as a left join.
+
+**Steps**
+
+1. The left join code is commented out here.  Your task is to write a new query using rights joins that produces the same result as what the query using left joins produces. Keep this left joins code commented as you write your own query just below it using right joins to solve the problem.
+
+Note the order of the joins matters in your conversion to using right joins!
+
+
+```{sql}
+-- convert this code to use RIGHT JOINs instead of LEFT JOINs
+/*
+SELECT cities.name AS city, urbanarea_pop, countries.name AS country,
+       indep_year, languages.name AS language, percent
+FROM cities
+  LEFT JOIN countries
+    ON cities.country_code = countries.code
+  LEFT JOIN languages
+    ON countries.code = languages.code
+ORDER BY city, language;
+*/
+
+SELECT cities.name AS city, urbanarea_pop, countries.name AS country,
+       indep_year, languages.name AS language, percent
+FROM languages
+  RIGHT JOIN countries
+    ON languages.code = countries.code
+  RIGHT JOIN cities
+    ON countries.code = cities.country_code
+ORDER BY city, language;
+```
+
+Correct; everything should be reversed!
+
+## FULL JOINs
+
+Theory. Coming soon ...
+
+**1. FULL JOINs**
+
+The last of the three types of OUTER JOINs is the FULL JOIN. In this video, you'll see the differences between a FULL JOIN and the other joins you've learned about. In particular, the instruction will focus on comparing them to INNER JOINs and LEFT JOINs and then to LEFT JOINs and RIGHT JOINs.Let's first review how the diagram changes between an INNER JOIN and a LEFT JOIN for our basic example using the left and right tables. Then we'll delve into the FULL JOIN diagram and its SQL code.
+
+**2. INNER JOIN vs LEFT JOIN**
+
+Recall that an INNER JOIN keeps only the records that have matching key field values in both tables. A LEFT JOIN keeps all of the records in the left table while bringing in missing values for those key field values that don't appear in the right table. Let's next review the differences between a LEFT JOIN and a RIGHT JOIN.
+
+**3. LEFT JOIN vs RIGHT JOIN**
+
+Now you can see the differences between a LEFT JOIN and a RIGHT JOIN. The id values of 2 and 3 in the left table do not match with the id values in the right table, so missing values are brought in for them in the LEFT JOIN. Likewise for the RIGHT JOIN, missing values are brought in for id values of 5 and 6.
+
+**4. FULL JOIN initial diagram**
+
+A FULL JOIN combines a LEFT JOIN and a RIGHT JOIN as you can see by looking at this diagram. So it will bring in all records from both the left and the right table and keep track of the missing values accordingly.
+
+**5. FULL JOIN diagram**
+
+Note the missing values here and that all six of the values of id are included in the table. You can also see from the SQL code to produce this FULL JOIN result that the general format aligns closely with the SQL syntax you've seen for both an INNER JOIN and a LEFT JOIN. You'll next explore an example from the leaders database.
+
+**6. FULL JOIN example using leaders database**
+
+Let's revisit the example of looking at countries with prime ministers and/or presidents. We'll walk through the code line by line to do this using a FULL JOIN. The SELECT statement starts us off by including the country field from both of our tables of interest and also the prime_minister and president fields.
+
+**7. FULL JOIN example using leaders database**
+
+Next, the left table is specified as prime_ministers. Note that the order matters here and if you switched the two tables you'd get slightly different output.
+
+**8. FULL JOIN example using leaders database**
+
+The right table is specified as presidents with the alias of p2. prime_ministers was aliased as p1 in the previous line.
+
+**9. FULL JOIN example using leaders database**
+
+Lastly, the join is done based on the key field of country in both tables.
+
+**10. FULL JOIN example results using leaders**
+
+Time for some practice!
+
+**11. Let's practice!**
+
+## Full join
+
+In this exercise, you'll examine how your results differ when using a full join versus using a left join versus using an inner join with the `countries` and `currencies` tables.
+
+You will focus on the North American `region` and also where the `name` of the country is missing. Dig in to see what we mean!
+
+Begin with a full join with `countries` on the left and `currencies` on the right. The fields of interest have been `SELECT`ed for you throughout this exercise.
+
+Then complete a similar left join and conclude with an inner join.
+
+**Steps**
+
+1. Choose records in which `region` corresponds to North America or is `NULL`.
+
+```{sql}
+SELECT name AS country, code, region, basic_unit
+-- From countries
+FROM countries
+  -- Join to currencies
+  FULL JOIN currencies
+    -- Match on code
+    USING (code)
+-- Where region is North America or null
+WHERE region = 'North America' OR region IS NULL
+-- Order by region
+ORDER BY region;
+```
+
+2. Repeat the same query as before, using a `LEFT JOIN` instead of a `FULL JOIN`. Note what has changed compared to the `FULL JOIN` result!
+
+```{sql}
+SELECT name AS country, code, region, basic_unit
+-- From countries
+FROM countries
+  -- Join to currencies
+  LEFT JOIN currencies
+    -- Match on code
+    USING (code)
+-- Where region is North America or null
+WHERE region = 'North America' OR region IS NULL
+-- Order by region
+ORDER BY region;
+```
+
+3. Repeat the same query again but use an `INNER JOIN` instead of a `FULL JOIN`.\nNote what has changed compared to the `FULL JOIN` and `LEFT JOIN` results!
+
+```{sql}
+SELECT name AS country, code, region, basic_unit
+-- From countries
+FROM countries
+  -- Join to currencies
+  INNER JOIN currencies
+    -- Match on code
+    USING (code)
+-- Where region is North America or null
+WHERE region = 'North America' OR region IS NULL
+-- Order by region
+ORDER BY region;
+```
+
+Have you kept an eye out on the different numbers of records these queries returned? The `FULL JOIN` query returned 18 rows, the `OUTER JOIN` returned 4 rows, and the `INNER JOIN` only returned 3 rows. Do these results make sense to you?
+
+## Full join (2)
+
+You'll now investigate a similar exercise to the last one, but this time focused on using a table with more records on the left than the right. You'll work with the `languages` and `countries` tables.
+
+Begin with a full join with `languages` on the left and `countries` on the right. Appropriate fields have been selected for you again here.
+
+**Steps**
+
+1. Choose records in which `countries.name` starts with the capital letter `'V'` or is `NULL`. 
+2. Arrange by `countries.name` in ascending order to more clearly see the results.
+
+```{sql}
+SELECT countries.name, code, languages.name AS language
+-- From languages
+FROM languages
+  -- Join to countries
+  FULL JOIN countries
+    -- Match on code
+    USING (code)
+-- Where countries.name starts with V or is null
+WHERE countries.name LIKE 'V%' OR countries.name IS NULL
+-- Order by ascending countries.name
+ORDER BY countries.name;
+```
+
+3. Repeat the same query as before, using a `LEFT JOIN` instead of a `FULL JOIN`. Note what has changed compared to the `FULL JOIN` result!
+
+```{sql}
+SELECT countries.name, code, languages.name AS language
+-- From languages
+FROM languages
+  -- Join to countries
+  LEFT JOIN countries
+    -- Match using code
+    USING (code)
+-- Where countries.name starts with V or is null
+WHERE countries.name LIKE 'V%' OR countries.name IS NULL
+-- Order by ascending countries.name
+ORDER BY countries.name;
+```
+
+4. Repeat once more, but use an `INNER JOIN` instead of a `LEFT JOIN`. Note what has changed compared to the `FULL JOIN` and `LEFT JOIN` results.
+
+```{sql}
+SELECT countries.name, code, languages.name AS language
+-- From languages
+FROM languages
+  -- Join to countries
+  INNER JOIN countries
+  -- Match using code
+    USING (code)
+-- Where countries.name starts with V or is null
+WHERE countries.name LIKE 'V%' OR countries.name IS NULL
+-- Order by ascending countries.name
+ORDER BY countries.name;
+```
+
+Well done. Again, make sure to compare the number of records the different types of joins return and try to verify whether the results make sense.
+
+## Full join (3)
+
+You'll now explore using two consecutive full joins on the three tables you worked with in the previous two exercises.
+
+**Steps**
+
+1. Complete a full join with `countries` on the left and `languages` on the right. 
+2. Next, full join this result with `currencies` on the right.
+3. Use `LIKE` to choose the Melanesia and Micronesia regions (Hint: `'M%esia'`).
+4. Select the fields corresponding to the country name `AS country`, region, language name `AS language`, and basic and fractional units of currency.
+
+```{sql}
+-- Select fields (with aliases)
+SELECT c1.name AS country, region, l.name AS language,
+       basic_unit, frac_unit
+-- From countries (alias as c1)
+FROM countries AS c1
+  -- Join with languages (alias as l)
+  FULL JOIN languages AS l
+    -- Match on code
+    USING (code)
+  -- Join with currencies (alias as c2)
+  FULL JOIN currencies AS c2
+    -- Match on code
+    USING (code)
+-- Where region like Melanesia and Micronesia
+WHERE region LIKE 'M%esia';
+```
+
+Well done! How many countries are in the regions you filtered on?
+
+## Review outer joins
+
+A(n) ___ join is a join combining the results of a ___ join and a ___ join.
+
+> *Question*
+> ---
+> Fill out!<br>
+> <br>
+> ⬜ left, full, right<br>
+> ⬜ right, full, left<br>
+> ⬜ inner, left, right<br>
+> ✅ None of the above are true<br>
+
+Correct!
+
+## CROSSing the rubicon
+
+Theory. Coming soon ...
+
+**1. CROSSing the Rubicon**
+
+Now that you've worked with INNER JOINs and OUTER JOINs it's time to check out the CROSS JOIN. CROSS JOINs create all possible combinations of two tables. Let's explore the diagram for a CROSS JOIN next.
+
+**2. CROSS JOIN diagram**
+
+In this diagram we have two tables named table1 and table2. Each table only has one field, both with the name of id. The result of the CROSS JOIN is all nine combinations of the id values of 1, 2, and 3 in table1 with the id values of A, B, and C for table2. Next you'll explore an example from the leaders database and look over the SQL syntax for a CROSS JOIN.
+
+**3. Pairing prime ministers with presidents**
+
+Suppose that all prime ministers in North America and Oceania in the prime_ministers table are scheduled for individual meetings with all presidents in the presidents table. You can look at all of these combinations by using a CROSS JOIN. The syntax here remains similar to what you've seen earlier in the course. We use a WHERE clause to focus on only prime ministers in North America and Oceania in the prime_ministers table. The results of the query give us the pairings for the two prime ministers in North America and Oceania from the prime_ministers table with the seven presidents in the presidents table.
+
+**4. Let's practice!**
+
+You'll now hop into an exercise focusing on a couple of cities in a tribute to the author Charles Dickens. This chapter closes with a challenge to test your comprehension of the content covered here. Good luck!
+
+## A table of two cities
+
+This exercise looks to explore languages potentially *and* most frequently spoken in the cities of Hyderabad, India and Hyderabad, Pakistan.
+
+**Steps**
+
+1. Create a `CROSS JOIN` with `cities AS c` on the left and `languages AS l` on the right.
+2. Make use of `LIKE` and `Hyder%` to choose Hyderabad in both countries.
+3. Select only the city name `AS city` and language name `AS language`.
+
+```{sql}
+-- Select fields
+SELECT c.name AS city, l.name AS language
+-- From cities (alias as c)
+FROM cities AS c        
+  -- Join to languages (alias as l)
+  CROSS JOIN languages AS l
+-- Where c.name like Hyderabad
+WHERE c.name LIKE 'Hyder%';
+```
+
+4. Use an `INNER JOIN` instead of a `CROSS JOIN`. Think about what the difference will be in the results for this `INNER JOIN` result and the one for the `CROSS JOIN`.
+
+```{sql}
+-- Select fields
+SELECT c.name AS city, l.name AS language
+-- From cities (alias as c)
+FROM cities AS c        
+  -- Join to languages (alias as l)
+  INNER JOIN languages AS l
+    -- Match on country code
+    ON c.country_code = l.code
+-- Where c.name like Hyderabad
+WHERE c.name LIKE 'Hyder%';
+```
+
+Good one! Can you see the difference between a `CROSS JOIN` and a `INNER JOIN`?
+
+## Outer challenge
+
+Now that you're fully equipped to use `OUTER JOIN`s, try a challenge problem to test your knowledge!
+
+In terms of life expectancy for 2010, determine the names of the lowest five countries and their regions.
+
+**Steps**
+
+1. Select country name `AS country`, `region`, and life expectancy `AS life_exp`.
+2. Make sure to use `LEFT JOIN`, `WHERE`, `ORDER BY`, and `LIMIT`.
+
+```{sql}
+-- Select fields
+SELECT c.name AS country,
+       region,
+       life_expectancy AS life_exp
+-- From countries (alias as c)
+FROM countries AS c
+  -- Join to populations (alias as p)
+  LEFT JOIN populations AS p
+    -- Match on country code
+    ON c.code = p.country_code
+-- Focus on 2010
+WHERE year = 2010
+-- Order by life_exp
+ORDER BY life_exp
+-- Limit to 5 records
+LIMIT 5;
+```
+
+This was the last exercise of this chapter on outer joins and cross joins. In the next chapter, you'll learn about set theory clauses!
+
+# 3. Set theory clauses
+
+In this chapter, you'll learn more about set theory using Venn diagrams and get an introduction to union, union all, intersect, and except clauses. You'll finish by investigating semi joins and anti joins, which provide a nice introduction to subqueries.
+
+## State of the UNION
+
+Theory. Coming soon ...
+
+**1. State of the UNION**
+
+Welcome to Chapter 3! You've made it through some challenging material so far. Keep up the great work! Next are set theory clauses. In this video, we'll focus on the operations of UNION and UNION ALL. In addition to joining diagrams, in this chapter, you'll also see how Venn diagrams can be used to represent set operations. Let's begin with these Venn diagrams now.
+
+**2. Set Theory Venn Diagrams**
+
+You can think of each circle as representing a table of data. The shading represents what is included in the result of the set operation from each table. Beginning in the top left, UNION includes every record in both tables but DOES NOT double count those that are in both tables. UNION ALL includes every record in both tables and DOES replicate those that are in both tables. This is why the center is shaded black. The two diagrams on the bottom represent only subsets of data being selected. INTERSECT results in only those records found in both of the two tables. EXCEPT results in only those records in one table BUT NOT the other. Let's investigate what UNION looks like as a joining diagram.
+
+**3. UNION diagram**
+
+In this diagram, you have two tables with names left_one and right_one. The "one" here corresponds to each table only having one field. If you run a UNION on these two fields you get each record appearing in either table, but notice that the id values of 1 and 4 in right_one are not included again in the UNION since they were already found in the left_one table.
+
+**4. UNION ALL diagram**
+
+By contrast (with the same two tables left_one and right_one), UNION ALL includes all duplicates in its result. So left_one and right_one both having four records yields eight records for the result of the UNION ALL. If it were the case that right_one had these same four values and also one more value of 1 for id, you'd see three entries for 1 in the resulting UNION ALL. Let's check out the SQL syntax using the leaders database for both UNION and UNION ALL, but first you'll see one more table in the leaders database.
+
+**5. monarchs table**
+
+Check out the monarchs table in the leaders database that we will use in examples here. The table lists the country, continent, and the name of the monarch for that country. Do some of these names look familiar based on the other tables you've seen? They should! We'll come back to this.
+
+**6. All prime ministers and monarchs**
+
+You can use UNION on the prime_ministers and monarchs table to show all of the different prime ministers and monarchs in these two tables. The country field is also included here for reference. Note that the prime_minister field has been aliased as leader. In fact, the resulting field from the UNION will have the name of leader. That's an important property of the set theory clauses you will see in this chapter. The fields included in the operation must be of the same data type since they come back as just a single field. You can't stack a number on top of a character field in other words.
+
+**7. Resulting table from UNION**
+
+Our resulting table from the UNION gives all the leaders and their corresponding country.  Does something stand out to you here? (PAUSE)
+
+**8. UNION ALL with leaders**
+
+The countries of Brunei and Oman were listed only once in the UNION table. These countries have monarchs that also act as prime ministers. This can be seen in the UNION ALL results. You've seen
+
+**9. Let's practice!**
+
+that UNION and UNION ALL clauses do not do the lookup step that JOINs do. They simply stack records on top of each other from one table to the next.
+
+## Union
+
+You have two new tables, `economies2010` and `economies2015`, available to you. The `economies` table is also included for reference.
+
+**Steps**
+
+1. Combine the two new tables into one table containing all of the fields in `economies2010`. 
+2. Sort this resulting single table by country code and then by year, both in ascending order.
+
+```{sql}
+-- Select fields from 2010 table
+SELECT *
+  -- From 2010 table
+  FROM economies2010
+    -- Set theory clause
+    UNION
+-- Select fields from 2015 table
+SELECT *
+  -- From 2015 table
+  FROM economies2015
+-- Order by code and year
+ORDER BY code, year;
+```
+
+What a beauty!
+
+## Union (2)
+
+`UNION` can also be used to determine all occurrences of a field across multiple tables. Try out this exercise with no starter code.
+
+**Steps**
+
+1. Determine all (non-duplicated) country codes in either the `cities` or the `currencies` table. The result should be a table with only one field called `country_code`.
+2. Sort by `country_code` in alphabetical order.
+
+```{sql}
+-- Select field
+SELECT country_code
+  -- From cities
+  FROM cities
+  -- Set theory clause
+  UNION
+-- Select field
+SELECT code
+  -- From currencies
+  FROM currencies
+-- Order by country_code
+ORDER BY country_code;
+```
+
+Well done! Let's take it up a notch!
+
+## Union all
+
+As you saw, duplicates were removed from the previous two exercises by using `UNION`.  
+
+To include duplicates, you can use `UNION ALL`.
+
+**Steps**
+
+1. Determine all combinations (include duplicates) of country code and year that exist in either the `economies` or the `populations` tables. Order by `code` then `year`.
+2. The result of the query should only have two columns/fields. Think about how many records this query should result in.  
+3. You'll use code very similar to this in your next exercise after the video. Make note of this code after completing it.
+
+```{sql}
+-- Select fields
+SELECT code, year
+  -- From economies
+  FROM economies
+  -- Set theory clause
+  UNION ALL
+-- Select fields
+SELECT country_code, year
+  -- From populations
+  FROM populations
+-- Order by code, year
+ORDER BY code, year;
+```
+
+Can you spot some duplicates in the query result?
+
+## INTERSECTional data science
+
+Theory. Coming soon ...
+
+**1. INTERSECTional data science**
+
+You saw with UNION and UNION ALL via examples that they do not do quite the same thing as what a join does. They only bind fields on top of one another in the two tables. The set theory clause INTERSECT works in a similar fashion to UNION and UNION ALL, but remember from the Venn diagram that INTERSECT only includes those records in common to both tables and fields selected. Let's investigate the diagram for INTERSECT and the corresponding SQL code to achieve it.
+
+**2. INTERSECT diagram and SQL code**
+
+The result of the INTERSECT on left_one and right_one is only the records in common to both left_one and right_one: 1 and 4. Let's next see how you could use INTERSECT to determine all countries having both a prime minister and a president.
+
+**3. Prime minister and president countries**
+
+The code for each of these set operations has a similar layout. You first select which fields you'd like to include in your first table, and then you specify the name of the first table. Next you specify the set operation to perform. Lastly, you denote which fields in the second table you'd like to include and then the name of the second table.The result of the query is the four countries with both a prime minister and a president in the leaders database.
+
+**4. INTERSECT on two fields**
+
+Next, let's think about what would happen if we tried to select two columns instead of one from our previous example. The code shown does just that. What will be the result of this query? Will this also give you the names of the countries that have both a prime minister and a president? Hmmm [PAUSE]The actual result is an empty table. Why is that? When INTERSECT looks at two columns it includes both columns in the search. So it didn't find any countries with prime ministers AND presidents having the same name. INTERSECT looks for RECORDS in common, not individual key fields like what a join does to match. This is an important distinction.
+
+**5. Let's practice!**
+
+Let's get some practice!
+
+## Intersect
+
+`UNION ALL` will extract all records from two tables, while `INTERSECT` will only return records that both tables have in common. In this exercise, you will create a similar query as before, however, this time you will look at the records in common for country code and year for the `economies` and `populations` tables.
+
+Note the number of records from the result of this query compared to the similar `UNION ALL` query result of 814 records.
+
+**Steps**
+
+1. Use `INTERSECT` to determine the records in common for country code and year for the `economies` and `populations` tables.
+2. Again, order by `code` and then by `year`, both in ascending order.
+
+```{sql}
+-- Select fields
+SELECT code, year
+  -- From economies
+  FROM economies
+  -- Set theory clause
+  INTERSECT
+-- Select fields
+SELECT country_code, year
+  -- From populations
+  FROM populations
+-- Order by code and year
+ORDER BY code, year;
+```
+
+Boom!
+
+## Intersect (2)
+
+As you think about major world cities and their corresponding country, you may ask *which countries also have a city with the same name as their country name?*
+
+**Steps**
+
+1. Use `INTERSECT` to answer this question with `countries` and `cities`!
+
+
+```{sql}
+-- Select fields
+SELECT name
+  -- From countries
+  FROM countries
+  -- Set theory clause
+  INTERSECT
+-- Select fields
+SELECT name
+  -- From cities
+  FROM cities;
+```
+
+Nice one! It looks as though Singapore is the only country that has a city with the same name!
+
+## Review union and intersect
+
+> *Question*
+> ---
+> Which of the following combinations of terms and definitions is correct?<br>
+> <br>
+> ⬜ `UNION`: returns all records (potentially duplicates) in both tables<br>
+> ⬜ `UNION ALL`: returns only unique records<br>
+> ✅ `INTERSECT`: returns only records appearing in both tables<br>
+> ⬜ None of the above are matched correctly<br>
+
+Correct!
+
+## EXCEPTional
+
+Theory. Coming soon ...
+
+**1. EXCEPTional**
+
+Way to go! You've made it to the last of the four set theory clauses in this course. EXCEPT allows you to include only the records that are in one table, but not the other. Let's mix things up and look into the SQL code and result first and then dive into the diagram.
+
+**2. Monarchs that aren't prime ministers**
+
+You saw earlier that there are some monarchs that also act as the prime minister for their country. One way to determine those monarchs in the monarchs table that do not also hold the title of prime minister is to use the EXCEPT clause. [CLICK]This SQL query selects the monarch field from monarchs and then looks for common entries with the prime_ministers field, while also keeping track of the country for each leader. [CLICK] You can see in the resulting query that only the two European monarchs are not also prime ministers in the leaders database.
+
+**3. EXCEPT diagram**
+
+This diagram gives the structure of EXCEPT clauses. Only the records that appear in the left table BUT DO NOT appear in the right table are included.
+
+**4. Let's practice!**
+
+After a couple exercises on using EXCEPT clauses, you'll check out the last two types of joins for the course: semi-joins and anti-joins. I'll see you in the next video for them!
+
+## Except
+
+Get the names of cities in `cities` which are not noted as capital cities in `countries` as a single field result.  
+
+Note that there are some countries in the world that are not included in the `countries` table, which will result in some cities not being labeled as capital cities when in fact they are.
+
+**Steps**
+
+1. Order the resulting field in ascending order. 
+2. Can you spot the city/cities that are actually capital cities which this query misses?
+
+```{sql}
+-- Select field
+SELECT name
+  -- From cities
+  FROM cities
+  -- Set theory clause
+  EXCEPT
+-- Select field
+SELECT capital
+  -- From countries
+  FROM countries
+-- Order by result
+ORDER BY name;
+```
+
+EXCEPTional!
+
+## Except (2)
+
+Now you will complete the previous query in reverse!
+
+Determine the names of capital cities that are **not** listed in the `cities` table.
+
+**Steps**
+
+1. Order by `capital` in ascending order.
+2. The `cities` table contains information about 236 of the world's most populous cities. The result of your query may surprise you in terms of the number of capital cities that **do not** appear in this list!
+
+```{sql}
+-- Select field
+SELECT capital
+  -- From countries
+  FROM countries
+  -- Set theory clause
+  EXCEPT
+-- Select field
+SELECT name
+  -- From cities
+  FROM cities
+-- Order by ascending capital
+ORDER BY capital;
+```
+
+Well done. Is this query surprising, as the instructions suggested?
+
+## Semi-joins and Anti-joins
+
+Theory. Coming soon ...
+
+**1. Semi-joins and Anti-joins**
+
+You'll now close this chapter by returning to joins. The six joins you've worked with so far are all additive joins in that they add columns to the original "left" table. Can you name all six? (1. INNER JOIN, 2. self-join, 3. LEFT JOIN, 4. RIGHT JOIN, 5. FULL JOIN, and 6. CROSS JOIN).
+
+**2. Building up to a semi-join**
+
+The last two joins we will cover use a right table to determine which records to keep in the left table. In other words, you use these last two joins (semi-join and anti-join) in a way similar to a WHERE clause dependent on the values of a second table. Let's try out some examples of semi-joins and anti-joins and then return to the diagrams for each.Suppose that you are interested in determining the presidents of countries that gained independence before 1800. Let's first determine which countries this corresponds to in the states table. Recall from your knowledge of SQL before you knew anything about JOINs how this could be done. To get only the countries meeting this condition you can use the WHERE clause. We'll next set up the other part of the query to get the
+
+**3. Another step towards the semi-join**
+
+presidents we want. What code is needed to retrieve the president, country, and continent columns from the presidents table in that order? [PAUSE]Now we need to use this result with the one in the previous slide to further filter the country field in the presidents table to give us the correct result. Let's see how this might be done next.
+
+**4. Finish the semi-join (an intro to subqueries)**
+
+In the first query of this example, we determined that Portugal and Spain were both independent before 1800. In the second query, we determined how to display the table in a nice form to answer our question. In order to combine the two tables together we will again use a WHERE clause and then use the first query as the condition to check in the WHERE clause. Check it out!This is your first example of a subquery: a query that sits inside of another query. You'll explore these more in Chapter 4. What does this give as a result? Is it the presidents of Spain and of Portugal? Since Spain does not have a president, it is not included here and only the Portuguese president is listed. The semi-join chooses records in the first table where a condition IS met in a second table. An anti-join chooses records in the first table where a condition IS NOT met in the second table. How might you determine countries in the Americas founded after 1800?
+
+**5. An anti-join**
+
+Using the code from the previous example, you only need to add a few pieces of code. So what goes in the blanks? [PAUSE]Fill in the WHERE clause by choosing only those continents ending in America and then fill in the other space with a NOT to exclude those countries in the subquery. The presidents of
+
+**6. The result of the anti-join**
+
+countries in the Americas founded after 1800 are given in the table.
+
+**7. Semi-join and anti-join diagrams**
+
+The semi-join matches records by key field in the right table with those in the left. It then picks out only the rows in the left table that match that condition. The anti-join picks out those columns in the left table that do not match the condition on the right table. Semi-joins and anti-joins don't have the same built-in SQL syntax that INNER JOIN and LEFT JOIN have. They are useful tools in filtering one table's records on the records of another table.
+
+**8. Let's practice!**
+
+This chapter's challenge exercise will ask you to combine set theory clauses with semi-joins.  Before you get to that, you'll try out some exercises on semi-joins and anti-joins. See you again in Chapter 4!
+
+## Semi-join
+
+You are now going to use the concept of a semi-join to identify languages spoken in the Middle East.
+
+**Steps**
+
+1. Begin by selecting all country codes in the Middle East as a single field result using `SELECT`, `FROM`, and `WHERE`.
+
+```{sql}
+-- Select code
+SELECT code
+  -- From countries
+  FROM countries
+-- Where region is Middle East
+WHERE region = 'Middle East';
+```
+
+2. Below the commented code, select only unique languages by name appearing in the `languages` table. 
+3. Order the resulting single field table by `name` in ascending order.
+
+```{sql}
+-- Query from step 1:
+/*
+SELECT code
+  FROM countries
+WHERE region = 'Middle East';
+*/
+
+-- Select field
+SELECT DISTINCT name
+  -- From languages
+  FROM languages
+-- Order by name
+ORDER BY name;
+```
+
+4. Combine the previous two queries into one query by adding a `WHERE IN` statement to the `SELECT DISTINCT` query to determine the unique languages spoken in the Middle East.
+5. Order the result by `name` in ascending order.
+
+```{sql}
+-- Query from step 2
+SELECT DISTINCT name
+  FROM languages
+-- Where in statement
+WHERE code IN
+  -- Query from step 1
+  -- Subquery
+  (SELECT code
+   FROM countries
+   WHERE region = 'Middle East')
+-- Order by name
+ORDER BY name;
+```
+
+Your first subquery is a fact! Let's dive a little deeper into the concept.
+
+## Relating semi-join to a tweaked inner join
+
+Let's revisit the code from the previous exercise, which retrieves languages spoken in the Middle East. 
+
+```{sql, eval=F}
+SELECT DISTINCT name
+FROM languages
+WHERE code IN
+  (SELECT code
+   FROM countries
+   WHERE region = 'Middle East')
+ORDER BY name;
+```
+
+Sometimes problems solved with semi-joins can also be solved using an inner join.
+
+```{sql, eval=F}
+SELECT languages.name AS language
+FROM languages
+INNER JOIN countries
+ON languages.code = countries.code
+WHERE region = 'Middle East'
+ORDER BY language;
+```
+
+> *Question*
+> ---
+> This inner join isn't quite right. What is missing from this second code block to get it to match with the correct answer produced by the first block?<br>
+> <br>
+> ⬜ `HAVING` instead of `WHERE`<br>
+> ✅ `DISTINCT`<br>
+> ⬜ `UNIQUE`<br>
+
+## Diagnosing problems using anti-join
+
+Another powerful join in SQL is the anti-join. It is particularly useful in identifying which records are causing an incorrect number of records to appear in join queries.
+
+You will also see another example of a subquery here, as you saw in the first exercise on semi-joins. Your goal is to identify the currencies used in Oceanian countries!
+
+**Steps**
+
+1. Begin by determining the number of countries in `countries` that are listed in Oceania using `SELECT`, `FROM`, and `WHERE`.
+
+```{sql}
+-- Select statement
+SELECT COUNT(*)
+  -- From countries
+  FROM countries
+-- Where continent is Oceania
+WHERE continent = 'Oceania';
+```
+
+2. Complete an inner join with `countries AS c1` on the left and `currencies AS c2` on the right to get the different currencies used in the countries of Oceania.
+3. Match `ON` the `code` field in the two tables.
+4. Include the country `code`, country `name`, and `basic_unit AS currency`.
+
+```{sql}
+-- Select fields (with aliases)
+SELECT c1.code, name, basic_unit AS currency
+  -- From countries (alias as c1)
+  FROM countries AS c1
+    -- Join with currencies (alias as c2)
+    INNER JOIN currencies AS c2
+    -- Match on code
+    ON c1.code = c2.code
+-- Where continent is Oceania
+WHERE c1.continent = 'Oceania';
+```
+
+5. Note that not all countries in Oceania were listed in the resulting inner join with `currencies`. Use an anti-join to determine which countries were not included!
+
+    * Use `NOT IN` and `(SELECT code FROM currencies)` as a subquery to get the country code and country name for the Oceanian countries that are not included in the `currencies` table.
+
+```{sql}
+-- Select fields
+SELECT code, name
+  -- From Countries
+  FROM countries
+  -- Where continent is Oceania
+  WHERE continent = 'Oceania'
+    -- And code not in
+    AND code NOT IN
+    -- Subquery
+    (SELECT code
+     FROM currencies);
+```
+
+Nice! Can you tell which countries were not included now?
+
+## Set theory challenge
+
+Congratulations!  You've now made your way to the challenge problem for this third chapter. Your task here will be to incorporate two of `UNION`/`UNION ALL`/`INTERSECT`/`EXCEPT` to solve a challenge involving three tables.
+
+In addition, you will use a subquery as you have in the last two exercises!  This will be great practice as you hop into subqueries more in Chapter 4!
+
+**Steps**
+
+1. Identify the country codes that are included in either `economies` or `currencies` but not in `populations`.
+2. Use that result to determine the names of cities in the countries that match the specification in the previous instruction.
+
+```{sql}
+-- Select the city name
+SELECT name
+  -- Alias the table where city name resides
+  FROM cities AS c1
+  -- Choose only records matching the result of multiple set theory clauses
+  WHERE country_code IN
+(
+    -- Select appropriate field from economies AS e
+    SELECT e.code
+    FROM economies AS e
+    -- Get all additional (unique) values of the field from currencies AS c2   
+    UNION
+    SELECT c2.code
+    FROM currencies AS c2
+    -- Exclude those appearing in populations AS p  
+    EXCEPT
+    SELECT p.country_code
+    FROM populations AS p
+);
+```
+
+Success! Head over to the final chapter of this course to feel the power of subqueries at your fingertips!
+
+# 4. Subqueries
+
+In this closing chapter, you'll learn how to use nested queries and you'll use what you’ve learned in this course to solve three challenge problems.
+
+## Subqueries inside WHERE and SELECT clauses
+
+Theory. Coming soon ...
+
+**1. Subqueries inside WHERE and SELECT clauses**
+
+You've made it all the way to the last chapter of this course. Congratulations and keep up the excellent work. This last chapter is focused on embedding queries inside of queries. These are called nested queries and also known as subqueries as you saw in Chapter 3. The most common type of subquery is one inside of a WHERE statement. Let's check out another one of these now with a little bit of setting up to do first, of course.
+
+**2. Subquery inside WHERE clause set-up**
+
+You've seen many examples of using a subquery inside a WHERE clause already with the semi-join and anti-join examples and exercises you just completed. With the WHERE clause being the most common place for a subquery to be found, it's important that you see just one more example of doing so. With this being the final chapter, it's time to unveil the remaining fields in the states table. Note that the continent field is not shown to display all the fields here.The fert_rate field gives an estimate for the average number of babies born per woman in each country. The women_parli_perc field gives the percentage of women in the elected federal parliament for each country. Across these 13 countries, how would you determine the average fertility rate?
+
+**3. Average fert_rate**
+
+We will use the average fertility rate as part of a subquery. Recall how this is done. The average babies born to women across these countries is 2-point-28 children.
+
+**4. Asian countries below average `fert_rate`**
+
+Let's use the previous slide's query as a subquery to determine Asian countries that fall under this average. You'll see the code in a couple steps. First we select the country name and the fertility rate for Asian countries.
+
+**5. Asian countries below average `fert_rate`**
+
+Next, we want to choose records where fert_rate is smaller than What comes next?
+
+**6. Asian countries below average `fert_rate`**
+
+The subquery is to get the average fertility rate! And now we can check out our result to make sure it makes sense.
+
+**7. Asian countries below average `fert_rate`**
+
+It appears so. These are the two Asian countries we were looking for with fertility rates below 2-point-28 babies per woman.
+
+**8. Subqueries inside SELECT clauses - setup**
+
+The second most common type of a subquery is inside of a SELECT clause. The task here is to count the number of countries listed in the states table for each continent in the prime_ministers table. Let's again take the stepwise approach to setting up the problem. What does this code do? [PAUSE] It gives each of the five continents in the prime_ministers table. Let's keep building our answer in the next slide.
+
+**9. Subquery inside SELECT clause - complete**
+
+Next is determining the counts of the number of countries in states for each of the continents in the last slide. Combining a COUNT clause with a WHERE statement matching the continent fields in the two tables gets us there. Let's check out the code and then discuss a bit further. The subquery involving states also can reference the prime_ministers table in the main query. Any time you do a subquery inside a SELECT statement like this, you need to give the subquery an alias like countries_num here. Please pause the video here and carefully review this code. The result of this query comes next. [PAUSE] It's kinda like magic that this works, huh?! If you haven't discovered it already, there are often many different ways to solve problems with SQL queries. You could use a carefully constructed JOIN to achieve this same result, for example.
+
+**10. Let's practice!**
+
+Test out your subquery expertise with a few exercises. I'll see you back soon in the subqueries inside FROM clauses video!
+
+## Subquery inside where
+
+You'll now try to figure out which countries had high average life expectancies (at the country level) in 2015.
+
+**Steps**
+
+1. Begin by calculating the average life expectancy across all countries for 2015.
+
+```{sql}
+-- Select average life_expectancy
+SELECT AVG(life_expectancy)
+  -- From populations
+  FROM populations
+-- Where year is 2015
+WHERE year = 2015;
+```
+
+2. Recall that you can use SQL to do calculations for you.  Suppose we wanted only records that were above\n`1.15 * 100` in terms of life expectancy for 2015:
+
+```{sql, eval=F}
+SELECT *
+  FROM populations
+WHERE life_expectancy > 1.15 * 100
+  AND year = 2015;
+```
+
+Select all fields from `populations` with records corresponding to larger than 1.15 times\nthe average you calculated in the first task for 2015. In other words, change the `100` in the example above with a subquery.
+
+```{sql}
+-- Select fields
+SELECT *
+  -- From populations
+  FROM populations
+-- Where life_expectancy is greater than
+WHERE life_expectancy >
+  -- 1.15 * subquery
+  1.15 * (SELECT AVG(life_expectancy)
+   FROM populations
+   WHERE year = 2015) AND
+  year = 2015;
+```
+
+Good work! Let's see how you do on a more high-level question in one go.
+
+## Subquery inside where (2)
+
+Use your knowledge of subqueries in `WHERE` to get the urban area population for only capital cities.
+
+**Steps**
+
+1. Make use of the `capital` field in the `countries` table in your subquery.
+2. Select the city name, country code, and urban area population fields.
+
+```{sql}
+-- Select fields
+SELECT name, country_code, urbanarea_pop
+  -- From cities
+  FROM cities
+-- Where city name in the field of capital cities
+WHERE name IN
+  -- Subquery
+  (SELECT capital
+   FROM countries)
+ORDER BY urbanarea_pop DESC;
+```
+
+Alright. You've got some practice on subqueries inside `WHERE` now. Time to see how you do when these subqueries are in the `SELECT` statement!
+
+## Subquery inside select
+
+In this exercise, you'll see how some queries can be written using either a join or a subquery.
+
+You have seen previously how to use `GROUP BY` with aggregate functions and an inner join to get summarized information from multiple tables. 
+
+The code given in the first query selects the top nine countries in terms of number of cities appearing in the `cities` table. Recall that this corresponds to the most populous cities in the world. Your task will be to convert the second query to get the same result as the provided code.
+
+**Steps**
+
+1. Submit the code to view the result of the provided query.
+
+```{sql}
+SELECT countries.name AS country, COUNT(*) AS cities_num
+  FROM cities
+    INNER JOIN countries
+    ON countries.code = cities.country_code
+GROUP BY country
+ORDER BY cities_num DESC, country
+LIMIT 9;
+
+/* 
+SELECT ___ AS ___,
+  (SELECT ___
+   FROM ___
+   WHERE countries.code = cities.country_code) AS cities_num
+FROM ___
+ORDER BY ___ ___, ___
+LIMIT 9;
+*/
+```
+
+2. Convert the `GROUP BY` code to use a subquery inside of `SELECT` by filling in the blanks to get a result that matches the one given using the `GROUP BY` code in the first query.
+3. Again, sort the result by `cities_num` descending and then by `country` ascending.
+
+```{sql}
+/*
+SELECT countries.name AS country, COUNT(*) AS cities_num
+  FROM cities
+    INNER JOIN countries
+    ON countries.code = cities.country_code
+GROUP BY country
+ORDER BY cities_num DESC, country
+LIMIT 9;
+*/
+
+SELECT countries.name AS country,
+  -- Subquery
+  (SELECT COUNT(*)
+   FROM cities
+   WHERE countries.code = cities.country_code) AS cities_num
+FROM countries
+ORDER BY cities_num DESC, country
+LIMIT 9;
+```
+
+Great! The next video will introduce you to using subqueries in the `FROM` clause. Exciting stuff!
+
+## Subquery inside FROM clause
+
+Theory. Coming soon ...
+
+**1. Subquery inside the FROM clause**
+
+The last basic type of a subquery exists inside of a FROM clause. A motivating example pertaining to the percentage of women in parliament will be used now to help you understand this style of subquery. Let's dig in!
+
+**2. Build-up**
+
+First, let's determine the maximum percentage of women in parliament for each continent listed in states. Recall that this query will only work if you include continent as one of the fields in the SELECT clause since we are grouping based on that field. Let's check out the result. We see that Europe has the largest value and North America has the smallest value for the countries listed in the states table.
+
+**3. Focusing on records in monarchs**
+
+What if you weren't interested in all continents, but specifically those in the monarchs table. You haven't seen this yet in the course but you can include multiple tables in a FROM clause by adding a comma between them. Let's investigate a way to get the continents only in monarchs using this new trick. We have at least part of our answer here, but how do we get rid of those duplicate entries? And what about the maximum column?
+
+**4. Finishing off the subquery**
+
+To get Asia and Europe to appear only once, use the DISTINCT command in your SELECT statement. But now how do you get that maximum column to also come along with Asia and Europe? Instead of including states in the FROM clause, include the subquery instead and alias it with a name like subquery. There you have it! That's how to include a subquery as a temporary table in your FROM clause.
+
+**5. Let's practice!**
+
+You are very close to the end of the course. Awesome work on making it this far! The last remaining exercises are designed to really test your understanding of the material. You may be a bit frustrated but stick with it and you'll take the knowledge gained in these problems with you as you continue to develop your SQL skills. See you in a bit for the course review video!
+
+## Subquery inside from
+
+The last type of subquery you will work with is one inside of `FROM`.
+
+You will use this to determine the number of languages spoken for each country, identified by
+the country's local name!  (Note this may be different than the `name` field and is stored in the `local_name` field.)
+
+**Steps**
+
+1. Begin by determining for each country code how many languages are listed in the\n`languages` table using `SELECT`, `FROM`, and `GROUP BY`. 
+2. Alias the aggregated field as `lang_num`.
+
+```{sql}
+-- Select fields (with aliases)
+SELECT code, COUNT(*) AS lang_num
+  -- From languages
+  FROM languages
+-- Group by code
+GROUP BY code;
+```
+
+3. Include the previous query (aliased as `subquery`) as a subquery in the `FROM` clause of a new query.
+4. Select the local name of the country from `countries`.
+5. Also, select `lang_num` from `subquery`.
+6. Make sure to use `WHERE` appropriately to match `code` in `countries` and in `subquery`.
+7. Sort by `lang_num` in descending order.
+
+```{sql}
+SELECT local_name, subquery.lang_num
+  FROM countries,
+    (SELECT code, COUNT(*) AS lang_num
+     FROM languages
+     GROUP BY code) AS subquery
+  WHERE countries.code = subquery.code
+ORDER BY lang_num DESC;
+```
+
+This one wasn't easy!
+
+## Advanced subquery
+
+You can also nest multiple subqueries to answer even more specific questions.
+
+In this exercise, for each of the six continents listed in 2015, you'll identify which country had the maximum inflation rate, and how high it was, using multiple subqueries. The table result of your final query
+should look something like the following, where anything between `<` `>` will be filled in with appropriate values:
+
+```{sql,eval=F}
++------------+---------------+-------------------+
+| name       | continent     | inflation_rate    |
+|------------+---------------+-------------------|
+| <country1> | North America | <max_inflation1>  |
+| <country2> | Africa        | <max_inflation2>  |
+| <country3> | Oceania       | <max_inflation3>  |
+| <country4> | Europe        | <max_inflation4>  |
+| <country5> | South America | <max_inflation5>  |
+| <country6> | Asia          | <max_inflation6>  |
++------------+---------------+-------------------+
+```
+
+Again, there are multiple ways to get to this solution using only joins, but the focus here is on showing you an introduction into advanced subqueries.
+
+**Steps**
+
+1. Create an `INNER JOIN` with `countries` on the left and `economies` on the right with `USING`, without aliasing your tables or columns.
+2. Retrieve the country's name, continent, and inflation rate for 2015.
+
+```{sql}
+-- Select fields
+SELECT name, continent, inflation_rate
+  -- From countries
+  FROM countries
+    -- Join to economies
+    INNER JOIN economies
+    -- Match on code
+    USING (code)
+-- Where year is 2015
+WHERE year = 2015;
+```
+
+3. Select the maximum inflation rate in 2015 `AS max_inf` grouped by continent using the previous step's query as a subquery in the `FROM` clause. 
+
+* Thus, in your subquery you should:
+
+    * Create an inner join with `countries` on the left and `economies` on the right with `USING` (without aliasing your tables or columns).
+    * Retrieve the country name, continent, and inflation rate for 2015.
+    * Alias the subquery as `subquery`.
+    
+4. This will result in the six maximum inflation rates in 2015 for the six continents as one field table. Make sure to not include `continent` in the outer `SELECT` statement.
+
+```{sql}
+-- Select the maximum inflation rate as max_inf
+SELECT MAX(inflation_rate) AS max_inf
+  -- Subquery using FROM (alias as subquery)
+  FROM (
+      SELECT name, continent, inflation_rate
+      FROM countries
+      INNER JOIN economies
+      USING (code)
+      WHERE year = 2015) AS subquery
+-- Group by continent
+GROUP BY continent;
+```
+
+5. Now it's time to append your second query to your first query using `AND` and `IN` to obtain the name of the country, its continent, and the maximum inflation rate for each continent in 2015. 
+6. For the sake of practice, change all joining conditions to use `ON` instead of `USING`.
+
+```{sql}
+-- Select fields
+SELECT name, continent, inflation_rate
+  -- From countries
+  FROM countries
+  -- Join to economies
+  INNER JOIN economies
+  -- Match on code
+  ON countries.code = economies.code
+  -- Where year is 2015
+  WHERE year = 2015
+    -- And inflation rate in subquery (alias as subquery)
+    AND inflation_rate IN (
+        SELECT MAX(inflation_rate) AS max_inf
+        FROM (
+             SELECT name, continent, inflation_rate
+             FROM countries
+             INNER JOIN economies
+             ON countries.code = economies.code
+             WHERE year = 2015) AS subquery
+      -- Group by continent
+        GROUP BY continent);
+```
+
+Wow! Well done! This code works since each of the six maximum inflation rate values occur only once in the 2015 data. Think about whether this particular code involving subqueries would work in cases where there are ties for the maximum inflation rate values.
+
+## Subquery challenge
+
+Let's test your understanding of the subqueries with a challenge problem!  Use a subquery to get 2015 economic data for countries that do **not** have 
+
+* `gov_form` of `'Constitutional Monarchy'` or 
+* `'Republic'` in their `gov_form`.
+Here, `gov_form` stands for the form of the government for each country.  Review the different entries for `gov_form` in the `countries` table.
+
+**Steps**
+
+1. Select the country code, inflation rate, and unemployment rate.
+2. Order by inflation rate ascending. 
+3. Do not use table aliasing in this exercise.
+
+```{sql}
+-- Select fields
+SELECT code, inflation_rate, unemployment_rate
+  -- From economies
+  FROM economies
+  -- Where year is 2015 and code is not in
+  WHERE year = 2015 AND code NOT IN
+    -- Subquery
+    (SELECT code
+     FROM countries
+     WHERE (gov_form = 'Constitutional Monarchy' OR gov_form LIKE '%Republic%'))
+-- Order by inflation rate
+ORDER BY inflation_rate;
+```
+
+Superb! Let's review subqueries before you head off to the last video of this course!
+
+## Subquery review
+
+> *Question*
+> ---
+> Within which SQL clause are subqueries most frequently found?<br>
+> <br>
+> ✅ WHERE<br>
+> ⬜ FROM<br>
+> ⬜ SELECT<br>
+> ⬜ IN<br>
+
+Correct!
+
+## Course review
+
+Theory. Coming soon ...
+
+
+**1. Course Review**
+
+Only the challenge problems remain! Way to go! You're on your way to being a SQL query warrior using PostgreSQL! Before you tackle the three challenge problems, let's review the main topics covered throughout the course.
+
+**2. Types of joins**
+
+In SQL, a join combines columns from one or more tables in a relational database via a lookup process.There are four different types of joins you learned about in this course. First, an INNER JOIN is also denoted as just JOIN in SQL. A special case of an INNER JOIN you explored is called a self-join.Second, there are three OUTER JOINs denoted as LEFT JOIN (or LEFT OUTER JOIN), RIGHT JOIN (or RIGHT OUTER JOIN), and FULL JOIN (or FULL OUTER JOIN).Third, you worked with CROSS JOINs to create all possible combinations between two tables. Lastly, you investigated semi-joins and anti-joins. Remember that words appearing in ALL capital letters correspond to the joins having simple SQL syntax. Self-joins, semi-joins, and anti-joins don't have built-in SQL syntax.
+
+**3. INNER JOIN vs LEFT JOIN**
+
+An INNER JOIN keeps only the records in which the key field (or fields) is in both tables. A LEFT JOIN keeps all the records in fields specified in the left table and includes the matches in the right table based on the key field or fields. Key field values that don't match in the right table are included as missing data in the resulting table of a LEFT JOIN.
+
+**4. RIGHT JOIN vs FULL JOIN**
+
+A RIGHT JOIN keeps all the records specified in the right table and includes the matches from the key field (or fields) in the left table. Those that don't match are included as missing values in the resulting table from the RIGHT JOIN query. A FULL JOIN is a combination of a LEFT JOIN and a RIGHT JOIN showing exactly which values appear in both tables and those that appear in only one or the other table.
+
+**5. CROSS JOIN with code**
+
+A CROSS JOIN matches all records from fields specified in one table with all records from fields specified in another table. Remember that a CROSS JOIN does not have an ON or USING clause, but otherwise looks very similar to the code for an INNER JOIN, LEFT JOIN, RIGHT JOIN, or FULL JOIN.
+
+**6. Set Theory Clauses**
+
+Recall that UNION includes every record in both tables but DOES NOT double count those that are in both tables whereas UNION ALL DOES replicate those that are in both tables. INTERSECT gives only those records found in both of the two tables. EXCEPT gives only those records in one table BUT NOT the other.
+
+**7. Semi-joins and Anti-joins**
+
+When you'd like to filter your first table based on conditions set on a second table, you should use a semi-join to accomplish your task. If instead you'd like to filter your first table based on conditions NOT being met on a second table, you should use an anti-join. Anti-joins are particularly useful in diagnosing problems with other joins in terms of getting fewer or more records than you expected.
+
+**8. Types of basic subqueries**
+
+The most common type of subquery is done inside of a WHERE clause. The next most frequent types of subqueries are inside SELECT clauses and inside FROM clauses. As you'll see in the challenge exercises, subqueries can also find their way into the ON statement of a join in ways similar to what you've seen inside WHERE clauses too.
+
+**9. Own the challenge problems!  You got this!**
+
+Well, you are only three exercises away from mastering the content in this course. You are a true SQL ninja. Now take down these last three problems using all the skills you've built up in this course!
+
+## Final challenge
+
+Welcome to the end of the course! The next three exercises will test your knowledge of the content covered in this course and apply many of the ideas you've seen to difficult problems. Good luck!
+
+Read carefully over the instructions and solve them step-by-step, thinking about how the different clauses work together.
+
+In this exercise, you'll need to get the country names and other 2015 data in the `economies` table and the `countries` table for **Central American countries with an official language**.
+
+**Steps**
+
+1. Select unique country names. Also select the total investment and imports fields.
+2. Use a left join with `countries` on the left. (An inner join would also work, but please use a left join here.)
+3. Match on `code` in the two tables `AND` use a subquery inside of `ON` to choose the appropriate `languages` records.
+4. Order by country name ascending. 
+5. Use table aliasing but **not** field aliasing in this exercise.
+
+```{sql}
+-- Select fields
+SELECT DISTINCT name, total_investment, imports
+  -- From table (with alias)
+  FROM countries AS c
+    -- Join with table (with alias)
+    LEFT JOIN economies AS e
+      -- Match on code
+      ON (c.code = e.code
+        -- and code in Subquery
+        AND c.code IN (
+          SELECT l.code
+          FROM languages AS l
+          WHERE official = 'true'
+        ) )
+  -- Where region and year are correct
+  WHERE region = 'Central America' AND year = 2015
+-- Order by field
+ORDER BY name;
+```
+
+One down, two to go!
+
+## Final challenge (2)
+
+Whoofta! That was challenging, huh?
+
+Let's ease up a bit and calculate the average fertility rate for each region in 2015.
+
+**Steps**
+
+1. Include the name of region, its continent, and average fertility rate aliased as `avg_fert_rate`. 
+2. Sort based on `avg_fert_rate` ascending.
+3. Remember that you'll need to `GROUP BY` all fields that aren't included in the aggregate function of `SELECT`.
+
+```{sql}
+-- Select fields
+SELECT region, continent, AVG(fertility_rate) AS avg_fert_rate
+  -- From left table
+  FROM countries AS c
+    -- Join to right table
+    INNER JOIN populations AS p
+      -- Match on join condition
+      ON c.code = p.country_code
+  -- Where specific records matching some condition
+  WHERE year = 2015
+-- Group appropriately?
+GROUP BY region, continent
+-- Order appropriately
+ORDER BY avg_fert_rate;
+```
+
+Interesting. It seems that the average fertility rate is lowest in Southern Europe and highest in Central Africa. Two down, one to go!
+
+## Final challenge (3)
+
+Welcome to the last challenge problem. By now you're a query warrior!  Remember that these challenges are designed to take you to the limit to solidify your SQL knowledge! Take a deep breath and solve this step-by-step.
+
+You are now tasked with determining the top 10 capital cities in Europe and the Americas in terms of a calculated percentage using `city_proper_pop` and `metroarea_pop` in `cities`.
+
+Do not use table aliasing in this exercise.
+
+**Steps**
+
+1. Select the city name, country code, city proper population, and metro area population.
+2. Calculate the percentage of metro area population composed of city proper population for each city in `cities`, aliased as `city_perc`.  
+3. Focus only on capital cities in Europe and the Americas in a subquery.
+4. Make sure to exclude records with missing data on metro area population.
+5. Order the result by `city_perc` descending.
+6. Then determine the top 10 capital cities in Europe and the Americas in terms of this `city_perc` percentage.
+
+```{sql}
+-- Select fields
+SELECT name, country_code, city_proper_pop, metroarea_pop,
+    -- Calculate city_perc
+      city_proper_pop / metroarea_pop * 100 AS city_perc
+  -- From appropriate table    
+  FROM cities
+  -- Where
+  WHERE name IN
+    -- Subquery
+    (SELECT capital
+     FROM countries
+     WHERE (continent = 'Europe'
+        OR continent LIKE '%America'))
+       AND metroarea_pop IS NOT NULL
+-- Order appropriately
+ORDER BY city_perc DESC
+-- Limit amount
+LIMIT 10;
+```
