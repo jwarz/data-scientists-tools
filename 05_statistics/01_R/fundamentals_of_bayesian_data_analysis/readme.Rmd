@@ -681,11 +681,14 @@ On the x-axis we have the number of visitors, and on the y-axis we have the unde
 If we knew that `proportion_clicks` was exactly 10%, we could condition on this, that is, remove all samples that don’t fulfill the condition of proportion_clicks being 10%. 
 
 ```{r}
-plot_prior <- function(x) {
+library(ggExtra)
+plot_prior <- function(x, filter_var) {
+  
+  var_quo = quo_name(enquo(filter_var))
   
   # Add flag for ~10% values
   prior10_df <- prior %>%
-    mutate( p10 = round( proportion_clicks, 2) == x ) 
+    mutate( p10 = !!filter_var == x ) 
   
   prior_plot <- ggplot( prior10_df |> filter(p10), aes( x = n_visitors, y = proportion_clicks ) ) +
     
@@ -698,7 +701,11 @@ plot_prior <- function(x) {
     
     # Add point layer again to bring it to top
     geom_point( alpha = 0.5, color = "deepskyblue4", shape = 1, stroke = 1) + 
-    geom_hline(yintercept=0.1, linetype="dashed", color = "black", size = 1) +
+    
+    {if(var_quo == "n_visitors")geom_vline(xintercept = x, linetype="dashed", color = "black", size = 1) else 
+                                geom_hline(yintercept = x, linetype="dashed", color = "black", size = 1)}+
+    
+    # geom_hline(yintercept=x, linetype="dashed", color = "black", size = 1) +
     theme_classic()
     
   prior_plot <- ggMarginal( prior_plot, type = 'histogram', 
@@ -708,7 +715,9 @@ plot_prior <- function(x) {
   prior_plot
 }
 
-plot_prior(0.1)
+
+# Set proportion_clicks to 10 %
+plot_prior(x = 0.1, round(proportion_clicks,2))
 ```
 
 This would also reduce the uncertainty in how many visitors we would get. If we knew the proportion of clicks was 10%, we would be pretty certain we would end up with between 2 and 15 visitors.
@@ -717,7 +726,7 @@ If we condition on other values the probability distribution over the number of 
 
 ```{r, eval=FALSE}
 for (i in c(0.05, 0.1, 0.15, 0.2 )) {
-  p <- plot_prior(i)
+  plot_prior(x = i, round(proportion_clicks,2))
   ggsave(plot = p, filename = paste0("img",i, ".png"), device = "png")
 }
 
@@ -732,42 +741,58 @@ img_animated <- magick::image_animate(img_joined, delay=150)
 
 ## save to disk
 magick::image_write(image = img_animated,
-            path = "marg_hist.gif")
+            path = "marg_hist1.gif")
 ```
 
-![marg_hist](readme_files/figure-gfm/marg_hist.gif){width=75%}
+![marg_hist](readme_files/figure-gfm/marg_hist1.gif){width=50%}
 
-However, there is no point to this, because the problem was that we didn’t know what the underlying proportions of clicks could be.
+However, there is no point to this, because the problem was that we didn’t know what the underlying proportions of clicks could be. But what we can know is the data, and we can condition on the data too. Say that 5 out of a 100 clicked when we ran the ad campaign. If we remove all samples that doesn’t fulfill this condition, we also reduce the uncertainty in what the underlying proportion of clicks could be. 
 
-**12. marginal_plot_all.png**
+```{r}
+# Set n_visitors to 5
+plot_prior(x = 5, n_visitors)
+```
 
-But what we can know is the data, and we can condition on the data too. Say that 5 out of a 100 clicked when we ran the ad campaign. If we
+We end up with a distribution that doesn’t look at all like the uniform distribution between 0% and 20% we defined before. And if we actually would have gotten 5 visitors we could have concluded that proportion_clicks probably would be between 3% and 10%.
 
-**13. marginal_plot_visit_5.png**
+And similarly we could condition on other values for the data. 
 
-remove all samples that doesn’t fulfill this condition, we also reduce the uncertainty in what the underlying proportion of clicks could be. We end up with a distribution that doesn’t look at all like the uniform distribution between 0% and 20% we defined before. And if we actually would have gotten 5 visitors we could have concluded that  proportion_clicks probably would be between 3% and 10%.
+```{r, eval=FALSE}
+for (i in c(5, 10, 15, 20, 25)) {
+  p <- plot_prior(x = i, n_visitors)
+  ggsave(plot = p, filename = paste0("img",i, ".png"), device = "png")
+}
 
-**14. marginal_plot_visit_animation.gif**
+imgs     <- list.files(full.names = TRUE, pattern = "img.*png")
+img_list <- lapply(imgs, magick::image_read)
+  
+## join the images together
+img_joined <- magick::image_join(img_list)
 
-And similarly we could condition on other values for the data. We have now reached
+## animate at 2 frames per second
+img_animated <- magick::image_animate(img_joined, delay=150)
 
-**15. The essence of Bayesian inference**
+## save to disk
+magick::image_write(image = img_animated,
+            path = "marg_hist2.gif")
+```
 
-the essence of what Bayesian inference is, it is conditioning on the data, in order to learn about what parameters values likely gave rise to this data. So, when you ran the ad campaign you got 13 site visits out of a 100 shown ads.
+![marg_hist](readme_files/figure-gfm/marg_hist2.gif){width=50%}
 
-**16. Try some Bayesian inference yourself!**
-
-Now you try doing some Bayesian inference yourself and condition on this data.
+We have now reached the **essence of what Bayesian inference** is, it is conditioning on the data, in order to learn about what parameters values likely gave rise to this data. So, when you ran the ad campaign you got 13 site visits out of a 100 shown ads.
 
 ## Update a Bayesian model with data
 
-You ran your ad campaign, and 13 people clicked and visited your site when the ad was shown a 100 times. You would now like to use this new information to update the Bayesian model.
+Let's use this new information to update the Bayesian model.
+
+The model we put together in the last step resulted in two vectors: 
+
+1. `proportion_clicks` that represents the uncertainty regarding the underlying proportion of clicks
+2. `n_visitors` which represents the uncertainty regarding the number of visitors you would get. 
 
 **Steps**
 
-1. The model you put together in the last exercise resulted in two vectors: (1) `proportion_clicks` that represents the uncertainty regarding the underlying proportion of clicks and (2) `n_visitors` which represents the uncertainty regarding the number of visitors you would get. We have now put these vectors into a data frame for you called `prior`.
-
-    * Take a look at the first rows of `prior` using the `head()` function.
+1. Put these vectors into a data frame called `prior`.
 
 ```{r}
 # Create the prior data frame
@@ -777,70 +802,45 @@ prior <- data.frame(proportion_clicks, n_visitors)
 head(prior)
 ```
 
-2. The reason we've called it `prior` is because it represents the uncertainty *before* (that is, *prior* to) having included the information in the data. Let's do that now! 
+The reason it is called `prior` is because it represents the uncertainty *before* (that is, *prior* to) having included the information in the data. `prior$n_visitors` represented the uncertainty over how many visitors you would get because of the ad campaign. But now you know you got exactly 13 visitors.
 
-    * 
+2. Update prior to include this information by conditioning on this data. That is, filtering away all rows where `prior$n_visitors` isn't equal to 13. Store the resulting data frame in posterior.
 
 ```{r}
-# Create the prior data frame
-prior <- data.frame(proportion_clicks, n_visitors)
-
-# Examine the prior data frame
-head(prior)
-
 # Create the posterior data frame
 posterior <- prior[prior$n_visitors == 13, ]
 ```
 
-3. Great! The reason that we call it `posterior` is because it represents the uncertainty *after* (that is, *posterior* to) having included the information in the data. So what does `posterior` contain now? Well, `posterior$n_visitors` isn't too exciting, that's just `13` repeated many times. 
+The reason that we call it `posterior` is because it represents the uncertainty *after* (that is, *posterior* to) having included the information in the data. So what does `posterior` contain now? Well, `posterior$n_visitors` isn't too exciting, that's just `13` repeated many times. 
 
-    * But take a look at `posterior$proportion_clicks` using the `hist` function.
+3. But take a look at `posterior$proportion_clicks` using the `hist` function.
 
 ```{r}
-# Create the prior data frame
-prior <- data.frame(proportion_clicks, n_visitors)
-
-# Examine the prior data frame
-head(prior)
-
-# Create the posterior data frame
-posterior <- prior[prior$n_visitors == 13, ]
-
 # Visualize posterior proportion clicks
 hist(posterior$proportion_clicks)
 ```
 
+This doesn't look at all like the uniform distribution between 0.0 and 0.2 we put into `proportion_clicks` before. The whole distribution of samples now represent the posterior (after the data) probability distribution over what `proportion_clicks` could be.
+
 > *Question*
 > ---
-> This doesn't look at all like the uniform distribution between 0.0 and 0.2 we put into `proportion_clicks` before. The whole distribution of samples now represent the posterior (after the data) probability distribution over what `proportion_clicks` could be.
-
-
-* Looking at the probability distribution over `proportion_clicks` what does the model know about the underlying proportion of visitors clicking on the ad?<br>
+> Looking at the probability distribution over `proportion_clicks` what does the model know about the underlying proportion of visitors clicking on the ad?<br>
 > <br>
 > ⬜ It's likely between 0% and 20%.<br>
 > ⬜ It's likely between 5% and 10%.<br>
 > ✅ It's likely between 7% and 19%.<br>
 > ⬜ It's likely between 15% and 20%.<br>
 
-This is a legitimate decision boundary as it lies in the gap between the clusters. Try again.
-
 ## How many visitors could your site get (3)?
 
-In the last exercise, you updated the probability distribution over the underlying proportions of clicks (`proportion_clicks`) using new data. Now we want to use this updated `proportion_clicks` to predict how many visitors we would get if we reran the ad campaign.
+In the last Step, you updated the probability distribution over the underlying proportions of clicks (`proportion_clicks`) using new data. Now we want to use this updated `proportion_clicks` to predict how many visitors we would get if we reran the ad campaign.
+
+If you look at `posterior$n_visits` you'll see it's just `13` repeated over and over again. This makes sense as `posterior` represents what the model knew about the outcome of the last ad campaign after having seen the data. 
 
 **Steps**
 
-1. The result from the last exercise is still in the data frame `posterior`, but if you look at `posterior$n_visits` you'll see it's just `13` repeated over and over again. This makes sense as `posterior` represents what the model knew about the outcome of the last ad campaign after having seen the data. 
-
-    * Assign `posterior` to a new variable called `prior` which will represent the uncertainty regarding the new ad campaign you haven't run yet.
-
-```{r}
-# Assign posterior to a new variable called prior
-prior <- posterior
-
-```
-
-2. Take a look at the first rows in `prior` using the `head()` function.
+1. Assign `posterior` to a new variable called `prior` which will represent the uncertainty regarding the new ad campaign you haven't run yet.
+2. Take a look at the first rows in `prior`
 
 ```{r}
 # Assign posterior to a new variable called prior
@@ -850,46 +850,24 @@ prior <- posterior
 head(prior)
 ```
 
-3. While `proportion_clicks` represents the uncertainty regarding the underlying proportion of clicks for the next ad campaign, `n_visitors` has not been updated yet. 
+While `proportion_clicks` represents the uncertainty regarding the underlying proportion of clicks for the next ad campaign, `n_visitors` has not been updated yet. 
 
-    * Replace `prior$n_visitors` with a new sample drawn using `rbinom` with `prior$proportion_clicks` as an argument. 
-    * Plot the resulting `prior$n_visitors` using `hist`. 
-4. Here is some example code you can use for this, just replace ___ .
-
+3. Replace `prior$n_visitors` with a new sample drawn using `rbinom` with `prior$proportion_clicks` as an argument. 
+4. Plot the resulting `prior$n_visitors` using `hist`. 
 
 ```{r}
-# Assign posterior to a new variable called prior
-prior <- posterior
-
-# Take a look at the first rows in prior
-head(prior)
-
 # Replace prior$n_visitors with a new sample and visualize the result
-n_samples <-  nrow(prior)
+n_samples   <-  nrow(prior)
 n_ads_shown <- 100
 prior$n_visitors <- rbinom(n_samples, size = n_ads_shown, prob = prior$proportion_clicks)
 hist(prior$n_visitors)
 ```
 
-5. The plot shows a probability distribution over the number of site visitors a new ad campaign would bring in. It now looks pretty likely that there would be more than, say, 5 visitors because of the campaign. 
+The plot shows a probability distribution over the number of site visitors a new ad campaign would bring in. It now looks pretty likely that there would be more than, say, 5 visitors because of the campaign. 
 
-    * Calculate the probability that you will get 5 or more visitors next time you run your ad campaign. 
-6. Do this by summing up the number of draws with more than five visitors ( `sum(prior$n_visitors >= 5)` ) and divide by the total number of draws ( `length(prior$n_visitors)` ).
-
+5. Calculate the probability that you will get 5 or more visitors next time you run your ad campaign (do this by summing up the number of draws with more than five visitors and divide by the total number of draws).
 
 ```{r}
-# Assign posterior to a new variable called prior
-prior <- posterior
-
-# Take a look at the first rows in prior
-head(prior)
-
-# Replace prior$n_visitors with a new sample and visualize the result
-n_samples <-  nrow(prior)
-n_ads_shown <- 100
-prior$n_visitors <- rbinom(n_samples, size = n_ads_shown, prob = prior$proportion_clicks)
-hist(prior$n_visitors)
-
 # Calculate the probability that you will get 5 or more visitors
 sum(prior$n_visitors >= 5) / length(prior$n_visitors)
 ```
@@ -903,155 +881,82 @@ sum(prior$n_visitors >= 5) / length(prior$n_visitors)
 > ⬜ 93%<br>
 > ✅ 99%<br>
 
-That's correct! 8.9 g/100ml is not a legitimate decision boundary as it is part of the lower sugar content cluster.
+From the observation of 13/100 visits, we find that it is very probable (99% probable) that future add campaigns will generate at least 5 visits.
 
-## What have we done?
+**Summary**
 
-Theory. Coming soon ...
+1. You started by specifying a generative model from scratch in R but then realized this was the same as the Binomial model. 
+2. You specified a prior probability distribution over the underlying proportion of clicks representing prior information; it’s likely between 0% and 20%, but also that it is uncertain, it could be anything from 0% to 20%. 
+3. Together the generative model and this prior resulted in a joint probability distribution over both the underlying proportion of clicks and how many visitors you would get. 
+4. You collected some data and used this to condition the joint distribution, in other words, you used Bayesian inference. This allowed the model to learn about the underlying proportion of clicks and resulted in an updated posterior probability distribution. 
+5. And, finally, as a bonus, we used this posterior as the prior for the next ad campaign and predicted how many visitors we would get if reran it. 
 
+I hope you can see that if you collected even more data, you could continue repeating these steps, to learn more and more about the underlying proportion of clicks.This is exactly how `prop_model` from the first chapter worked; it used the same Bayesian model with the only difference that the prior was uniform from 0 to 100% and that the model was updated with one success or failure at a time. 
 
-**1. Bayesian inference, again!**
+Taking a step back, what have we done? We have specified
 
-You’ve done some Bayesian inference! Again, I suppose, because you already tried it last chapter. But this time you did it from the ground up in exhaustive detail.
+* prior information,
+* a generative model,
+* and given some data we calculated the
+* updated probability of different parameter values. 
 
-**2. What have we done montage 1**
+In the examples so far we’ve used a Binomial model with a single parameter, but the cool thing here is that the general method of Bayesian inference works for any generative model, with any number of parameters. That is, you can have any number of parameters and unknown values, that you plug into any generative model that you can implement, and the data can be multivariate or can consist of completely different data sets, and the Bayesian machinery that we used in the simple case works in the same way.
 
-You started by specifying a generative model from scratch in R but then realized this was the same as
+This is why Bayesian methods are so broadly used, in everything from hypothesis testing to machine learning: As long as you can come up with a generative model for a data analytical problem, Bayesian inference can always be used to fit this model and learn from data. Well, in theory at least, because in practice you also need to use a computational method that’s efficient enough. And the method we used in this section is straightforward, easy to understand, but also scales very badly when you have more data or more complicated models. 
 
-**3. What have we done montage 2**
+So that’s actually the fourth thing you need to do Bayesian inference. 
 
-the Binomial model. You specified
-
-**4. What have we done montage 3**
-
-a prior probability distribution over the underlying proportion of clicks representing prior information; it’s likely between 0% and 20%, but also that it is uncertain, it could be anything from 0% to 20%. Together the generative model and this prior resulted in
-
-**5. What have we done montage 4**
-
-a joint probability distribution over both the underlying proportion of clicks and how many visitors you would get. You collected some data and used this to
-
-**6. What have we done montage 5**
-
-condition the joint distribution, in other words, you used
-
-**7. What have we done montage 6**
-
-Bayesian inference. This allowed the model to learn about the underlying proportion of clicks and resulted in an updated posterior probability distribution. And, finally, as a bonus, we used this posterior as
-
-**8. What have we done montage 7**
-
-the prior for the next ad campaign and predicted how many visitors we would get if reran it. I hope you can see that if you collected even more data, you could continue repeating these steps, to learn more and more about the underlying proportion of clicks.This is exactly how
-
-**9. prom_model result**
-
-prop_model from the first chapter worked; it used the same Bayesian model with the only difference that the prior was uniform from 0 to 100% and that the model was updated with one success or failure at a time. Taking a step back, what have we done? We have specified
-
-**10. What have we done 1**
-
-prior information,
-
-**11. What have we done 2**
-
-a generative model,
-
-**12. What have we done 3**
-
-and given some data we calculated the
-
-**13. What have we done 4**
-
-
-
-**14. What have we done 5**
-
-updated probability of different parameter values. In the examples so far we’ve used a Binomial model with a single parameter, but the cool thing here is that the general method of Bayesian inference works for
-
-**15. What have we done 6**
-
-any generative model, with any number of parameters. That is, you can have any number of parameters and unknown values, that you plug into any generative model that you can implement, and the data can be multivariate or can consist of completely different data sets, and the Bayesian machinery that we used in the simple case works in the same way.
-
-**16. What bayes need 1**
-
-This is why Bayesian methods are so broadly used, in everything from hypothesis testing to machine learning: As long as you can come up with a generative model for a data analytical problem, Bayesian inference can always be used to fit this model and learn from data. Well, in theory at least, because in practice you also need to use a computational method that’s efficient enough. And the method we used in this chapter is straightforward, easy to understand, but also scales very badly when you have more data or more complicated models. So that’s actually the fourth
-
-**17. What bayes need 2**
-
-thing you need to do Bayesian inference. And we will talk about more computationally efficient methods to do Bayesian inference in chapter 4.
-
-**18. Next up: Why use Bayes?**
-
-In this chapter, we looked at how Bayesian inference works. Next up, in chapter 3, we’ll look at some reasons for why you would want to use it to do Bayesian data analysis.
+In this chapter, we looked at how Bayesian inference works. Next up we’ll look at some reasons for why you would want to use it to do Bayesian data analysis.
 
 # 3. Why use Bayesian Data Analysis?
 
 This chapter will show you four reasons why Bayesian data analysis is a useful tool to have in your data science tool belt.
 
-## Four good things with Bayes
+So why would you want to use Bayesian data analysis, rather than some other method? So far, it seems like I’ve given you reasons for why not to use it: It mostly requires a lot of work, and you need to set everything up from scratch. But the reason for all this work was so that you would understand what’s going on under the hood. Once you know that, there are many good pre-packaged tools for Bayesian data analysis that just lets you get on with your work.
 
-Theory. Coming soon ...
+**1. Bayes is flexible**
 
+So the main reason to use Bayes is that it is a very flexible method to model, analyze and learn from data. 
 
-**1. Why use Bayesian data analysis?**
+1. Can include information sources in addition to the data
 
-So why would you want to use Bayesian data analysis, rather than some other method? So far, it seems like I’ve given you reasons for why not to use it: It mostly requires a lot of work, and you need to set everything up from scratch. But the reason for all this work was so that you would understand what’s going on under the hood. Once you know that, there are many good pre-packaged tools for Bayesian data analysis that just lets you get on with your work, and we’ll look at one of those tools in chapter 5, but for now, we’ll stay under the hood. So the main reason to use Bayes is that it is
+    * Background Information
+    * Expert Opinion
+    * Common Knowledge
+    * ex: suppose you ask a vendor what the median and range of success has been for previous ad campaigns.
+    
+The Bayesian model we used last, knows that the underlying proportion of clicks is equally likely to be anything between 0% and 20%. This is already a prior that contains some information: we’re basically telling the model that it is impossible that the proportion of clicks is any higher than 20% and if we really didn’t want to assume anything regarding the proportion of clicks we could make this into a more non-informative prior by saying it’s equally likely that it’s anything from 0% to a 100%. 
 
-**2. Bayes is flexible**
+But now we want to have a prior distribution that encodes the information that “Most ads get clicked on 5% of the time, but for some ads it is as low as 2% and for others as high as 8%.”There are many ways we could define such a distribution. You could even draw a distribution on paper, scan it in, and transfer it to R somehow. But a convenient way is to use a pre-defined probability distribution function that you can tweak so that it encodes prior information. In our case, a useful distribution could be the Beta distribution. It’s a distribution that is bounded between 0 and 1, which is useful when you want to define a distribution over a proportion, and depending on its two shape parameters alpha and beta it can take on many different shapes. In the next section, you will take a look at the Beta distribution and how you can use it to define a prior that is informed by the new info we got from the social media company.
 
-a very flexible method to model, analyze and learn from data. And in this chapter I’ll give you four examples of this flexibility, we’ll see how you can include information sources in addition to the data into your analysis, for example, expert opinion. How you always can compare any outcomes of Bayesian analyses, like parameters between different groups or datasets. How the result of a Bayesian analysis can be used to do decision analysis, for example, to make it easier to use the result of the model to make an informed business decision. And finally how the flexibility of Bayes allows you to change the underlying statistical model completely with relatively little effort. We’ll start by looking at
+2. Can make many comparisons between groups or data sets
 
-**3. Including information in addition to data**
+    * Can test different experimental conditions
+    * Can easily find the probable difference between treatment groups
+    * ex: suppose you have two different treatment groups
 
-including information sources in addition to the data. This could be background information, expert opinion or just common knowledge that you have and that you would like to add to the model. To run with the website ad example from last chapter: Let’s say you actually contacted the social media company and asked:
+3. Can use the result of Bayesian Analysis to do Decision Analysis
 
-**4. Chat 1**
+    *  **Decision Analysis:** take the result of a statistical analysis and post-process it to apply to a process of interest.
+    * the posterior distributions are not of principal interest, rather an outcome to meet a goal (e.g. highest return/clickthrough)
+    
+4. Can change the underlying statistical model
 
-“So what are really the range of proportion of clicks you see for ads?” And let’s say they actually answered:
+    * if new data indicates the need for a change e.g. from a binomial model to include a new variable(s)
+    
+5. Bayes is optimal in the small world that is the model
+6. In Bayesian data analysis there is a separation between model and computation
 
-**5. Chat 2**
-
-“Hi You! Most ads get clicked on 5% of the time, but for some ads it is as low as 2% and for others as high as 8%.”
-
-**6. Chat 3**
-
-“Ah, but you’ve written 10% on your webpage!?”
-
-**7. Chat 4**
-
-“That’s marketing, don’t listen to them!” Ok, this seems like it could be a piece of useful information to include in the analysis. But how do we do that?
-
-**8. Binomial model from chapter 2**
-
-Here is the Bayesian model we used last chapter and a natural place to include background information like this is in the prior probability distribution, as this represents what the model knows before seeing the data.
-
-**9. Unif(0, 0.2)**
-
-And right now it knows that the underlying proportion of clicks is equally likely to be anything between 0% and 20%. This is already a prior that contains some information: we’re basically telling the model that it is impossible that the proportion of clicks is any higher than 20% and if we really didn’t want to assume anything regarding the proportion of clicks we could make this into a more non-informative prior by saying it’s equally likely that it’s anything from
-
-**10. Unif(0, 1.0)**
-
-0% to a 100%. But now we want to have a prior distribution that encodes the information that
-
-**11. Zoom in on chat message**
-
-“Most ads get clicked on 5% of the time, but for some ads it is as low as 2% and for others as high as 8%.”There are many ways we could define such a distribution. You could even draw a distribution on paper, scan it in, and transfer it to R somehow. But a convenient way is to use a pre-defined probability distribution function that you can tweak so that it encodes prior information. In our case, a useful distribution could be
-
-**12. The Beta distribution**
-
-the Beta distribution. It’s a distribution that is bounded between 0 and 1, which is useful when you want to define a distribution over a proportion, and depending on its two shape parameters alpha and beta it can take on many different shapes. In the next exercises, you will take a look at the Beta distribution and how you can use it to
-
-**13. Define an informed prior!**
-
-define a prior that is informed by the new info we got from the social media company.
-
-## Explore using the Beta distribution as a prior
+## Beta distribution as a prior
 
 The Beta distribution is a useful probability distribution when you want model uncertainty over a parameter bounded between 0 and 1. Here you'll explore how the two parameters of the Beta distribution determine its shape.
 
+One way to see how the shape parameters of the Beta distribution affect its shape is to generate a large number of random draws using the `rbeta(n, shape1, shape2)` function and visualize these as a histogram. 
+
 **Steps**
 
-1. One way to see how the shape parameters of the Beta distribution affect its shape is to generate a large number of random draws using the `rbeta(n, shape1, shape2)` function and visualize these as a histogram. The code to the right generates 1,000,000 draws from a Beta(1, 1) distribution: A Beta distribution with both shape parameters set to 1. 
-
-    * Visualize these draws using the `hist` function.
+1. Generate 1,000,000 draws from a Beta(1, 1) distribution: A Beta distribution with both shape parameters set to 1. 
+2. Visualize these draws using the `hist` function.
 
 ```{r}
 # Explore using the rbeta function
@@ -1061,10 +966,9 @@ beta_sample <- rbeta(n = 1000000, shape1 = 1, shape2 = 1)
 hist(beta_sample)
 ```
 
-2. Right! A Beta(1,1) distribution is the same as a uniform distribution between 0 and 1. It is useful as a so-called *non-informative* prior as it expresses than any value from 0 to 1 is equally likely. 
+A Beta(1,1) distribution is the same as a uniform distribution between 0 and 1. It is useful as a so-called *non-informative* prior as it expresses than any value from 0 to 1 is equally likely. 
 
-    * Try to set one of the shape parameters to a negative number. 
-    * Take a look at the first few values using `head(beta_sample)`.
+2. Set one of the shape parameters to a negative number. 
 
 ```{r}
 # Explore using the rbeta function
@@ -1074,10 +978,10 @@ beta_sample <- rbeta(n = 1000000, shape1 = -1, shape2 = 1)
 head(beta_sample)
 ```
 
-3. Yes, `NaN` stands for *not a number* and the reason you got a lot of `NaN`s is that the Beta distribution is only defined when its shape parameters are positive.
+`NaN` stands for *not a number* and the reason you got a lot of `NaN`s is that the Beta distribution is only defined when its shape parameters are positive.
 
-    * Instead, set both shape parameters to a large number. Let's set both `shape1` and `shape2` to `100`. 
-    * Visualize the result using `hist()`.
+3. Instead, set both shape parameters to a large number. Let's set both `shape1` and `shape2` to `100`. 
+4. Visualize the result using `hist()`.
 
 ```{r}
 # Explore using the rbeta function
@@ -1087,9 +991,9 @@ beta_sample <- rbeta(n = 1000000, shape1 = 100, shape2 = 100)
 hist(beta_sample)
 ```
 
-4. So the larger the shape parameters are, the more concentrated the beta distribution becomes. When used as a prior, this Beta distribution encodes the information that the parameter is most likely close to 0.5 .
+So the larger the shape parameters are, the more concentrated the beta distribution becomes. When used as a prior, this Beta distribution encodes the information that the parameter is most likely close to 0.5 .
 
-    * See what happens if you set `shape2` to something smaller than `shape1`. Let's set `shape2 = 20` while keeping `shape1 = 100`.
+5. See what happens if you set `shape2` to something smaller than `shape1`. Let's set `shape2 = 20` while keeping `shape1 = 100`.
 
 ```{r}
 # Explore using the rbeta function
@@ -1105,112 +1009,185 @@ So the larger the `shape1` parameter is the closer the resulting distribution is
 
 The new information you got from the social media company was: 
 
-<blockquote>
-  Most ads get clicked on 5% of the time, but for some ads it is as low as 2% and for others as high as 8%.
+> Most ads get clicked on 5% of the time, but for some ads it is as low as 2% and for others as high as 8%.
 
-</blockquote>
 There are many different probability distributions that one can argue captures this information. 
-
-
-* Out of the four Beta distribution shown below, which captures this information the best?
-<img src="https://assets.datacamp.com/production/repositories/1300/datasets/99ec148dcdd05d87d7b278a16ba1c557c359a34e/four_different_beta_dists.png" width="400">
 
 > *Question*
 > ---
-> ???<br>
+> Out of the four Beta distribution shown below, which captures this information the best?<br>
 > <br>
 > ⬜ A. rbeta(shape1 = 3, shape2 = 12)<br>
 > ⬜ B. rbeta(shape1 = 15, shape2 = 75)<br>
 > ✅ C. rbeta(shape1 = 5, shape2 = 95)<br>
 > ⬜ D. rbeta(shape1 = 30, shape2 = 10)<br>
 
-Yes, this seems like a reasonable choice!
+```{r}
+# 1. Data for each distribution
+rbeta_data_tbl <- tibble(
+  idx    = LETTERS[1:4],
+  n      = rep(1000000, 4),
+  shape1 = c(3, 15, 5, 30),
+  shape2 = c(12, 75, 95, 10),
+  title  = paste0(idx, ". rbeta(shape1 = ", shape1, ", shape2 = ", shape2, ")"),
+  color  = c("lightblue","lightgreen", "salmon2", "yellow")
+)
+# 2. Arrange multiple plots in the same plotting space.
+par(mfrow=c(2,2))
+# 3. Walk over each row and plot the corresponding data
+rbeta_data_tbl %>%
+  pwalk(function(...) {
+    current <- tibble(...)
+    # do cool stuff and access content from current row with
+    
+    hist(rbeta(n = current$n, shape1 = current$shape1, shape2 = current$shape2),
+         main = current$title,
+         adj = 0,
+         col = current$color,
+         breaks = 30,
+         xlim = c(0,1),
+         # ann = F,
+         yaxt="n",
+         ylab = "",
+         xlab = ""
+    )
+  })
+```
 
 ## Change the model to use an informative prior
 
-The code to the right is the old model you developed from scratch in chapter 2.
-
 **Steps**
 
-1. Change this model to use the new informative prior for `proportion_clicks` that you just selected:
+1. Change the model to use the new informative prior for `proportion_clicks` that you just selected:
 
 ```{r}
-n_draws <- 100000
+n_draws     <- 100000
 n_ads_shown <- 100
 
 # Change the prior on proportion_clicks
-proportion_clicks <- 
-  rbeta(n_draws, shape1 = 5, shape2 = 95)
-n_visitors <- 
-  rbinom(n_draws, size = n_ads_shown, 
-         prob = proportion_clicks)
-prior <- 
-  data.frame(proportion_clicks, n_visitors)
-posterior <- 
-  prior[prior$n_visitors == 13, ]
+proportion_clicks <- rbeta(n_draws, shape1 = 5, shape2 = 95)
+n_visitors        <- rbinom(n_draws, size = n_ads_shown, prob = proportion_clicks)
+prior             <- data.frame(proportion_clicks, n_visitors)
+posterior         <- prior[prior$n_visitors == 13, ]
 
 # This plots the prior and the posterior in the same plot
 par(mfcol = c(2, 1))
-hist(prior$proportion_clicks, 
-     xlim = c(0, 0.25))
-hist(posterior$proportion_clicks, 
-     xlim = c(0, 0.25))
+hist(prior$proportion_clicks,     xlim = c(0, 0.25))
+hist(posterior$proportion_clicks, xlim = c(0, 0.25))
 ```
 
 Take a look at the new posterior! Due to the new informative prior it has shifted to the left, favoring lower rates.
 
 ## Contrasts and comparisons
 
-Theory. Coming soon ...
+You’ve now changed the prior to include the information you got from the social media company. What effect did that have? Well, here is the old uniform prior and posterior. And here is the new informed prior. 
+
+```{r}
+data_tbl <- tibble(
+  
+  proportion_clicks = list(runif( n = n_samples, min = 0.0, max = 0.2),
+                           rbeta( n = n_samples, shape1 = 5, shape2 = 95)),
+  
+  n_visitors        = list(rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[1]]),
+                           rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[2]])),
+  
+  prior             = list(data.frame(proportion_clicks = proportion_clicks[[1]], n_visitors = n_visitors[[1]]),
+                           data.frame(proportion_clicks = proportion_clicks[[2]], n_visitors = n_visitors[[2]])),
+  
+  posterior         = list(prior[[1]][prior[[1]]$n_visitors == 13, ],
+                           prior[[2]][prior[[2]]$n_visitors == 13, ])
+  
+) |> 
+  pivot_longer(cols = c(prior, posterior), names_to = "distribution", values_to = "data") |> 
+  mutate(color = c("palegreen", "chartreuse4", "lightblue", "blue3"),
+         title =c("Old prior", "Old posterior", "Informed prior", "Informed posterior"))
 
 
-**1. You've changed the prior!**
+# 2. Arrange multiple plots in the same plotting space.
+par(mfcol=c(2,2))
+# 3. Loop over each row and plot the corresponding data
+for (i in 1:4) {
+  
+  hist(x    = data_tbl$data[[i]]$proportion_clicks,
+       main = data_tbl$title[i],
+       col  = data_tbl$color[i],
+       yaxt="n",
+       ylab = "",
+       xlab = "Proportion of clicks",
+       xlim = c(0,0.25))
+  
+}
+```
 
-You’ve now changed the prior to include the information you got from the social media company. What effect did that have?
+If we didn’t have any data at all, then the prior would be all the model would know, but if we had lots of data the information in the data would overwhelm the prior information and we would end up with the pretty much the same posterior distribution independent of what prior was used. But now we just have a little data, so the resulting posterior is a mix of the information from the prior and the information from the data. The data is enthusiastic: “Hey, the proportion of clicks is likely around 13%!” The prior is less so: “Mmmm, it’s likely around 5%”. The resulting posterior is informed by both the data and the prior and ends up somewhere in between. Now we have two different models of the same data, so which should we choose? There is no correct answer here, but if the informed prior is based on genuinely good information, then the resulting estimate should be better. In this case, it’s up to you if you believe the numbers you got from the social media company. Going forward we’re going to go back to the uniform distribution between 0% and 20% we used before, but now you know how easy it is to switch the prior, would you want to. 
 
-**2. Uninformative prior and posterior**
+## 2. Comparison between gruops or datasets
 
-Well, here is the old uniform prior and posterior.
+Next up on reasons to use Bayesian data analysis is that it is easy to compare and contrast any outcomes from Bayesian models. A typical example of when you want to make comparisons is when you have two different experimental groups, like two different treatments or two different methods, and you want to compare these and see which seems the best. For example, say that the ads you’ve been running so far have been video ads, but you’ve been thinking that text ads could be more effective. To try this out you also paid for 100 text ads to be shown on the social media site, and that resulted in 6 clicks and visits to your site. But as the video ads resulted in 13 clicks it seems like they are more effective, but how sure should you be of this? We could run the same model on the data from the video ads and the text ads, and take a look at the corresponding posteriors over the underlying proportions of clicks. 
 
-**3. Informative prior**
+```{r}
+data_tbl <- tibble(
+  
+  proportion_clicks = list(runif( n = n_samples, min = 0.0, max = 0.2),
+                           runif( n = n_samples, min = 0.0, max = 0.2)),
+  
+  n_visitors        = list(rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[1]]),
+                           rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[2]])),
+  
+  prior             = list(data.frame(proportion_clicks = proportion_clicks[[1]], n_visitors = n_visitors[[1]]),
+                           data.frame(proportion_clicks = proportion_clicks[[2]], n_visitors = n_visitors[[2]])),
+  
+  posterior         = list(prior[[1]][prior[[1]]$n_visitors == 13, ],
+                           prior[[2]][prior[[2]]$n_visitors == 6, ])
+  
+) |> 
+  pivot_longer(cols = c(prior, posterior), names_to = "distribution", values_to = "data") |> 
+  mutate(color = c("palegreen", "chartreuse4", "coral1", "red1"),
+         title =c("Video prior", "Video posterior (13 / 100)", "Text prior", "Text posterior (6 / 100"))
 
-And here is the new informed prior. If we didn’t have any data at all, then the prior would be all the model would know, but if we had lots of data the information in the data would overwhelm the prior information and we would end up with the pretty much the same posterior distribution independent of what prior was used. But now we just have a little data, so the
 
-**4. Informative posterior**
+# 2. Arrange multiple plots in the same plotting space.
+par(mfcol=c(2,2))
+# 3. Loop over each row and plot the corresponding data
+for (i in 1:4) {
+  
+  hist(x    = data_tbl$data[[i]]$proportion_clicks,
+       main = data_tbl$title[i],
+       col  = data_tbl$color[i],
+       yaxt="n",
+       ylab = "",
+       xlab = "Proportion of clicks",
+       xlim = c(0,0.25))
+  
+}
+```
 
-resulting posterior is a mix of the information from the prior and the information from the data. The data is enthusiastic: “Hey, the proportion of clicks is likely around 13%!” The prior is less so: “Mmmm, it’s likely around 5%”. The resulting posterior is informed by both the data and the prior and ends up somewhere in between. Now we have two different models of the same data, so which should we choose? There is no correct answer here, but if the informed prior is based on genuinely good information, then the resulting estimate should be better. In this case, it’s up to you if you believe the numbers you got from the social media company. Going forward we’re going to go back to the uniform distribution between 0% and 20% we used before, but now you know how easy it is to switch the prior, would you want to. Next up on reasons to use Bayesian data analysis is that
+It looks like it’s more probable that the proportion of clicks is lower for the text ad, but there is some overlap between the probability distributions. What we would want is to compare the performance of the text and video ads in such a way that we got out a new probability distribution showing the probable difference. And this is easy to get, especially since these two distributions are represented by long vectors of samples.
 
-**5. Next up on reasons to use Bayesian data analysis**
+Here I’ve taken the samples that make up these two probability distributions, given them the names `video_prop` and `text_prop`, prop as in proportion, and put them into a data frame called posterior. 
 
-it is easy to compare and contrast any outcomes from Bayesian models. A typical example of when you want to make comparisons is when you have two different experimental groups, like two different treatments or two different methods, and you want to compare these and see which seems the best. For example, say that the ads you’ve been running so far have been
+```{r}
+min_length <- data_tbl |> 
+                filter(distribution |> str_detect("posterior")) |> 
+                pull(data) |> map(nrow) |> unlist() |> min()
 
-**6. Video vs Text 1**
+posterior <- data_tbl |> 
+  filter(distribution |> str_detect("posterior")) |> 
+  pull(data) |> 
+  map_dfc(function(x) {x |> slice(1:min_length) |> select(proportion_clicks)}) |> 
+  set_names("video_prop", "text_prop") |> 
+  mutate(across(, round, 2))
+posterior
+```
 
-video ads, but you’ve been thinking that
+As long as these samples are in a random order, and as long as I do it row by row, I can now calculate any type of derivative quantity and the resulting new distribution of samples will correctly retain the uncertainty of these original two distributions. Now, we were interested in the difference, so for each row let’s subtract text_prop from video_prop and put it into the column prop_diff. 
 
-**7. Video vs Text 2**
+```{r}
+posterior$prop_diff <- posterior$video_prop - posterior$text_prop
+posterior
+```
 
-text ads could be more effective. To try this out you also paid for 100 text ads to be shown on the social media site, and that resulted in
-
-**8. Video vs Text 3**
-
-6 clicks and visits to your site. But as the video ads resulted in 13 clicks it seems like they are more effective, but how sure should you be of this? We could run the same model on the data from the video ads and the text ads, and take a look at
-
-**9. Video vs Text analysis**
-
-the corresponding posteriors over the underlying proportions of clicks. It looks like it’s more probable that the proportion of clicks is lower for the text ad, but there is some overlap between the probability distributions. What we would want is to compare the performance of the text and video ads in such a way that we got out a new probability distribution showing the probable difference. And this is easy to get, especially since these two distributions are represented by long vectors of samples.
-
-**10. Comparing Video and Text ads**
-
-Here I’ve taken the samples that make up these two probability distributions, given them the names video_prop and text_prop, prop as in proportion, and put them into a data frame called posterior. As long as these samples are in a random order, and as long as I do it row by row, I can now calculate any type of derivative quantity and the resulting new distribution of samples will correctly retain the uncertainty of these original two distributions. Now, we were interested in the difference, so for each row let’s
-
-**11. Comparing Video and Text ads**
-
-subtract text_prop from video_prop and put it into the column prop_diff. Looking at the first couple of samples in prop_diff we see that for most rows video ads are better than text ads. The whole vector of samples in prop_diff now represents the posterior probability distribution over the difference between video ads and text ads.
-
-**12. How does the prop_diff() distribution look?**
-
-So how does this distribution look? Well, you’ll find out in the following exercises!
+Looking at the first couple of samples in prop_diff we see that for most rows video ads are better than text ads. The whole vector of samples in prop_diff now represents the posterior probability distribution over the difference between video ads and text ads. So how does this distribution look? Well, you’ll find out in the steps!
 
 ## Fit the model using another dataset
 
@@ -1218,10 +1195,10 @@ Let's fit the binomial model to both the video ad data (13 out of 100 clicked) a
 
 **Steps**
 
-1. To the right, you again have the model you developed in the last chapter. Here `posterior_video` is the posterior proportion of clicks for the video ad data. 
+We are using the model we have developed in the last section. 
 
-    * Add a row where you calculate `posterior_text` in the same way as `posterior_video` *but* using the text ad data instead. 
-    * Plot `posterior_text` as a histogram just as `posterior_video` is plotted.
+1. Calculate `posterior_video` (the posterior proportion of clicks for the video ad data) and `posterior_text` in the same way (using the text ad data instead).
+2. Plot `posterior_text` as a histogram just as `posterior_video` is plotted.
 
 ```{r}
 # Define parameters
@@ -1234,11 +1211,12 @@ prior <- data.frame(proportion_clicks, n_visitors)
 
 # Create the posteriors for video and text ads
 posterior_video <- prior[prior$n_visitors == 13, ]
-posterior_text <- prior[prior$n_visitors == 6, ]
+posterior_text  <- prior[prior$n_visitors == 6, ]
 
 # Visualize the posteriors
+par(mfrow=c(1,2))
 hist(posterior_video$proportion_clicks, xlim = c(0, 0.25))
-hist(posterior_text$proportion_clicks, xlim = c(0, 0.25))
+hist(posterior_text$proportion_clicks,  xlim = c(0, 0.25))
 ```
 
 > *Question*
@@ -1250,7 +1228,7 @@ hist(posterior_text$proportion_clicks, xlim = c(0, 0.25))
 > ⬜ It's exactly 0.06.<br>
 > ⬜ It's likely between 0.06 and 0.10<br>
 
-This is a legitimate decision boundary as it lies in the gap between the clusters. Try again.
+That seems about right! Since we have so little data, the estimate is pretty uncertain.
 
 ## Calculating the posterior difference
 
@@ -1265,7 +1243,7 @@ Now it's time to calculate the posterior probability distribution over what the 
 
 ```{r}
 posterior <- data.frame(video_prop = posterior_video$proportion_clicks[1:4000],
-                        text_prop = posterior_text$proportion_click[1:4000])
+                        text_prop  = posterior_text$proportion_click[1:4000])
 
 # Calculate the posterior difference: video_prop - text_prop
 posterior$prop_diff <- posterior$video_prop - posterior$text_prop 
@@ -1277,15 +1255,6 @@ hist(posterior$prop_diff)
 3. Calculate "a most likely" difference by taking the `median` of `posterior$prop_diff`
 
 ```{r}
-posterior <- data.frame(video_prop = posterior_video$proportion_clicks[1:4000],
-                        text_prop = posterior_text$proportion_click[1:4000])
-
-# Calculate the posterior difference: video_prop - text_prop
-posterior$prop_diff <- posterior$video_prop - posterior$text_prop 
-
-# Visualize prop_diff
-hist(posterior$prop_diff)
-
 # Calculate the median of prop_diff
 median(posterior$prop_diff)
 ```
@@ -1293,18 +1262,6 @@ median(posterior$prop_diff)
 4. Finally, calculate the probability that proportion of clicks is larger for the video ad than for the text ad.
 
 ```{r}
-posterior <- data.frame(video_prop = posterior_video$proportion_clicks[1:4000],
-                        text_prop = posterior_text$proportion_click[1:4000])
-
-# Calculate the posterior difference: video_prop - text_prop
-posterior$prop_diff <- posterior$video_prop - posterior$text_prop 
-
-# Visualize prop_diff
-hist(posterior$prop_diff)
-
-# Calculate the median of prop_diff
-median(posterior$prop_diff)
-
 # Calculate the proportion
 mean(posterior$prop_diff > 0.0)
 ```
@@ -1318,24 +1275,49 @@ mean(posterior$prop_diff > 0.0)
 > ⬜ 90%<br>
 > ✅ 95%<br>
 
-That's correct! 8.9 g/100ml is not a legitimate decision boundary as it is part of the lower sugar content cluster.
+It's pretty likely that the video ad is better.
 
 ## Decision analysis
 
-Theory. Coming soon ...
+We’ve now seen that Bayesian Data Analysis makes it easy to compare and contrast parameter estimates. And it’s generally the case that it’s easy to calculate any derivative quantities once we’ve fitted a Bayesian model and gotten out posteriors. 
+
+Given a probability distribution over some interesting parameter you calculated a point estimate: A single value summarizing the whole distribution. You did the posterior median, but could also have calculated, say, the posterior mean. It’s important to remember that the posterior median or mean are not the same as the median or mean of the data. The posterior median is a summary of a probability distribution over some parameter, while the median of the data is a summary of a data set. Two different things. You calculated the amount of probability favoring a positive value.
 
 
-**1. It's easy to compare and contrast!**
+```{r}
+### TO DO
+# ADD legend
+# ADD CIs
+# ADD Text
 
-We’ve now seen that Bayesian Data Analysis makes it easy to compare and contrast parameter estimates. And it’s generally the case that it’s easy to calculate any derivative quantities once we’ve fitted a Bayesian model and gotten out posteriors. You’ve already seen some examples of that in the first chapter. Given
-
-**2. A probability distribution over an interesting parameter**
-
-a probability distribution over some interesting parameter you calculated a point estimate: A single value summarizing the whole distribution. You did
-
-**3. A probability distribution over an interesting parameter**
-
-the posterior median, but could also have calculated, say, the posterior mean. It’s important to remember that the posterior median or mean are not the same as the median or mean of the data. The posterior median is a summary of a probability distribution over some parameter, while the median of the data is a summary of a data set. Two different things. You calculated the amount of probability favoring a positive value.
+posterior |> 
+  
+  ggplot(aes(x = prop_diff)) +
+    geom_histogram(fill = "lightblue", col = "black") +
+  
+  scale_x_continuous(breaks = seq(-0.1, 0.2, 0.05), 
+                     limits = c(-0.1,0.2), 
+                     expand = c(0,0)) +
+  
+    geom_segment(x = 0, y = 0, xend = 0, yend = Inf, linetype  = "dashed", size = 2, lineend = "round") +
+    # geom_vline(xintercept = 0, linetype = "dashed", size = 2, lineend='round')
+    
+    geom_point(aes(x = median(prop_diff) , y = 0),colour="darkred", size = 5) +
+    geom_errorbarh(aes(xmin=0.02, xmax=0.12, y = 0), position = position_dodge(0.3), color = "darkred", size = 3) +
+  
+    labs(x = "Difference in proportion of clicks", y = "") +
+    expand_limits(x = c(-0.1, 0.2)) +
+  
+    theme(panel.background = element_blank(),
+          axis.line.x = element_line(colour = "black"),
+          axis.text        = element_text(size=12),
+          axis.text.x      = element_text(margin=margin(t = 10, r = 0, b = 0, l = 0)),
+          axis.text.y      = element_blank(),
+          axis.ticks.y     = element_blank(),
+          axis.ticks.length=unit(.3, "cm"),
+          axis.title.x = element_text(size=12, margin = margin(t = 30, r = 0, b = 0, l = 0))
+    )
+```
 
 **4. A probability distribution over an interesting parameter**
 

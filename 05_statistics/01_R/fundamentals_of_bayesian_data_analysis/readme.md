@@ -23,17 +23,16 @@ Joschka Schwarz
         data](#update-a-bayesian-model-with-data)
     -   [How many visitors could your site get
         (3)?](#how-many-visitors-could-your-site-get-3)
-    -   [What have we done?](#what-have-we-done)
 -   [3. Why use Bayesian Data
     Analysis?](#3-why-use-bayesian-data-analysis)
-    -   [Four good things with Bayes](#four-good-things-with-bayes)
-    -   [Explore using the Beta distribution as a
-        prior](#explore-using-the-beta-distribution-as-a-prior)
+    -   [Beta distribution as a prior](#beta-distribution-as-a-prior)
     -   [Pick the prior that best captures the
         information](#pick-the-prior-that-best-captures-the-information)
     -   [Change the model to use an informative
         prior](#change-the-model-to-use-an-informative-prior)
     -   [Contrasts and comparisons](#contrasts-and-comparisons)
+    -   [2. Comparison between gruops or
+        datasets](#2-comparison-between-gruops-or-datasets)
     -   [Fit the model using another
         dataset](#fit-the-model-using-another-dataset)
     -   [Calculating the posterior
@@ -537,7 +536,7 @@ number_of_sixes <- rbinom(10000, 5, 1/6)
 head(number_of_sixes)
 ```
 
-    ## [1] 1 0 0 2 1 1
+    ## [1] 0 1 1 0 1 0
 
 ``` r
 ### rbinom(number of experiments, number of observations per experiment, probability of success)
@@ -545,9 +544,9 @@ number_of_sixes_mean <- number_of_sixes |> mean()
 number_of_sixes_mean
 ```
 
-    ## [1] 0.8385
+    ## [1] 0.8263
 
-Turns out the average number of sixes is 0.8385. The easiest way of
+Turns out the average number of sixes is 0.8263. The easiest way of
 generating samples is by drawing a random sample from the probability
 distribution, and if this sample is large enough, each value will occur
 roughly proportionally often to how probable it is.
@@ -582,7 +581,7 @@ posterior <- prop_model(data)
 head(posterior)
 ```
 
-    ## [1] 0.1539243 0.5795897 0.2281266 0.2509004 0.1782614 0.2549279
+    ## [1] 0.36524489 0.29208362 0.07360099 0.19354117 0.09914411 0.24074733
 
 Looking at these first few samples confirms what is already shown in the
 plot: That the underlying proportion of cured zombies is likely
@@ -628,7 +627,7 @@ it is to be smaller than it.
 median(posterior)
 ```
 
-    ## [1] 0.1855849
+    ## [1] 0.185917
 
 So, a best guess is that the drug would cure around 18% of all zombies.
 Another common summary is to report an interval that includes the
@@ -649,7 +648,7 @@ quantile(posterior, c(0.05, 0.95))
 ```
 
     ##         5%        95% 
-    ## 0.06228448 0.38098318
+    ## 0.06185263 0.38426024
 
 According to the credible interval, there is a 90% probability that the
 proportion of zombies the drug would cure is between 6% and 38%. (Here
@@ -670,7 +669,7 @@ is better? Yes, we can! But it’s a two stage process.
 sum(posterior > 0.07)
 ```
 
-    ## [1] 9307
+    ## [1] 9314
 
 To turn this count into a probability we now need to *normalize* it,
 that is, divide it by the total number of samples in `posterior`.
@@ -684,7 +683,7 @@ that is, divide it by the total number of samples in `posterior`.
 sum(posterior > 0.07) / length(posterior)
 ```
 
-    ## [1] 0.9307
+    ## [1] 0.9314
 
 It seems there is a large probability (93%) that our zombie drug is
 better!
@@ -764,7 +763,7 @@ data <- as.numeric(data)
 data
 ```
 
-    ##  [1] 0 0 0 0 0 0 0 1 0 0 0 1 0
+    ##  [1] 0 1 0 0 0 0 0 0 0 0 0 0 0
 
 This gives us almost what we want, except that the simulated data is a
 vector of TRUEs and FALSEs, so the last step is to turn this into
@@ -799,9 +798,9 @@ data <- as.numeric(data)
 data
 ```
 
-    ##   [1] 0 0 0 0 1 0 1 1 0 1 0 1 0 1 0 1 0 1 1 0 1 0 1 0 0 0 1 1 0 1 1 0 1 0 0 1 0
-    ##  [38] 1 0 1 1 1 1 1 1 1 0 0 1 1 1 0 0 1 1 0 1 0 1 1 1 0 0 1 1 1 0 0 0 1 1 0 0 0
-    ##  [75] 0 1 1 0 1 1 0 1 1 1 0 1 1 0 0 0 1 1 1 0 0 0 0 1 1 0
+    ##   [1] 1 0 1 0 0 1 0 1 1 0 1 0 1 1 0 0 0 0 0 1 0 0 0 0 1 1 0 1 0 1 0 1 1 1 1 0 1
+    ##  [38] 1 0 0 0 0 0 0 1 1 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 1 0 0 1 0 0 0 0 0 1 1 1 0
+    ##  [75] 0 0 0 0 1 0 1 0 0 1 0 1 0 1 0 0 1 0 0 0 1 0 0 1 1 0
 
 Instead of representing cured zombies as a vector of `1`s and `0`s it
 could be represented as a *count* of the number of cured out of the
@@ -829,7 +828,7 @@ data <- sum( as.numeric(data) )
 data
 ```
 
-    ## [1] 42
+    ## [1] 34
 
 Perfect! Some zombies got cured in this simulation, but far from all.
 
@@ -858,7 +857,7 @@ arguments:
 rbinom(n = 1, size = 100, prob = 0.42)
 ```
 
-    ## [1] 42
+    ## [1] 44
 
 A nice thing with `rbinom` is that it makes it easy to rerun the
 generative model many times.
@@ -871,14 +870,14 @@ generative model many times.
 rbinom(n = 200, size = 100, prob = 0.42)
 ```
 
-    ##   [1] 40 34 46 43 34 42 42 43 43 45 39 44 45 43 48 42 44 37 45 35 40 51 43 41 44
-    ##  [26] 50 41 39 42 46 39 42 45 42 41 50 47 43 35 36 46 40 46 48 33 34 38 44 52 51
-    ##  [51] 47 49 42 36 35 48 42 38 44 40 34 49 39 46 42 41 39 39 35 45 47 47 45 42 39
-    ##  [76] 41 34 41 47 40 45 42 42 38 39 33 42 45 34 40 43 49 44 43 47 47 39 31 43 46
-    ## [101] 46 41 39 38 39 44 33 40 42 38 41 31 47 46 41 42 47 42 31 44 43 35 44 45 48
-    ## [126] 33 37 43 37 38 43 48 38 42 32 46 42 46 46 45 36 50 50 43 41 40 44 52 42 51
-    ## [151] 36 37 46 36 44 47 39 44 38 45 39 42 47 35 38 41 44 43 40 39 45 33 39 51 43
-    ## [176] 48 44 45 40 40 40 39 53 41 39 40 51 42 45 50 53 45 29 48 48 41 39 40 41 40
+    ##   [1] 44 35 43 45 47 40 44 40 42 33 46 41 38 45 42 46 40 43 35 42 47 45 40 34 46
+    ##  [26] 40 48 38 45 36 41 40 43 46 52 34 44 37 44 43 40 47 35 34 47 42 42 37 34 43
+    ##  [51] 44 43 46 39 48 42 39 34 41 40 41 34 45 36 39 41 43 42 45 44 48 47 32 41 48
+    ##  [76] 38 28 44 49 41 45 44 42 45 43 42 35 43 35 36 39 37 38 34 47 53 40 39 56 36
+    ## [101] 38 42 37 42 34 42 49 35 44 50 37 33 42 40 42 44 52 38 50 43 45 42 36 44 41
+    ## [126] 47 33 43 35 35 34 44 50 44 35 41 35 38 43 45 40 37 44 37 45 42 40 43 43 44
+    ## [151] 46 44 44 43 34 47 48 47 27 51 38 50 39 41 36 54 47 50 47 44 45 32 44 46 49
+    ## [176] 35 37 44 37 37 37 36 41 44 35 43 45 47 45 46 36 42 41 39 46 54 45 47 50 38
 
 Nice! That’s a lot of simulated zombies right there.
 
@@ -1015,7 +1014,7 @@ proportion_clicks <- runif(n = 6, min = 0.0, max = 1.0)
 proportion_clicks
 ```
 
-    ## [1] 0.42715083 0.89870840 0.73429049 0.56822827 0.41483111 0.06783123
+    ## [1] 0.3691369 0.5704800 0.3642540 0.4235276 0.7969716 0.3880661
 
 A neat thing is that because most random number functions are vectorized
 it’s very easy to chain probability distributions together in R. For
@@ -1028,7 +1027,7 @@ n_clicks <- rbinom(n = 6, size = 100, proportion_clicks)
 n_clicks
 ```
 
-    ## [1] 39 88 76 66 42  8
+    ## [1] 38 61 29 36 79 41
 
 If we look at the resulting values in `n_clicks`, we can see this. The
 first value in `proportion_clicks` is used to sample the first value in
@@ -1153,12 +1152,12 @@ head(prior)
 ```
 
     ##   proportion_clicks n_visitors
-    ## 1        0.15937338         13
-    ## 2        0.17496316         12
-    ## 3        0.05305114          6
-    ## 4        0.12727434          9
-    ## 5        0.05095272          8
-    ## 6        0.13724565         14
+    ## 1        0.18801775         14
+    ## 2        0.15133280         13
+    ## 3        0.12200241         12
+    ## 4        0.06483485          8
+    ## 5        0.12896960         13
+    ## 6        0.18148186         14
 
 But it’s easier to see what going on if we plot this data frame as a
 scatter plot.
@@ -1202,11 +1201,14 @@ on this, that is, remove all samples that don’t fulfill the condition of
 proportion_clicks being 10%.
 
 ``` r
-plot_prior <- function(x) {
+library(ggExtra)
+plot_prior <- function(x, filter_var) {
+  
+  var_quo = quo_name(enquo(filter_var))
   
   # Add flag for ~10% values
   prior10_df <- prior %>%
-    mutate( p10 = round( proportion_clicks, 2) == x ) 
+    mutate( p10 = !!filter_var == x ) 
   
   prior_plot <- ggplot( prior10_df |> filter(p10), aes( x = n_visitors, y = proportion_clicks ) ) +
     
@@ -1219,7 +1221,11 @@ plot_prior <- function(x) {
     
     # Add point layer again to bring it to top
     geom_point( alpha = 0.5, color = "deepskyblue4", shape = 1, stroke = 1) + 
-    geom_hline(yintercept=0.1, linetype="dashed", color = "black", size = 1) +
+    
+    {if(var_quo == "n_visitors")geom_vline(xintercept = x, linetype="dashed", color = "black", size = 1) else 
+                                geom_hline(yintercept = x, linetype="dashed", color = "black", size = 1)}+
+    
+    # geom_hline(yintercept=x, linetype="dashed", color = "black", size = 1) +
     theme_classic()
     
   prior_plot <- ggMarginal( prior_plot, type = 'histogram', 
@@ -1229,7 +1235,9 @@ plot_prior <- function(x) {
   prior_plot
 }
 
-plot_prior(0.1)
+
+# Set proportion_clicks to 10 %
+plot_prior(x = 0.1, round(proportion_clicks,2))
 ```
 
 ![](readme_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
@@ -1243,7 +1251,7 @@ number of visitors shifts accordingly.
 
 ``` r
 for (i in c(0.05, 0.1, 0.15, 0.2 )) {
-  p <- plot_prior(i)
+  plot_prior(x = i, round(proportion_clicks,2))
   ggsave(plot = p, filename = paste0("img",i, ".png"), device = "png")
 }
 
@@ -1258,66 +1266,81 @@ img_animated <- magick::image_animate(img_joined, delay=150)
 
 ## save to disk
 magick::image_write(image = img_animated,
-            path = "marg_hist.gif")
+            path = "marg_hist1.gif")
 ```
 
 <figure>
-<img src="readme_files/figure-gfm/marg_hist.gif" style="width:75.0%"
+<img src="readme_files/figure-gfm/marg_hist1.gif" style="width:50.0%"
 alt="marg_hist" />
 <figcaption aria-hidden="true">marg_hist</figcaption>
 </figure>
 
 However, there is no point to this, because the problem was that we
-didn’t know what the underlying proportions of clicks could be.
+didn’t know what the underlying proportions of clicks could be. But what
+we can know is the data, and we can condition on the data too. Say that
+5 out of a 100 clicked when we ran the ad campaign. If we remove all
+samples that doesn’t fulfill this condition, we also reduce the
+uncertainty in what the underlying proportion of clicks could be.
 
-**12. marginal_plot_all.png**
+``` r
+# Set n_visitors to 5
+plot_prior(x = 5, n_visitors)
+```
 
-But what we can know is the data, and we can condition on the data too.
-Say that 5 out of a 100 clicked when we ran the ad campaign. If we
+![](readme_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
 
-**13. marginal_plot_visit_5.png**
-
-remove all samples that doesn’t fulfill this condition, we also reduce
-the uncertainty in what the underlying proportion of clicks could be. We
-end up with a distribution that doesn’t look at all like the uniform
+We end up with a distribution that doesn’t look at all like the uniform
 distribution between 0% and 20% we defined before. And if we actually
 would have gotten 5 visitors we could have concluded that
 proportion_clicks probably would be between 3% and 10%.
 
-**14. marginal_plot_visit_animation.gif**
+And similarly we could condition on other values for the data.
 
-And similarly we could condition on other values for the data. We have
-now reached
+``` r
+for (i in c(5, 10, 15, 20, 25)) {
+  p <- plot_prior(x = i, n_visitors)
+  ggsave(plot = p, filename = paste0("img",i, ".png"), device = "png")
+}
 
-**15. The essence of Bayesian inference**
+imgs     <- list.files(full.names = TRUE, pattern = "img.*png")
+img_list <- lapply(imgs, magick::image_read)
+  
+## join the images together
+img_joined <- magick::image_join(img_list)
 
-the essence of what Bayesian inference is, it is conditioning on the
-data, in order to learn about what parameters values likely gave rise to
-this data. So, when you ran the ad campaign you got 13 site visits out
-of a 100 shown ads.
+## animate at 2 frames per second
+img_animated <- magick::image_animate(img_joined, delay=150)
 
-**16. Try some Bayesian inference yourself!**
+## save to disk
+magick::image_write(image = img_animated,
+            path = "marg_hist2.gif")
+```
 
-Now you try doing some Bayesian inference yourself and condition on this
-data.
+<figure>
+<img src="readme_files/figure-gfm/marg_hist2.gif" style="width:50.0%"
+alt="marg_hist" />
+<figcaption aria-hidden="true">marg_hist</figcaption>
+</figure>
+
+We have now reached the **essence of what Bayesian inference** is, it is
+conditioning on the data, in order to learn about what parameters values
+likely gave rise to this data. So, when you ran the ad campaign you got
+13 site visits out of a 100 shown ads.
 
 ## Update a Bayesian model with data
 
-You ran your ad campaign, and 13 people clicked and visited your site
-when the ad was shown a 100 times. You would now like to use this new
-information to update the Bayesian model.
+Let’s use this new information to update the Bayesian model.
+
+The model we put together in the last step resulted in two vectors:
+
+1.  `proportion_clicks` that represents the uncertainty regarding the
+    underlying proportion of clicks
+2.  `n_visitors` which represents the uncertainty regarding the number
+    of visitors you would get.
 
 **Steps**
 
-1.  The model you put together in the last exercise resulted in two
-    vectors: (1) `proportion_clicks` that represents the uncertainty
-    regarding the underlying proportion of clicks and (2) `n_visitors`
-    which represents the uncertainty regarding the number of visitors
-    you would get. We have now put these vectors into a data frame for
-    you called `prior`.
-
-    -   Take a look at the first rows of `prior` using the `head()`
-        function.
+1.  Put these vectors into a data frame called `prior`.
 
 ``` r
 # Create the prior data frame
@@ -1328,117 +1351,75 @@ head(prior)
 ```
 
     ##   proportion_clicks n_visitors
-    ## 1        0.15937338         13
-    ## 2        0.17496316         12
-    ## 3        0.05305114          6
-    ## 4        0.12727434          9
-    ## 5        0.05095272          8
-    ## 6        0.13724565         14
+    ## 1        0.18801775         14
+    ## 2        0.15133280         13
+    ## 3        0.12200241         12
+    ## 4        0.06483485          8
+    ## 5        0.12896960         13
+    ## 6        0.18148186         14
 
-2.  The reason we’ve called it `prior` is because it represents the
-    uncertainty *before* (that is, *prior* to) having included the
-    information in the data. Let’s do that now!
+The reason it is called `prior` is because it represents the uncertainty
+*before* (that is, *prior* to) having included the information in the
+data. `prior$n_visitors` represented the uncertainty over how many
+visitors you would get because of the ad campaign. But now you know you
+got exactly 13 visitors.
 
-    -   
-
-``` r
-# Create the prior data frame
-prior <- data.frame(proportion_clicks, n_visitors)
-
-# Examine the prior data frame
-head(prior)
-```
-
-    ##   proportion_clicks n_visitors
-    ## 1        0.15937338         13
-    ## 2        0.17496316         12
-    ## 3        0.05305114          6
-    ## 4        0.12727434          9
-    ## 5        0.05095272          8
-    ## 6        0.13724565         14
+2.  Update prior to include this information by conditioning on this
+    data. That is, filtering away all rows where `prior$n_visitors`
+    isn’t equal to 13. Store the resulting data frame in posterior.
 
 ``` r
 # Create the posterior data frame
 posterior <- prior[prior$n_visitors == 13, ]
 ```
 
-3.  Great! The reason that we call it `posterior` is because it
-    represents the uncertainty *after* (that is, *posterior* to) having
-    included the information in the data. So what does `posterior`
-    contain now? Well, `posterior$n_visitors` isn’t too exciting, that’s
-    just `13` repeated many times.
+The reason that we call it `posterior` is because it represents the
+uncertainty *after* (that is, *posterior* to) having included the
+information in the data. So what does `posterior` contain now? Well,
+`posterior$n_visitors` isn’t too exciting, that’s just `13` repeated
+many times.
 
-    -   But take a look at `posterior$proportion_clicks` using the
-        `hist` function.
-
-``` r
-# Create the prior data frame
-prior <- data.frame(proportion_clicks, n_visitors)
-
-# Examine the prior data frame
-head(prior)
-```
-
-    ##   proportion_clicks n_visitors
-    ## 1        0.15937338         13
-    ## 2        0.17496316         12
-    ## 3        0.05305114          6
-    ## 4        0.12727434          9
-    ## 5        0.05095272          8
-    ## 6        0.13724565         14
+3.  But take a look at `posterior$proportion_clicks` using the `hist`
+    function.
 
 ``` r
-# Create the posterior data frame
-posterior <- prior[prior$n_visitors == 13, ]
-
 # Visualize posterior proportion clicks
 hist(posterior$proportion_clicks)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+
+This doesn’t look at all like the uniform distribution between 0.0 and
+0.2 we put into `proportion_clicks` before. The whole distribution of
+samples now represent the posterior (after the data) probability
+distribution over what `proportion_clicks` could be.
 
 > ## *Question*
 >
-> This doesn’t look at all like the uniform distribution between 0.0 and
-> 0.2 we put into `proportion_clicks` before. The whole distribution of
-> samples now represent the posterior (after the data) probability
-> distribution over what `proportion_clicks` could be.
-
--   Looking at the probability distribution over `proportion_clicks`
-    what does the model know about the underlying proportion of visitors
-    clicking on the ad?<br> \> <br> \> ⬜ It’s likely between 0% and
-    20%.<br> \> ⬜ It’s likely between 5% and 10%.<br> \> ✅ It’s likely
-    between 7% and 19%.<br> \> ⬜ It’s likely between 15% and 20%.<br>
-
-This is a legitimate decision boundary as it lies in the gap between the
-clusters. Try again.
+> Looking at the probability distribution over `proportion_clicks` what
+> does the model know about the underlying proportion of visitors
+> clicking on the ad?<br> <br> ⬜ It’s likely between 0% and 20%.<br> ⬜
+> It’s likely between 5% and 10%.<br> ✅ It’s likely between 7% and
+> 19%.<br> ⬜ It’s likely between 15% and 20%.<br>
 
 ## How many visitors could your site get (3)?
 
-In the last exercise, you updated the probability distribution over the
+In the last Step, you updated the probability distribution over the
 underlying proportions of clicks (`proportion_clicks`) using new data.
 Now we want to use this updated `proportion_clicks` to predict how many
 visitors we would get if we reran the ad campaign.
 
+If you look at `posterior$n_visits` you’ll see it’s just `13` repeated
+over and over again. This makes sense as `posterior` represents what the
+model knew about the outcome of the last ad campaign after having seen
+the data.
+
 **Steps**
 
-1.  The result from the last exercise is still in the data frame
-    `posterior`, but if you look at `posterior$n_visits` you’ll see it’s
-    just `13` repeated over and over again. This makes sense as
-    `posterior` represents what the model knew about the outcome of the
-    last ad campaign after having seen the data.
-
-    -   Assign `posterior` to a new variable called `prior` which will
-        represent the uncertainty regarding the new ad campaign you
-        haven’t run yet.
-
-``` r
-# Assign posterior to a new variable called prior
-prior <- posterior
-```
-
-2.  Take a look at the first rows in `prior` using the `head()`
-    function.
+1.  Assign `posterior` to a new variable called `prior` which will
+    represent the uncertainty regarding the new ad campaign you haven’t
+    run yet.
+2.  Take a look at the first rows in `prior`
 
 ``` r
 # Assign posterior to a new variable called prior
@@ -1449,81 +1430,24 @@ head(prior)
 ```
 
     ##     proportion_clicks n_visitors
-    ## 1          0.15937338         13
-    ## 21         0.08127312         13
-    ## 24         0.11886884         13
-    ## 44         0.09327488         13
-    ## 60         0.17005728         13
-    ## 156        0.15686119         13
+    ## 2          0.15133280         13
+    ## 5          0.12896960         13
+    ## 12         0.13807354         13
+    ## 47         0.07463229         13
+    ## 53         0.07594397         13
+    ## 133        0.11021899         13
 
-3.  While `proportion_clicks` represents the uncertainty regarding the
-    underlying proportion of clicks for the next ad campaign,
-    `n_visitors` has not been updated yet.
+While `proportion_clicks` represents the uncertainty regarding the
+underlying proportion of clicks for the next ad campaign, `n_visitors`
+has not been updated yet.
 
-    -   Replace `prior$n_visitors` with a new sample drawn using
-        `rbinom` with `prior$proportion_clicks` as an argument.
-    -   Plot the resulting `prior$n_visitors` using `hist`.
-
-4.  Here is some example code you can use for this, just replace \_\_\_
-    .
-
-``` r
-# Assign posterior to a new variable called prior
-prior <- posterior
-
-# Take a look at the first rows in prior
-head(prior)
-```
-
-    ##     proportion_clicks n_visitors
-    ## 1          0.15937338         13
-    ## 21         0.08127312         13
-    ## 24         0.11886884         13
-    ## 44         0.09327488         13
-    ## 60         0.17005728         13
-    ## 156        0.15686119         13
+3.  Replace `prior$n_visitors` with a new sample drawn using `rbinom`
+    with `prior$proportion_clicks` as an argument.
+4.  Plot the resulting `prior$n_visitors` using `hist`.
 
 ``` r
 # Replace prior$n_visitors with a new sample and visualize the result
-n_samples <-  nrow(prior)
-n_ads_shown <- 100
-prior$n_visitors <- rbinom(n_samples, size = n_ads_shown, prob = prior$proportion_clicks)
-hist(prior$n_visitors)
-```
-
-![](readme_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
-
-5.  The plot shows a probability distribution over the number of site
-    visitors a new ad campaign would bring in. It now looks pretty
-    likely that there would be more than, say, 5 visitors because of the
-    campaign.
-
-    -   Calculate the probability that you will get 5 or more visitors
-        next time you run your ad campaign.
-
-6.  Do this by summing up the number of draws with more than five
-    visitors ( `sum(prior$n_visitors >= 5)` ) and divide by the total
-    number of draws ( `length(prior$n_visitors)` ).
-
-``` r
-# Assign posterior to a new variable called prior
-prior <- posterior
-
-# Take a look at the first rows in prior
-head(prior)
-```
-
-    ##     proportion_clicks n_visitors
-    ## 1          0.15937338         13
-    ## 21         0.08127312         13
-    ## 24         0.11886884         13
-    ## 44         0.09327488         13
-    ## 60         0.17005728         13
-    ## 156        0.15686119         13
-
-``` r
-# Replace prior$n_visitors with a new sample and visualize the result
-n_samples <-  nrow(prior)
+n_samples   <-  nrow(prior)
 n_ads_shown <- 100
 prior$n_visitors <- rbinom(n_samples, size = n_ads_shown, prob = prior$proportion_clicks)
 hist(prior$n_visitors)
@@ -1531,138 +1455,92 @@ hist(prior$n_visitors)
 
 ![](readme_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
+The plot shows a probability distribution over the number of site
+visitors a new ad campaign would bring in. It now looks pretty likely
+that there would be more than, say, 5 visitors because of the campaign.
+
+5.  Calculate the probability that you will get 5 or more visitors next
+    time you run your ad campaign (do this by summing up the number of
+    draws with more than five visitors and divide by the total number of
+    draws).
+
 ``` r
 # Calculate the probability that you will get 5 or more visitors
 sum(prior$n_visitors >= 5) / length(prior$n_visitors)
 ```
 
-    ## [1] 0.9876622
+    ## [1] 0.9891982
 
 > ## *Question*
 >
 > According to the new model, what is the probability of getting five or
 > more visitors?<br> <br> ⬜ 75%<br> ⬜ 87%<br> ⬜ 93%<br> ✅ 99%<br>
 
-That’s correct! 8.9 g/100ml is not a legitimate decision boundary as it
-is part of the lower sugar content cluster.
+From the observation of 13/100 visits, we find that it is very probable
+(99% probable) that future add campaigns will generate at least 5
+visits.
 
-## What have we done?
+**Summary**
 
-Theory. Coming soon …
+1.  You started by specifying a generative model from scratch in R but
+    then realized this was the same as the Binomial model.
+2.  You specified a prior probability distribution over the underlying
+    proportion of clicks representing prior information; it’s likely
+    between 0% and 20%, but also that it is uncertain, it could be
+    anything from 0% to 20%.
+3.  Together the generative model and this prior resulted in a joint
+    probability distribution over both the underlying proportion of
+    clicks and how many visitors you would get.
+4.  You collected some data and used this to condition the joint
+    distribution, in other words, you used Bayesian inference. This
+    allowed the model to learn about the underlying proportion of clicks
+    and resulted in an updated posterior probability distribution.
+5.  And, finally, as a bonus, we used this posterior as the prior for
+    the next ad campaign and predicted how many visitors we would get if
+    reran it.
 
-**1. Bayesian inference, again!**
+I hope you can see that if you collected even more data, you could
+continue repeating these steps, to learn more and more about the
+underlying proportion of clicks.This is exactly how `prop_model` from
+the first chapter worked; it used the same Bayesian model with the only
+difference that the prior was uniform from 0 to 100% and that the model
+was updated with one success or failure at a time.
 
-You’ve done some Bayesian inference! Again, I suppose, because you
-already tried it last chapter. But this time you did it from the ground
-up in exhaustive detail.
-
-**2. What have we done montage 1**
-
-You started by specifying a generative model from scratch in R but then
-realized this was the same as
-
-**3. What have we done montage 2**
-
-the Binomial model. You specified
-
-**4. What have we done montage 3**
-
-a prior probability distribution over the underlying proportion of
-clicks representing prior information; it’s likely between 0% and 20%,
-but also that it is uncertain, it could be anything from 0% to 20%.
-Together the generative model and this prior resulted in
-
-**5. What have we done montage 4**
-
-a joint probability distribution over both the underlying proportion of
-clicks and how many visitors you would get. You collected some data and
-used this to
-
-**6. What have we done montage 5**
-
-condition the joint distribution, in other words, you used
-
-**7. What have we done montage 6**
-
-Bayesian inference. This allowed the model to learn about the underlying
-proportion of clicks and resulted in an updated posterior probability
-distribution. And, finally, as a bonus, we used this posterior as
-
-**8. What have we done montage 7**
-
-the prior for the next ad campaign and predicted how many visitors we
-would get if reran it. I hope you can see that if you collected even
-more data, you could continue repeating these steps, to learn more and
-more about the underlying proportion of clicks.This is exactly how
-
-**9. prom_model result**
-
-prop_model from the first chapter worked; it used the same Bayesian
-model with the only difference that the prior was uniform from 0 to 100%
-and that the model was updated with one success or failure at a time.
 Taking a step back, what have we done? We have specified
 
-**10. What have we done 1**
+-   prior information,
+-   a generative model,
+-   and given some data we calculated the
+-   updated probability of different parameter values.
 
-prior information,
-
-**11. What have we done 2**
-
-a generative model,
-
-**12. What have we done 3**
-
-and given some data we calculated the
-
-**13. What have we done 4**
-
-**14. What have we done 5**
-
-updated probability of different parameter values. In the examples so
-far we’ve used a Binomial model with a single parameter, but the cool
-thing here is that the general method of Bayesian inference works for
-
-**15. What have we done 6**
-
-any generative model, with any number of parameters. That is, you can
-have any number of parameters and unknown values, that you plug into any
-generative model that you can implement, and the data can be
-multivariate or can consist of completely different data sets, and the
-Bayesian machinery that we used in the simple case works in the same
-way.
-
-**16. What bayes need 1**
+In the examples so far we’ve used a Binomial model with a single
+parameter, but the cool thing here is that the general method of
+Bayesian inference works for any generative model, with any number of
+parameters. That is, you can have any number of parameters and unknown
+values, that you plug into any generative model that you can implement,
+and the data can be multivariate or can consist of completely different
+data sets, and the Bayesian machinery that we used in the simple case
+works in the same way.
 
 This is why Bayesian methods are so broadly used, in everything from
 hypothesis testing to machine learning: As long as you can come up with
 a generative model for a data analytical problem, Bayesian inference can
 always be used to fit this model and learn from data. Well, in theory at
 least, because in practice you also need to use a computational method
-that’s efficient enough. And the method we used in this chapter is
+that’s efficient enough. And the method we used in this section is
 straightforward, easy to understand, but also scales very badly when you
-have more data or more complicated models. So that’s actually the fourth
+have more data or more complicated models.
 
-**17. What bayes need 2**
+So that’s actually the fourth thing you need to do Bayesian inference.
 
-thing you need to do Bayesian inference. And we will talk about more
-computationally efficient methods to do Bayesian inference in chapter 4.
-
-**18. Next up: Why use Bayes?**
-
-In this chapter, we looked at how Bayesian inference works. Next up, in
-chapter 3, we’ll look at some reasons for why you would want to use it
-to do Bayesian data analysis.
+In this chapter, we looked at how Bayesian inference works. Next up
+we’ll look at some reasons for why you would want to use it to do
+Bayesian data analysis.
 
 # 3. Why use Bayesian Data Analysis?
 
 This chapter will show you four reasons why Bayesian data analysis is a
 useful tool to have in your data science tool belt.
-
-## Four good things with Bayes
-
-Theory. Coming soon …
-
-**1. Why use Bayesian data analysis?**
 
 So why would you want to use Bayesian data analysis, rather than some
 other method? So far, it seems like I’ve given you reasons for why not
@@ -1670,114 +1548,85 @@ to use it: It mostly requires a lot of work, and you need to set
 everything up from scratch. But the reason for all this work was so that
 you would understand what’s going on under the hood. Once you know that,
 there are many good pre-packaged tools for Bayesian data analysis that
-just lets you get on with your work, and we’ll look at one of those
-tools in chapter 5, but for now, we’ll stay under the hood. So the main
-reason to use Bayes is that it is
+just lets you get on with your work.
 
-**2. Bayes is flexible**
+**1. Bayes is flexible**
 
-a very flexible method to model, analyze and learn from data. And in
-this chapter I’ll give you four examples of this flexibility, we’ll see
-how you can include information sources in addition to the data into
-your analysis, for example, expert opinion. How you always can compare
-any outcomes of Bayesian analyses, like parameters between different
-groups or datasets. How the result of a Bayesian analysis can be used to
-do decision analysis, for example, to make it easier to use the result
-of the model to make an informed business decision. And finally how the
-flexibility of Bayes allows you to change the underlying statistical
-model completely with relatively little effort. We’ll start by looking
-at
+So the main reason to use Bayes is that it is a very flexible method to
+model, analyze and learn from data.
 
-**3. Including information in addition to data**
+1.  Can include information sources in addition to the data
 
-including information sources in addition to the data. This could be
-background information, expert opinion or just common knowledge that you
-have and that you would like to add to the model. To run with the
-website ad example from last chapter: Let’s say you actually contacted
-the social media company and asked:
+    -   Background Information
+    -   Expert Opinion
+    -   Common Knowledge
+    -   ex: suppose you ask a vendor what the median and range of
+        success has been for previous ad campaigns.
 
-**4. Chat 1**
+The Bayesian model we used last, knows that the underlying proportion of
+clicks is equally likely to be anything between 0% and 20%. This is
+already a prior that contains some information: we’re basically telling
+the model that it is impossible that the proportion of clicks is any
+higher than 20% and if we really didn’t want to assume anything
+regarding the proportion of clicks we could make this into a more
+non-informative prior by saying it’s equally likely that it’s anything
+from 0% to a 100%.
 
-“So what are really the range of proportion of clicks you see for ads?”
-And let’s say they actually answered:
+But now we want to have a prior distribution that encodes the
+information that “Most ads get clicked on 5% of the time, but for some
+ads it is as low as 2% and for others as high as 8%.”There are many ways
+we could define such a distribution. You could even draw a distribution
+on paper, scan it in, and transfer it to R somehow. But a convenient way
+is to use a pre-defined probability distribution function that you can
+tweak so that it encodes prior information. In our case, a useful
+distribution could be the Beta distribution. It’s a distribution that is
+bounded between 0 and 1, which is useful when you want to define a
+distribution over a proportion, and depending on its two shape
+parameters alpha and beta it can take on many different shapes. In the
+next section, you will take a look at the Beta distribution and how you
+can use it to define a prior that is informed by the new info we got
+from the social media company.
 
-**5. Chat 2**
+2.  Can make many comparisons between groups or data sets
 
-“Hi You! Most ads get clicked on 5% of the time, but for some ads it is
-as low as 2% and for others as high as 8%.”
+    -   Can test different experimental conditions
+    -   Can easily find the probable difference between treatment groups
+    -   ex: suppose you have two different treatment groups
 
-**6. Chat 3**
+3.  Can use the result of Bayesian Analysis to do Decision Analysis
 
-“Ah, but you’ve written 10% on your webpage!?”
+    -   **Decision Analysis:** take the result of a statistical analysis
+        and post-process it to apply to a process of interest.
+    -   the posterior distributions are not of principal interest,
+        rather an outcome to meet a goal (e.g. highest
+        return/clickthrough)
 
-**7. Chat 4**
+4.  Can change the underlying statistical model
 
-“That’s marketing, don’t listen to them!” Ok, this seems like it could
-be a piece of useful information to include in the analysis. But how do
-we do that?
+    -   if new data indicates the need for a change e.g. from a binomial
+        model to include a new variable(s)
 
-**8. Binomial model from chapter 2**
+5.  Bayes is optimal in the small world that is the model
 
-Here is the Bayesian model we used last chapter and a natural place to
-include background information like this is in the prior probability
-distribution, as this represents what the model knows before seeing the
-data.
+6.  In Bayesian data analysis there is a separation between model and
+    computation
 
-**9. Unif(0, 0.2)**
-
-And right now it knows that the underlying proportion of clicks is
-equally likely to be anything between 0% and 20%. This is already a
-prior that contains some information: we’re basically telling the model
-that it is impossible that the proportion of clicks is any higher than
-20% and if we really didn’t want to assume anything regarding the
-proportion of clicks we could make this into a more non-informative
-prior by saying it’s equally likely that it’s anything from
-
-**10. Unif(0, 1.0)**
-
-0% to a 100%. But now we want to have a prior distribution that encodes
-the information that
-
-**11. Zoom in on chat message**
-
-“Most ads get clicked on 5% of the time, but for some ads it is as low
-as 2% and for others as high as 8%.”There are many ways we could define
-such a distribution. You could even draw a distribution on paper, scan
-it in, and transfer it to R somehow. But a convenient way is to use a
-pre-defined probability distribution function that you can tweak so that
-it encodes prior information. In our case, a useful distribution could
-be
-
-**12. The Beta distribution**
-
-the Beta distribution. It’s a distribution that is bounded between 0 and
-1, which is useful when you want to define a distribution over a
-proportion, and depending on its two shape parameters alpha and beta it
-can take on many different shapes. In the next exercises, you will take
-a look at the Beta distribution and how you can use it to
-
-**13. Define an informed prior!**
-
-define a prior that is informed by the new info we got from the social
-media company.
-
-## Explore using the Beta distribution as a prior
+## Beta distribution as a prior
 
 The Beta distribution is a useful probability distribution when you want
 model uncertainty over a parameter bounded between 0 and 1. Here you’ll
 explore how the two parameters of the Beta distribution determine its
 shape.
 
+One way to see how the shape parameters of the Beta distribution affect
+its shape is to generate a large number of random draws using the
+`rbeta(n, shape1, shape2)` function and visualize these as a histogram.
+
 **Steps**
 
-1.  One way to see how the shape parameters of the Beta distribution
-    affect its shape is to generate a large number of random draws using
-    the `rbeta(n, shape1, shape2)` function and visualize these as a
-    histogram. The code to the right generates 1,000,000 draws from a
-    Beta(1, 1) distribution: A Beta distribution with both shape
-    parameters set to 1.
-
-    -   Visualize these draws using the `hist` function.
+1.  Generate 1,000,000 draws from a Beta(1, 1) distribution: A Beta
+    distribution with both shape parameters set to 1.
+2.  Visualize these draws using the `hist` function.
 
 ``` r
 # Explore using the rbeta function
@@ -1787,15 +1636,13 @@ beta_sample <- rbeta(n = 1000000, shape1 = 1, shape2 = 1)
 hist(beta_sample)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
-2.  Right! A Beta(1,1) distribution is the same as a uniform
-    distribution between 0 and 1. It is useful as a so-called
-    *non-informative* prior as it expresses than any value from 0 to 1
-    is equally likely.
+A Beta(1,1) distribution is the same as a uniform distribution between 0
+and 1. It is useful as a so-called *non-informative* prior as it
+expresses than any value from 0 to 1 is equally likely.
 
-    -   Try to set one of the shape parameters to a negative number.
-    -   Take a look at the first few values using `head(beta_sample)`.
+2.  Set one of the shape parameters to a negative number.
 
 ``` r
 # Explore using the rbeta function
@@ -1811,13 +1658,13 @@ head(beta_sample)
 
     ## [1] NaN NaN NaN NaN NaN NaN
 
-3.  Yes, `NaN` stands for *not a number* and the reason you got a lot of
-    `NaN`s is that the Beta distribution is only defined when its shape
-    parameters are positive.
+`NaN` stands for *not a number* and the reason you got a lot of `NaN`s
+is that the Beta distribution is only defined when its shape parameters
+are positive.
 
-    -   Instead, set both shape parameters to a large number. Let’s set
-        both `shape1` and `shape2` to `100`.
-    -   Visualize the result using `hist()`.
+3.  Instead, set both shape parameters to a large number. Let’s set both
+    `shape1` and `shape2` to `100`.
+4.  Visualize the result using `hist()`.
 
 ``` r
 # Explore using the rbeta function
@@ -1827,15 +1674,14 @@ beta_sample <- rbeta(n = 1000000, shape1 = 100, shape2 = 100)
 hist(beta_sample)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
-4.  So the larger the shape parameters are, the more concentrated the
-    beta distribution becomes. When used as a prior, this Beta
-    distribution encodes the information that the parameter is most
-    likely close to 0.5 .
+So the larger the shape parameters are, the more concentrated the beta
+distribution becomes. When used as a prior, this Beta distribution
+encodes the information that the parameter is most likely close to 0.5 .
 
-    -   See what happens if you set `shape2` to something smaller than
-        `shape1`. Let’s set `shape2 = 20` while keeping `shape1 = 100`.
+5.  See what happens if you set `shape2` to something smaller than
+    `shape1`. Let’s set `shape2 = 20` while keeping `shape1 = 100`.
 
 ``` r
 # Explore using the rbeta function
@@ -1845,7 +1691,7 @@ beta_sample <- rbeta(n = 1000000, shape1 = 100, shape2 = 20)
 hist(beta_sample)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
 So the larger the `shape1` parameter is the closer the resulting
 distribution is to 1.0 and the larger the `shape2` the closer it is to
@@ -1855,131 +1701,200 @@ distribution is to 1.0 and the larger the `shape2` the closer it is to
 
 The new information you got from the social media company was:
 
-<blockquote>
-
-Most ads get clicked on 5% of the time, but for some ads it is as low as
-2% and for others as high as 8%.
-
-</blockquote>
+> Most ads get clicked on 5% of the time, but for some ads it is as low
+> as 2% and for others as high as 8%.
 
 There are many different probability distributions that one can argue
 captures this information.
 
--   Out of the four Beta distribution shown below, which captures this
-    information the best?
-    <img src="https://assets.datacamp.com/production/repositories/1300/datasets/99ec148dcdd05d87d7b278a16ba1c557c359a34e/four_different_beta_dists.png" width="400">
-
 > ## *Question*
 >
-> ???<br> <br> ⬜ A. rbeta(shape1 = 3, shape2 = 12)<br> ⬜ B.
-> rbeta(shape1 = 15, shape2 = 75)<br> ✅ C. rbeta(shape1 = 5, shape2 =
-> 95)<br> ⬜ D. rbeta(shape1 = 30, shape2 = 10)<br>
+> Out of the four Beta distribution shown below, which captures this
+> information the best?<br> <br> ⬜ A. rbeta(shape1 = 3, shape2 =
+> 12)<br> ⬜ B. rbeta(shape1 = 15, shape2 = 75)<br> ✅ C. rbeta(shape1 =
+> 5, shape2 = 95)<br> ⬜ D. rbeta(shape1 = 30, shape2 = 10)<br>
 
-Yes, this seems like a reasonable choice!
+``` r
+# 1. Data for each distribution
+rbeta_data_tbl <- tibble(
+  idx    = LETTERS[1:4],
+  n      = rep(1000000, 4),
+  shape1 = c(3, 15, 5, 30),
+  shape2 = c(12, 75, 95, 10),
+  title  = paste0(idx, ". rbeta(shape1 = ", shape1, ", shape2 = ", shape2, ")"),
+  color  = c("lightblue","lightgreen", "salmon2", "yellow")
+)
+# 2. Arrange multiple plots in the same plotting space.
+par(mfrow=c(2,2))
+# 3. Walk over each row and plot the corresponding data
+rbeta_data_tbl %>%
+  pwalk(function(...) {
+    current <- tibble(...)
+    # do cool stuff and access content from current row with
+    
+    hist(rbeta(n = current$n, shape1 = current$shape1, shape2 = current$shape2),
+         main = current$title,
+         adj = 0,
+         col = current$color,
+         breaks = 30,
+         xlim = c(0,1),
+         # ann = F,
+         yaxt="n",
+         ylab = "",
+         xlab = ""
+    )
+  })
+```
+
+![](readme_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 ## Change the model to use an informative prior
 
-The code to the right is the old model you developed from scratch in
-chapter 2.
-
 **Steps**
 
-1.  Change this model to use the new informative prior for
+1.  Change the model to use the new informative prior for
     `proportion_clicks` that you just selected:
 
 ``` r
-n_draws <- 100000
+n_draws     <- 100000
 n_ads_shown <- 100
 
 # Change the prior on proportion_clicks
-proportion_clicks <- 
-  rbeta(n_draws, shape1 = 5, shape2 = 95)
-n_visitors <- 
-  rbinom(n_draws, size = n_ads_shown, 
-         prob = proportion_clicks)
-prior <- 
-  data.frame(proportion_clicks, n_visitors)
-posterior <- 
-  prior[prior$n_visitors == 13, ]
+proportion_clicks <- rbeta(n_draws, shape1 = 5, shape2 = 95)
+n_visitors        <- rbinom(n_draws, size = n_ads_shown, prob = proportion_clicks)
+prior             <- data.frame(proportion_clicks, n_visitors)
+posterior         <- prior[prior$n_visitors == 13, ]
 
 # This plots the prior and the posterior in the same plot
 par(mfcol = c(2, 1))
-hist(prior$proportion_clicks, 
-     xlim = c(0, 0.25))
-hist(posterior$proportion_clicks, 
-     xlim = c(0, 0.25))
+hist(prior$proportion_clicks,     xlim = c(0, 0.25))
+hist(posterior$proportion_clicks, xlim = c(0, 0.25))
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
 Take a look at the new posterior! Due to the new informative prior it
 has shifted to the left, favoring lower rates.
 
 ## Contrasts and comparisons
 
-Theory. Coming soon …
-
-**1. You’ve changed the prior!**
-
 You’ve now changed the prior to include the information you got from the
-social media company. What effect did that have?
+social media company. What effect did that have? Well, here is the old
+uniform prior and posterior. And here is the new informed prior.
 
-**2. Uninformative prior and posterior**
+``` r
+data_tbl <- tibble(
+  
+  proportion_clicks = list(runif( n = n_samples, min = 0.0, max = 0.2),
+                           rbeta( n = n_samples, shape1 = 5, shape2 = 95)),
+  
+  n_visitors        = list(rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[1]]),
+                           rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[2]])),
+  
+  prior             = list(data.frame(proportion_clicks = proportion_clicks[[1]], n_visitors = n_visitors[[1]]),
+                           data.frame(proportion_clicks = proportion_clicks[[2]], n_visitors = n_visitors[[2]])),
+  
+  posterior         = list(prior[[1]][prior[[1]]$n_visitors == 13, ],
+                           prior[[2]][prior[[2]]$n_visitors == 13, ])
+  
+) |> 
+  pivot_longer(cols = c(prior, posterior), names_to = "distribution", values_to = "data") |> 
+  mutate(color = c("palegreen", "chartreuse4", "lightblue", "blue3"),
+         title =c("Old prior", "Old posterior", "Informed prior", "Informed posterior"))
 
-Well, here is the old uniform prior and posterior.
 
-**3. Informative prior**
+# 2. Arrange multiple plots in the same plotting space.
+par(mfcol=c(2,2))
+# 3. Loop over each row and plot the corresponding data
+for (i in 1:4) {
+  
+  hist(x    = data_tbl$data[[i]]$proportion_clicks,
+       main = data_tbl$title[i],
+       col  = data_tbl$color[i],
+       yaxt="n",
+       ylab = "",
+       xlab = "Proportion of clicks",
+       xlim = c(0,0.25))
+  
+}
+```
 
-And here is the new informed prior. If we didn’t have any data at all,
-then the prior would be all the model would know, but if we had lots of
-data the information in the data would overwhelm the prior information
-and we would end up with the pretty much the same posterior distribution
-independent of what prior was used. But now we just have a little data,
-so the
+![](readme_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
 
-**4. Informative posterior**
+If we didn’t have any data at all, then the prior would be all the model
+would know, but if we had lots of data the information in the data would
+overwhelm the prior information and we would end up with the pretty much
+the same posterior distribution independent of what prior was used. But
+now we just have a little data, so the resulting posterior is a mix of
+the information from the prior and the information from the data. The
+data is enthusiastic: “Hey, the proportion of clicks is likely around
+13%!” The prior is less so: “Mmmm, it’s likely around 5%”. The resulting
+posterior is informed by both the data and the prior and ends up
+somewhere in between. Now we have two different models of the same data,
+so which should we choose? There is no correct answer here, but if the
+informed prior is based on genuinely good information, then the
+resulting estimate should be better. In this case, it’s up to you if you
+believe the numbers you got from the social media company. Going forward
+we’re going to go back to the uniform distribution between 0% and 20% we
+used before, but now you know how easy it is to switch the prior, would
+you want to.
 
-resulting posterior is a mix of the information from the prior and the
-information from the data. The data is enthusiastic: “Hey, the
-proportion of clicks is likely around 13%!” The prior is less so: “Mmmm,
-it’s likely around 5%”. The resulting posterior is informed by both the
-data and the prior and ends up somewhere in between. Now we have two
-different models of the same data, so which should we choose? There is
-no correct answer here, but if the informed prior is based on genuinely
-good information, then the resulting estimate should be better. In this
-case, it’s up to you if you believe the numbers you got from the social
-media company. Going forward we’re going to go back to the uniform
-distribution between 0% and 20% we used before, but now you know how
-easy it is to switch the prior, would you want to. Next up on reasons to
-use Bayesian data analysis is that
+## 2. Comparison between gruops or datasets
 
-**5. Next up on reasons to use Bayesian data analysis**
-
-it is easy to compare and contrast any outcomes from Bayesian models. A
-typical example of when you want to make comparisons is when you have
-two different experimental groups, like two different treatments or two
+Next up on reasons to use Bayesian data analysis is that it is easy to
+compare and contrast any outcomes from Bayesian models. A typical
+example of when you want to make comparisons is when you have two
+different experimental groups, like two different treatments or two
 different methods, and you want to compare these and see which seems the
 best. For example, say that the ads you’ve been running so far have been
+video ads, but you’ve been thinking that text ads could be more
+effective. To try this out you also paid for 100 text ads to be shown on
+the social media site, and that resulted in 6 clicks and visits to your
+site. But as the video ads resulted in 13 clicks it seems like they are
+more effective, but how sure should you be of this? We could run the
+same model on the data from the video ads and the text ads, and take a
+look at the corresponding posteriors over the underlying proportions of
+clicks.
 
-**6. Video vs Text 1**
+``` r
+data_tbl <- tibble(
+  
+  proportion_clicks = list(runif( n = n_samples, min = 0.0, max = 0.2),
+                           runif( n = n_samples, min = 0.0, max = 0.2)),
+  
+  n_visitors        = list(rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[1]]),
+                           rbinom(n = n_samples, size = n_ads_shown, prob = proportion_clicks[[2]])),
+  
+  prior             = list(data.frame(proportion_clicks = proportion_clicks[[1]], n_visitors = n_visitors[[1]]),
+                           data.frame(proportion_clicks = proportion_clicks[[2]], n_visitors = n_visitors[[2]])),
+  
+  posterior         = list(prior[[1]][prior[[1]]$n_visitors == 13, ],
+                           prior[[2]][prior[[2]]$n_visitors == 6, ])
+  
+) |> 
+  pivot_longer(cols = c(prior, posterior), names_to = "distribution", values_to = "data") |> 
+  mutate(color = c("palegreen", "chartreuse4", "coral1", "red1"),
+         title =c("Video prior", "Video posterior (13 / 100)", "Text prior", "Text posterior (6 / 100"))
 
-video ads, but you’ve been thinking that
 
-**7. Video vs Text 2**
+# 2. Arrange multiple plots in the same plotting space.
+par(mfcol=c(2,2))
+# 3. Loop over each row and plot the corresponding data
+for (i in 1:4) {
+  
+  hist(x    = data_tbl$data[[i]]$proportion_clicks,
+       main = data_tbl$title[i],
+       col  = data_tbl$color[i],
+       yaxt="n",
+       ylab = "",
+       xlab = "Proportion of clicks",
+       xlim = c(0,0.25))
+  
+}
+```
 
-text ads could be more effective. To try this out you also paid for 100
-text ads to be shown on the social media site, and that resulted in
+![](readme_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
-**8. Video vs Text 3**
-
-6 clicks and visits to your site. But as the video ads resulted in 13
-clicks it seems like they are more effective, but how sure should you be
-of this? We could run the same model on the data from the video ads and
-the text ads, and take a look at
-
-**9. Video vs Text analysis**
-
-the corresponding posteriors over the underlying proportions of clicks.
 It looks like it’s more probable that the proportion of clicks is lower
 for the text ad, but there is some overlap between the probability
 distributions. What we would want is to compare the performance of the
@@ -1988,29 +1903,508 @@ distribution showing the probable difference. And this is easy to get,
 especially since these two distributions are represented by long vectors
 of samples.
 
-**10. Comparing Video and Text ads**
-
 Here I’ve taken the samples that make up these two probability
-distributions, given them the names video_prop and text_prop, prop as in
-proportion, and put them into a data frame called posterior. As long as
-these samples are in a random order, and as long as I do it row by row,
-I can now calculate any type of derivative quantity and the resulting
-new distribution of samples will correctly retain the uncertainty of
-these original two distributions. Now, we were interested in the
-difference, so for each row let’s
+distributions, given them the names `video_prop` and `text_prop`, prop
+as in proportion, and put them into a data frame called posterior.
 
-**11. Comparing Video and Text ads**
+``` r
+min_length <- data_tbl |> 
+                filter(distribution |> str_detect("posterior")) |> 
+                pull(data) |> map(nrow) |> unlist() |> min()
 
-subtract text_prop from video_prop and put it into the column prop_diff.
+posterior <- data_tbl |> 
+  filter(distribution |> str_detect("posterior")) |> 
+  pull(data) |> 
+  map_dfc(function(x) {x |> slice(1:min_length) |> select(proportion_clicks)}) |> 
+  set_names("video_prop", "text_prop") |> 
+  mutate(across(, round, 2))
+```
+
+    ## New names:
+    ## * proportion_clicks -> proportion_clicks...1
+    ## * proportion_clicks -> proportion_clicks...2
+
+``` r
+posterior
+```
+
+    ##     video_prop text_prop
+    ## 1         0.12      0.11
+    ## 2         0.08      0.04
+    ## 3         0.13      0.06
+    ## 4         0.12      0.02
+    ## 5         0.16      0.06
+    ## 6         0.15      0.03
+    ## 7         0.11      0.04
+    ## 8         0.12      0.12
+    ## 9         0.12      0.09
+    ## 10        0.12      0.09
+    ## 11        0.17      0.08
+    ## 12        0.19      0.04
+    ## 13        0.11      0.03
+    ## 14        0.10      0.03
+    ## 15        0.11      0.05
+    ## 16        0.19      0.08
+    ## 17        0.19      0.05
+    ## 18        0.13      0.14
+    ## 19        0.13      0.08
+    ## 20        0.11      0.07
+    ## 21        0.13      0.07
+    ## 22        0.12      0.04
+    ## 23        0.13      0.13
+    ## 24        0.18      0.10
+    ## 25        0.10      0.06
+    ## 26        0.15      0.08
+    ## 27        0.13      0.06
+    ## 28        0.16      0.03
+    ## 29        0.14      0.09
+    ## 30        0.10      0.09
+    ## 31        0.11      0.10
+    ## 32        0.19      0.09
+    ## 33        0.19      0.05
+    ## 34        0.13      0.09
+    ## 35        0.16      0.06
+    ## 36        0.14      0.09
+    ## 37        0.11      0.08
+    ## 38        0.20      0.06
+    ## 39        0.11      0.06
+    ## 40        0.17      0.08
+    ## 41        0.12      0.04
+    ## 42        0.08      0.05
+    ## 43        0.11      0.08
+    ## 44        0.14      0.09
+    ## 45        0.15      0.14
+    ## 46        0.05      0.06
+    ## 47        0.12      0.06
+    ## 48        0.16      0.04
+    ## 49        0.12      0.08
+    ## 50        0.11      0.02
+    ## 51        0.16      0.11
+    ## 52        0.11      0.09
+    ## 53        0.13      0.08
+    ## 54        0.13      0.07
+    ## 55        0.14      0.04
+    ## 56        0.10      0.05
+    ## 57        0.16      0.03
+    ## 58        0.17      0.06
+    ## 59        0.13      0.05
+    ## 60        0.12      0.13
+    ## 61        0.14      0.09
+    ## 62        0.12      0.08
+    ## 63        0.14      0.10
+    ## 64        0.14      0.04
+    ## 65        0.08      0.06
+    ## 66        0.11      0.07
+    ## 67        0.14      0.06
+    ## 68        0.11      0.09
+    ## 69        0.11      0.06
+    ## 70        0.11      0.03
+    ## 71        0.14      0.08
+    ## 72        0.20      0.09
+    ## 73        0.14      0.06
+    ## 74        0.10      0.05
+    ## 75        0.14      0.10
+    ## 76        0.14      0.06
+    ## 77        0.14      0.05
+    ## 78        0.17      0.05
+    ## 79        0.13      0.07
+    ## 80        0.11      0.05
+    ## 81        0.11      0.06
+    ## 82        0.13      0.11
+    ## 83        0.13      0.09
+    ## 84        0.20      0.08
+    ## 85        0.11      0.05
+    ## 86        0.15      0.07
+    ## 87        0.08      0.04
+    ## 88        0.11      0.11
+    ## 89        0.17      0.05
+    ## 90        0.08      0.03
+    ## 91        0.11      0.10
+    ## 92        0.14      0.06
+    ## 93        0.12      0.07
+    ## 94        0.12      0.04
+    ## 95        0.13      0.04
+    ## 96        0.17      0.04
+    ## 97        0.10      0.08
+    ## 98        0.12      0.08
+    ## 99        0.13      0.04
+    ## 100       0.14      0.04
+    ## 101       0.19      0.06
+    ## 102       0.15      0.07
+    ## 103       0.19      0.05
+    ## 104       0.10      0.06
+    ## 105       0.09      0.07
+    ## 106       0.12      0.05
+    ## 107       0.15      0.05
+    ## 108       0.11      0.05
+    ## 109       0.15      0.08
+    ## 110       0.11      0.07
+    ## 111       0.14      0.04
+    ## 112       0.16      0.12
+    ## 113       0.11      0.06
+    ## 114       0.12      0.08
+    ## 115       0.12      0.05
+    ## 116       0.19      0.07
+    ## 117       0.18      0.08
+    ## 118       0.16      0.07
+    ## 119       0.20      0.07
+    ## 120       0.14      0.04
+    ## 121       0.15      0.11
+    ## 122       0.15      0.07
+    ## 123       0.11      0.09
+    ## 124       0.19      0.07
+    ## 125       0.11      0.05
+    ## 126       0.14      0.03
+    ## 127       0.15      0.10
+    ## 128       0.08      0.04
+    ## 129       0.07      0.06
+    ## 130       0.15      0.05
+    ## 131       0.17      0.09
+    ## 132       0.17      0.07
+    ## 133       0.16      0.06
+    ## 134       0.20      0.05
+    ## 135       0.16      0.07
+    ## 136       0.08      0.06
+    ## 137       0.07      0.07
+    ## 138       0.15      0.12
+    ## 139       0.11      0.08
+    ## 140       0.20      0.05
+    ## 141       0.15      0.09
+    ## 142       0.20      0.06
+    ## 143       0.17      0.06
+    ## 144       0.15      0.08
+    ## 145       0.10      0.05
+    ## 146       0.14      0.07
+    ## 147       0.13      0.08
+    ## 148       0.12      0.07
+    ## 149       0.18      0.03
+    ## 150       0.11      0.07
+    ## 151       0.13      0.06
+    ## 152       0.11      0.05
+    ## 153       0.10      0.06
+    ## 154       0.15      0.05
+    ## 155       0.18      0.05
+    ## 156       0.12      0.08
+    ## 157       0.12      0.03
+    ## 158       0.12      0.06
+    ## 159       0.12      0.05
+    ## 160       0.14      0.07
+    ## 161       0.10      0.07
+    ## 162       0.19      0.08
+    ## 163       0.11      0.09
+    ## 164       0.10      0.09
+    ## 165       0.12      0.05
+    ## 166       0.16      0.04
+    ## 167       0.08      0.05
+    ## 168       0.15      0.10
+    ## 169       0.15      0.06
+    ## 170       0.12      0.08
+    ## 171       0.17      0.09
+    ## 172       0.15      0.04
+    ## 173       0.17      0.05
+    ## 174       0.13      0.09
+    ## 175       0.13      0.08
+    ## 176       0.13      0.10
+    ## 177       0.17      0.07
+    ## 178       0.16      0.10
+    ## 179       0.11      0.08
+    ## 180       0.16      0.04
+    ## 181       0.15      0.06
+    ## 182       0.14      0.07
+    ## 183       0.08      0.08
+    ## 184       0.13      0.05
+    ## 185       0.09      0.05
+    ## 186       0.13      0.07
+    ## 187       0.13      0.15
+    ## 188       0.15      0.07
+    ## 189       0.16      0.05
+    ## 190       0.13      0.09
+    ## 191       0.12      0.04
+    ## 192       0.14      0.05
+    ## 193       0.16      0.06
+    ## 194       0.16      0.10
+    ## 195       0.16      0.10
+    ## 196       0.14      0.06
+    ## 197       0.07      0.04
+    ## 198       0.15      0.06
+    ## 199       0.08      0.14
+    ## 200       0.14      0.07
+    ## 201       0.15      0.08
+    ## 202       0.11      0.08
+    ## 203       0.14      0.08
+    ## 204       0.16      0.08
+    ## 205       0.17      0.13
+    ## 206       0.15      0.10
+    ## 207       0.10      0.07
+    ## 208       0.16      0.05
+    ## 209       0.16      0.06
+    ## 210       0.14      0.03
+    ## 211       0.13      0.08
+    ## 212       0.10      0.05
+    ## 213       0.18      0.07
+    ## 214       0.14      0.08
+    ## 215       0.19      0.10
+    ## 216       0.16      0.08
+    ## 217       0.12      0.05
+    ## 218       0.14      0.05
+    ## 219       0.16      0.05
+    ## 220       0.06      0.08
+    ## 221       0.18      0.08
+    ## 222       0.14      0.08
+    ## 223       0.12      0.03
+    ## 224       0.09      0.06
+    ## 225       0.17      0.05
+    ## 226       0.12      0.11
+    ## 227       0.14      0.04
+    ## 228       0.15      0.07
+
+As long as these samples are in a random order, and as long as I do it
+row by row, I can now calculate any type of derivative quantity and the
+resulting new distribution of samples will correctly retain the
+uncertainty of these original two distributions. Now, we were interested
+in the difference, so for each row let’s subtract text_prop from
+video_prop and put it into the column prop_diff.
+
+``` r
+posterior$prop_diff <- posterior$video_prop - posterior$text_prop
+posterior
+```
+
+    ##     video_prop text_prop prop_diff
+    ## 1         0.12      0.11      0.01
+    ## 2         0.08      0.04      0.04
+    ## 3         0.13      0.06      0.07
+    ## 4         0.12      0.02      0.10
+    ## 5         0.16      0.06      0.10
+    ## 6         0.15      0.03      0.12
+    ## 7         0.11      0.04      0.07
+    ## 8         0.12      0.12      0.00
+    ## 9         0.12      0.09      0.03
+    ## 10        0.12      0.09      0.03
+    ## 11        0.17      0.08      0.09
+    ## 12        0.19      0.04      0.15
+    ## 13        0.11      0.03      0.08
+    ## 14        0.10      0.03      0.07
+    ## 15        0.11      0.05      0.06
+    ## 16        0.19      0.08      0.11
+    ## 17        0.19      0.05      0.14
+    ## 18        0.13      0.14     -0.01
+    ## 19        0.13      0.08      0.05
+    ## 20        0.11      0.07      0.04
+    ## 21        0.13      0.07      0.06
+    ## 22        0.12      0.04      0.08
+    ## 23        0.13      0.13      0.00
+    ## 24        0.18      0.10      0.08
+    ## 25        0.10      0.06      0.04
+    ## 26        0.15      0.08      0.07
+    ## 27        0.13      0.06      0.07
+    ## 28        0.16      0.03      0.13
+    ## 29        0.14      0.09      0.05
+    ## 30        0.10      0.09      0.01
+    ## 31        0.11      0.10      0.01
+    ## 32        0.19      0.09      0.10
+    ## 33        0.19      0.05      0.14
+    ## 34        0.13      0.09      0.04
+    ## 35        0.16      0.06      0.10
+    ## 36        0.14      0.09      0.05
+    ## 37        0.11      0.08      0.03
+    ## 38        0.20      0.06      0.14
+    ## 39        0.11      0.06      0.05
+    ## 40        0.17      0.08      0.09
+    ## 41        0.12      0.04      0.08
+    ## 42        0.08      0.05      0.03
+    ## 43        0.11      0.08      0.03
+    ## 44        0.14      0.09      0.05
+    ## 45        0.15      0.14      0.01
+    ## 46        0.05      0.06     -0.01
+    ## 47        0.12      0.06      0.06
+    ## 48        0.16      0.04      0.12
+    ## 49        0.12      0.08      0.04
+    ## 50        0.11      0.02      0.09
+    ## 51        0.16      0.11      0.05
+    ## 52        0.11      0.09      0.02
+    ## 53        0.13      0.08      0.05
+    ## 54        0.13      0.07      0.06
+    ## 55        0.14      0.04      0.10
+    ## 56        0.10      0.05      0.05
+    ## 57        0.16      0.03      0.13
+    ## 58        0.17      0.06      0.11
+    ## 59        0.13      0.05      0.08
+    ## 60        0.12      0.13     -0.01
+    ## 61        0.14      0.09      0.05
+    ## 62        0.12      0.08      0.04
+    ## 63        0.14      0.10      0.04
+    ## 64        0.14      0.04      0.10
+    ## 65        0.08      0.06      0.02
+    ## 66        0.11      0.07      0.04
+    ## 67        0.14      0.06      0.08
+    ## 68        0.11      0.09      0.02
+    ## 69        0.11      0.06      0.05
+    ## 70        0.11      0.03      0.08
+    ## 71        0.14      0.08      0.06
+    ## 72        0.20      0.09      0.11
+    ## 73        0.14      0.06      0.08
+    ## 74        0.10      0.05      0.05
+    ## 75        0.14      0.10      0.04
+    ## 76        0.14      0.06      0.08
+    ## 77        0.14      0.05      0.09
+    ## 78        0.17      0.05      0.12
+    ## 79        0.13      0.07      0.06
+    ## 80        0.11      0.05      0.06
+    ## 81        0.11      0.06      0.05
+    ## 82        0.13      0.11      0.02
+    ## 83        0.13      0.09      0.04
+    ## 84        0.20      0.08      0.12
+    ## 85        0.11      0.05      0.06
+    ## 86        0.15      0.07      0.08
+    ## 87        0.08      0.04      0.04
+    ## 88        0.11      0.11      0.00
+    ## 89        0.17      0.05      0.12
+    ## 90        0.08      0.03      0.05
+    ## 91        0.11      0.10      0.01
+    ## 92        0.14      0.06      0.08
+    ## 93        0.12      0.07      0.05
+    ## 94        0.12      0.04      0.08
+    ## 95        0.13      0.04      0.09
+    ## 96        0.17      0.04      0.13
+    ## 97        0.10      0.08      0.02
+    ## 98        0.12      0.08      0.04
+    ## 99        0.13      0.04      0.09
+    ## 100       0.14      0.04      0.10
+    ## 101       0.19      0.06      0.13
+    ## 102       0.15      0.07      0.08
+    ## 103       0.19      0.05      0.14
+    ## 104       0.10      0.06      0.04
+    ## 105       0.09      0.07      0.02
+    ## 106       0.12      0.05      0.07
+    ## 107       0.15      0.05      0.10
+    ## 108       0.11      0.05      0.06
+    ## 109       0.15      0.08      0.07
+    ## 110       0.11      0.07      0.04
+    ## 111       0.14      0.04      0.10
+    ## 112       0.16      0.12      0.04
+    ## 113       0.11      0.06      0.05
+    ## 114       0.12      0.08      0.04
+    ## 115       0.12      0.05      0.07
+    ## 116       0.19      0.07      0.12
+    ## 117       0.18      0.08      0.10
+    ## 118       0.16      0.07      0.09
+    ## 119       0.20      0.07      0.13
+    ## 120       0.14      0.04      0.10
+    ## 121       0.15      0.11      0.04
+    ## 122       0.15      0.07      0.08
+    ## 123       0.11      0.09      0.02
+    ## 124       0.19      0.07      0.12
+    ## 125       0.11      0.05      0.06
+    ## 126       0.14      0.03      0.11
+    ## 127       0.15      0.10      0.05
+    ## 128       0.08      0.04      0.04
+    ## 129       0.07      0.06      0.01
+    ## 130       0.15      0.05      0.10
+    ## 131       0.17      0.09      0.08
+    ## 132       0.17      0.07      0.10
+    ## 133       0.16      0.06      0.10
+    ## 134       0.20      0.05      0.15
+    ## 135       0.16      0.07      0.09
+    ## 136       0.08      0.06      0.02
+    ## 137       0.07      0.07      0.00
+    ## 138       0.15      0.12      0.03
+    ## 139       0.11      0.08      0.03
+    ## 140       0.20      0.05      0.15
+    ## 141       0.15      0.09      0.06
+    ## 142       0.20      0.06      0.14
+    ## 143       0.17      0.06      0.11
+    ## 144       0.15      0.08      0.07
+    ## 145       0.10      0.05      0.05
+    ## 146       0.14      0.07      0.07
+    ## 147       0.13      0.08      0.05
+    ## 148       0.12      0.07      0.05
+    ## 149       0.18      0.03      0.15
+    ## 150       0.11      0.07      0.04
+    ## 151       0.13      0.06      0.07
+    ## 152       0.11      0.05      0.06
+    ## 153       0.10      0.06      0.04
+    ## 154       0.15      0.05      0.10
+    ## 155       0.18      0.05      0.13
+    ## 156       0.12      0.08      0.04
+    ## 157       0.12      0.03      0.09
+    ## 158       0.12      0.06      0.06
+    ## 159       0.12      0.05      0.07
+    ## 160       0.14      0.07      0.07
+    ## 161       0.10      0.07      0.03
+    ## 162       0.19      0.08      0.11
+    ## 163       0.11      0.09      0.02
+    ## 164       0.10      0.09      0.01
+    ## 165       0.12      0.05      0.07
+    ## 166       0.16      0.04      0.12
+    ## 167       0.08      0.05      0.03
+    ## 168       0.15      0.10      0.05
+    ## 169       0.15      0.06      0.09
+    ## 170       0.12      0.08      0.04
+    ## 171       0.17      0.09      0.08
+    ## 172       0.15      0.04      0.11
+    ## 173       0.17      0.05      0.12
+    ## 174       0.13      0.09      0.04
+    ## 175       0.13      0.08      0.05
+    ## 176       0.13      0.10      0.03
+    ## 177       0.17      0.07      0.10
+    ## 178       0.16      0.10      0.06
+    ## 179       0.11      0.08      0.03
+    ## 180       0.16      0.04      0.12
+    ## 181       0.15      0.06      0.09
+    ## 182       0.14      0.07      0.07
+    ## 183       0.08      0.08      0.00
+    ## 184       0.13      0.05      0.08
+    ## 185       0.09      0.05      0.04
+    ## 186       0.13      0.07      0.06
+    ## 187       0.13      0.15     -0.02
+    ## 188       0.15      0.07      0.08
+    ## 189       0.16      0.05      0.11
+    ## 190       0.13      0.09      0.04
+    ## 191       0.12      0.04      0.08
+    ## 192       0.14      0.05      0.09
+    ## 193       0.16      0.06      0.10
+    ## 194       0.16      0.10      0.06
+    ## 195       0.16      0.10      0.06
+    ## 196       0.14      0.06      0.08
+    ## 197       0.07      0.04      0.03
+    ## 198       0.15      0.06      0.09
+    ## 199       0.08      0.14     -0.06
+    ## 200       0.14      0.07      0.07
+    ## 201       0.15      0.08      0.07
+    ## 202       0.11      0.08      0.03
+    ## 203       0.14      0.08      0.06
+    ## 204       0.16      0.08      0.08
+    ## 205       0.17      0.13      0.04
+    ## 206       0.15      0.10      0.05
+    ## 207       0.10      0.07      0.03
+    ## 208       0.16      0.05      0.11
+    ## 209       0.16      0.06      0.10
+    ## 210       0.14      0.03      0.11
+    ## 211       0.13      0.08      0.05
+    ## 212       0.10      0.05      0.05
+    ## 213       0.18      0.07      0.11
+    ## 214       0.14      0.08      0.06
+    ## 215       0.19      0.10      0.09
+    ## 216       0.16      0.08      0.08
+    ## 217       0.12      0.05      0.07
+    ## 218       0.14      0.05      0.09
+    ## 219       0.16      0.05      0.11
+    ## 220       0.06      0.08     -0.02
+    ## 221       0.18      0.08      0.10
+    ## 222       0.14      0.08      0.06
+    ## 223       0.12      0.03      0.09
+    ## 224       0.09      0.06      0.03
+    ## 225       0.17      0.05      0.12
+    ## 226       0.12      0.11      0.01
+    ## 227       0.14      0.04      0.10
+    ## 228       0.15      0.07      0.08
+
 Looking at the first couple of samples in prop_diff we see that for most
 rows video ads are better than text ads. The whole vector of samples in
 prop_diff now represents the posterior probability distribution over the
-difference between video ads and text ads.
-
-**12. How does the prop_diff() distribution look?**
-
-So how does this distribution look? Well, you’ll find out in the
-following exercises!
+difference between video ads and text ads. So how does this distribution
+look? Well, you’ll find out in the steps!
 
 ## Fit the model using another dataset
 
@@ -2019,14 +2413,13 @@ clicked) and the new text ad data (6 out of a 100 clicked).
 
 **Steps**
 
-1.  To the right, you again have the model you developed in the last
-    chapter. Here `posterior_video` is the posterior proportion of
-    clicks for the video ad data.
+We are using the model we have developed in the last section.
 
-    -   Add a row where you calculate `posterior_text` in the same way
-        as `posterior_video` *but* using the text ad data instead.
-    -   Plot `posterior_text` as a histogram just as `posterior_video`
-        is plotted.
+1.  Calculate `posterior_video` (the posterior proportion of clicks for
+    the video ad data) and `posterior_text` in the same way (using the
+    text ad data instead).
+2.  Plot `posterior_text` as a histogram just as `posterior_video` is
+    plotted.
 
 ``` r
 # Define parameters
@@ -2039,19 +2432,15 @@ prior <- data.frame(proportion_clicks, n_visitors)
 
 # Create the posteriors for video and text ads
 posterior_video <- prior[prior$n_visitors == 13, ]
-posterior_text <- prior[prior$n_visitors == 6, ]
+posterior_text  <- prior[prior$n_visitors == 6, ]
 
 # Visualize the posteriors
+par(mfrow=c(1,2))
 hist(posterior_video$proportion_clicks, xlim = c(0, 0.25))
+hist(posterior_text$proportion_clicks,  xlim = c(0, 0.25))
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
-
-``` r
-hist(posterior_text$proportion_clicks, xlim = c(0, 0.25))
-```
-
-![](readme_files/figure-gfm/unnamed-chunk-48-2.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-54-1.png)<!-- -->
 
 > ## *Question*
 >
@@ -2061,8 +2450,8 @@ hist(posterior_text$proportion_clicks, xlim = c(0, 0.25))
 > 0.15.<br> ⬜ It’s exactly 0.06.<br> ⬜ It’s likely between 0.06 and
 > 0.10<br>
 
-This is a legitimate decision boundary as it lies in the gap between the
-clusters. Try again.
+That seems about right! Since we have so little data, the estimate is
+pretty uncertain.
 
 ## Calculating the posterior difference
 
@@ -2084,7 +2473,7 @@ ad and the text ad.
 
 ``` r
 posterior <- data.frame(video_prop = posterior_video$proportion_clicks[1:4000],
-                        text_prop = posterior_text$proportion_click[1:4000])
+                        text_prop  = posterior_text$proportion_click[1:4000])
 
 # Calculate the posterior difference: video_prop - text_prop
 posterior$prop_diff <- posterior$video_prop - posterior$text_prop 
@@ -2093,60 +2482,27 @@ posterior$prop_diff <- posterior$video_prop - posterior$text_prop
 hist(posterior$prop_diff)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
 
 3.  Calculate “a most likely” difference by taking the `median` of
     `posterior$prop_diff`
 
 ``` r
-posterior <- data.frame(video_prop = posterior_video$proportion_clicks[1:4000],
-                        text_prop = posterior_text$proportion_click[1:4000])
-
-# Calculate the posterior difference: video_prop - text_prop
-posterior$prop_diff <- posterior$video_prop - posterior$text_prop 
-
-# Visualize prop_diff
-hist(posterior$prop_diff)
-```
-
-![](readme_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
-
-``` r
 # Calculate the median of prop_diff
 median(posterior$prop_diff)
 ```
 
-    ## [1] 0.06576173
+    ## [1] 0.06588651
 
 4.  Finally, calculate the probability that proportion of clicks is
     larger for the video ad than for the text ad.
-
-``` r
-posterior <- data.frame(video_prop = posterior_video$proportion_clicks[1:4000],
-                        text_prop = posterior_text$proportion_click[1:4000])
-
-# Calculate the posterior difference: video_prop - text_prop
-posterior$prop_diff <- posterior$video_prop - posterior$text_prop 
-
-# Visualize prop_diff
-hist(posterior$prop_diff)
-```
-
-![](readme_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
-
-``` r
-# Calculate the median of prop_diff
-median(posterior$prop_diff)
-```
-
-    ## [1] 0.06576173
 
 ``` r
 # Calculate the proportion
 mean(posterior$prop_diff > 0.0)
 ```
 
-    ## [1] 0.94775
+    ## [1] 0.9475
 
 > ## *Question*
 >
@@ -2155,35 +2511,65 @@ mean(posterior$prop_diff > 0.0)
 > proportion of clicks.)<br> <br> ⬜ 5%<br> ⬜ 50%<br> ⬜ 90%<br> ✅
 > 95%<br>
 
-That’s correct! 8.9 g/100ml is not a legitimate decision boundary as it
-is part of the lower sugar content cluster.
+It’s pretty likely that the video ad is better.
 
 ## Decision analysis
-
-Theory. Coming soon …
-
-**1. It’s easy to compare and contrast!**
 
 We’ve now seen that Bayesian Data Analysis makes it easy to compare and
 contrast parameter estimates. And it’s generally the case that it’s easy
 to calculate any derivative quantities once we’ve fitted a Bayesian
-model and gotten out posteriors. You’ve already seen some examples of
-that in the first chapter. Given
+model and gotten out posteriors.
 
-**2. A probability distribution over an interesting parameter**
-
-a probability distribution over some interesting parameter you
+Given a probability distribution over some interesting parameter you
 calculated a point estimate: A single value summarizing the whole
-distribution. You did
+distribution. You did the posterior median, but could also have
+calculated, say, the posterior mean. It’s important to remember that the
+posterior median or mean are not the same as the median or mean of the
+data. The posterior median is a summary of a probability distribution
+over some parameter, while the median of the data is a summary of a data
+set. Two different things. You calculated the amount of probability
+favoring a positive value.
 
-**3. A probability distribution over an interesting parameter**
+``` r
+### TO DO
+# ADD legend
+# ADD CIs
+# ADD Text
 
-the posterior median, but could also have calculated, say, the posterior
-mean. It’s important to remember that the posterior median or mean are
-not the same as the median or mean of the data. The posterior median is
-a summary of a probability distribution over some parameter, while the
-median of the data is a summary of a data set. Two different things. You
-calculated the amount of probability favoring a positive value.
+posterior |> 
+  
+  ggplot(aes(x = prop_diff)) +
+    geom_histogram(fill = "lightblue", col = "black") +
+  
+  scale_x_continuous(breaks = seq(-0.1, 0.2, 0.05), 
+                     limits = c(-0.1,0.2), 
+                     expand = c(0,0)) +
+  
+    geom_segment(x = 0, y = 0, xend = 0, yend = Inf, linetype  = "dashed", size = 2, lineend = "round") +
+    # geom_vline(xintercept = 0, linetype = "dashed", size = 2, lineend='round')
+    
+    geom_point(aes(x = median(prop_diff) , y = 0),colour="darkred", size = 5) +
+    geom_errorbarh(aes(xmin=0.02, xmax=0.12, y = 0), position = position_dodge(0.3), color = "darkred", size = 3) +
+  
+    labs(x = "Difference in proportion of clicks", y = "") +
+    expand_limits(x = c(-0.1, 0.2)) +
+  
+    theme(panel.background = element_blank(),
+          axis.line.x = element_line(colour = "black"),
+          axis.text        = element_text(size=12),
+          axis.text.x      = element_text(margin=margin(t = 10, r = 0, b = 0, l = 0)),
+          axis.text.y      = element_blank(),
+          axis.ticks.y     = element_blank(),
+          axis.ticks.length=unit(.3, "cm"),
+          axis.title.x = element_text(size=12, margin = margin(t = 30, r = 0, b = 0, l = 0))
+    )
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 2 rows containing missing values (geom_bar).
+
+![](readme_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
 
 **4. A probability distribution over an interesting parameter**
 
@@ -2308,12 +2694,12 @@ head(posterior)
 ```
 
     ##   video_prop  text_prop  prop_diff video_profit text_profit
-    ## 1 0.18046910 0.09155561 0.08891349  0.206586829  0.18163569
-    ## 2 0.17727382 0.05399033 0.12328349  0.198502764  0.08659554
-    ## 3 0.16416682 0.02810095 0.13606587  0.165342055  0.02109540
-    ## 4 0.09658983 0.05164868 0.04494115 -0.005627719  0.08067117
-    ## 5 0.09782043 0.07623401 0.02158642 -0.002514318  0.14287205
-    ## 6 0.14552004 0.03236332 0.11315673  0.118165711  0.03187919
+    ## 1  0.1059727 0.04886485 0.05710785   0.01811093  0.07362807
+    ## 2  0.1526210 0.04152211 0.11109890   0.13613115  0.05505093
+    ## 3  0.1888383 0.10332588 0.08551240   0.22776084  0.21141447
+    ## 4  0.1541209 0.10242201 0.05169891   0.13992593  0.20912768
+    ## 5  0.1480848 0.09099781 0.05708703   0.12465465  0.18022446
+    ## 6  0.1600317 0.05001357 0.11001813   0.15488019  0.07653433
 
 4.  Finally, take a look at the probability distributions of
     `posterior$video_profit` and `posterior$text_profit` by plotting
@@ -2334,13 +2720,13 @@ posterior$text_profit <- posterior$text_prop * visitor_spend - text_cost
 hist(posterior$video_profit)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-54-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-61-1.png)<!-- -->
 
 ``` r
 hist(posterior$text_profit)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-54-2.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-61-2.png)<!-- -->
 
 Great! Take a look at the two histograms you’ve plotted, which method
 seems most profitable, if any?
@@ -2367,7 +2753,7 @@ posterior$profit_diff <- posterior$video_profit - posterior$text_profit
 hist(posterior$profit_diff)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-62-1.png)<!-- -->
 
 3.  There are many ways to calculate a “best guess” for what the
     difference in profits might be. Here, use the posterior median.
@@ -2382,14 +2768,14 @@ posterior$profit_diff <- posterior$video_profit - posterior$text_profit
 hist(posterior$profit_diff)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-63-1.png)<!-- -->
 
 ``` r
 # Calculate a "best guess" for the difference in profits
 median(posterior$profit_diff)
 ```
 
-    ## [1] -0.03362282
+    ## [1] -0.03330712
 
 4.  Finally (phew!) calculate the probability that running text ads will
     result in higher profits than video ads. That is:
@@ -2405,21 +2791,21 @@ posterior$profit_diff <- posterior$video_profit - posterior$text_profit
 hist(posterior$profit_diff)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-64-1.png)<!-- -->
 
 ``` r
 # Calculate a "best guess" for the difference in profits
 median(posterior$profit_diff)
 ```
 
-    ## [1] -0.03362282
+    ## [1] -0.03330712
 
 ``` r
 # Calculate the probability that text ads are better than video ads
 mean(posterior$profit_diff < 0)
 ```
 
-    ## [1] 0.63325
+    ## [1] 0.63025
 
 > ## *Question*
 >
@@ -2541,7 +2927,7 @@ x <- rpois(n = 10000, lambda = 3)
 hist(x)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-65-1.png)<!-- -->
 
 2.  Let’s say that you run an ice cream stand and on cloudy days you on
     average sell 11.5 ice creams. It’s a cloudy day.
@@ -2555,7 +2941,7 @@ x <- rpois(n = 10000, lambda = 11.5)
 hist(x)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-66-1.png)<!-- -->
 
 3.  It’s still a cloudy day, and unfortunately, you won’t break even
     unless you sell 15 or more ice creams.
@@ -2572,14 +2958,14 @@ x <- rpois(n = 10000, lambda = 11.5)
 hist(x)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-67-1.png)<!-- -->
 
 ``` r
 # Calculate the probability of break-even
 mean(x >= 15)
 ```
 
-    ## [1] 0.1932
+    ## [1] 0.1838
 
 > ## *Question*
 >
@@ -2658,13 +3044,13 @@ posterior <- prior[prior$n_visitors == 19, ]
 hist(prior$mean_clicks)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-63-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-70-1.png)<!-- -->
 
 ``` r
 hist(posterior$mean_clicks)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-63-2.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-70-2.png)<!-- -->
 
 > ## *Question*
 >
@@ -3090,7 +3476,7 @@ prob
 plot(n_visitors, prob, type = "h")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-68-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-75-1.png)<!-- -->
 
 4.  It seems that with `proportion_clicks` = 10% the most probable
     `n_visitors` values are between 1 and 20. Now, let’s flip the
@@ -3141,7 +3527,7 @@ prob
 plot(proportion_clicks, prob, type = "h")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-76-1.png)<!-- -->
 
 > ## *Question*
 >
@@ -3381,7 +3767,7 @@ pars$probability <- pars$probability / sum(pars$probability)
 plot(pars$proportion_clicks, pars$probability, type = "h")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-71-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-78-1.png)<!-- -->
 
 Cool! You have now calculated (rather than simulated) your first
 posterior probability distribution!
@@ -3419,7 +3805,7 @@ pars$probability <- pars$probability / sum(pars$probability)
 plot(pars$proportion_clicks, pars$probability, type = "h")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-72-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-79-1.png)<!-- -->
 
 Unnecessary lines are removed, the code is easier to read, and the
 program runs quicker! Nice!
@@ -3575,7 +3961,7 @@ weight_distr <- rnorm(n = 100000, mean = mu, sd = sigma)
 hist(weight_distr, 60, xlim = c(0, 6000), col = "lightgreen")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-73-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-80-1.png)<!-- -->
 
 3.  The resulting histogram gives you a sense of the uncertainty over
     the birth weight of newborns. Let’s recreate this plot, but
@@ -3597,7 +3983,7 @@ weight_distr <- rnorm(n = 100000, mean = mu, sd = sigma)
 hist(weight_distr, 60, xlim = c(0, 6000), col = "lightgreen")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-74-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-81-1.png)<!-- -->
 
 ``` r
 # Create weight
@@ -3617,7 +4003,7 @@ weight_distr <- rnorm(n = 100000, mean = mu, sd = sigma)
 hist(weight_distr, 60, xlim = c(0, 6000), col = "lightgreen")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-75-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-82-1.png)<!-- -->
 
 ``` r
 # Create weight
@@ -3640,7 +4026,7 @@ weight_distr <- rnorm(n = 100000, mean = mu, sd = sigma)
 hist(weight_distr, 60, xlim = c(0, 6000), col = "lightgreen")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-76-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-83-1.png)<!-- -->
 
 ``` r
 # Create weight
@@ -3653,7 +4039,7 @@ likelihood <- dnorm(weight, mu, sigma)
 plot(weight, likelihood, type = "h")
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-76-2.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-83-2.png)<!-- -->
 
 Cool! A nice smooth bell curve.
 
@@ -3930,7 +4316,7 @@ sample_indices <- sample( nrow(pars), size = 10000,
 head(sample_indices)
 ```
 
-    ## [1] 3927 3233 2128 2225 2030 4230
+    ## [1] 4130 1829 2335 3317 2432 2428
 
 ``` r
 # Sample from pars to calculate some new measures
@@ -3960,7 +4346,7 @@ sample_indices <- sample( nrow(pars), size = 10000,
 head(sample_indices)
 ```
 
-    ## [1] 3029 2629 1930 2732 2229 3229
+    ## [1] 4123 2327 2329 1829 1825 3529
 
 ``` r
 # Sample from pars to calculate some new measures
@@ -3970,7 +4356,7 @@ pars_sample <- pars[sample_indices, c("mu", "sigma")]
 hist(pars_sample$mu)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-79-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-86-1.png)<!-- -->
 
 3.  Finally, use the `quantile` function to calculate the 0.025, 0.5 and
     0.975 quantiles of `pars_sample$mu`.
@@ -3993,7 +4379,7 @@ sample_indices <- sample( nrow(pars), size = 10000,
 head(sample_indices)
 ```
 
-    ## [1] 2129 1632 4234 1630 1328 2931
+    ## [1] 2525 1931 2330 3627 2532 2227
 
 ``` r
 # Sample from pars to calculate some new measures
@@ -4003,7 +4389,7 @@ pars_sample <- pars[sample_indices, c("mu", "sigma")]
 hist(pars_sample$mu, 100, col = 'blue')
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-80-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
 
 ``` r
 # Calculate quantiles
@@ -4011,7 +4397,7 @@ quantile(pars_sample$mu, c(0.025, 0.5, 0.975))
 ```
 
     ##     2.5%      50%    97.5% 
-    ## 34.84848 42.42424 50.00000
+    ## 34.84848 42.42424 51.51515
 
 > ## *Question*
 >
@@ -4052,12 +4438,12 @@ head(pars_sample)
 ```
 
     ##            mu     sigma
-    ## 2129 42.42424 10.684848
-    ## 1632 46.96970  8.164646
-    ## 4234 50.00000 21.269697
-    ## 1630 43.93939  8.164646
-    ## 1328 40.90909  6.652525
-    ## 2931 45.45455 14.717172
+    ## 2525 36.36364 12.701010
+    ## 1931 45.45455  9.676768
+    ## 2330 43.93939 11.692929
+    ## 3627 39.39394 18.245455
+    ## 2532 46.96970 12.701010
+    ## 2227 39.39394 11.188889
 
 ``` r
 pred_iq <- rnorm(10000, mean = pars_sample$mu, 
@@ -4067,7 +4453,7 @@ pred_iq <- rnorm(10000, mean = pars_sample$mu,
 hist(pred_iq)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-81-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
 
 2.  The `pred_iq` distribution can be interpreted as the uncertainty
     over what IQ the next zombie you’ll meet will have.
@@ -4081,12 +4467,12 @@ head(pars_sample)
 ```
 
     ##            mu     sigma
-    ## 2129 42.42424 10.684848
-    ## 1632 46.96970  8.164646
-    ## 4234 50.00000 21.269697
-    ## 1630 43.93939  8.164646
-    ## 1328 40.90909  6.652525
-    ## 2931 45.45455 14.717172
+    ## 2525 36.36364 12.701010
+    ## 1931 45.45455  9.676768
+    ## 2330 43.93939 11.692929
+    ## 3627 39.39394 18.245455
+    ## 2532 46.96970 12.701010
+    ## 2227 39.39394 11.188889
 
 ``` r
 pred_iq <- rnorm(10000, mean = pars_sample$mu, 
@@ -4096,14 +4482,14 @@ pred_iq <- rnorm(10000, mean = pars_sample$mu,
 hist(pred_iq)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-82-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
 
 ``` r
 # Calculate the probability of a zombie being "smart" (+60 IQ)
 sum(pred_iq >= 60) / length(pred_iq)
 ```
 
-    ## [1] 0.0866
+    ## [1] 0.0929
 
 > ## *Question*
 >
@@ -4223,7 +4609,7 @@ best_posterior <- BESTmcmc(iq_brains, iq_regular)
 plot(best_posterior)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
 
 > ## *Question*
 >
@@ -4313,7 +4699,7 @@ best_posterior <- BESTmcmc(iq_brains, iq_regular)
 plot(best_posterior)
 ```
 
-![](readme_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
+![](readme_files/figure-gfm/unnamed-chunk-94-1.png)<!-- -->
 
 > ## *Question*
 >
