@@ -1,0 +1,303 @@
+---
+title: "Datasets"
+author: "Dr. Shirin Glander"
+date: "28 4 2018"
+output: html_document
+---
+
+# Breast Cancer Wisconsin (Diagnostic) Data Set
+
+In this course, we will be working with the Breast Cancer Wisconsin (Diagnostic) Data Set. 
+
+https://www.kaggle.com/uciml/breast-cancer-wisconsin-data/data
+
+It contains 569 patient samples from breast tissue. Each tissue sample either comes from a malignant or benign mass; the column named **diagnosis**. For each sample, 30 features have been measured, like mean texture, mean area, mean smoothness, etc.
+
+We want to use this dataset to train machine learning models and learn how to tune hyperparameters for optimized model performance.
+
+
+---
+
+```{r}
+library(readr)
+library(tidyverse)
+library(caret)
+```
+
+<br>
+
+## Preparing the dataset
+
+- To read the data into R, I am using the `read_csv()` function from the `readr` package. This function is much faster than base R's `read.csv()` function and offers more flexibility.
+
+```{r}
+breast_cancer_data_orig <- readr::read_csv("breast_cancer_data.csv")
+```
+
+- the original dataset has the following dimensions:
+
+```{r}
+dim(breast_cancer_data_orig)
+```
+
+- Also keep in mind that the response variable classes `diagnosis` are unbalanced in the original dataset! In this course, we will disregard this and focus solely on aspects of hyper-parameter tuning, but in reality you would have to address this before modeling:
+
+```{r}
+summary(as.factor(breast_cancer_data_orig$diagnosis))
+```
+
+- Because training machine learning models can take quite long, especially if there is a lot of data, we will work on a very small subset of 100 samples: 50 from `diagnosis == "M"` + 50 from `diagnosis == "B"`
+
+```{r}
+breast_cancer_data <- bind_rows(filter(breast_cancer_data_orig, diagnosis == "M")[1:50, ],
+                                filter(breast_cancer_data_orig, diagnosis == "B")[1:50, ])
+```
+
+```{r}
+dim(breast_cancer_data)
+summary(as.factor(breast_cancer_data$diagnosis))
+```
+
+- Because model training is still relatively slow, I am also removing all highly correlated features from the data:
+
+```{r }
+cor_mat <- cor(breast_cancer_data[, -1])
+cols_to_remove <- findCorrelation(cor_mat, cutoff = .6, exact = FALSE)
+breast_cancer_data <- breast_cancer_data[, -cols_to_remove + 1]
+```
+
+```{r}
+dim(breast_cancer_data)
+summary(as.factor(breast_cancer_data$diagnosis))
+```
+
+```{r}
+summary(breast_cancer_data)
+```
+
+```{r }
+readr::write_csv(breast_cancer_data, "breast_cancer_data.csv")
+```
+
+- I have also already split the data into training and test sets:
+
+```{r}
+library(caret)
+
+set.seed(42)
+index <- createDataPartition(breast_cancer_data$diagnosis, 
+                             p = .80, 
+                             list = FALSE)
+bc_train_data <- breast_cancer_data[index, ]
+bc_test_data  <- breast_cancer_data[-index, ]
+```
+
+```{r }
+readr::write_csv(bc_train_data, "bc_train_data.csv")
+readr::write_csv(bc_test_data, "bc_test_data.csv")
+```
+
+<br>
+
+# Voters dataset from Julia's course
+
+> In this case study, you will predict whether a person voted or not in the United States 2016 presidential election from responses that person gave on a survey. The survey focuses on opinions about political and economic topics. What kind of model will you build?
+
+(https://www.datacamp.com/courses/supervised-learning-in-r-case-studies) 
+
+```{r}
+voters_orig <- read_csv("voters_orig.csv") %>%
+  select(-case_identifier)
+```
+
+```{r}
+dim(voters_orig)
+summary(as.factor(voters_orig$turnout16_2016))
+```
+
+- here, we have similar problems as with the breastcancer dataset above and I'll prepare the data in the same way:
+
+```{r}
+voters_data <- bind_rows(filter(voters_orig, turnout16_2016 == "Did not vote")[1:50, ],
+                                filter(voters_orig, turnout16_2016 == "Voted")[1:50, ])
+```
+
+```{r }
+cor_mat <- cor(voters_data[, -1])
+cols_to_remove <- findCorrelation(cor_mat, cutoff = .7, exact = FALSE)
+voters_data <- voters_data[, -cols_to_remove + 1]
+```
+
+```{r}
+dim(voters_data)
+summary(as.factor(voters_data$turnout16_2016))
+```
+
+```{r}
+summary(voters_data)
+```
+
+```{r }
+readr::write_csv(voters_data, "voters_data.csv")
+```
+
+```{r}
+set.seed(42)
+index <- createDataPartition(voters_data$turnout16_2016, 
+                             p = .80, 
+                             list = FALSE)
+voters_train_data <- voters_data[index, ]
+voters_test_data  <- voters_data[-index, ]
+```
+
+```{r }
+readr::write_csv(voters_train_data, "voters_train_data.csv")
+readr::write_csv(voters_test_data, "voters_test_data.csv")
+```
+
+# Seeds dataset
+
+https://archive.ics.uci.edu/ml/datasets/seeds
+
+- Data Set Information:
+
+> The examined group comprised kernels belonging to three different varieties of wheat: Kama, Rosa and Canadian, 70 elements each, randomly selected for 
+the experiment. High quality visualization of the internal kernel structure was detected using a soft X-ray technique. It is non-destructive and considerably cheaper than other more sophisticated imaging techniques like scanning microscopy or laser technology. The images were recorded on 13x18 cm X-ray KODAK plates. Studies were conducted using combine harvested wheat grain originating from experimental fields, explored at the Institute of Agrophysics of the Polish Academy of Sciences in Lublin. 
+
+- Attribute Information:
+
+To construct the data, seven geometric parameters of wheat kernels were measured: 
+
+1. area A, 
+2. perimeter P, 
+3. compactness C = 4*pi*A/P^2, 
+4. length of kernel, 
+5. width of kernel, 
+6. asymmetry coefficient 
+7. length of kernel groove. 
+
+All of these parameters were real-valued continuous.
+
+```{r}
+seeds_orig <- read_delim("seeds_dataset.txt", delim = "\t", 
+                         col_names = c("area", "perimeter", "compactness", "kernel_length", "kernel_width", "asymmetry", "kernel_groove", "seed_type")) %>%
+  drop_na()
+```
+
+```{r}
+dim(seeds_orig)
+summary(as.factor(seeds_orig$seed_type))
+```
+
+- here, we have similar problems as with the datasets above; different is that this data has 3 possible classes to predict, so I'll keep 150 rows:
+
+```{r}
+seeds_data <- bind_rows(filter(seeds_orig, seed_type == "1")[1:50, ],
+                        filter(seeds_orig, seed_type == "2")[1:50, ],
+                        filter(seeds_orig, seed_type == "3")[1:50, ])
+```
+
+```{r}
+dim(seeds_data)
+summary(as.factor(seeds_data$seed_type))
+```
+
+```{r}
+summary(seeds_data)
+```
+
+```{r }
+readr::write_csv(seeds_data, "seeds_data.csv")
+```
+
+```{r}
+set.seed(42)
+index <- createDataPartition(seeds_data$seed_type, 
+                             p = .80, 
+                             list = FALSE)
+seeds_train_data <- seeds_data[index, ]
+seeds_test_data  <- seeds_data[-index, ]
+```
+
+```{r }
+readr::write_csv(seeds_train_data, "seeds_train_data.csv")
+readr::write_csv(seeds_test_data, "seeds_test_data.csv")
+```
+
+# Student Knowledge dataset
+
+https://archive.ics.uci.edu/ml/datasets/User+Knowledge+Modeling
+
+- Data Set Information:
+
+> The users' knowledge class were classified by the authors 
+using intuitive knowledge classifier (a hybrid ML technique of k-NN and meta-heuristic exploring methods), k-nearest neighbor algorithm. 
+See article for more details on how the users' data was collected and evaluated by the user modeling server. 
+
+> H. T. Kahraman, Sagiroglu, S., Colak, I., Developing intuitive knowledge classifier and modeling of users' domain dependent data in web, 
+Knowledge Based Systems, vol. 37, pp. 283-295, 2013.
+
+- Attribute Information:
+
+1. STG (The degree of study time for goal object materails), (input value) 
+2. SCG (The degree of repetition number of user for goal object materails) (input value) 
+3. STR (The degree of study time of user for related objects with goal object) (input value) 
+4. LPR (The exam performance of user for related objects with goal object) (input value) 
+5. PEG (The exam performance of user for goal objects) (input value) 
+6. UNS (The knowledge level of user) (target value) 
+Very Low: 50 
+Low:129 
+Middle: 122 
+High 130
+
+The data was provided as an Excel file, I saved the table part as csv.
+
+```{r}
+knowledge_orig <- read_csv2("knowledge_orig.csv") %>%
+  drop_na()
+```
+
+```{r}
+dim(knowledge_orig)
+summary(as.factor(knowledge_orig$UNS))
+```
+
+- here, we have similar problems as with the datasets above; different is that this data has 4 possible classes to predict, but there are only 24 "very_low" samples; so I'll keep 150 rows:
+
+```{r}
+knowledge_data <- bind_rows(filter(knowledge_orig, UNS == "High")[1:50, ],
+                            filter(knowledge_orig, UNS == "Low")[1:50, ],
+                            filter(knowledge_orig, UNS == "Middle")[1:50, ])
+```
+
+```{r}
+dim(knowledge_data)
+summary(as.factor(knowledge_data$UNS))
+```
+
+```{r}
+summary(knowledge_data)
+```
+
+```{r }
+readr::write_csv(knowledge_data, "knowledge_data.csv")
+```
+
+```{r}
+set.seed(42)
+index <- createDataPartition(knowledge_data$UNS, 
+                             p = .80, 
+                             list = FALSE)
+knowledge_train_data <- knowledge_data[index, ]
+knowledge_test_data  <- knowledge_data[-index, ]
+```
+
+```{r }
+readr::write_csv(knowledge_train_data, "knowledge_train_data.csv")
+readr::write_csv(knowledge_test_data, "knowledge_test_data.csv")
+```
+
+```{r}
+sessionInfo()
+```
+
