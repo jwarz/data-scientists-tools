@@ -91,5 +91,45 @@
 		</td>
 			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
 		</tr>
+		<! –– ML with caret ––>
+		<tr>
+			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_with_caret">Machine Learning with caret</a></td>
+			<td rowspan="1">
+			  <ol>
+          <li>Regression models: fitting them and evaluating their performance</li>
+          <li>Classification models: fitting them and evaluating their performance</li>
+          <li>Tuning model parameters to improve performance</li>
+		  <li>Preprocessing your data</li>
+		  <li>Selecting models</li>
+        </ol>
+		</td>
+			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+		</tr>
+		<! –– Machine Learning in the tidyverse ––>
+		<tr>
+			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_in_the_tidyverse">Machine Learning in the tidyverse</a></td>
+			<td rowspan="1">
+			  <ol>
+          <li>Foundations of "tidy" Machine learning</li>
+          <li>Multiple Models with broom</li>
+          <li>Build, Tune & Evaluate Regression Models 1</li>
+		  <li>Build, Tune & Evaluate Regression Models 2</li>
+        </ol>
+		</td>
+			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+		</tr>
+		<! –– Cluster Analysis ––>
+		<tr>
+			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a></td>
+			<td rowspan="1">
+			  <ol>
+          <li>Calculating distance between observations</li>
+          <li>Hierarchical clustering</li>
+          <li>K-means clustering</li>
+		  <li>Case Study: National Occupational mean wage</li>
+        </ol>
+		</td>
+			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+		</tr>
 	</tbody>
 </table>
