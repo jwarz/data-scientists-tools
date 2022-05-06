@@ -134,6 +134,7 @@
 		</td>
 		<td>
 		<details><summary>SHOW PACKAGES</summary>
+		<div id="user-content-toc">
 		<ul style="list-style-type: none; padding: 0; margin: 0;">
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
@@ -141,6 +142,7 @@
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 		</ul>
+		</div>
 		</details>
 		</td>
 		</tr>
