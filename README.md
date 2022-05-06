@@ -33,109 +33,148 @@
 	<tbody>
 		<! –– SUPERVISED LEARNING: CLASSIFICATION ––>
 		<tr>
-			<td rowspan="6"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a></td>
-			<td rowspan="6">
-			  <ol>
-          <li>k-Nearest Neighbors (kNN)</li>
-          <li>Naive Bayes</li>
-          <li>Logistic Regression</li>
-          <li>Classification Trees</li>
-        </ol>
+			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a>
 			</td>
-			<td><img height="50px" align="center" src="img/logo_class.png"/><a href="https://CRAN.R-project.org/package=class">&nbsp;&nbsp;class</a></td>
+			<td>
+			  <ol>
+          		<li>k-Nearest Neighbors (kNN)</li>
+          		<li>Naive Bayes</li>
+          		<li>Logistic Regression</li>
+          		<li>Classification Trees</li>
+        		</ol>
+			</td>
+			<td>
+				<details><summary>Click to show packages ...</summary>
+					<div id="user-content-toc">
+						<ul>
+							<li><img height="50px" align="center" src="img/logo_class.png"/><a href="https://CRAN.R-project.org/package=class">&nbsp;&nbsp;class</a></li>
+							<li><img height="50px" align="center" src="img/logo_naivebayes.png"/><a href="https://github.com/majkamichal/naivebayes">&nbsp;&nbsp;naivebayes</a></li>
+							<li><a href="https://github.com/xrobin/pROC">pROC</a></li>
+							<li><img height="50px" align="center" src="img/logo_rpart.png"/><a href="https://github.com/bethatkinson/rpart">&nbsp;&nbsp;rpart</a></li>
+							<li><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></li>
+							<li><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></li>
+						</ul>
+					</div>
+				</details>
+			</td>
 		</tr>
-		<tr><td><img height="50px" align="center" src="img/logo_naivebayes.png"/><a href="https://github.com/majkamichal/naivebayes">&nbsp;&nbsp;naivebayes</a></td></tr>
-		<tr><td><a href="https://github.com/xrobin/pROC">pROC</a></td></tr>
-		<tr><td><img height="50px" align="center" src="img/logo_rpart.png"/><a href="https://github.com/bethatkinson/rpart">&nbsp;&nbsp;rpart</a></td></tr>
-		<tr><td><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></td></tr>
-		<tr><td><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></td></tr>
 		<! –– SUPERVISED LEARNING: REGRESSION ––>
 		<tr>
-			<td rowspan="7"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_regression">Supervised Learning: Regression</a></td>
-			<td rowspan="7">
-			  <ol>
-          <li>k-What is Regression?</li>
-          <li>Training and Evaluating Regression Models</li>
-          <li>Issues to Consider</li>
-          <li>Dealing with Non-Linear Responses</li>
-          <li>Tree-Based Methods</li>
-        </ol>
+			<td>
+				<a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_regression">Supervised Learning: Regression</a>
 			</td>
-			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;broom</a></td>
+			<td>
+				<ol>
+					<li>k-What is Regression?</li>
+					<li>Training and Evaluating Regression Models</li>
+					<li>Issues to Consider</li>
+					<li>Dealing with Non-Linear Responses</li>
+					<li>Tree-Based Methods</li>
+        		</ol>
+			</td>
+			<td>
+				<details><summary>Show packages ...</summary>
+					<div id="user-content-toc">
+						<ul>
+							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;broom</a></li>
+							<li><a href="https://winvector.github.io/sigr/index.html">sigr</a></li>
+							<li><a href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></li>
+							<li><a href="https://winvector.github.io/vtreat/">vtreat</a></li>
+							<li><a href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></li>
+							<li><a href="https://github.com/imbs-hl/ranger">ranger</a></li>
+							<li><a href="https://github.com/dmlc/xgboost">xgboost</a></li>
+						</ul>
+					</div>
+				</details>
+			</td>
 		</tr>
-		<tr><td><a href="https://winvector.github.io/sigr/index.html">sigr</a></td></tr>
-		<tr><td><a href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></td></tr>
-		<tr><td><a href="https://winvector.github.io/vtreat/">vtreat</a></td></tr>
-		<tr><td><a href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></td></tr>
-		<tr><td><a href="https://github.com/imbs-hl/ranger">ranger</a></td></tr>
-		<tr><td><a href="https://github.com/dmlc/xgboost">xgboost</a></td></tr>
 		<! –– UNSUPERVISED LEARNING ––>
 		<tr>
-			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/unsupervised_learning">Unsupervised Learning</a></td>
-			<td rowspan="1">
-			  <ol>
-          <li>Unsupervised Learning in R</li>
-          <li>Hierarchical clustering</li>
-          <li>Dimensionality Reduction with PCA</li>
-        </ol>
-		</td>
-			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/unsupervised_learning">Unsupervised Learning</a>
+			</td>
+			<td>
+				<ol>
+					<li>Unsupervised Learning in R</li>
+					<li>Hierarchical clustering</li>
+					<li>Dimensionality Reduction with PCA</li>
+        		</ol>
+			</td>
+			<td>
+				<details><summary>Show packages ...</summary>
+					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+				</details>
+			</td>
 		</tr>
 		<! –– ML with caret ––>
 		<tr>
-			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_with_caret">Machine Learning with caret</a></td>
-			<td rowspan="1">
-			  <ol>
-          <li>Regression models: fitting them and evaluating their performance</li>
-          <li>Classification models: fitting them and evaluating their performance</li>
-          <li>Tuning model parameters to improve performance</li>
-		  <li>Preprocessing your data</li>
-		  <li>Selecting models</li>
-        </ol>
-		</td>
-			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_with_caret">Machine Learning with caret</a>
+			</td>
+			<td>
+				<ol>
+					<li>Regression models: fitting them and evaluating their performance</li>
+					<li>Classification models: fitting them and evaluating their performance</li>
+					<li>Tuning model parameters to improve performance</li>
+					<li>Preprocessing your data</li>
+					<li>Selecting models</li>
+        		</ol>
+			</td>
+			<td>
+				<details><summary>Show packages ...</summary>
+					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+				</details>
+			</td>
 		</tr>
 		<! –– Machine Learning in the tidyverse ––>
 		<tr>
-			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_in_the_tidyverse">Machine Learning in the tidyverse</a></td>
-			<td rowspan="1">
-			  <ol>
-          <li>Foundations of "tidy" Machine learning</li>
-          <li>Multiple Models with broom</li>
-          <li>Build, Tune & Evaluate Regression Models 1</li>
-		  <li>Build, Tune & Evaluate Regression Models 2</li>
-        </ol>
-		</td>
-			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_in_the_tidyverse">Machine Learning in the tidyverse</a>
+			</td>
+			<td>
+				<ol>
+					<li>Foundations of "tidy" Machine learning</li>
+					<li>Multiple Models with broom</li>
+					<li>Build, Tune & Evaluate Regression Models 1</li>
+					<li>Build, Tune & Evaluate Regression Models 2</li>
+        		</ol>
+			</td>
+			<td>
+				<details><summary>Show packages ...</summary>
+					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+				</details>
+			</td>
 		</tr>
 		<! –– Cluster Analysis ––>
 		<tr>
-			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a></td>
-			<td rowspan="1">
-			  <ol>
-          <li>Calculating distance between observations</li>
-          <li>Hierarchical clustering</li>
-          <li>K-means clustering</li>
-		  <li>Case Study: National Occupational mean wage</li>
-        </ol>
-		</td>
-			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
+			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a></td>
+			<td>
+				<ol>
+					<li>Calculating distance between observations</li>
+					<li>Hierarchical clustering</li>
+					<li>K-means clustering</li>
+					<li>Case Study: National Occupational mean wage</li>
+        		</ol>
+			</td>
+			<td>
+				<details><summary>Show packages ...</summary>
+					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+				</details>
+			</td>
 		</tr>
 		<! –– TEST ––>
 		<tr>
-			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a></td>
-			<td rowspan="1">
-			  <ol>
-          <li>Calculating distance between observations</li>
-          <li>Hierarchical clustering</li>
-          <li>K-means clustering</li>
-		  <li>Case Study: National Occupational mean wage</li>
-        </ol>
-		</td>
+			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a>
+			</td>
+			<td>
+				<ol>
+					<li>Calculating distance between observations</li>
+					<li>Hierarchical clustering</li>
+					<li>K-means clustering</li>
+					<li>Case Study: National Occupational mean wage</li>
+        		</ol>
+			</td>
 		<td>
 		<details><summary>Show packages ...</summary>
 		<div id="user-content-toc">
-		<ul style="list-style-type: none; padding: 0; margin: 0;">
+		<ul>
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
@@ -148,27 +187,6 @@
 		</tr>
 	</tbody>
 </table>
-
-
-<style>
-	details > summary {
-    list-style-type: '▶️';
-}
-
-details[open] > summary {
-    list-style-type: '🔽';
-}
-
-details {
-    border: 1px solid gray;
-    border-radius: 0.2rem;
-    padding: 0.5rem;
-}
-
-details[open] > summary {
-    margin-bottom: 0.5rem;
-}
-</style>
 
 <details><summary><b><a href="https://github.com/flask-restful/flask-restful">flask-restful</a></b> (🥈35 ·  ⭐ 6.3K) - Simple framework for creating REST APIs. <code><a href="http://bit.ly/3aKzpTv">BSD-3</a></code> <code><img src="https://flask.palletsprojects.com/en/1.1.x/_static/flask-icon.png" style="display:inline;" width="13" height="13"></code></summary>
 
