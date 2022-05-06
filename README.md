@@ -77,12 +77,12 @@
 					<div id="user-content-toc">
 						<ul>
 							<li><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org"><img height="50px" align="center" src="img/hex_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">broom</a></li>
-							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/sigr/index.html"><img height="50px" align="center" src="img/hex_randomForest.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/sigr/index.html">sigr</a></li>
-							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/WVPlots/index.html"><img height="50px" align="center" src="img/hex_randomForest.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></li>
-							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/vtreat/"><img height="50px" align="center" src="img/hex_randomForest.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/vtreat/">vtreat</a></li>
-							<li><a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=mgcv "><img height="50px" align="center" src="img/hex_randomForest.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></li>
-							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger"><img height="50px" align="center" src="img/hex_randomForest.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger">ranger</a></li>
-							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/dmlc/xgboost"><img height="50px" align="center" src="img/hex_randomForest.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/dmlc/xgboost">xgboost</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/sigr/index.html"><img height="50px" align="center" src="img/hex_sigr.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/sigr/index.html">sigr</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/WVPlots/index.html"><img height="50px" align="center" src="img/hex_WVPlots.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/vtreat/"><img height="50px" align="center" src="img/hex_vtreat.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/vtreat/">vtreat</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=mgcv "><img height="50px" align="center" src="img/hex_mgcv.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger"><img height="50px" align="center" src="img/hex_ranger.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger">ranger</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/dmlc/xgboost"><img height="50px" align="center" src="img/hex_xgboost.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/dmlc/xgboost">xgboost</a></li>
 						</ul>
 					</div>
 				</details>
