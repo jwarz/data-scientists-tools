@@ -133,14 +133,14 @@
         </ol>
 		</td>
 		<td>
-		<details><summary>Show packages ...</summary>
+		<details><summary>SHOW PACKAGES</summary>
 		<div id="user-content-toc">
 		<ul style="list-style-type: none; padding: 0; margin: 0;">
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
-			<li><img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a href="https://broom.tidymodels.org">base R / stats</a></li>
-			<li><img height="50px" align="center" style="display:inline;" src="img/logo_broom.svg"/>&emsp;<a href="https://broom.tidymodels.org">base R / stats</a></li>
+			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
 		</ul>
 		</div>
 		</details>
@@ -149,26 +149,6 @@
 	</tbody>
 </table>
 
-
-<style>
-	details > summary {
-    list-style-type: '▶️';
-}
-
-details[open] > summary {
-    list-style-type: '🔽';
-}
-
-details {
-    border: 1px solid gray;
-    border-radius: 0.2rem;
-    padding: 0.5rem;
-}
-
-details[open] > summary {
-    margin-bottom: 0.5rem;
-}
-</style>
 
 <details><summary><b><a href="https://github.com/flask-restful/flask-restful">flask-restful</a></b> (🥈35 ·  ⭐ 6.3K) - Simple framework for creating REST APIs. <code><a href="http://bit.ly/3aKzpTv">BSD-3</a></code> <code><img src="https://flask.palletsprojects.com/en/1.1.x/_static/flask-icon.png" style="display:inline;" width="13" height="13"></code></summary>
 
