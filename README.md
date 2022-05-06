@@ -19,6 +19,7 @@
 
 ## 06 Regression
 
+
 ## 07 Machine Learning
 
 <table>
@@ -120,5 +121,46 @@
 		</td>
 			<td><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></td>
 		</tr>
+		<! –– TEST ––>
+		<tr>
+			<td rowspan="1"><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a></td>
+			<td rowspan="1">
+			  <ol>
+          <li>Calculating distance between observations</li>
+          <li>Hierarchical clustering</li>
+          <li>K-means clustering</li>
+		  <li>Case Study: National Occupational mean wage</li>
+        </ol>
+		</td>
+		<td>
+		<details><summary>SHOW PACKAGES</summary>
+		<ul style="list-style-type: none; padding: 0; margin: 0;">
+			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+		</ul>
+		</details>
+		</td>
+		</tr>
 	</tbody>
 </table>
+
+
+<details><summary><b><a href="https://github.com/flask-restful/flask-restful">flask-restful</a></b> (🥈35 ·  ⭐ 6.3K) - Simple framework for creating REST APIs. <code><a href="http://bit.ly/3aKzpTv">BSD-3</a></code> <code><img src="https://flask.palletsprojects.com/en/1.1.x/_static/flask-icon.png" style="display:inline;" width="13" height="13"></code></summary>
+
+- [GitHub](https://github.com/flask-restful/flask-restful) (👨‍💻 160 · 🔀 970 · 📦 75K · 📋 570 - 20% open · ⏱️ 04.03.2022):
+
+	```
+	git clone https://github.com/flask-restful/flask-restful
+	```
+- [PyPi](https://pypi.org/project/flask-restful) (📥 1.8M / month · 📦 7.2K · ⏱️ 17.05.2021):
+	```
+	pip install flask-restful
+	```
+- [Conda](https://anaconda.org/conda-forge/flask-restful) (📥 110K · ⏱️ 30.05.2021):
+	```
+	conda install -c conda-forge flask-restful
+	```
+</details>
