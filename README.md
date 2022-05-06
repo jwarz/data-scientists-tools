@@ -33,7 +33,7 @@
 	<tbody>
 		<! –– SUPERVISED LEARNING: CLASSIFICATION ––>
 		<tr>
-			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a>
+			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_classification">Supervised Learning: Classification</a>
 			</td>
 			<td>
 			  <ol>
@@ -47,12 +47,12 @@
 				<details><summary>Click to show packages ...</summary>
 					<div id="user-content-toc">
 						<ul>
-							<li><img height="50px" align="center" src="img/logo_class.png"/><a href="https://CRAN.R-project.org/package=class">&nbsp;&nbsp;class</a></li>
-							<li><img height="50px" align="center" src="img/logo_naivebayes.png"/><a href="https://github.com/majkamichal/naivebayes">&nbsp;&nbsp;naivebayes</a></li>
-							<li><a href="https://github.com/xrobin/pROC">pROC</a></li>
-							<li><img height="50px" align="center" src="img/logo_rpart.png"/><a href="https://github.com/bethatkinson/rpart">&nbsp;&nbsp;rpart</a></li>
-							<li><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></li>
-							<li><a href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></li>
+							<li><img height="50px" align="center" src="img/logo_class.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=class">class</a></li>
+							<li><img height="50px" align="center" src="img/logo_naivebayes.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/majkamichal/naivebayes">naivebayes</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/xrobin/pROC">pROC</a></li>
+							<li><img height="50px" align="center" src="img/logo_rpart.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/bethatkinson/rpart">rpart</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://cran.r-project.org/web/packages/randomForest/index.html">randomForest</a></li>
 						</ul>
 					</div>
 				</details>
@@ -61,7 +61,7 @@
 		<! –– SUPERVISED LEARNING: REGRESSION ––>
 		<tr>
 			<td>
-				<a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_regression">Supervised Learning: Regression</a>
+				<a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/supervised_learning_regression">Supervised Learning: Regression</a>
 			</td>
 			<td>
 				<ol>
@@ -76,13 +76,13 @@
 				<details><summary>Show packages ...</summary>
 					<div id="user-content-toc">
 						<ul>
-							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;broom</a></li>
-							<li><a href="https://winvector.github.io/sigr/index.html">sigr</a></li>
-							<li><a href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></li>
-							<li><a href="https://winvector.github.io/vtreat/">vtreat</a></li>
-							<li><a href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></li>
-							<li><a href="https://github.com/imbs-hl/ranger">ranger</a></li>
-							<li><a href="https://github.com/dmlc/xgboost">xgboost</a></li>
+							<li><img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">broom</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/sigr/index.html">sigr</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/WVPlots/index.html">WVPlots</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/vtreat/">vtreat</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger">ranger</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/dmlc/xgboost">xgboost</a></li>
 						</ul>
 					</div>
 				</details>
@@ -90,7 +90,7 @@
 		</tr>
 		<! –– UNSUPERVISED LEARNING ––>
 		<tr>
-			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/unsupervised_learning">Unsupervised Learning</a>
+			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/unsupervised_learning">Unsupervised Learning</a>
 			</td>
 			<td>
 				<ol>
@@ -101,13 +101,13 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
 				</details>
 			</td>
 		</tr>
 		<! –– ML with caret ––>
 		<tr>
-			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_with_caret">Machine Learning with caret</a>
+			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_with_caret">Machine Learning with caret</a>
 			</td>
 			<td>
 				<ol>
@@ -120,13 +120,13 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
 				</details>
 			</td>
 		</tr>
 		<! –– Machine Learning in the tidyverse ––>
 		<tr>
-			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_in_the_tidyverse">Machine Learning in the tidyverse</a>
+			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/machine_learning_in_the_tidyverse">Machine Learning in the tidyverse</a>
 			</td>
 			<td>
 				<ol>
@@ -138,13 +138,13 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
 				</details>
 			</td>
 		</tr>
 		<! –– Cluster Analysis ––>
 		<tr>
-			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a></td>
+			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a></td>
 			<td>
 				<ol>
 					<li>Calculating distance between observations</li>
@@ -155,13 +155,13 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a>
+					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
 				</details>
 			</td>
 		</tr>
 		<! –– TEST ––>
 		<tr>
-			<td><a href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a>
+			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a>
 			</td>
 			<td>
 				<ol>
@@ -171,24 +171,24 @@
 					<li>Case Study: National Occupational mean wage</li>
         		</ol>
 			</td>
-		<td>
-		<details><summary>Show packages ...</summary>
-		<div id="user-content-toc">
-		<ul>
-			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
-			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
-			<li><img height="50px" align="center" src="img/logo_broom.svg"/><a href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
-			<li><img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a href="https://broom.tidymodels.org">base R / stats</a></li>
-			<li><img height="50px" align="center" style="display:inline;" src="img/logo_broom.svg"/>&emsp;<a href="https://broom.tidymodels.org">base R / stats</a></li>
-		</ul>
-		</div>
-		</details>
-		</td>
+			<td>
+				<details><summary>Show packages ...</summary>
+					<div id="user-content-toc">
+						<ul>
+							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
+							<li><img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a></li>
+							<li><img height="50px" align="center" style="display:inline;" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a></li>
+						</ul>
+					</div>
+				</details>
+			</td>
 		</tr>
 	</tbody>
 </table>
 
-<details><summary><b><a href="https://github.com/flask-restful/flask-restful">flask-restful</a></b> (🥈35 ·  ⭐ 6.3K) - Simple framework for creating REST APIs. <code><a href="http://bit.ly/3aKzpTv">BSD-3</a></code> <code><img src="https://flask.palletsprojects.com/en/1.1.x/_static/flask-icon.png" style="display:inline;" width="13" height="13"></code></summary>
+<details><summary><b><a target="_blank" rel="noopener noreferrer" href="https://github.com/flask-restful/flask-restful">flask-restful</a></b> (🥈35 ·  ⭐ 6.3K) - Simple framework for creating REST APIs. <code><a target="_blank" rel="noopener noreferrer" href="http://bit.ly/3aKzpTv">BSD-3</a></code> <code><img src="https://flask.palletsprojects.com/en/1.1.x/_static/flask-icon.png" style="display:inline;" width="13" height="13"></code></summary>
 
 - [GitHub](https://github.com/flask-restful/flask-restful) (👨‍💻 160 · 🔀 970 · 📦 75K · 📋 570 - 20% open · ⏱️ 04.03.2022):
 
