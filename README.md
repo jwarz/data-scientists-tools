@@ -47,7 +47,7 @@
 				<details><summary>Click to show packages ...</summary>
 					<div id="user-content-toc">
 						<ul>
-							<li><img height="50px" align="center" src="img/logo_class.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=class">class</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=class"><img height="50px" align="center" src="img/logo_class.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=class">class</a></li>
 							<li><img height="50px" align="center" src="img/logo_naivebayes.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/majkamichal/naivebayes">naivebayes</a></li>
 							<li><img height="50px" align="center" src="img/logo_pROC.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/xrobin/pROC">pROC</a></li>
 							<li><img height="50px" align="center" src="img/logo_rpart.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/bethatkinson/rpart">rpart</a></li>
