@@ -1,6 +1,19 @@
-# Data Scientist's Tools
+# 1. Books
 
-## UNDER CONSTRUCTION ...
+## Applied Data Science
+
+* [Applied Predictive Modeling - By Max Kuhn and Kjell Johnson](http://appliedpredictivemodeling.com)
+* [Machine Learning Engineering - By Andriy Burkov](http://www.mlebook.com/wiki/doku.php)
+
+## Theoretical Data Science
+
+* [An Introduction to Statistical Learning - By Gareth James et al.](https://www.statlearning.com)
+* [The Elements of Statistical Learning - By Trevor Hastie et al.](https://hastie.su.domains/ElemStatLearn/)
+* [Bayesian Data Analysis - By Andrew Gelman et al.](http://www.stat.columbia.edu/~gelman/book/)
+* [The Hundred-Page Machine Learning Book - By Andriy Burkov](http://www.mlebook.com/wiki)
+* [The StatQuest Illustrated Guide to Machine Learning - By Josh Starmer](https://statquest.org/statquest-store/)
+
+# 2. UNDER CONSTRUCTION ...
 
 ## 01 Programming Basics
 
@@ -65,7 +78,7 @@
 			</td>
 			<td>
 				<ol>
-					<li>k-What is Regression?</li>
+					<li>What is Regression?</li>
 					<li>Training and Evaluating Regression Models</li>
 					<li>Issues to Consider</li>
 					<li>Dealing with Non-Linear Responses</li>
@@ -76,7 +89,7 @@
 				<details><summary>Show packages ...</summary>
 					<div id="user-content-toc">
 						<ul>
-							<li><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org"><img height="50px" align="center" src="img/hex_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">broom</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org"><img height="50px" align="center" src="img/hex_broom.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">broom</a></li>
 							<li><a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=mgcv "><img height="50px" align="center" src="img/hex_mgcv.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://CRAN.R-project.org/package=mgcv ">mgcv</a></li>
 							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger"><img height="50px" align="center" src="img/hex_ranger.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger">ranger</a></li>
 							<li><a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/sigr/index.html"><img height="50px" align="center" src="img/hex_sigr.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://winvector.github.io/sigr/index.html">sigr</a></li>
@@ -101,7 +114,7 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
+					<img height="50px" align="center" src="img/logo_R.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
 				</details>
 			</td>
 		</tr>
@@ -120,7 +133,14 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
+					<div id="user-content-toc">
+						<ul>
+							<li><a target="_blank" rel="noopener noreferrer" href="http://topepo.github.io/caret/index.htmlpackage=class"><img height="50px" align="center" src="img/hex_caret.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="http://topepo.github.io/caret/index.htmlpackage=class">caret</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://cran.r-project.org/web/packages/mlbench/index.html"><img height="50px" align="center" src="img/hex_mlbench.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://cran.r-project.org/web/packages/mlbench/index.html">mlbench</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://cran.r-project.org/web/packages/caTools/index.html"><img height="50px" align="center" src="img/hex_caTools.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://cran.r-project.org/web/packages/caTools/index.html">caTools</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/zachmayer/caretEnsemble"><img height="50px" align="center" src="img/hex_caretEnsemble.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/zachmayer/caretEnsemble">caretEnsemble</a></li>
+						</ul>
+					</div>
 				</details>
 			</td>
 		</tr>
@@ -138,7 +158,14 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
+					<div id="user-content-toc">
+						<ul>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org"><img height="50px" align="center" src="img/hex_broom.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">broom</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://rsample.tidymodels.org"><img height="50px" align="center" src="img/hex_rsample.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://rsample.tidymodels.org">rsample</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/mfrasco/Metrics"><img height="50px" align="center" src="img/hex_Metrics.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/mfrasco/Metrics">Metrics</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger"><img height="50px" align="center" src="img/hex_ranger.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/imbs-hl/ranger">ranger</a></li>
+						</ul>
+					</div>
 				</details>
 			</td>
 		</tr>
@@ -155,7 +182,12 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
+					<div id="user-content-toc">
+						<ul>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/talgalili/dendextend"><img height="50px" align="center" src="img/hex_dendextend.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://github.com/talgalili/dendextend">dendextend</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://cran.r-project.org/web/packages/cluster/index.html"><img height="50px" align="center" src="img/hex_cluster.png"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://cran.r-project.org/web/packages/cluster/index.html">cluster</a></li>
+						</ul>
+					</div>
 				</details>
 			</td>
 		</tr>
@@ -187,20 +219,3 @@
 		</tr>
 	</tbody>
 </table>
-
-<details><summary><b><a target="_blank" rel="noopener noreferrer" href="https://github.com/flask-restful/flask-restful">flask-restful</a></b> (🥈35 ·  ⭐ 6.3K) - Simple framework for creating REST APIs. <code><a target="_blank" rel="noopener noreferrer" href="http://bit.ly/3aKzpTv">BSD-3</a></code> <code><img src="https://flask.palletsprojects.com/en/1.1.x/_static/flask-icon.png" style="display:inline;" width="13" height="13"></code></summary>
-
-- [GitHub](https://github.com/flask-restful/flask-restful) (👨‍💻 160 · 🔀 970 · 📦 75K · 📋 570 - 20% open · ⏱️ 04.03.2022):
-
-	```
-	git clone https://github.com/flask-restful/flask-restful
-	```
-- [PyPi](https://pypi.org/project/flask-restful) (📥 1.8M / month · 📦 7.2K · ⏱️ 17.05.2021):
-	```
-	pip install flask-restful
-	```
-- [Conda](https://anaconda.org/conda-forge/flask-restful) (📥 110K · ⏱️ 30.05.2021):
-	```
-	conda install -c conda-forge flask-restful
-	```
-</details>
