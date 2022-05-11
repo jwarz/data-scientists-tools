@@ -2205,7 +2205,7 @@ tibble [1,011 × 5]
 
 ```{r}
 # load data
-preds_combinded <- readRDS("data/preds_combinded.rds")
+preds_combined <- readRDS("data/preds_combined.rds")
 
 # Calculate the AUC for each model
 auc_tree   <- roc_auc(preds_combined, truth = still_customer, estimate = preds_tree)
