@@ -340,7 +340,7 @@ home_training %>%
     ## # A tibble: 1 × 4
     ##   min_sell_price max_sell_price mean_sell_price sd_sell_price
     ##            <dbl>          <dbl>           <dbl>         <dbl>
-    ## 1         350000         650000         479235.        81014.
+    ## 1         350000         650000         479128.        80649.
 
 2.  Calculate the minimum, maximum, mean, and standard deviation of the
     `selling_price` variable in `home_test`.
@@ -357,7 +357,7 @@ home_test %>%
     ## # A tibble: 1 × 4
     ##   min_sell_price max_sell_price mean_sell_price sd_sell_price
     ##            <dbl>          <dbl>           <dbl>         <dbl>
-    ## 1         350000         650000         478735.        80987.
+    ## 1         350000         650000         478983.        81829.
 
 Excellent work! The minimum and maximum selling prices in both datasets
 are the same. The mean and standard deviation are also similar.
@@ -513,14 +513,13 @@ lm_fit
 
     ## parsnip model object
     ## 
-    ## Fit time:  5ms 
     ## 
     ## Call:
     ## stats::lm(formula = selling_price ~ home_age + sqft_living, data = data)
     ## 
     ## Coefficients:
     ## (Intercept)     home_age  sqft_living  
-    ##    288194.2      -1366.8        103.5
+    ##    294625.1      -1508.5        101.7
 
 Excellent work! You have defined your model with `linear_reg()` and
 trained it to predict `selling_price` using `home_age` and
@@ -583,16 +582,16 @@ home_predictions
     ## # A tibble: 450 × 1
     ##      .pred
     ##      <dbl>
-    ##  1 432948.
-    ##  2 380596.
-    ##  3 629599.
-    ##  4 430339.
-    ##  5 410293.
-    ##  6 471964.
-    ##  7 564242.
-    ##  8 526345.
-    ##  9 532640.
-    ## 10 460077.
+    ##  1 629280.
+    ##  2 475037.
+    ##  3 488682.
+    ##  4 403849.
+    ##  5 484055.
+    ##  6 528531.
+    ##  7 533717.
+    ##  8 501547.
+    ##  9 409493.
+    ## 10 406730.
     ## # … with 440 more rows
 
 2.  Create a tibble with the `selling_price`, `home_age`, and
@@ -612,16 +611,16 @@ home_test_results
     ## # A tibble: 450 × 4
     ##    selling_price home_age sqft_living   .pred
     ##            <dbl>    <dbl>       <dbl>   <dbl>
-    ##  1        465000       10        1530 432948.
-    ##  2        411000       18        1130 380596.
-    ##  3        635000        4        3350 629599.
-    ##  4        495000       21        1650 430339.
-    ##  5        355000       19        1430 410293.
-    ##  6        425000       11        1920 471964.
-    ##  7        559900       20        2930 564242.
-    ##  8        475000        0        2300 526345.
-    ##  9        485000        6        2440 532640.
-    ## 10        450000       25        1990 460077.
+    ##  1        635000        4        3350 629280.
+    ##  2        380000       24        2130 475037.
+    ##  3        464950       19        2190 488682.
+    ##  4        356000       24        1430 403849.
+    ##  5        525000       16        2100 484055.
+    ##  6        475000        0        2300 528531.
+    ##  7        485000        6        2440 533717.
+    ##  8        525000       28        2450 501547.
+    ##  9        452000       27        1530 409493.
+    ## 10        398000       14        1310 406730.
     ## # … with 440 more rows
 
 Congratualtions! You have trained a linear regression model and used it
@@ -755,7 +754,7 @@ home_test_results %>%
     ## # A tibble: 1 × 3
     ##   .metric .estimator .estimate
     ##   <chr>   <chr>          <dbl>
-    ## 1 rmse    standard      47380.
+    ## 1 rmse    standard      47762.
 
 ``` r
 # Calculate the R squared metric
@@ -766,7 +765,7 @@ home_test_results %>%
     ## # A tibble: 1 × 3
     ##   .metric .estimator .estimate
     ##   <chr>   <chr>          <dbl>
-    ## 1 rsq     standard       0.657
+    ## 1 rsq     standard       0.660
 
 Great job! The RMSE metric indicates that the average prediction error
 for home selling prices is about $48,000. Not bad considering you only
@@ -806,6 +805,13 @@ library(tune)
     ## Registered S3 method overwritten by 'tune':
     ##   method                   from   
     ##   required_pkgs.model_spec parsnip
+
+    ## 
+    ## Attaching package: 'tune'
+
+    ## The following object is masked from 'package:parsnip':
+    ## 
+    ##     tune
 
 ``` r
 library(ggplot2)
@@ -875,16 +881,16 @@ predictions_df
     ## # A tibble: 450 × 5
     ##    id                 .pred  .row selling_price .config             
     ##    <chr>              <dbl> <int>         <dbl> <chr>               
-    ##  1 train/test split 420396.     2        465000 Preprocessor1_Model1
-    ##  2 train/test split 396658.     3        411000 Preprocessor1_Model1
-    ##  3 train/test split 687953.     4        635000 Preprocessor1_Model1
-    ##  4 train/test split 439479.     6        495000 Preprocessor1_Model1
-    ##  5 train/test split 401202.     7        355000 Preprocessor1_Model1
-    ##  6 train/test split 439093.     9        425000 Preprocessor1_Model1
-    ##  7 train/test split 582289.    14        559900 Preprocessor1_Model1
-    ##  8 train/test split 463262.    16        475000 Preprocessor1_Model1
-    ##  9 train/test split 560730.    17        485000 Preprocessor1_Model1
-    ## 10 train/test split 479843.    21        450000 Preprocessor1_Model1
+    ##  1 train/test split 688967.     4        635000 Preprocessor1_Model1
+    ##  2 train/test split 411990.     5        380000 Preprocessor1_Model1
+    ##  3 train/test split 476304.     8        464950 Preprocessor1_Model1
+    ##  4 train/test split 440417.    11        356000 Preprocessor1_Model1
+    ##  5 train/test split 503237.    13        525000 Preprocessor1_Model1
+    ##  6 train/test split 463869.    16        475000 Preprocessor1_Model1
+    ##  7 train/test split 562982.    17        485000 Preprocessor1_Model1
+    ##  8 train/test split 457952.    19        525000 Preprocessor1_Model1
+    ##  9 train/test split 410291.    23        452000 Preprocessor1_Model1
+    ## 10 train/test split 381981.    24        398000 Preprocessor1_Model1
     ## # … with 440 more rows
 
 5.  Create an R square plot of the model’s performance. The x-axis
@@ -900,16 +906,16 @@ predictions_df
     ## # A tibble: 450 × 5
     ##    id                 .pred  .row selling_price .config             
     ##    <chr>              <dbl> <int>         <dbl> <chr>               
-    ##  1 train/test split 420396.     2        465000 Preprocessor1_Model1
-    ##  2 train/test split 396658.     3        411000 Preprocessor1_Model1
-    ##  3 train/test split 687953.     4        635000 Preprocessor1_Model1
-    ##  4 train/test split 439479.     6        495000 Preprocessor1_Model1
-    ##  5 train/test split 401202.     7        355000 Preprocessor1_Model1
-    ##  6 train/test split 439093.     9        425000 Preprocessor1_Model1
-    ##  7 train/test split 582289.    14        559900 Preprocessor1_Model1
-    ##  8 train/test split 463262.    16        475000 Preprocessor1_Model1
-    ##  9 train/test split 560730.    17        485000 Preprocessor1_Model1
-    ## 10 train/test split 479843.    21        450000 Preprocessor1_Model1
+    ##  1 train/test split 688967.     4        635000 Preprocessor1_Model1
+    ##  2 train/test split 411990.     5        380000 Preprocessor1_Model1
+    ##  3 train/test split 476304.     8        464950 Preprocessor1_Model1
+    ##  4 train/test split 440417.    11        356000 Preprocessor1_Model1
+    ##  5 train/test split 503237.    13        525000 Preprocessor1_Model1
+    ##  6 train/test split 463869.    16        475000 Preprocessor1_Model1
+    ##  7 train/test split 562982.    17        485000 Preprocessor1_Model1
+    ##  8 train/test split 457952.    19        525000 Preprocessor1_Model1
+    ##  9 train/test split 410291.    23        452000 Preprocessor1_Model1
+    ## 10 train/test split 381981.    24        398000 Preprocessor1_Model1
     ## # … with 440 more rows
 
 ``` r
@@ -1160,18 +1166,17 @@ logistic_fit
 
     ## parsnip model object
     ## 
-    ## Fit time:  6ms 
     ## 
     ## Call:  stats::glm(formula = canceled_service ~ avg_call_mins + avg_intl_mins + 
     ##     monthly_charges, family = stats::binomial, data = data)
     ## 
     ## Coefficients:
     ##     (Intercept)    avg_call_mins    avg_intl_mins  monthly_charges  
-    ##       1.5536790       -0.0095403        0.0238060       -0.0002804  
+    ##        1.864443        -0.009419         0.022191        -0.001772  
     ## 
     ## Degrees of Freedom: 730 Total (i.e. Null);  727 Residual
     ## Null Deviance:       932.4 
-    ## Residual Deviance: 809.1     AIC: 817.1
+    ## Residual Deviance: 813.7     AIC: 821.7
 
 Great job! You have defined your model with `logistic_reg()` and trained
 it to predict `canceled_service` using `avg_call_mins`, `avg_intl_mins`,
@@ -1240,16 +1245,16 @@ telecom_results
     ## # A tibble: 244 × 4
     ##    canceled_service .pred_class .pred_yes .pred_no
     ##    <fct>            <fct>           <dbl>    <dbl>
-    ##  1 yes              yes            0.546     0.454
-    ##  2 yes              no             0.397     0.603
-    ##  3 no               no             0.213     0.787
-    ##  4 yes              yes            0.763     0.237
-    ##  5 no               no             0.180     0.820
-    ##  6 yes              yes            0.564     0.436
-    ##  7 yes              yes            0.568     0.432
-    ##  8 no               no             0.415     0.585
-    ##  9 no               no             0.0877    0.912
-    ## 10 no               no             0.0228    0.977
+    ##  1 no               no             0.118     0.882
+    ##  2 no               no             0.184     0.816
+    ##  3 yes              yes            0.530     0.470
+    ##  4 yes              yes            0.542     0.458
+    ##  5 no               yes            0.569     0.431
+    ##  6 no               no             0.227     0.773
+    ##  7 no               no             0.114     0.886
+    ##  8 yes              no             0.494     0.506
+    ##  9 no               no             0.0236    0.976
+    ## 10 no               no             0.314     0.686
     ## # … with 234 more rows
 
 Good job! You have created a tibble of model results using the test
@@ -1412,8 +1417,8 @@ conf_mat(telecom_results, truth = canceled_service,
 
     ##           Truth
     ## Prediction yes  no
-    ##        yes  42  29
-    ##        no   40 133
+    ##        yes  25  14
+    ##        no   57 148
 
 2.  Calculate the **accuracy** of your model with the appropriate
     `yardstick` function.
@@ -1427,7 +1432,7 @@ accuracy(telecom_results, truth = canceled_service,
     ## # A tibble: 1 × 3
     ##   .metric  .estimator .estimate
     ##   <chr>    <chr>          <dbl>
-    ## 1 accuracy binary         0.717
+    ## 1 accuracy binary         0.709
 
 3.  Calculate the **sensitivity** of your model.
 
@@ -1440,7 +1445,7 @@ sens(telecom_results, truth = canceled_service,
     ## # A tibble: 1 × 3
     ##   .metric .estimator .estimate
     ##   <chr>   <chr>          <dbl>
-    ## 1 sens    binary         0.512
+    ## 1 sens    binary         0.305
 
 4.  Calculate the **specificity** of your model.
 
@@ -1453,7 +1458,7 @@ spec(telecom_results, truth = canceled_service,
     ## # A tibble: 1 × 3
     ##   .metric .estimator .estimate
     ##   <chr>   <chr>          <dbl>
-    ## 1 spec    binary         0.821
+    ## 1 spec    binary         0.914
 
 Excellent work! The specificity of your logistic regression model is
 0.895, which is more than double the sensitivity of 0.42. This indicates
@@ -1503,9 +1508,9 @@ telecom_metrics(telecom_results, truth = canceled_service,
     ## # A tibble: 3 × 3
     ##   .metric  .estimator .estimate
     ##   <chr>    <chr>          <dbl>
-    ## 1 accuracy binary         0.717
-    ## 2 sens     binary         0.512
-    ## 3 spec     binary         0.821
+    ## 1 accuracy binary         0.709
+    ## 2 sens     binary         0.305
+    ## 3 spec     binary         0.914
 
 4.  Create a confusion matrix using the `telecom_results` tibble.
 5.  Pass your confusion matrix to the `summary()` function in base R.
@@ -1522,19 +1527,19 @@ conf_mat(telecom_results,
     ## # A tibble: 13 × 3
     ##    .metric              .estimator .estimate
     ##    <chr>                <chr>          <dbl>
-    ##  1 accuracy             binary         0.717
-    ##  2 kap                  binary         0.345
-    ##  3 sens                 binary         0.512
-    ##  4 spec                 binary         0.821
-    ##  5 ppv                  binary         0.592
-    ##  6 npv                  binary         0.769
-    ##  7 mcc                  binary         0.346
-    ##  8 j_index              binary         0.333
-    ##  9 bal_accuracy         binary         0.667
-    ## 10 detection_prevalence binary         0.291
-    ## 11 precision            binary         0.592
-    ## 12 recall               binary         0.512
-    ## 13 f_meas               binary         0.549
+    ##  1 accuracy             binary         0.709
+    ##  2 kap                  binary         0.251
+    ##  3 sens                 binary         0.305
+    ##  4 spec                 binary         0.914
+    ##  5 ppv                  binary         0.641
+    ##  6 npv                  binary         0.722
+    ##  7 mcc                  binary         0.282
+    ##  8 j_index              binary         0.218
+    ##  9 bal_accuracy         binary         0.609
+    ## 10 detection_prevalence binary         0.160
+    ## 11 precision            binary         0.641
+    ## 12 recall               binary         0.305
+    ## 13 f_meas               binary         0.413
 
 Nice work! You created a custom metric function to calculate accuracy,
 sensitivity, and specificity. Oftentimes, you will be interested in
@@ -1742,16 +1747,16 @@ threshold_df
     ## # A tibble: 246 × 3
     ##    .threshold specificity sensitivity
     ##         <dbl>       <dbl>       <dbl>
-    ##  1  -Inf          0             1    
-    ##  2     0.0155     0             1    
-    ##  3     0.0228     0             0.988
-    ##  4     0.0236     0.00617       0.988
-    ##  5     0.0454     0.0123        0.988
-    ##  6     0.0542     0.0185        0.988
-    ##  7     0.0560     0.0247        0.988
-    ##  8     0.0663     0.0309        0.988
-    ##  9     0.0747     0.0370        0.988
-    ## 10     0.0818     0.0432        0.988
+    ##  1  -Inf          0                 1
+    ##  2     0.0236     0                 1
+    ##  3     0.0485     0.00617           1
+    ##  4     0.0567     0.0123            1
+    ##  5     0.0592     0.0185            1
+    ##  6     0.0603     0.0247            1
+    ##  7     0.0621     0.0309            1
+    ##  8     0.0670     0.0370            1
+    ##  9     0.0729     0.0432            1
+    ## 10     0.0740     0.0494            1
     ## # … with 236 more rows
 
 3.  Use `threshold_df` to to plot your model’s ROC curve.
@@ -1777,7 +1782,7 @@ roc_auc(telecom_results,
     ## # A tibble: 1 × 3
     ##   .metric .estimator .estimate
     ##   <chr>   <chr>          <dbl>
-    ## 1 roc_auc binary         0.771
+    ## 1 roc_auc binary         0.775
 
 Nice work! The area under the ROC curve is 0.76. This indicates that
 your model gets a C in terms of overall performance. This is mainly due
@@ -1877,8 +1882,8 @@ telecom_last_fit %>%
     ## # A tibble: 2 × 4
     ##   .metric  .estimator .estimate .config             
     ##   <chr>    <chr>          <dbl> <chr>               
-    ## 1 accuracy binary         0.717 Preprocessor1_Model1
-    ## 2 roc_auc  binary         0.771 Preprocessor1_Model1
+    ## 1 accuracy binary         0.709 Preprocessor1_Model1
+    ## 2 roc_auc  binary         0.775 Preprocessor1_Model1
 
 Excellent work! Notice that you got the same area under the ROC curve as
 before, just with a lot less effort!
@@ -1915,16 +1920,16 @@ last_fit_results
     ## # A tibble: 244 × 7
     ##    id         .pred_yes .pred_no  .row .pred_class canceled_service .config     
     ##    <chr>          <dbl>    <dbl> <int> <fct>       <fct>            <chr>       
-    ##  1 train/tes…    0.546     0.454     1 yes         yes              Preprocesso…
-    ##  2 train/tes…    0.397     0.603     2 no          yes              Preprocesso…
-    ##  3 train/tes…    0.213     0.787     5 no          no               Preprocesso…
-    ##  4 train/tes…    0.763     0.237     7 yes         yes              Preprocesso…
-    ##  5 train/tes…    0.180     0.820    10 no          no               Preprocesso…
-    ##  6 train/tes…    0.564     0.436    11 yes         yes              Preprocesso…
-    ##  7 train/tes…    0.568     0.432    12 yes         yes              Preprocesso…
-    ##  8 train/tes…    0.415     0.585    15 no          no               Preprocesso…
-    ##  9 train/tes…    0.0877    0.912    19 no          no               Preprocesso…
-    ## 10 train/tes…    0.0228    0.977    22 no          no               Preprocesso…
+    ##  1 train/tes…    0.118     0.882     8 no          no               Preprocesso…
+    ##  2 train/tes…    0.184     0.816    10 no          no               Preprocesso…
+    ##  3 train/tes…    0.530     0.470    11 yes         yes              Preprocesso…
+    ##  4 train/tes…    0.542     0.458    12 yes         yes              Preprocesso…
+    ##  5 train/tes…    0.569     0.431    24 yes         no               Preprocesso…
+    ##  6 train/tes…    0.227     0.773    25 no          no               Preprocesso…
+    ##  7 train/tes…    0.114     0.886    28 no          no               Preprocesso…
+    ##  8 train/tes…    0.494     0.506    30 no          yes              Preprocesso…
+    ##  9 train/tes…    0.0236    0.976    37 no          no               Preprocesso…
+    ## 10 train/tes…    0.314     0.686    42 no          no               Preprocesso…
     ## # … with 234 more rows
 
 3.  Create a custom metric function, `last_fit_metrics`, using the
@@ -1952,10 +1957,10 @@ last_fit_metrics(last_fit_results,
     ## # A tibble: 4 × 3
     ##   .metric  .estimator .estimate
     ##   <chr>    <chr>          <dbl>
-    ## 1 accuracy binary         0.717
-    ## 2 sens     binary         0.512
-    ## 3 spec     binary         0.821
-    ## 4 roc_auc  binary         0.771
+    ## 1 accuracy binary         0.709
+    ## 2 sens     binary         0.305
+    ## 3 spec     binary         0.914
+    ## 4 roc_auc  binary         0.775
 
 Great job! You were able to train and evaluate your logistic regression
 model in half the time! Notice that all performance metrics match the
@@ -2002,8 +2007,8 @@ logistic_fit %>%
     ## # A tibble: 2 × 4
     ##   .metric  .estimator .estimate .config             
     ##   <chr>    <chr>          <dbl> <chr>               
-    ## 1 accuracy binary         0.787 Preprocessor1_Model1
-    ## 2 roc_auc  binary         0.845 Preprocessor1_Model1
+    ## 1 accuracy binary         0.795 Preprocessor1_Model1
+    ## 2 roc_auc  binary         0.871 Preprocessor1_Model1
 
 3.  Collect your model predictions.
 4.  Pass the predictions to the appropriate function to calculate
@@ -2293,15 +2298,15 @@ telecom_log_rec_prep %>%
     ##    cellular_service avg_data_gb avg_call_mins avg_intl_mins internet_service
     ##    <fct>                  <dbl>         <dbl>         <dbl> <fct>           
     ##  1 single_line            10.3           2.42          1.74 fiber_optic     
-    ##  2 single_line             9.3           2.51          2.06 fiber_optic     
-    ##  3 multiple_lines          9.4           2.49          2.17 fiber_optic     
+    ##  2 multiple_lines          8.05          2.52          2.09 digital         
+    ##  3 single_line             9.3           2.51          2.06 fiber_optic     
     ##  4 multiple_lines         10.2           2.60          2.06 fiber_optic     
-    ##  5 single_line             9.37          2.58          1.94 fiber_optic     
-    ##  6 multiple_lines          4.11          2.57          1.81 digital         
-    ##  7 multiple_lines          5.17          2.53          2.08 digital         
-    ##  8 multiple_lines          7.86          2.58          2.21 digital         
-    ##  9 multiple_lines         11.8           2.54          2.10 fiber_optic     
-    ## 10 single_line             8.02          2.38          1.98 fiber_optic     
+    ##  5 single_line             6.69          2.55          1.96 digital         
+    ##  6 single_line             9.37          2.58          1.94 fiber_optic     
+    ##  7 multiple_lines          4.11          2.57          1.81 digital         
+    ##  8 multiple_lines         10.6           2.45          2.17 fiber_optic     
+    ##  9 multiple_lines          5.17          2.53          2.08 digital         
+    ## 10 multiple_lines          7.86          2.58          2.21 digital         
     ## # … with 721 more rows, and 4 more variables: contract <fct>,
     ## #   months_with_company <dbl>, monthly_charges <dbl>, canceled_service <fct>
 
@@ -2320,16 +2325,16 @@ telecom_log_rec_prep %>%
     ## # A tibble: 244 × 9
     ##    cellular_service avg_data_gb avg_call_mins avg_intl_mins internet_service
     ##    <fct>                  <dbl>         <dbl>         <dbl> <fct>           
-    ##  1 single_line             7.78          2.70          2.10 fiber_optic     
-    ##  2 single_line             9.04          2.53          1.94 fiber_optic     
-    ##  3 multiple_lines          8.05          2.52          2.09 digital         
-    ##  4 multiple_lines          8.01          2.72          1.99 fiber_optic     
-    ##  5 multiple_lines          9.96          2.53          2.13 fiber_optic     
-    ##  6 single_line             5.87          2.61          1.94 digital         
-    ##  7 single_line             6.23          2.63          1.98 fiber_optic     
-    ##  8 single_line             6.69          2.55          1.96 digital         
-    ##  9 multiple_lines         10.6           2.45          2.17 fiber_optic     
-    ## 10 single_line             8.67          1.97          2.12 fiber_optic     
+    ##  1 multiple_lines          9.4           2.49          2.17 fiber_optic     
+    ##  2 multiple_lines          9.96          2.53          2.13 fiber_optic     
+    ##  3 single_line             5.87          2.61          1.94 digital         
+    ##  4 single_line             6.23          2.63          1.98 fiber_optic     
+    ##  5 multiple_lines         11.0           2.59          1.89 fiber_optic     
+    ##  6 multiple_lines         11.8           2.54          2.10 fiber_optic     
+    ##  7 single_line             7.31          2.39          2.08 digital         
+    ##  8 single_line             8.04          2.46          1.67 fiber_optic     
+    ##  9 single_line             6.64          2.04          2.13 digital         
+    ## 10 single_line            10.7           2.49          1.95 fiber_optic     
     ## # … with 234 more rows, and 4 more variables: contract <fct>,
     ## #   months_with_company <dbl>, monthly_charges <dbl>, canceled_service <fct>
 
@@ -2464,16 +2469,16 @@ telecom_training %>%
 ```
 
     ##                     avg_data_gb avg_call_mins avg_intl_mins months_with_company
-    ## avg_data_gb           1.0000000    0.17005846     0.1623071          0.40600989
-    ## avg_call_mins         0.1700585    1.00000000     0.1041689          0.02179842
-    ## avg_intl_mins         0.1623071    0.10416887     1.0000000          0.24015770
-    ## months_with_company   0.4060099    0.02179842     0.2401577          1.00000000
-    ## monthly_charges       0.9567417    0.16913418     0.1636031          0.42792048
+    ## avg_data_gb           1.0000000    0.18137724    0.15152793          0.39025374
+    ## avg_call_mins         0.1813772    1.00000000    0.04155127          0.01059132
+    ## avg_intl_mins         0.1515279    0.04155127    1.00000000          0.23929730
+    ## months_with_company   0.3902537    0.01059132    0.23929730          1.00000000
+    ## monthly_charges       0.9557471    0.18216591    0.16121406          0.41594256
     ##                     monthly_charges
-    ## avg_data_gb               0.9567417
-    ## avg_call_mins             0.1691342
-    ## avg_intl_mins             0.1636031
-    ## months_with_company       0.4279205
+    ## avg_data_gb               0.9557471
+    ## avg_call_mins             0.1821659
+    ## avg_intl_mins             0.1612141
+    ## months_with_company       0.4159426
     ## monthly_charges           1.0000000
 
 > ## *Question*
@@ -2562,15 +2567,15 @@ telecom_cor_rec_prep %>%
     ##    cellular_service avg_data_gb avg_call_mins avg_intl_mins internet_service
     ##    <fct>                  <dbl>         <dbl>         <dbl> <fct>           
     ##  1 single_line            10.3            262            55 fiber_optic     
-    ##  2 single_line             9.3            326           114 fiber_optic     
-    ##  3 multiple_lines          9.4            312           147 fiber_optic     
+    ##  2 multiple_lines          8.05           328           122 digital         
+    ##  3 single_line             9.3            326           114 fiber_optic     
     ##  4 multiple_lines         10.2            402           116 fiber_optic     
-    ##  5 single_line             9.37           382            87 fiber_optic     
-    ##  6 multiple_lines          4.11           371            64 digital         
-    ##  7 multiple_lines          5.17           341           119 digital         
-    ##  8 multiple_lines          7.86           378           164 digital         
-    ##  9 multiple_lines         11.8            343           126 fiber_optic     
-    ## 10 single_line             8.02           240            95 fiber_optic     
+    ##  5 single_line             6.69           352            91 digital         
+    ##  6 single_line             9.37           382            87 fiber_optic     
+    ##  7 multiple_lines          4.11           371            64 digital         
+    ##  8 multiple_lines         10.6            281           147 fiber_optic     
+    ##  9 multiple_lines          5.17           341           119 digital         
+    ## 10 multiple_lines          7.86           378           164 digital         
     ## # … with 721 more rows, and 3 more variables: contract <fct>,
     ## #   months_with_company <dbl>, canceled_service <fct>
 
@@ -2585,16 +2590,16 @@ telecom_cor_rec_prep %>%
     ## # A tibble: 244 × 8
     ##    cellular_service avg_data_gb avg_call_mins avg_intl_mins internet_service
     ##    <fct>                  <dbl>         <dbl>         <dbl> <fct>           
-    ##  1 single_line             7.78           497           127 fiber_optic     
-    ##  2 single_line             9.04           336            88 fiber_optic     
-    ##  3 multiple_lines          8.05           328           122 digital         
-    ##  4 multiple_lines          8.01           525            97 fiber_optic     
-    ##  5 multiple_lines          9.96           340           136 fiber_optic     
-    ##  6 single_line             5.87           408            88 digital         
-    ##  7 single_line             6.23           429            96 fiber_optic     
-    ##  8 single_line             6.69           352            91 digital         
-    ##  9 multiple_lines         10.6            281           147 fiber_optic     
-    ## 10 single_line             8.67            93           131 fiber_optic     
+    ##  1 multiple_lines          9.4            312           147 fiber_optic     
+    ##  2 multiple_lines          9.96           340           136 fiber_optic     
+    ##  3 single_line             5.87           408            88 digital         
+    ##  4 single_line             6.23           429            96 fiber_optic     
+    ##  5 multiple_lines         11.0            390            78 fiber_optic     
+    ##  6 multiple_lines         11.8            343           126 fiber_optic     
+    ##  7 single_line             7.31           246           119 digital         
+    ##  8 single_line             8.04           290            47 fiber_optic     
+    ##  9 single_line             6.64           110           136 digital         
+    ## 10 single_line            10.7            308            90 fiber_optic     
     ## # … with 234 more rows, and 3 more variables: contract <fct>,
     ## #   months_with_company <dbl>, canceled_service <fct>
 
@@ -2656,16 +2661,16 @@ telecom_norm_rec_prep %>%
     ## # A tibble: 244 × 8
     ##    cellular_service avg_data_gb avg_call_mins avg_intl_mins internet_service
     ##    <fct>                  <dbl>         <dbl>         <dbl> <fct>           
-    ##  1 single_line          -0.239         1.99           0.557 fiber_optic     
-    ##  2 single_line           0.412        -0.142         -0.663 fiber_optic     
-    ##  3 multiple_lines       -0.0995       -0.247          0.400 digital         
-    ##  4 multiple_lines       -0.120         2.36          -0.382 fiber_optic     
-    ##  5 multiple_lines        0.887        -0.0887         0.839 fiber_optic     
-    ##  6 single_line          -1.23          0.810         -0.663 digital         
-    ##  7 single_line          -1.04          1.09          -0.413 fiber_optic     
-    ##  8 single_line          -0.802         0.0698        -0.570 digital         
-    ##  9 multiple_lines        1.24         -0.868          1.18  fiber_optic     
-    ## 10 single_line           0.221        -3.35           0.682 fiber_optic     
+    ##  1 multiple_lines        0.625        -0.501          1.26  fiber_optic     
+    ##  2 multiple_lines        0.924        -0.134          0.900 fiber_optic     
+    ##  3 single_line          -1.26          0.755         -0.650 digital         
+    ##  4 single_line          -1.06          1.03          -0.391 fiber_optic     
+    ##  5 multiple_lines        1.50          0.520         -0.973 fiber_optic     
+    ##  6 multiple_lines        1.88         -0.0951         0.578 fiber_optic     
+    ##  7 single_line          -0.489        -1.36           0.351 digital         
+    ##  8 single_line          -0.0996       -0.788         -1.97  fiber_optic     
+    ##  9 single_line          -0.846        -3.14           0.900 digital         
+    ## 10 single_line           1.31         -0.553         -0.585 fiber_optic     
     ## # … with 234 more rows, and 3 more variables: contract <fct>,
     ## #   months_with_company <dbl>, canceled_service <fct>
 
@@ -2834,16 +2839,16 @@ telecom_recipe_1 %>%
     ## # A tibble: 244 × 4
     ##    avg_data_gb canceled_service contract_one_year contract_two_year
     ##          <dbl> <fct>                        <dbl>             <dbl>
-    ##  1     -0.239  yes                              0                 0
-    ##  2      0.412  yes                              0                 0
-    ##  3     -0.0995 no                               0                 1
-    ##  4     -0.120  yes                              0                 0
-    ##  5      0.887  no                               0                 0
-    ##  6     -1.23   yes                              1                 0
-    ##  7     -1.04   yes                              0                 0
-    ##  8     -0.802  no                               0                 0
-    ##  9      1.24   no                               0                 1
-    ## 10      0.221  no                               0                 1
+    ##  1      0.625  no                               1                 0
+    ##  2      0.924  no                               0                 0
+    ##  3     -1.26   yes                              1                 0
+    ##  4     -1.06   yes                              0                 0
+    ##  5      1.50   no                               0                 1
+    ##  6      1.88   no                               0                 1
+    ##  7     -0.489  no                               1                 0
+    ##  8     -0.0996 yes                              0                 0
+    ##  9     -0.846  no                               0                 1
+    ## 10      1.31   no                               0                 1
     ## # … with 234 more rows
 
 4.  Now specify `telecom_recipe_2` to create dummy variables for all
@@ -2873,16 +2878,16 @@ telecom_recipe_2 %>%
     ## # A tibble: 244 × 4
     ##    avg_data_gb canceled_service contract_one_year contract_two_year
     ##          <dbl> <fct>                        <dbl>             <dbl>
-    ##  1     -0.239  yes                         -0.491            -0.486
-    ##  2      0.412  yes                         -0.491            -0.486
-    ##  3     -0.0995 no                          -0.491             2.05 
-    ##  4     -0.120  yes                         -0.491            -0.486
-    ##  5      0.887  no                          -0.491            -0.486
-    ##  6     -1.23   yes                          2.04             -0.486
-    ##  7     -1.04   yes                         -0.491            -0.486
-    ##  8     -0.802  no                          -0.491            -0.486
-    ##  9      1.24   no                          -0.491             2.05 
-    ## 10      0.221  no                          -0.491             2.05 
+    ##  1      0.625  no                           1.92             -0.456
+    ##  2      0.924  no                          -0.521            -0.456
+    ##  3     -1.26   yes                          1.92             -0.456
+    ##  4     -1.06   yes                         -0.521            -0.456
+    ##  5      1.50   no                          -0.521             2.19 
+    ##  6      1.88   no                          -0.521             2.19 
+    ##  7     -0.489  no                           1.92             -0.456
+    ##  8     -0.0996 yes                         -0.521            -0.456
+    ##  9     -0.846  no                          -0.521             2.19 
+    ## 10      1.31   no                          -0.521             2.19 
     ## # … with 234 more rows
 
 Great job! Notice that `telecom_recipe_1` produced \[0, 1\] values in
@@ -2937,16 +2942,16 @@ telecom_recipe %>%
     ## # A tibble: 244 × 9
     ##    avg_data_gb avg_call_mins avg_intl_mins months_with_company canceled_service
     ##          <dbl>         <dbl>         <dbl>               <dbl> <fct>           
-    ##  1     -0.239         1.99           0.557             -1.05   yes             
-    ##  2      0.412        -0.142         -0.663             -0.932  yes             
-    ##  3     -0.0995       -0.247          0.400              0.668  no              
-    ##  4     -0.120         2.36          -0.382             -0.572  yes             
-    ##  5      0.887        -0.0887         0.839              1.11   no              
-    ##  6     -1.23          0.810         -0.663              0.468  yes             
-    ##  7     -1.04          1.09          -0.413             -0.0120 yes             
-    ##  8     -0.802         0.0698        -0.570             -1.09   no              
-    ##  9      1.24         -0.868          1.18               0.828  no              
-    ## 10      0.221        -3.35           0.682              0.868  no              
+    ##  1      0.625        -0.501          1.26               0.665  no              
+    ##  2      0.924        -0.134          0.900              1.11   no              
+    ##  3     -1.26          0.755         -0.650              0.463  yes             
+    ##  4     -1.06          1.03          -0.391             -0.0230 yes             
+    ##  5      1.50          0.520         -0.973              1.48   no              
+    ##  6      1.88         -0.0951         0.578              1.52   no              
+    ##  7     -0.489        -1.36           0.351              0.989  no              
+    ##  8     -0.0996       -0.788         -1.97               0.544  yes             
+    ##  9     -0.846        -3.14           0.900              0.827  no              
+    ## 10      1.31         -0.553         -0.585              1.48   no              
     ## # … with 234 more rows, and 4 more variables:
     ## #   cellular_service_single_line <dbl>, internet_service_digital <dbl>,
     ## #   contract_one_year <dbl>, contract_two_year <dbl>
@@ -3103,16 +3108,16 @@ telecom_test_prep
     ## # A tibble: 244 × 9
     ##    avg_data_gb avg_call_mins avg_intl_mins months_with_company canceled_service
     ##          <dbl>         <dbl>         <dbl>               <dbl> <fct>           
-    ##  1    -0.103          1.62           0.622            -0.738   yes             
-    ##  2     0.477         -0.0212        -0.531            -0.473   yes             
-    ##  3     0.0287        -0.122          0.495             0.724   no              
-    ##  4     0.00944        1.85          -0.225             0.00471 yes             
-    ##  5     0.852          0.0285         0.837             0.872   no              
-    ##  6    -1.19           0.794         -0.531             0.646   yes             
-    ##  7    -0.962          1.00          -0.258             0.415   yes             
-    ##  8    -0.687          0.174         -0.426            -0.853   no              
-    ##  9     1.11          -0.771          1.08              0.782   no              
-    ## 10     0.316         -5.41           0.719             0.795   no              
+    ##  1      0.650        -0.363          1.11                0.714 no              
+    ##  2      0.881        -0.0111         0.865               0.863 no              
+    ##  3     -1.23          0.735         -0.503               0.635 yes             
+    ##  4     -0.995         0.941         -0.229               0.401 yes             
+    ##  5      1.30          0.551         -0.882               0.967 no              
+    ##  6      1.54          0.0249         0.625               0.977 no              
+    ##  7     -0.356        -1.34           0.446               0.825 no              
+    ##  8      0.0246       -0.662         -2.47                0.667 yes             
+    ##  9     -0.741        -4.63           0.865               0.772 no              
+    ## 10      1.16         -0.416         -0.432               0.967 no              
     ## # … with 234 more rows, and 4 more variables:
     ## #   cellular_service_single_line <dbl>, internet_service_digital <dbl>,
     ## #   contract_one_year <dbl>, contract_two_year <dbl>
@@ -3180,16 +3185,16 @@ telecom_results
     ## # A tibble: 244 × 4
     ##    canceled_service .pred_class .pred_yes .pred_no
     ##    <fct>            <fct>           <dbl>    <dbl>
-    ##  1 yes              yes          0.639       0.361
-    ##  2 yes              yes          0.554       0.446
-    ##  3 no               no           0.0141      0.986
-    ##  4 yes              yes          0.812       0.188
-    ##  5 no               no           0.237       0.763
-    ##  6 yes              no           0.0772      0.923
-    ##  7 yes              no           0.372       0.628
-    ##  8 no               no           0.371       0.629
-    ##  9 no               no           0.0174      0.983
-    ## 10 no               no           0.000370    1.00 
+    ##  1 no               no           0.112       0.888
+    ##  2 no               no           0.232       0.768
+    ##  3 yes              no           0.0955      0.904
+    ##  4 yes              no           0.463       0.537
+    ##  5 no               no           0.108       0.892
+    ##  6 no               no           0.0340      0.966
+    ##  7 no               no           0.0136      0.986
+    ##  8 yes              no           0.487       0.513
+    ##  9 no               no           0.000276    1.00 
+    ## 10 no               no           0.0274      0.973
     ## # … with 234 more rows
 
 Good job! You have created a tibble of model results on the test dataset
@@ -3226,8 +3231,8 @@ telecom_results %>%
 
     ##           Truth
     ## Prediction yes  no
-    ##        yes  52  23
-    ##        no   30 139
+    ##        yes  56  19
+    ##        no   26 143
 
 2.  Calculate the sensitivity of your model.
 
@@ -3240,7 +3245,7 @@ telecom_results %>%
     ## # A tibble: 1 × 3
     ##   .metric .estimator .estimate
     ##   <chr>   <chr>          <dbl>
-    ## 1 sens    binary         0.634
+    ## 1 sens    binary         0.683
 
 3.  Calculate the specificity of your model.
 
@@ -3253,7 +3258,7 @@ telecom_results %>%
     ## # A tibble: 1 × 3
     ##   .metric .estimator .estimate
     ##   <chr>   <chr>          <dbl>
-    ## 1 spec    binary         0.858
+    ## 1 spec    binary         0.883
 
 4.  Create an ROC curve plot of your model’s performance.
 
@@ -3451,17 +3456,17 @@ loans_training %>%
   cor()
 ```
 
-    ##                 loan_amount interest_rate installment annual_income
-    ## loan_amount     1.000000000  -0.004939285   0.9398740     0.3780620
-    ## interest_rate  -0.004939285   1.000000000   0.0362389    -0.1068373
-    ## installment     0.939874045   0.036238904   1.0000000     0.3240807
-    ## annual_income   0.378062000  -0.106837328   0.3240807     1.0000000
-    ## debt_to_income  0.118815701   0.155043643   0.1667754    -0.1868498
+    ##                loan_amount interest_rate installment annual_income
+    ## loan_amount     1.00000000    0.02097502  0.93834218     0.3845197
+    ## interest_rate   0.02097502    1.00000000  0.05744029    -0.0803220
+    ## installment     0.93834218    0.05744029  1.00000000     0.3304429
+    ## annual_income   0.38451967   -0.08032200  0.33044289     1.0000000
+    ## debt_to_income  0.10261788    0.12871490  0.15017726    -0.1928158
     ##                debt_to_income
-    ## loan_amount         0.1188157
-    ## interest_rate       0.1550436
-    ## installment         0.1667754
-    ## annual_income      -0.1868498
+    ## loan_amount         0.1026179
+    ## interest_rate       0.1287149
+    ## installment         0.1501773
+    ## annual_income      -0.1928158
     ## debt_to_income      1.0000000
 
 Great work! You have created your training and test datasets and
@@ -3599,8 +3604,8 @@ loans_dt_wkfl_fit %>%
     ## # A tibble: 2 × 4
     ##   .metric  .estimator .estimate .config             
     ##   <chr>    <chr>          <dbl> <chr>               
-    ## 1 accuracy binary         0.813 Preprocessor1_Model1
-    ## 2 roc_auc  binary         0.866 Preprocessor1_Model1
+    ## 1 accuracy binary         0.799 Preprocessor1_Model1
+    ## 2 roc_auc  binary         0.846 Preprocessor1_Model1
 
 Good job! You have trained a `workflow` with `last_fit()` that created
 training and test datasets, trained and applied your `recipe`, fit your
@@ -3779,9 +3784,9 @@ loans_dt_rs %>%
     ## # A tibble: 3 × 6
     ##   .metric .estimator  mean     n std_err .config             
     ##   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-    ## 1 roc_auc binary     0.804     5  0.0191 Preprocessor1_Model1
-    ## 2 sens    binary     0.674     5  0.0510 Preprocessor1_Model1
-    ## 3 spec    binary     0.868     5  0.0202 Preprocessor1_Model1
+    ## 1 roc_auc binary     0.810     5  0.0273 Preprocessor1_Model1
+    ## 2 sens    binary     0.678     5  0.0397 Preprocessor1_Model1
+    ## 3 spec    binary     0.850     5  0.0390 Preprocessor1_Model1
 
 Excellent work! You have used cross validation to evaluate the
 performance of your decision tree workflow. Across the 5 cross
@@ -3849,9 +3854,9 @@ loans_logistic_rs %>%
     ## # A tibble: 3 × 6
     ##   .metric .estimator  mean     n std_err .config             
     ##   <chr>   <chr>      <dbl> <int>   <dbl> <chr>               
-    ## 1 roc_auc binary     0.841     5  0.0160 Preprocessor1_Model1
-    ## 2 sens    binary     0.663     5  0.0433 Preprocessor1_Model1
-    ## 3 spec    binary     0.858     5  0.0158 Preprocessor1_Model1
+    ## 1 roc_auc binary     0.853     5  0.0199 Preprocessor1_Model1
+    ## 2 sens    binary     0.671     5  0.0437 Preprocessor1_Model1
+    ## 3 spec    binary     0.848     5  0.0129 Preprocessor1_Model1
 
 Great job! For logistic regression, across the 5 cross validation folds,
 the average area under the ROC curve was 0.848. The average sensitivity
@@ -3895,9 +3900,9 @@ dt_rs_results %>%
     ## # A tibble: 3 × 4
     ##   .metric   min median   max
     ##   <chr>   <dbl>  <dbl> <dbl>
-    ## 1 roc_auc 0.770  0.779 0.869
-    ## 2 sens    0.56   0.647 0.82 
-    ## 3 spec    0.825  0.85  0.938
+    ## 1 roc_auc 0.742  0.789 0.897
+    ## 2 sens    0.58   0.64  0.78 
+    ## 3 spec    0.762  0.825 0.975
 
 3.  Collect the detailed cross validation results for your logistic
     regression model.
@@ -3920,9 +3925,9 @@ logistic_rs_results %>%
     ## # A tibble: 3 × 4
     ##   .metric   min median   max
     ##   <chr>   <dbl>  <dbl> <dbl>
-    ## 1 roc_auc 0.802  0.826 0.891
-    ## 2 sens    0.549  0.66  0.8  
-    ## 3 spec    0.815  0.85  0.912
+    ## 1 roc_auc 0.790  0.850 0.898
+    ## 2 sens    0.58   0.64  0.8  
+    ## 3 spec    0.8    0.85  0.875
 
 Great job! Both models have similar average values across all metrics.
 However, logistic regression tends to have a wider range of values on
@@ -4168,21 +4173,21 @@ dt_tuning %>%
     ## # A tibble: 15 × 9
     ##    cost_complexity tree_depth min_n .metric .estimator  mean     n std_err
     ##              <dbl>      <int> <int> <chr>   <chr>      <dbl> <int>   <dbl>
-    ##  1    0.0000000758         14    39 roc_auc binary     0.843     5  0.0125
-    ##  2    0.0000000758         14    39 sens    binary     0.667     5  0.0444
-    ##  3    0.0000000758         14    39 spec    binary     0.845     5  0.0156
-    ##  4    0.0243                5    34 roc_auc binary     0.770     5  0.0191
-    ##  5    0.0243                5    34 sens    binary     0.639     5  0.0468
-    ##  6    0.0243                5    34 spec    binary     0.900     5  0.0157
-    ##  7    0.00000443           11     8 roc_auc binary     0.799     5  0.0191
-    ##  8    0.00000443           11     8 sens    binary     0.628     5  0.0370
-    ##  9    0.00000443           11     8 spec    binary     0.798     5  0.0379
-    ## 10    0.000000600           3     5 roc_auc binary     0.762     5  0.0173
-    ## 11    0.000000600           3     5 sens    binary     0.623     5  0.0406
-    ## 12    0.000000600           3     5 spec    binary     0.903     5  0.0149
-    ## 13    0.00380               5    36 roc_auc binary     0.828     5  0.0179
-    ## 14    0.00380               5    36 sens    binary     0.678     5  0.0549
-    ## 15    0.00380               5    36 spec    binary     0.848     5  0.0294
+    ##  1    0.0000000758         14    39 roc_auc binary     0.821     5 0.0259 
+    ##  2    0.0000000758         14    39 sens    binary     0.703     5 0.0495 
+    ##  3    0.0000000758         14    39 spec    binary     0.813     5 0.0348 
+    ##  4    0.0243                5    34 roc_auc binary     0.774     5 0.0249 
+    ##  5    0.0243                5    34 sens    binary     0.655     5 0.0482 
+    ##  6    0.0243                5    34 spec    binary     0.893     5 0.0258 
+    ##  7    0.00000443           11     8 roc_auc binary     0.786     5 0.0216 
+    ##  8    0.00000443           11     8 sens    binary     0.682     5 0.0353 
+    ##  9    0.00000443           11     8 spec    binary     0.810     5 0.00949
+    ## 10    0.000000600           3     5 roc_auc binary     0.789     5 0.0151 
+    ## 11    0.000000600           3     5 sens    binary     0.643     5 0.0408 
+    ## 12    0.000000600           3     5 spec    binary     0.915     5 0.0215 
+    ## 13    0.00380               5    36 roc_auc binary     0.826     5 0.0257 
+    ## 14    0.00380               5    36 sens    binary     0.691     5 0.0463 
+    ## 15    0.00380               5    36 spec    binary     0.833     5 0.0234 
     ## # … with 1 more variable: .config <chr>
 
 Good work! Since you have 5 random hyperparameter combinations and 3
@@ -4217,16 +4222,16 @@ dt_tuning_results
     ## # A tibble: 75 × 8
     ##    id    cost_complexity tree_depth min_n .metric .estimator .estimate .config  
     ##    <chr>           <dbl>      <int> <int> <chr>   <chr>          <dbl> <chr>    
-    ##  1 Fold1    0.0000000758         14    39 sens    binary         0.765 Preproce…
-    ##  2 Fold1    0.0000000758         14    39 spec    binary         0.840 Preproce…
-    ##  3 Fold1    0.0000000758         14    39 roc_auc binary         0.825 Preproce…
-    ##  4 Fold2    0.0000000758         14    39 sens    binary         0.608 Preproce…
-    ##  5 Fold2    0.0000000758         14    39 spec    binary         0.875 Preproce…
-    ##  6 Fold2    0.0000000758         14    39 roc_auc binary         0.838 Preproce…
-    ##  7 Fold3    0.0000000758         14    39 sens    binary         0.62  Preproce…
-    ##  8 Fold3    0.0000000758         14    39 spec    binary         0.862 Preproce…
-    ##  9 Fold3    0.0000000758         14    39 roc_auc binary         0.840 Preproce…
-    ## 10 Fold4    0.0000000758         14    39 sens    binary         0.56  Preproce…
+    ##  1 Fold1    0.0000000758         14    39 sens    binary         0.667 Preproce…
+    ##  2 Fold1    0.0000000758         14    39 spec    binary         0.864 Preproce…
+    ##  3 Fold1    0.0000000758         14    39 roc_auc binary         0.891 Preproce…
+    ##  4 Fold2    0.0000000758         14    39 sens    binary         0.647 Preproce…
+    ##  5 Fold2    0.0000000758         14    39 spec    binary         0.762 Preproce…
+    ##  6 Fold2    0.0000000758         14    39 roc_auc binary         0.744 Preproce…
+    ##  7 Fold3    0.0000000758         14    39 sens    binary         0.66  Preproce…
+    ##  8 Fold3    0.0000000758         14    39 spec    binary         0.762 Preproce…
+    ##  9 Fold3    0.0000000758         14    39 roc_auc binary         0.786 Preproce…
+    ## 10 Fold4    0.0000000758         14    39 sens    binary         0.64  Preproce…
     ## # … with 65 more rows
 
 2.  Calculate the minimum, median, and maximum area under the ROC curve
@@ -4245,11 +4250,11 @@ dt_tuning_results %>%
     ## # A tibble: 5 × 4
     ##   id    min_roc_auc median_roc_auc max_roc_auc
     ##   <chr>       <dbl>          <dbl>       <dbl>
-    ## 1 Fold1       0.728          0.772       0.825
-    ## 2 Fold2       0.720          0.819       0.838
-    ## 3 Fold3       0.773          0.822       0.849
-    ## 4 Fold4       0.735          0.771       0.834
-    ## 5 Fold5       0.793          0.838       0.891
+    ## 1 Fold1       0.834          0.864       0.895
+    ## 2 Fold2       0.703          0.744       0.780
+    ## 3 Fold3       0.74           0.764       0.792
+    ## 4 Fold4       0.778          0.793       0.853
+    ## 5 Fold5       0.775          0.809       0.857
 
 Excellent work! You have now had the chance to explore the detailed
 results of your decision tree hyperparameter tuning. The next step will
@@ -4361,11 +4366,11 @@ dt_tuning %>%
     ## # A tibble: 5 × 9
     ##   cost_complexity tree_depth min_n .metric .estimator  mean     n std_err
     ##             <dbl>      <int> <int> <chr>   <chr>      <dbl> <int>   <dbl>
-    ## 1    0.0000000758         14    39 roc_auc binary     0.843     5  0.0125
-    ## 2    0.00380               5    36 roc_auc binary     0.828     5  0.0179
-    ## 3    0.00000443           11     8 roc_auc binary     0.799     5  0.0191
-    ## 4    0.0243                5    34 roc_auc binary     0.770     5  0.0191
-    ## 5    0.000000600           3     5 roc_auc binary     0.762     5  0.0173
+    ## 1    0.00380               5    36 roc_auc binary     0.826     5  0.0257
+    ## 2    0.0000000758         14    39 roc_auc binary     0.821     5  0.0259
+    ## 3    0.000000600           3     5 roc_auc binary     0.789     5  0.0151
+    ## 4    0.00000443           11     8 roc_auc binary     0.786     5  0.0216
+    ## 5    0.0243                5    34 roc_auc binary     0.774     5  0.0249
     ## # … with 1 more variable: .config <chr>
 
 2.  Select the best hyperparameter combination from your tuning results
@@ -4383,7 +4388,7 @@ best_dt_model
     ## # A tibble: 1 × 4
     ##   cost_complexity tree_depth min_n .config             
     ##             <dbl>      <int> <int> <chr>               
-    ## 1    0.0000000758         14    39 Preprocessor1_Model1
+    ## 1         0.00380          5    36 Preprocessor1_Model5
 
 3.  Finalize your `loans_tune_wkfl` with the best hyperparameter
     combination.
@@ -4411,9 +4416,9 @@ final_loans_wkfl
     ## Decision Tree Model Specification (classification)
     ## 
     ## Main Arguments:
-    ##   cost_complexity = 7.58290839567418e-08
-    ##   tree_depth = 14
-    ##   min_n = 39
+    ##   cost_complexity = 0.00379655818919849
+    ##   tree_depth = 5
+    ##   min_n = 36
     ## 
     ## Computational engine: rpart
 
@@ -4456,8 +4461,8 @@ loans_final_fit %>%
     ## # A tibble: 2 × 4
     ##   .metric  .estimator .estimate .config             
     ##   <chr>    <chr>          <dbl> <chr>               
-    ## 1 accuracy binary         0.813 Preprocessor1_Model1
-    ## 2 roc_auc  binary         0.866 Preprocessor1_Model1
+    ## 1 accuracy binary         0.799 Preprocessor1_Model1
+    ## 2 roc_auc  binary         0.839 Preprocessor1_Model1
 
 3.  Use your trained `workflow` object to create an ROC curve.
 

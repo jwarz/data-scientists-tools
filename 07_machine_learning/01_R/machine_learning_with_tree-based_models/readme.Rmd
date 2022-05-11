@@ -254,9 +254,6 @@ diabetes_split
 3. Extract the training and test sets and save them as `diabetes_train` and `diabetes_test`.
 
 ```{r}
-# Create the split
-diabetes_split <- initial_split(diabetes, prop = 0.8)
-
 # Extract the training and test set
 diabetes_train <- training(diabetes_split)
 diabetes_test  <- testing(diabetes_split)
@@ -555,7 +552,6 @@ Ready for some candy? Use a chocolate rating dataset to build regression trees a
 
 Theory. Coming soon ...
 
-
 **1. Continuous outcomes**
 
 In this section, we’ll talk about another type of decision tree, the regression tree.In regression, the goal is to predict a numeric or quantitative outcome.An example of a continuous numeric outcome is house prices or the number of online store visitors - the underlying value is continuous and can take any positive value.
@@ -668,15 +664,14 @@ model <- decision_tree(tree_depth = 1) %>%
   set_mode("regression") %>%
   set_engine("rpart") %>%
   fit(final_grade ~ ., data = chocolate_train)
+model
 ```
 
 As you can see, the `tree_depth` hyperparameter is set to `1`, which means there's only one split in the tree.
 
-What are the possible values for `final_grade` that will be predicted by this regression tree? Use the console to inspect `model` and find the answer.
-
 > *Question*
 > ---
-> ???<br>
+> What are the possible values for `final_grade` that will be predicted by this regression tree?<br>
 > <br>
 > ⬜ Only 3.183787<br>
 > ⬜ 11.37 or 332.72<br>
@@ -824,7 +819,6 @@ Candid calculation of the RMSE in two ways! Use the RMSE to compare models where
 
 Theory. Coming soon ...
 
-
 **1. Cross-validation**
 
 Welcome back!So far, we always used a single train/test split.However, this is a little fragile: a single outlier can vastly change our out-of-sample error.One way to reduce this variance is to average multiple estimates together.This is exactly what cross-validation does.
@@ -921,14 +915,14 @@ Provided in your workspace is `chocolate_folds`, which you created in the last e
 ```{r}
 # Create a specification
 tree_spec <- decision_tree() %>%
-\t\tset_mode("regression") %>%
-        set_engine("rpart")
+                set_mode("regression") %>%
+                set_engine("rpart")
 
 # Fit all folds to the specification
 fits_cv <- fit_resamples(tree_spec,
-                 \t\t final_grade ~ .,
-                 \t\t resamples = chocolate_folds,
-                \t\t metrics = metric_set(mae, rmse))
+                         final_grade ~ .,
+                         resamples = chocolate_folds,
+                         metrics = metric_set(mae, rmse))
 
 fits_cv
 ```
@@ -947,7 +941,6 @@ The result of the previous exercise, `fits_cv`, is pre-loaded.
 
 1. Collect the out-of-sample errors of all models of `fits_cv` using a single `yardstick` function and save them as `all_errors`.
 2. Create a `ggplot2` histogram using the `.estimate` as the `x` aesthetic and `fill` the bars by `.metric`.
-3. Use the same function as in the first instruction with `summarize = TRUE` to display summary statistics of `fits_cv`.
 
 ```{r}
 library(ggplot2)
@@ -958,7 +951,11 @@ all_errors <- collect_metrics(fits_cv, summarize = FALSE)
 # Plot an error histogram
 ggplot(all_errors , aes(x = .estimate, fill = .metric)) +
         geom_histogram()
+```
 
+3. Use the same function as in the first instruction with `summarize = TRUE` to display summary statistics of `fits_cv`.
+
+```{r}
 # Collect and print error statistics
 collect_metrics(fits_cv, summarize = TRUE)
 ```
@@ -968,7 +965,6 @@ Dashing display! You drew all of the errors as a histogram and summarized them i
 ## Bias-variance tradeoff
 
 Theory. Coming soon ...
-
 
 **1. Bias-variance tradeoff**
 
@@ -1008,6 +1004,16 @@ If you think this is tricky, rest assured: you will understand this step by step
 
 ## Call things by their names
 
+Overfitting and underfitting both result in a model that performs poorly on test data, but the implications of each are different. In this exercise, you'll classify model characteristics as symptoms of either overfitting or underfitting to better understand the bias-variance tradeoff.
+
+Decide which characteristics represent overfitting and which characterize underfitting.
+
+| Overfitting | Underfitting |
+| --- | --- |
+| Low in-sample error and high out-of-sample error | Large training set error |
+| High Variance | High Bias |
+| Low training error and high CV error | Large in-sample-error |
+
 ## Adjust model complexity
 
 To make good predictions, you need to adjust the complexity of your model.
@@ -1024,9 +1030,9 @@ The training data `chocolate_train` is pre-loaded in your workspace.
 ```{r}
 # Create a model having only one split
 chocolate_model <- decision_tree(tree_depth = 1) %>% 
-\t\tset_mode("regression") %>%
-\t\tset_engine("rpart") %>% 
-\t\tfit(final_grade ~ ., data = chocolate_train)
+  set_mode("regression") %>%
+  set_engine("rpart") %>% 
+  fit(final_grade ~ ., data = chocolate_train)
 chocolate_model
 ```
 
@@ -1035,9 +1041,9 @@ chocolate_model
 ```{r}
 # Create a model with high cost for complexity
 chocolate_model <- decision_tree(cost_complexity = 0.1) %>% 
-\t\tset_mode("regression") %>%
-\t\tset_engine("rpart") %>% 
-\t\tfit(final_grade ~ ., data = chocolate_train)
+  set_mode("regression") %>%
+  set_engine("rpart") %>% 
+  fit(final_grade ~ ., data = chocolate_train)
 chocolate_model
 ```
 
@@ -1046,8 +1052,8 @@ chocolate_model
 ```{r}
 # Create a model that can grow arbitrarily complex
 chocolate_model <- decision_tree(cost_complexity = 0,
-              \t\t\t\t\t min_n = 2) %>% 
-\t\tset_mode("regression") %>%
+                                 min_n = 2) %>% 
+        set_mode("regression") %>%
         set_engine("rpart") %>% 
         fit(final_grade ~ ., data = chocolate_train)
 chocolate_model
@@ -1070,11 +1076,14 @@ Pre-loaded is the last model of the previous exercise, `complex_model`, and your
 1. Use `complex_model` to predict the training set grades, add these predictions to the original training data, and calculate their mean absolute error.
 
 ```{r}
+# Assign chocolate_model to complex
+complex_model <- chocolate_model
+
 # Predict on and combine with training data and calculate the error
 predict(complex_model, new_data = chocolate_train) %>%
-\tbind_cols(chocolate_train) %>% 
-\tmae(estimate = .pred,
-        truth = final_grade)
+  bind_cols(chocolate_train) %>% 
+  mae(estimate = .pred,
+         truth = final_grade)
 ```
 
 2. Adapt your code to predict test set grades, add these predictions to the original test data, and calculate the mean absolute error.
@@ -1082,9 +1091,9 @@ predict(complex_model, new_data = chocolate_train) %>%
 ```{r}
 # Predict on and combine with test data and calculate the error
 predict(complex_model, new_data = chocolate_test) %>%
-\tbind_cols(chocolate_test) %>% 
-\tmae(estimate = .pred,
-        truth = final_grade)
+  bind_cols(chocolate_test) %>% 
+  mae(estimate = .pred,
+         truth = final_grade)
 ```
 
 You are a great fit for this task, but unfortunately, your model is overfitted. The out-of-sample-error is 10 times higher than the in-sample error, which is close to 0 - that model is way too complex! In the next chapter, you will overcome this by tuning your model's hyperparameters!
@@ -1096,7 +1105,6 @@ Time to get serious with tuning your hyperparameters and interpreting receiver o
 ## Tuning hyperparameters
 
 Theory. Coming soon ...
-
 
 **1. Tuning hyperparameters**
 
@@ -1175,14 +1183,6 @@ tune_spec
 2. Create a regular grid of `tune_spec`'s hyperparameters that contains two levels for each one.
 
 ```{r}
-# Create a specification with tuning placeholders
-tune_spec <- decision_tree(tree_depth = tune(),
-                           cost_complexity = tune()) %>% 
-  # Specify mode
-  set_mode("classification") %>%
-  # Specify engine
-  set_engine("rpart") 
-
 # Create a regular grid
 tree_grid <- grid_regular(parameters(tune_spec),
                           levels = 2)
@@ -1199,12 +1199,12 @@ This is very easy in the `tidymodels` framework using the `tune_grid()` function
 
 In the remaining exercises, you will use the **credit card customers dataset**, which has the following columns:
 
-
 * `still_customer`: flag (*yes* or *no*) that indicates if a customer is still an active customer
 * `total_trans_amt`: total sum of transactions in USD
 * `customer_age`: age of the customer
 * `income_category`: labels like *$60K - $80K* or *Less than $40K* to indicate the category of yearly income
 * … and 16 more columns.
+
 Feel free to inspect the `customers` tibble in the console! The results of the previous exercise, `tree_grid` and `tune_spec`, are still loaded.
 
 **Steps**
@@ -1214,6 +1214,10 @@ Feel free to inspect the `customers` tibble in the console! The results of the p
 3. Use `autoplot()` to plot the tuning results.
 
 ```{r}
+# Load data
+customers <- read_csv("data/bank_churners.csv") |> 
+              mutate(across(where(is.character), as.factor))
+
 set.seed(275)
 
 # Create CV folds of the customers tibble
@@ -1254,9 +1258,6 @@ final_params
 2. Update your untuned tree specification with `final_params` and save this as `best_spec`.
 
 ```{r}
-# Select the parameters that perform best
-final_params <- select_best(tune_results)
-
 # Finalize the specification
 best_spec <- finalize_model(tune_spec, final_params)
 
@@ -1266,12 +1267,6 @@ best_spec
 3. Create your final model by fitting the tuned specification `best_spec` to the `customers` tibble.
 
 ```{r}
-# Select the parameters that perform best
-final_params <- select_best(tune_results)
-
-# Finalize the specification
-best_spec <- finalize_model(tune_spec, final_params)
-
 # Build the final model
 final_model <- fit(best_spec,
                    still_customer ~ .,
@@ -1286,6 +1281,41 @@ Fearless finalization! You just selected the optimal hyperparameters, plugged th
 
 Theory. Coming soon ...
 
+**1. More model measures**
+Welcome back. So far, you evaluated your binary classification models using accuracy.
+
+**2. Limits of accuracy**
+But do you recall that one exercise where the model that always predicted "no" achieved a very high accuracy? That is easily possible with an imbalanced data set.
+
+**3. Sensitivity or true positive rate**
+Fortunately, there are more binary classification metrics. One is sensitivity. Sensitivity or true positive rate is the proportion of all positive outcomes that were found by your model. For example, of the credit card customers that did churn, how many did our model predict correctly?
+
+**4. Specificity or true negative rate**
+Specificity or true negative rate measures the proportion of all negative outcomes that were correctly classified. For example, of the credit card customers that did not churn, what proportion did our model predict correctly?
+
+**5. Different thresholds**
+So far, you have only used the predict function to calculate predicted classes. It predicted "yes" if the probability was more than 0-point-5, and "no" otherwise. What if you calculated predicted probabilities instead? You could try different thresholds for your class predictions and would get different confusion matrices and performance measures. Is there one threshold among these that performs best?
+
+**6. ROC (Receiver-operating-characteristic) curve**
+The ROC curve, an acronym for receiver-operating-characteristic, visualizes the performance of a classification model across all possible probability thresholds. For each unique threshold, a point that represents the true positive rate or sensitivity and the false positive rate or one minus the specificity is added to the plot.
+
+**7. ROC curve and AUC**
+An ideal ROC curve would fall into the top-left corner of the graph, with a true positive rate or sensitivity of 1 and a false positive rate or 1 minus specificity of 0. The overall performance of a classifier, summarized over all possible thresholds, is given by the area under this curve (AUC).
+
+**8. Area under the ROC curve**
+An AUC of zero point five corresponds to a ROC curve along the diagonal and indicates that a model performs no better than random chance. An AUC of one corresponds to a model that perfectly classifies every example, while an AUC of zero means that your model is classifying every observation wrongly. So, ROC curves and the AUC are useful for comparing different classifiers, since they take into account all possible thresholds.
+
+**9. yardstick sensitivity: sens()**
+Let's see how all that is coded in tidymodels. Imagine you have the class predictions tibble containing the predicted and true classes. The sens() function calculates sensitivity and takes the same arguments as the conf_mat() and accuracy() functions. For data, we supply our predictions tibble. For estimate column we specify dot-pred_class and for the truth column, we specify true_class. As you would expect, the function returns a tibble that gives the sensitivity in the column dot-estimate. In this case, 87-point-2 percent of all positive outcomes were found by the model.
+
+**10. yardstick ROC: roc_curve()**
+To plot a ROC curve, you first need predicted probabilities instead of predicted classes. Use the predict function with the model, test data and type equals to "prob". Then, add these predictions to the test data tibble using bind_cols(). The next step is to create a tibble with sensitivity and specificity for many different thresholds. This is done by the roc_curve() function. Pass the predictions tibble as first argument, the dot-pred_yes column as estimate and the still_customer column as truth argument. This will return a tibble with specificity and sensitivity for all unique thresholds. Using the autoplot() function, you get a graphical representation of this curve.
+
+**11. yardstick AUC: roc_auc()**
+Calculating the area under the curve is no different. Same arguments as usual: data, estimate, and truth. The result is the familiar tibble containing our result in the dot-estimate column. Our area under the curve is 0-point-872, or 87-point-2 percent here.
+
+**12. Let's measure!**
+Now it's your turn to draw receiver-operating-characteristic curves and calculate sensitivity and area under the curve.
 
 ## Calculate specificity
 
@@ -1301,7 +1331,7 @@ In this exercise, you are going to investigate the out-of-sample specificity of 
 
 Pre-loaded is the training data of the credit card customers dataset, `customers_train`, and a decision tree specification, `tree_spec`, which was generated using the following code:
 
-```{r}
+```{r,eval=FALSE}
 tree_spec <- decision_tree() %>% 
                 set_engine("rpart") %>%
                 set_mode("classification")
@@ -1314,6 +1344,19 @@ tree_spec <- decision_tree() %>%
 3. Aggregate the results using a single function.
 
 ```{r}
+##  !!! Create customer train
+# Create the split
+customers_split <- initial_split(customers, prop = 0.7)
+
+# Extract the training and test set
+customers_train <- training(customers_split)
+customers_test  <- testing(customers_split)
+
+## !!! Create tree_spec
+tree_spec <- decision_tree() %>% 
+                set_engine("rpart") %>%
+                set_mode("classification")
+
 # Create CV folds of the training data
 folds <- vfold_cv(customers_train, v = 3)
 
@@ -1345,6 +1388,9 @@ Pre-loaded is a `model`, which is a decision tree that was trained on the credit
 4. Plot the ROC curve using `autoplot()`.
 
 ```{r}
+## Assign model
+model <- tree_spec |> fit(still_customer ~ ., customers_train)
+
 # Predict probabilities on test set
 predictions <- predict(model, 
                        customers_test,
@@ -1399,7 +1445,6 @@ Too easy for you! An AUC of over 92% corresponds to grade A in the grading syste
 
 Theory. Coming soon ...
 
-
 **1. Bagged trees**
 
 Decision trees are easy to understand and interpret, but often a small change in the data can result in a very different series of splits and a very different model. This is one of the main drawbacks of decision trees: the high variance that you have observed in the exercises.
@@ -1442,11 +1487,13 @@ The credit card customers training data is pre-loaded as `customers_train`.
 
 **Steps**
 
-1. Use `baguette::bag_tree()` to create a bagged tree classification model with an `"rpart"` engine that builds 20 bagged trees.
+1. Use `bag_tree()` to create a bagged tree classification model with an `"rpart"` engine that builds 20 bagged trees.
 
 ```{r}
 # Create the specification
-spec_bagged <- baguette::bag_tree() %>%
+library(baguette)
+
+spec_bagged <- bag_tree() %>%
   set_mode("classification") %>%
   set_engine("rpart", times = 20)
 
@@ -1457,11 +1504,6 @@ spec_bagged
 3. Print the model to see the importance of variables.
 
 ```{r}
-# Create the specification
-spec_bagged <- baguette::bag_tree() %>%
-  set_mode("classification") %>%
-  set_engine("rpart", times = 20)
-
 # Fit to the training data
 model_bagged <- fit(spec_bagged,
                     formula = still_customer ~ total_trans_amt + customer_age + education_level, 
@@ -1492,8 +1534,6 @@ Pre-loaded is the result of the previous exercise, `model_bagged`, and training 
 **Steps**
 
 1. Use `model_bagged` to generate **probability** predictions with your training set and add them to the training set tibble, saving the result as `predictions`.
-2. Generate the ROC curve of the `predictions` tibble and plot the result.
-3. Calculate the AUC of the `predictions` tibble.
 
 ```{r}
 # Predict on training set and add to training set
@@ -1501,12 +1541,20 @@ predictions <- predict(model_bagged,
                        new_data = customers_train, 
                        type = "prob") %>% 
     bind_cols(customers_train)
+```
 
+2. Generate the ROC curve of the `predictions` tibble and plot the result.
+
+```{r}
 # Create and plot the ROC curve
 roc_curve(predictions, 
           estimate = .pred_yes, 
           truth = still_customer) %>% autoplot()
+```
 
+3. Calculate the AUC of the `predictions` tibble.
+
+```{r}
 # Calculate the AUC
 roc_auc(predictions,
         estimate = .pred_yes, 
@@ -1547,7 +1595,6 @@ You revealed the hidden secret! The cross-validated out-of-sample AUC is just ov
 
 Theory. Coming soon ...
 
-
 **1. Random forest**
 
 Welcome back! Now you know that bagged trees are a big improvement over single decision trees. You might have heard of random forests, which are an improvement upon bagged trees.
@@ -1586,11 +1633,9 @@ Now it's your turn to grow your first random forest!
 
 ## Bagged trees vs. random forest
 
-What is the main difference between the two ensemble methods *bagged trees* and *random forest*?
-
 > *Question*
 > ---
-> ???<br>
+> What is the main difference between the two ensemble methods *bagged trees* and *random forest*?<br>
 > <br>
 > ⬜ In a random forest, the decision trees are trained on a random subset of the rows, but in bagging, all the rows are used.<br>
 > ✅ In a random forest, only a subset of features is selected at random at each split in a decision tree. In bagging, all features are used.<br>
@@ -1613,7 +1658,7 @@ In this exercise, you will build a random forest yourself and plot the importanc
 ```{r}
 # Specify a random forest
 spec <- rand_forest() %>%
-\tset_mode("classification") %>%
+    set_mode("classification") %>%
     set_engine("ranger", importance = "impurity")
 
 # Train the forest
@@ -1634,7 +1679,6 @@ Ready for the high society of tree-based models? Apply gradient boosting to crea
 ## Introduction to boosting
 
 Theory. Coming soon ...
-
 
 **1. Introduction to boosting**
 
@@ -1690,12 +1734,11 @@ Now it's your turn to test your understanding of boosting.
 
 ## Bagging vs. boosting
 
-<!-- Guidelines for the question: https://instructor-support.datacamp.com/en/articles/2375516-course-multiple-choice-exercises. -->
-The terms *bagging* and *boosting* may sound similar, but these are two machine learning algorithms that follow different approaches. What is one of the main differences between bagged trees and boosted trees?
+The terms *bagging* and *boosting* may sound similar, but these are two machine learning algorithms that follow different approaches.
 
 > *Question*
 > ---
-> ???<br>
+> What is one of the main differences between bagged trees and boosted trees?<br>
 > <br>
 > ⬜ Boosted trees have fewer hyperparameters than bagged trees, making them easier to tune.<br>
 > ⬜ The performance of boosted trees is generally not as great as the performance of bagged trees.<br>
@@ -1725,8 +1768,8 @@ boost_spec
 ```{r}
 # Specify the model class
 boost_spec <- boost_tree() %>%
-\t# Set the mode
-\tset_mode("classification")
+    # Set the mode
+    set_mode("classification")
 
 boost_spec
 ```
@@ -1736,10 +1779,10 @@ boost_spec
 ```{r}
 # Specify the model class
 boost_spec <- boost_tree() %>%
-\t# Set the mode
-\tset_mode("classification") %>%
-\t# Set the engine
-\tset_engine("xgboost")
+    # Set the mode
+    set_mode("classification") %>%
+    # Set the engine
+    set_engine("xgboost")
 
 boost_spec
 ```
@@ -1749,7 +1792,6 @@ Savvy specification - defining boosted models is just as easy as creating decisi
 ## Gradient boosting
 
 Theory. Coming soon ...
-
 
 **1. Gradient boosting**
 
@@ -1828,9 +1870,9 @@ folds <- vfold_cv(customers_train, v = 5)
 
 # Fit and evaluate models for all folds
 cv_results <- fit_resamples(boost_spec,
-\t\t\t    \t\t\tstill_customer ~ ., 
-\t                    \tresamples = folds,
-\t                    \tmetrics = metric_set(roc_auc))
+                            still_customer ~ ., 
+                            resamples = folds,
+                            metrics = metric_set(roc_auc))
 
 # Collect cross-validated metrics
 collect_metrics(cv_results)
@@ -1892,7 +1934,6 @@ Good job! Boosting beats the decision tree with 99.8% versus 92.9% in-sample AUC
 ## Optimize the boosted ensemble
 
 Theory. Coming soon ...
-
 
 **1. Optimize the boosted ensemble**
 
@@ -1996,7 +2037,7 @@ This can take some time, given that using k-fold cross-validation, an ensemble s
 
 It's your turn to perform the actual tuning! Pre-loaded are `customers_train` and the results of the last exercise, `boost_spec` and `tunegrid_boost`:
 
-```{r}
+```{r,eval=F}
 # A tibble: 27 x 3
    tree_depth   learn_rate sample_size
         <int>        <dbl>       <dbl>
@@ -2053,9 +2094,6 @@ best_params
 2. Create `final_spec` by plugging the best parameters into the untuned specification.
 
 ```{r}
-# Select the final hyperparameters
-best_params <- select_best(tune_results)
-
 # Finalize the specification
 final_spec <- finalize_model(boost_spec, best_params)
 
@@ -2065,12 +2103,6 @@ final_spec
 3. Create `final_model`, the final model trained on the whole training set, using all predictor variables.
 
 ```{r}
-# Select the final hyperparameters
-best_params <- select_best(tune_results)
-
-# Finalize the specification
-final_spec <- finalize_model(boost_spec, best_params)
-
 # Train the final model on the full training data
 final_model <- final_spec %>% fit(formula = still_customer ~ ., 
                                   data = customers_train)
@@ -2083,7 +2115,6 @@ That's the final fit! You plugged the best-performing hyperparameters into your 
 ## Model comparison
 
 Theory. Coming soon ...
-
 
 **1. Model comparison**
 
@@ -2159,7 +2190,7 @@ Comparing different models is the core of model selection. In the final two exer
 
 The models were all tuned to perfection and trained on the same training set, `customers_train`, and predictions were made for the `customers_test` dataset. The results are numeric probabilities and are available as `preds_combined` in your session:
 
-```{r}
+```{r,eval=F}
 tibble [1,011 × 5]
  $ preds_tree    : 0.144 0.441 ...
  $ preds_bagging : 0.115 0.326 ...
@@ -2173,6 +2204,9 @@ tibble [1,011 × 5]
 1. Calculate the AUC for each prediction column in `preds_combined`, always using `still_customer` as the truth column.
 
 ```{r}
+# load data
+preds_combinded <- readRDS("data/preds_combinded.rds")
+
 # Calculate the AUC for each model
 auc_tree   <- roc_auc(preds_combined, truth = still_customer, estimate = preds_tree)
 auc_bagged <- roc_auc(preds_combined, truth = still_customer, estimate = preds_bagging)
@@ -2189,12 +2223,6 @@ auc_boost
 2. Combine the results into one single tibble.
 
 ```{r}
-# Calculate the AUC for each model
-auc_tree   <- roc_auc(preds_combined, truth = still_customer, estimate = preds_tree)
-auc_bagged <- roc_auc(preds_combined, truth = still_customer, estimate = preds_bagging)
-auc_forest <- roc_auc(preds_combined, truth = still_customer, estimate = preds_forest)
-auc_boost  <- roc_auc(preds_combined, truth = still_customer, estimate = preds_boosting)
-
 # Combine AUCs into one tibble
 combined <- bind_rows(auc_tree,
                       auc_bagged,
@@ -2207,12 +2235,6 @@ combined
 3. Change the code so that the arguments to `bind_rows()` are named `decision_tree`, `bagged_tree`, `random_forest`, and `boosted_tree`.
 
 ```{r}
-# Calculate the AUC for each model
-auc_tree   <- roc_auc(preds_combined, truth = still_customer, estimate = preds_tree)
-auc_bagged <- roc_auc(preds_combined, truth = still_customer, estimate = preds_bagging)
-auc_forest <- roc_auc(preds_combined, truth = still_customer, estimate = preds_forest)
-auc_boost  <- roc_auc(preds_combined, truth = still_customer, estimate = preds_boosting)
-
 # Combine AUCs into one tibble
 combined <- bind_rows(decision_tree = auc_tree,
                       bagged_tree   = auc_bagged,
@@ -2262,7 +2284,6 @@ Fantastic plot! The ROC curves resemble the AUC differences, and you can clearly
 ## Wrap-up
 
 Theory. Coming soon ...
-
 
 **1. Wrap-up**
 

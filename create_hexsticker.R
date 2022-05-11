@@ -8,8 +8,8 @@ hexSticker::sticker(
 
 
 
-imgurl <- "~/03_repos/data-scientists-tools/img/carrot.png"
+imgurl <- "~/03_repos/data-scientists-tools/img/logo_R.svg"
 
-hexSticker::sticker(imgurl, package="caret", p_size=8, s_x=1, s_y=.75, s_width=.6,
+hexSticker::sticker(imgurl, package="base", p_size=8, s_x=1, s_y=.75, s_width=.5,
                     p_color = "#2dc6d6", h_fill = "transparent", h_color = "#2dc6d6",
-        filename="~/03_repos/data-scientists-tools/img/hex_caret.png")
+        filename="~/03_repos/data-scientists-tools/img/hex_R.png")
