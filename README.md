@@ -114,7 +114,7 @@
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
-					<img height="50px" align="center" src="img/logo_R.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
+					<img height="50px" align="center" src="img/hex_R.png"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a>
 				</details>
 			</td>
 		</tr>
@@ -191,27 +191,29 @@
 				</details>
 			</td>
 		</tr>
-		<! –– TEST ––>
+		<! –– Modeling with Tidymodels ––>
 		<tr>
-			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/cluster_analysis">Cluster Analysis</a>
+			<td><a target="_blank" rel="noopener noreferrer" href="https://github.com/jwarz/data-scientists-tools/tree/main/07_machine_learning/01_R/modeling_with_tidymodels">Modeling with Tidymodels</a>
 			</td>
 			<td>
 				<ol>
-					<li>Calculating distance between observations</li>
-					<li>Hierarchical clustering</li>
-					<li>K-means clustering</li>
-					<li>Case Study: National Occupational mean wage</li>
+					<li>Machine Learning with tidymodels</li>
+					<li>Classification Models</li>
+					<li>Feature Engineering</li>
+					<li>Workflows and Hyperparameter Tuning</li>
         		</ol>
 			</td>
 			<td>
 				<details><summary>Show packages ...</summary>
 					<div id="user-content-toc">
 						<ul>
-							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
-							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
-							<li><img height="50px" align="center" src="img/logo_broom.svg"/><a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">&emsp;base R / stats</a></li>
-							<li><img height="50px" align="center" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a></li>
-							<li><img height="50px" align="center" style="display:inline;" src="img/logo_broom.svg"/>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://broom.tidymodels.org">base R / stats</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://magrittr.tidyverse.org"><img height="50px" align="center" src="img/hex_magrittr.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://magrittr.tidyverse.org">magrittr</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://rsample.tidymodels.org"><img height="50px" align="center" src="img/hex_rsample.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://rsample.tidymodels.org">rsample</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://parsnip.tidymodels.org"><img height="50px" align="center" src="img/hex_parsnip.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://parsnip.tidymodels.org">parsnip</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://yardstick.tidymodels.org"><img height="50px" align="center" src="img/hex_yardstick.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://yardstick.tidymodels.org">yardstick</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://tune.tidymodels.org"><img height="50px" align="center" src="img/hex_tune.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://tune.tidymodels.org">tune</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://recipes.tidymodels.org"><img height="50px" align="center" src="img/hex_recipes.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://recipes.tidymodels.org">recipes</a></li>
+							<li><a target="_blank" rel="noopener noreferrer" href="https://workflows.tidymodels.org"><img height="50px" align="center" src="img/hex_workflows.svg"/></a>&emsp;<a target="_blank" rel="noopener noreferrer" href="https://workflows.tidymodels.org">workflows</a></li>
 						</ul>
 					</div>
 				</details>
