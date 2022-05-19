@@ -2,6 +2,7 @@ Hackerrank SQL
 ================
 Joschka Schwarz
 
+-   [SETUP](#setup)
 -   [Basic Select](#basic-select)
 -   [Advanced Select](#advanced-select)
 -   [Aggregation](#aggregation)
@@ -9,9 +10,9 @@ Joschka Schwarz
 -   [Advanced Join](#advanced-join)
 -   [Alternative Queries](#alternative-queries)
 
-**SETUP**
+# SETUP
 
-1.  Create USer
+## Create User
 
 ``` sql
 CREATE USER 'jwarz'@localhost IDENTIFIED BY '***';
@@ -19,17 +20,23 @@ GRANT ALL PRIVILEGES ON *.* TO 'jwarz'@localhost IDENTIFIED BY '***';
 # GRANT ALL PRIVILEGES ON 'DBname'.* TO 'jwarz'@localhost; 
 ```
 
-2.  Create database
+## Create databases
 
 ``` sql
 DROP DATABASE IF EXISTS hackerrank_cities;
 CREATE DATABASE hackerrank_cities;
-USE hackerrank_cities;
+
+DROP DATABASE IF EXISTS hackerrank_station;
+CREATE DATABASE hackerrank_station;
+# USE hackerrank_station;
 ```
 
-3.  Create table
+## Create tables
 
 ``` sql
+#########
+# city1 #
+#########
 create table city1
 (
     ID int primary key,
@@ -48,13 +55,45 @@ insert into city1 values (3982, "Coral Springs", "USA", "Florida", 117549);
 insert into city1 values (4054, "Fairfield", "USA", "California", 92256);
 insert into city1 values (4058, "Boulder", "USA", "Colorado", 91238);
 insert into city1 values (4061, "Fall River", "USA", "Massachusetts", 90555);
+
+#########
+# city2 #
+#########
+create table city2
+(
+    ID int primary key,
+    NAME varchar(17),
+    COUNTRYCODE varchar(3),
+    DISTRICT varchar(20),
+    POPULATION int
+);
+LOAD DATA LOCAL INFILE "data/city2.csv" INTO TABLE city2
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+###########
+# STATION #
+###########
+create table STATION
+(
+    ID int,
+    CITY varchar(21),
+    STATE varchar(2),
+    LAT_N decimal(10,0),
+    LONG_W decimal(10,0)
+);
+LOAD DATA LOCAL INFILE "data/STATION.csv" INTO TABLE STATION
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
 ```
 
 # Basic Select
 
-## Revising the Select Query I
+## City Data
 
-The CITY table is described as follows:
+The CITY1 / CITY2 tables are described as follows:
 
 ``` sql
 select column_name, column_type 
@@ -71,6 +110,8 @@ where TABLE_NAME='city1';
 | POPULATION  | int(11)     |
 
 5 records
+
+## Revising the Select Query I
 
 Query all columns for all American cities in the CITY table with
 populations larger than 100000. The CountryCode for America is USA.
@@ -138,22 +179,7 @@ FROM city1;
 
 ## Select BY ID
 
-Create new table
-
-``` sql
-create table city2
-(
-    ID int primary key,
-    NAME varchar(17),
-    COUNTRYCODE varchar(3),
-    DISTRICT varchar(20),
-    POPULATION int
-);
-LOAD DATA LOCAL INFILE "/Users/jschwarz/03_repos/data-scientists-tools/10_hackerrank/01_sql/data/city2.csv" INTO TABLE city2
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
-```
+*Table: CITY2*
 
 Query all columns for a city in CITY with the ID 1661.
 
@@ -211,32 +237,7 @@ WHERE COUNTRYCODE = 'JPN';
 
 5 records
 
-## Weather Observation Station 1
-
-New table:
-
-### Create database
-
-``` sql
-DROP DATABASE IF EXISTS hackerrank_station;
-CREATE DATABASE hackerrank_station;
-USE hackerrank_station;
-```
-
-``` sql
-create table STATION
-(
-    ID int,
-    CITY varchar(21),
-    STATE varchar(2),
-    LAT_N decimal(10,0),
-    LONG_W decimal(10,0)
-);
-LOAD DATA LOCAL INFILE "/Users/jschwarz/03_repos/data-scientists-tools/10_hackerrank/01_sql/data/STATION.csv" INTO TABLE STATION
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
-```
+## Weather Observation Station data
 
 The STATION table is described as follows:
 
@@ -255,6 +256,8 @@ where TABLE_NAME='STATION';
 | LONG_W      | decimal(10,0) |
 
 5 records
+
+## Weather Observation Station 1
 
 *SIMPLE SELECT*
 
@@ -282,7 +285,7 @@ Displaying records 1 - 10
 
 ## Weather Observation Station 2
 
-??? Does not exist ???
+Does not exist …
 
 ## Weather Observation Station 3
 
