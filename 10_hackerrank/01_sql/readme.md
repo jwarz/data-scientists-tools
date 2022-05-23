@@ -23,12 +23,9 @@ GRANT ALL PRIVILEGES ON *.* TO 'jwarz'@localhost IDENTIFIED BY '***';
 ## Create databases
 
 ``` sql
-DROP DATABASE IF EXISTS hackerrank_cities;
-CREATE DATABASE hackerrank_cities;
-
-DROP DATABASE IF EXISTS hackerrank_station;
-CREATE DATABASE hackerrank_station;
-# USE hackerrank_station;
+DROP DATABASE IF EXISTS hackerrank;
+CREATE DATABASE hackerrank;
+# USE hackerrank;
 ```
 
 ## Create tables
@@ -87,9 +84,80 @@ LOAD DATA LOCAL INFILE "data/STATION.csv" INTO TABLE STATION
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
+
+############
+# STUDENTS #
+############
+create table STUDENTS
+(
+    ID int,
+    Name varchar(30),
+    Marks int
+);
+LOAD DATA LOCAL INFILE "data/STUDENTS.csv" INTO TABLE STUDENTS
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+############
+# EMPLOYEE #
+############
+create table Employee
+(
+    employee_id int(11),
+    name varchar(20), 
+    months int(11),
+    salary int(11)
+);
+LOAD DATA LOCAL INFILE "data/employee.csv" INTO TABLE Employee
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+#############
+# TRIANGLES #
+#############
+create table TRIANGLES
+(
+    A int,
+    B int,
+    C int
+);
+LOAD DATA LOCAL INFILE "data/triangles.csv" INTO TABLE TRIANGLES
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+###############
+# OCCUPATIONS #
+###############
+create table OCCUPATIONS
+(
+    Name varchar(30),
+    Occupation varchar(30)
+);
+LOAD DATA LOCAL INFILE "data/OCCUPATIONS.csv" INTO TABLE OCCUPATIONS
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+#######
+# BST #
+#######
+create table BST
+(
+    N int,
+    P int
+);
+LOAD DATA LOCAL INFILE "/Users/jschwarz/03_repos/data-scientists-tools/10_hackerrank/01_sql/data/BST.csv" INTO TABLE BST
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
 ```
 
 # Basic Select
+
+**easy**
 
 ## City Data
 
@@ -713,9 +781,418 @@ WHERE city NOT RLIKE '^[aeiou]' AND city NOT RLIKE '[aeiou]$';
 
 Displaying records 1 - 10
 
+### Students fdata
+
+``` sql
+select column_name, column_type 
+from INFORMATION_SCHEMA.COLUMNS 
+where TABLE_NAME='students';
+```
+
+| column_name | column_type |
+|:------------|:------------|
+| ID          | int(11)     |
+| Name        | varchar(30) |
+| Marks       | int(11)     |
+
+3 records
+
+### Higher than 75 Marks
+
+Query the Name of any student in STUDENTS who scored higher than Marks.
+Order your output by the last three characters of each name. If two or
+more students both have names ending in the same last three characters
+(i.e.: Bobby, Robby, etc.), secondary sort them by ascending ID.
+
+``` sql
+select name
+from students
+where marks > 75
+order by SUBSTR(name, -3), id;
+```
+
+| name      |
+|:----------|
+| Stuart    |
+| Kristeen  |
+| Christene |
+| Amina     |
+| Aamina    |
+| Priya     |
+| Heraldo   |
+| Scarlet   |
+| Julia     |
+| Salma     |
+
+Displaying records 1 - 10
+
+## Employee Data
+
+``` sql
+select column_name, column_type 
+from INFORMATION_SCHEMA.COLUMNS 
+where TABLE_NAME='Employee';
+```
+
+| column_name | column_type |
+|:------------|:------------|
+| employee_id | int(11)     |
+| name        | varchar(20) |
+| months      | int(11)     |
+| salary      | int(11)     |
+
+4 records
+
+## Employee Names
+
+Write a query that prints a list of employee names (i.e.: the name
+attribute) from the Employee table in alphabetical order.
+
+``` sql
+select name
+from employee
+order by name;
+```
+
+| name     |
+|:---------|
+| Alan     |
+| Amy      |
+| Andrew   |
+| Andrew   |
+| Angela   |
+| Ann      |
+| Anna     |
+| Anthony  |
+| Antonio  |
+| Benjamin |
+
+Displaying records 1 - 10
+
+## Employee Salaries
+
+Write a query that prints a list of employee names (i.e.: the name
+attribute) for employees in Employee having a salary greater than $2000
+per month who have been employees for less than 10 months. Sort your
+result by ascending employee_id.
+
+``` sql
+select name
+from employee
+where salary > 2000 AND months < 10
+order by employee_id ASC;
+```
+
+| name     |
+|:---------|
+| Rose     |
+| Patrick  |
+| Lisa     |
+| Amy      |
+| Pamela   |
+| Jennifer |
+| Julia    |
+| Kevin    |
+| Paul     |
+| Donna    |
+
+Displaying records 1 - 10
+
 # Advanced Select
 
-coming soon …
+**easy**
+
+## Triangles data
+
+``` sql
+select column_name, column_type 
+from INFORMATION_SCHEMA.COLUMNS 
+where TABLE_NAME='TRIANGLES';
+```
+
+| column_name | column_type |
+|:------------|:------------|
+| A           | int(11)     |
+| B           | int(11)     |
+| C           | int(11)     |
+
+3 records
+
+## Type of Triangle
+
+Write a query identifying the type of each record in the TRIANGLES table
+using its three side lengths. Output one of the following statements for
+each record in the table:
+
+-   Equilateral: It’s a triangle with sides of equal length.
+-   Isosceles: It’s a triangle with sides of equal length.
+-   Scalene: It’s a triangle with sides of differing lengths.
+-   Not A Triangle: The given values of A, B, and C don’t form a
+    triangle.
+
+``` sql
+SELECT CASE             
+            WHEN A + B > C AND B + C > A AND A + C > B THEN
+                CASE 
+                    WHEN A = B AND B = C THEN 'Equilateral'
+                    WHEN A = B OR B = C OR A = C THEN 'Isosceles'
+                    ELSE 'Scalene'
+                END
+            ELSE 'Not A Triangle'
+        END
+FROM TRIANGLES;
+```
+
+Table: Displaying records 1 - 10
+
+\|CASE  
+WHEN A + B \> C AND B + C \> A AND A + C \> B THEN CASE WHEN A = B AND B
+= C THEN ‘Equilateral’ WHEN A = B OR B = C OR A = C THEN ‘Isosceles’
+ELSE ’Sca \|
+\|:———————————————————————————————————————————————————————————————————————————————————-\|
+\|Equilateral \| \|Equilateral \| \|Isosceles \| \|Equilateral \|
+\|Isosceles \| \|Equilateral \| \|Scalene \| \|Not A Triangle \|
+\|Scalene \| \|Scalene \|
+
+Explanation Values in the tuple (20,20,23) form an Isosceles triangle,
+because A = B. Values in the tuple (20,20,20) form an Equilateral
+triangle, because A = B = C. Values in the tuple (20,21,22) form a
+Scalene triangle, because A != B != C. Values in the tuple (13,14,30)
+cannot form a triangle because the combined value of sides A and B is
+not larger than that of side C.
+
+**medium**
+
+## THE PADS
+
+Generate the following two result sets:
+
+1.  Query an alphabetically ordered list of all names in OCCUPATIONS,
+    immediately followed by the first letter of each profession as a
+    parenthetical (i.e.: enclosed in parentheses). For example:
+    AnActorName(A), ADoctorName(D), AProfessorName(P), and
+    ASingerName(S).
+2.  Query the number of ocurrences of each occupation in OCCUPATIONS.
+    Sort the occurrences in ascending order, and output them in the
+    following format:
+
+``` sql
+select concat(Name,'(',Substring(Occupation,1,1),')') as Name
+from occupations
+order by Name;
+```
+
+| Name         |
+|:-------------|
+| Aamina(D)    |
+| Ashley(P)    |
+| Belvet(P)    |
+| Britney(P)   |
+| Christeen(S) |
+| Eve(A)       |
+| Jane(S)      |
+| Jennifer(A)  |
+| Jenny(S)     |
+| Julia(D)     |
+
+Displaying records 1 - 10
+
+``` sql
+select concat('There are a total of',' ',count(occupation),' ',lower(occupation),'s.') as total
+from occupations
+group by occupation
+order by total;
+```
+
+| total                              |
+|:-----------------------------------|
+| There are a total of 3 doctors.    |
+| There are a total of 4 actors.     |
+| There are a total of 4 singers.    |
+| There are a total of 7 professors. |
+
+4 records
+
+## Occupations
+
+Pivot the Occupation column in OCCUPATIONS so that each Name is sorted
+alphabetically and displayed underneath its corresponding Occupation.
+The output column headers should be Doctor, Professor, Singer, and
+Actor, respectively.
+
+Note: Print NULL when there are no more names corresponding to an
+occupation.
+
+Step 1: Create a virtual table in your head of the data given to us.
+
+``` sql
+SELECT
+    case when Occupation='Doctor' then Name end as Doctor,
+    case when Occupation='Professor' then Name end as Professor,
+    case when Occupation='Singer' then Name end as Singer,
+    case when Occupation='Actor' then Name end as Actor
+FROM OCCUPATIONS
+```
+
+| Doctor | Professor | Singer | Actor    |
+|:-------|:----------|:-------|:---------|
+| NA     | Ashley    | NA     | NA       |
+| NA     | NA        | NA     | Samantha |
+| Julia  | NA        | NA     | NA       |
+| NA     | Britney   | NA     | NA       |
+| NA     | Maria     | NA     | NA       |
+| NA     | Meera     | NA     | NA       |
+| Priya  | NA        | NA     | NA       |
+| NA     | Priyanka  | NA     | NA       |
+| NA     | NA        | NA     | Jennifer |
+| NA     | NA        | NA     | Ketty    |
+
+Displaying records 1 - 10
+
+Step 2: Create an index column with respect to occupation as “RowNumber”
+
+``` sql
+set @r1=0, @r2=0, @r3=0, @r4=0;
+```
+
+``` sql
+SELECT case 
+    when Occupation='Doctor' then (@r1:=@r1+1)
+        when Occupation='Professor' then (@r2:=@r2+1)
+        when Occupation='Singer' then (@r3:=@r3+1)
+        when Occupation='Actor' then (@r4:=@r4+1) end as RowNumber
+
+FROM OCCUPATIONS
+```
+
+| RowNumber |
+|----------:|
+|         1 |
+|         1 |
+|         1 |
+|         2 |
+|         3 |
+|         4 |
+|         2 |
+|         5 |
+|         2 |
+|         3 |
+
+Displaying records 1 - 10
+
+Step 3: Combine the result from step 1 and step 2:
+
+``` sql
+set @r1=0, @r2=0, @r3=0, @r4=0;
+```
+
+``` sql
+SELECT case 
+    when Occupation='Doctor' then (@r1:=@r1+1)
+        when Occupation='Professor' then (@r2:=@r2+1)
+        when Occupation='Singer' then (@r3:=@r3+1)
+        when Occupation='Actor' then (@r4:=@r4+1) end as RowNumber,
+        case when Occupation='Doctor' then Name end as Doctor,
+        case when Occupation='Professor' then Name end as Professor,
+        case when Occupation='Singer' then Name end as Singer,
+        case when Occupation='Actor' then Name end as Actor
+
+FROM OCCUPATIONS
+```
+
+| RowNumber | Doctor | Professor | Singer | Actor    |
+|----------:|:-------|:----------|:-------|:---------|
+|         1 | NA     | Ashley    | NA     | NA       |
+|         1 | NA     | NA        | NA     | Samantha |
+|         1 | Julia  | NA        | NA     | NA       |
+|         2 | NA     | Britney   | NA     | NA       |
+|         3 | NA     | Maria     | NA     | NA       |
+|         4 | NA     | Meera     | NA     | NA       |
+|         2 | Priya  | NA        | NA     | NA       |
+|         5 | NA     | Priyanka  | NA     | NA       |
+|         2 | NA     | NA        | NA     | Jennifer |
+|         3 | NA     | NA        | NA     | Ketty    |
+
+Displaying records 1 - 10
+
+Step 4: Now, Order_by name then Group_By RowNumber. Using Min/Max, if
+there is a name, it will return it, if not, return NULL.
+
+``` sql
+set @r1=0, @r2=0, @r3=0, @r4=0;
+```
+
+``` sql
+select min(Doctor), min(Professor), min(Singer), min(Actor)
+from(
+  select case when Occupation='Doctor' then (@r1:=@r1+1)
+            when Occupation='Professor' then (@r2:=@r2+1)
+            when Occupation='Singer' then (@r3:=@r3+1)
+            when Occupation='Actor' then (@r4:=@r4+1) end as RowNumber,
+    case when Occupation='Doctor' then Name end as Doctor,
+    case when Occupation='Professor' then Name end as Professor,
+    case when Occupation='Singer' then Name end as Singer,
+    case when Occupation='Actor' then Name end as Actor
+  from OCCUPATIONS
+  order by Name
+    ) temp
+group by RowNumber;
+```
+
+| min(Doctor) | min(Professor) | min(Singer) | min(Actor) |
+|:------------|:---------------|:------------|:-----------|
+| Julia       | Ashley         | Jane        | Samantha   |
+| Priya       | Britney        | Jenny       | Jennifer   |
+| Aamina      | Maria          | Kristeen    | Ketty      |
+| NA          | Meera          | Christeen   | Eve        |
+| NA          | Priyanka       | NA          | NA         |
+| NA          | Belvet         | NA          | NA         |
+| NA          | Naomi          | NA          | NA         |
+
+7 records
+
+## BST table
+
+You are given a table, BST, containing two columns: N and P, where N
+represents the value of a node in Binary Tree, and P is the parent of N.
+
+Write a query to find the node type of Binary Tree ordered by the value
+of the node. Output one of the following for each node:
+
+-   Root: If node is root node.
+-   Leaf: If node is leaf node.
+-   Inner: If node is neither root nor leaf node.
+
+``` sql
+SELECT CASE
+    WHEN P IS NULL THEN CONCAT(N, ' Root')
+    WHEN N IN (SELECT DISTINCT P FROM BST) THEN CONCAT(N, ' Inner')
+    ELSE CONCAT(N, ' Leaf')
+    END AS NODE_TYPE
+FROM BST
+ORDER BY N ASC;
+```
+
+| NODE_TYPE |
+|:----------|
+| 1 Leaf    |
+| 2 Inner   |
+| 3 Leaf    |
+| 4 Inner   |
+| 5 Leaf    |
+| 6 Inner   |
+| 7 Leaf    |
+| 8 Leaf    |
+| 9 Inner   |
+| 10 Leaf   |
+
+Displaying records 1 - 10
+
+Explanation
+
+The Binary Tree below illustrates the sample:
+
+![](data/sql_bst.png)
 
 # Aggregation
 
